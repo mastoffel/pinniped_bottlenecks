@@ -3,7 +3,6 @@ library(devtools)
 library(readxl)
 # install.packages("gdata")
 # library(gdata)
-# test
 
 # sheet numbers to load
 dataset_names <- excel_sheets("data/processed/seal_data_largest_clust_and_pop.xlsx")
