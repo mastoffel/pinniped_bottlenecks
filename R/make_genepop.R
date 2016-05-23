@@ -1,4 +1,4 @@
-# this script reads in an excel file with multiple sheets of microsatellite data and makes genepop files for each
+# reads in an excel file with multiple sheets of microsatellite data and makes genepop files for each
 
 library(devtools)
 # devtools::install_github("hadley/readxl")
