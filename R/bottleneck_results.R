@@ -13,16 +13,16 @@ library(dplyr)
 library(plyr)
 
 # paths to full datasets
-in_1 <- paste("../output/bottleneck_out/", list.files(path = "../output/bottleneck_out", pattern="*1.txt.edit.txt"), sep = "")
-in_2 <- paste("../output/bottleneck_out/", list.files(path = "../output/bottleneck_out", pattern="*2.txt.edit.txt"), sep = "")
-in_3 <- paste("../output/bottleneck_out/", list.files(path = "../output/bottleneck_out", pattern="*3.txt.edit.txt"), sep = "")
-in_4 <- paste("../output/bottleneck_out/", list.files(path = "../output/bottleneck_out", pattern="*4.txt.edit.txt"), sep = "")
+in_1 <- paste("output/bottleneck_out/", list.files(path = "output/bottleneck_out", pattern="*1.txt.edit.txt"), sep = "")
+in_2 <- paste("output/bottleneck_out/", list.files(path = "output/bottleneck_out", pattern="*2.txt.edit.txt"), sep = "")
+in_3 <- paste("output/bottleneck_out/", list.files(path = "output/bottleneck_out", pattern="*3.txt.edit.txt"), sep = "")
+in_4 <- paste("output/bottleneck_out/", list.files(path = "output/bottleneck_out", pattern="*4.txt.edit.txt"), sep = "")
 
 # paths to datasets in hwe
-in1_hw <- paste("../output/bottleneck_out/hw/", list.files(path = "../output/bottleneck_out/hw", pattern="*1.txt.edit.txt"), sep = "")
-in2_hw <- paste("../output/bottleneck_out/hw/", list.files(path = "../output/bottleneck_out/hw", pattern="*2.txt.edit.txt"), sep = "")
-in3_hw <- paste("../output/bottleneck_out/hw/", list.files(path = "../output/bottleneck_out/hw", pattern="*3.txt.edit.txt"), sep = "")
-in4_hw <- paste("../output/bottleneck_out/hw/", list.files(path = "../output/bottleneck_out/hw", pattern="*4.txt.edit.txt"), sep = "")
+in1_hw <- paste("output/bottleneck_out/hw/", list.files(path = "output/bottleneck_out/hw", pattern="*1.txt.edit.txt"), sep = "")
+in2_hw <- paste("output/bottleneck_out/hw/", list.files(path = "output/bottleneck_out/hw", pattern="*2.txt.edit.txt"), sep = "")
+in3_hw <- paste("output/bottleneck_out/hw/", list.files(path = "output/bottleneck_out/hw", pattern="*3.txt.edit.txt"), sep = "")
+in4_hw <- paste("output/bottleneck_out/hw/", list.files(path = "output/bottleneck_out/hw", pattern="*4.txt.edit.txt"), sep = "")
 
 import_files <- function(file){
         file <- readLines(file)
@@ -170,18 +170,18 @@ out_hw <- lapply(out_hw, get_colnames)
 #------------------------------------------------------------------------------
 # specify dataset names
 library(plyr)
-dataset_names <-list.files(path = "../output/bottleneck_out", pattern="*2.txt.edit.txt")
+dataset_names <-list.files(path = "output/bottleneck_out", pattern="*2.txt.edit.txt")
 names(out) <- dataset_names
 out <- ldply(out, data.frame)
 
-dataset_names_hw <-list.files(path = "../output/bottleneck_out/hw", pattern="*2.txt.edit.txt")
+dataset_names_hw <-list.files(path = "output/bottleneck_out/hw", pattern="*2.txt.edit.txt")
 names(out_hw) <- dataset_names_hw
 out_hw <- ldply(out_hw, data.frame)
 
 # write out files
 library(WriteXLS)
-WriteXLS(out, ExcelFileName = "../output/out_bottleneck_stats.xls", na = "", row.names = F, col.names = T)
-WriteXLS(out_hw, ExcelFileName = "../output/out_bottleneck_stats_HW.xls", na = "", row.names = F, col.names = T)
+WriteXLS(out, ExcelFileName = "output/out_bottleneck_stats.xls", na = "", row.names = F, col.names = T)
+WriteXLS(out_hw, ExcelFileName = "output/out_bottleneck_stats_HW.xls", na = "", row.names = F, col.names = T)
 
 # write.csv(out, file = "output/out_bottleneck_stats.csv", na = "", row.names = F, col.names = T, quote = F)
 # write.csv(out_hw, file = "output/out_bottleneck_stats_HW.csv", na = "", row.names = F, col.names = T, quote = F)
