@@ -1,45 +1,19 @@
 # plots
-
-#### load datasets
+library(stringr)
+library(sealABC)
 library(readxl)
-# sheet numbers to load
-dataset_names <- excel_sheets("data/processed/seal_data_largest_clust_and_pop_all_hw.xlsx")
-load_dataset <- function(dataset_names) {
-    read_excel("data/processed/seal_data_largest_clust_and_pop_all_hw.xlsx", sheet = dataset_names)
-}
-# load all datasets
-all_seals <- lapply(dataset_names, load_dataset)
-names(all_seals) <- dataset_names
+all_seals <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop.xlsx")
 
 # get 28 datasets, biggest clusters
-ids <- c("antarctic_fur_seal",
-    "galapagos_fur_seal",
-    "stellers_sea_lion_cl_2",
-    "grey_seal_orkneys",
-    "harbour_seal_waddensee_cl_1",
-    "galapagos_sea_lion",
-    "south_american_fur_seal_cl_2",
-    "hooded_seal" ,
-    "mediterranean_monk_seal",
-    "hawaiian_monk_seal",
-    "bearded_seal_cl_1",
-    "crabeater_seal",
-    "leopard_seal" ,
-    "arctic_ringed_seal",
-    "ross_seal",
-    "weddell_seal_cl_2",
-    "northern_fur_seal_cl_1",
-    "atlantic_walrus_cl_1",
-    "nes_cl_4",
-    "ses_cl_1",
-    "california_sea_lion",
-    "south_american_sea_lion",
-    "new_zealand_sea_lion_cl_1",
-    "saimaa_ringed_seal_cl_2",
-    "lagoda_ringed_seal",
-    "baltic_ringed_seal",
-    "new_zealand_fur_seal" ,
-    "australian_fur_seal")
+ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_2",
+    "grey_seal_orkneys", "harbour_seal_waddensee_cl_2", "galapagos_sea_lion",
+    "south_american_fur_seal_cl_2", "hooded_seal", "mediterranean_monk_seal",
+    "hawaiian_monk_seal", "bearded_seal_cl_2", "crabeater_seal",
+    "leopard_seal", "arctic_ringed_seal", "ross_seal",
+    "weddell_seal_cl_1", "northern_fur_seal_cl_1", "atlantic_walrus_cl_1",
+    "nes_cl_1", "ses_cl_1", "california_sea_lion", "south_american_sea_lion",
+    "new_zealand_sea_lion", "saimaa_ringed_seal_cl_2", "lagoda_ringed_seal",
+    "baltic_ringed_seal", "new_zealand_fur_seal", "australian_fur_seal")
 
 # filter for 28 species datasets
 all_seals <- all_seals[ids]
@@ -48,7 +22,7 @@ names(all_seals) <- str_replace(names(all_seals), "_cl_[1-9]", "")
 
 
 #### load bottleneck data
-load("R/bottleneck_results.RData")
+load("bottleneck_results.RData")
 # rename all seals
 rename_species <- function(bottle_tests){
     bottle_tests$id <- str_replace(bottle_tests$id, "_cl_[1-9]", "")
@@ -77,7 +51,8 @@ calc_g2s <- function(genotypes){
 
 g2s <- lapply(all_seals, calc_g2s)
 # save(g2s, file = "all_g2s.RData")
-load("R/all_g2s.RData")
+load("all_g2s.RData")
+
 options(scipen = 999)
 g2_summary <- as.data.frame(do.call(rbind, lapply(g2s, function(x) c(x$g2, x$CI_boot, x$p_val))))
 names(g2_summary ) <- c("g2", "CIlow", "CIup", "p_val")
@@ -126,6 +101,7 @@ all_seal_data <- all_seal_data[, c(5,1,2,3,4,6)]
 mean_mlh <- unlist(lapply(all_hets, mean, na.rm = TRUE))
 var_mlh <- unlist(lapply(all_hets, var, na.rm = TRUE))
 
+library(strataG)
 # expected heterozygosity
 exp_het <- function(genotypes) {
     msats <- new("gtypes", gen.data = genotypes[, 4:ncol(genotypes)], ploidy = 2)
@@ -160,9 +136,9 @@ all_seal_info$id <- NULL
 # load harem data
 library(readxl)
 # sheet numbers to load
-dataset_names <- excel_sheets("data/overview.xlsx")
+dataset_names <- excel_sheets("data/processed/overview.xlsx")
 # load all datasets
-harem_data <- read_excel("data/overview.xlsx", sheet = 2)
+harem_data <- read_excel("data/processed/overview.xlsx", sheet = 2)
 
 
 # put everything together

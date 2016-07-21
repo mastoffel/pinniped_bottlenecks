@@ -1,7 +1,6 @@
 # script to calculate HW for all seal microsatellite datasets and select HW loci and put these
 # into a new excel file as additional datasets
 
-
 # Hardy Weinberg
 library(pegas)
 library("ape")
@@ -14,16 +13,10 @@ library(dplyr)
 
 # load cleaned seal data
 library(readxl)
-# sheet numbers to load
-dataset_names <- excel_sheets("data/processed/seal_data_largest_clust_and_pop.xlsx")
 
-load_dataset <- function(dataset_names) {
-    read_excel("data/processed/seal_data_largest_clust_and_pop.xlsx", sheet = dataset_names)
-}
+seal_data <- "data/processed/seal_data_largest_clust_and_pop.xlsx"
+all_seals <- sealABC::read_excel_sheets(seal_data)
 
-# load all datasets
-seal_data <- lapply(dataset_names, load_dataset)
-names(seal_data) <- dataset_names
 
 # create genind files where genotypes are stored as "134/140" instead of two column format and save
 # them in folder ../data/genind_formatted as tab seperated text files, including id and population--------
@@ -101,7 +94,7 @@ total_genotypes <- sample_size * loci_full
 all_hw <- lapply(seal_data_pegas, hw.test, B = 10000)
 
 save(all_hw, file = "all_hw_10000iter.RData")
-# load("all_hw_10000iter.RData")
+load("all_hw_10000iter.RData")
 all_non_hw <- lapply(all_hw, function(x) {
                                     x <- as.data.frame(x)
                                     x[which(x["Pr.exact"] < 0.05), ]
@@ -218,3 +211,6 @@ lapply(names(all_seals_in_hw), list_to_df, all_seals_in_hw, envir)
 
 WriteXLS(names(all_seals_in_hw), ExcelFileName = "seal_data_largest_clust_and_pop_all_hw.xls")
 
+
+####### LAST step ######
+# save all xls files as xlsx for postprocessing 

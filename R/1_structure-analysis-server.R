@@ -1,25 +1,16 @@
-# R script to put on the server and run there
+# This script runs from a server where STRUCTURE is installed.
+# It uses the parallelStructure package to interface with STRUCTURE.
+
+library(readxl)
+library(ParallelStructure)
+library(sealABC)
 
 ## load a list of genetic data frames and runs STRUCTURE in parallel on all of them
-library(readxl)
-
-# sheet numbers to load
-dataset_names <- excel_sheets("data/processed/seal_data_largest_clust_and_pop.xlsx")
-
-load_dataset <- function(dataset_names) {
-    read_excel("data/processed/seal_data_largest_clust_and_pop.xlsx", sheet = dataset_names)
-}
-# load all datasets
-all_seals <- lapply(dataset_names, load_dataset)
-names(all_seals) <- dataset_names
-
+seal_data <- "data/processed/seal_data_largest_clust_and_pop.xlsx"
+all_seals <- sealABC::read_excel_sheets(seal_data)
 
 # just get the 28 single species
 all_seals <- all_seals[1:28]
-
-
-# load ParallelStructure
-library(ParallelStructure)
 
 # prepare data
 all_seals_struc <- lapply(all_seals, function(x){
@@ -39,7 +30,8 @@ seals_no_clus <- lapply(seals_no_pop, function(x){
 
 options(scipen=999)
 # format
-# construct job matrix
+
+# construct job matrix and write to job file
 nrep <- 5
 burnin <- 10000
 niter <- 100000

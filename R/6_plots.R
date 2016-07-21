@@ -5,10 +5,11 @@ library(readxl)
 # load all datasets
 phylo <- read_excel("data/raw/phylogeny_overview.xlsx", sheet = 2, col_names = F)
 
-load("R/seal_summary_data.RData")
+load("seal_summary_data.RData")
 seals
 
 library(stringr)
+
 # get phylo order
 reorder <- unlist(lapply(phylo$X3, function(x) which(str_detect(seals$species, x))))
 seals <- seals[reorder, ]
@@ -16,6 +17,8 @@ seals[, 2:6] <- lapply(seals[, 2:6], as.numeric)
 
 # get krueger data and order
 krueger_data <- read_excel("data/processed/seal_data_krueger.xlsx", sheet = 1, col_names = T)
+
+# decide at some point whether to include ringed seal subspecies
 krueger_data <- krueger_data[1:35, ]
 krueger_data <- krueger_data[!is.na(krueger_data$dataset_name), ]
 
@@ -46,6 +49,7 @@ seal_names_real[10] <- "New Zealand Sea Lion"
 # plot p_vals
 bot_ratio <- melt(seals[, c(1, which(str_detect(names(seals), "_ratio")))], id.vars = "species")
 bot_ratio$species <- factor(bot_ratio$species, levels = bot_ratio$species[28:1]) # 
+
 
 p <- ggplot(bot_ratio, aes(x= variable, y = species, fill = value)) + 
     #facet_grid(.~dataset) + 
@@ -130,7 +134,7 @@ p1 <- ggplot(seals, aes(x= weight_ratio, y = TPM70_ratio, label = seal_names_rea
     #facet_grid(.~dataset) + 
     geom_smooth(method = "lm", size = 0.5, color = "grey", fill = "lightblue") +
     geom_point(size = 2, alpha = 0.5) +
-    labs(x = "male / female size ratio", y = "bottleneck footprint \n (heterozygosity excess ratio)") +
+    labs(x = "male / female weight ratio", y = "bottleneck footprint \n (heterozygosity excess ratio)") +
     geom_text_repel(size = 3) +
     theme_classic() +
     theme(axis.line.x = element_line(colour = 'grey', size=0.5, linetype='solid'),

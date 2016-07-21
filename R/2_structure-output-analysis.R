@@ -1,4 +1,3 @@
-
 ## script to analyse structure output for 28 seal species
 
 #(1) summarise structure output files with tables / graphs
@@ -9,35 +8,27 @@
 
 
 # summarising output with pophelper package from github
-
 library(devtools)
 # load data with original population names ---------------------------------------------------------
 library(readxl)
-# install.packages("gdata")
 library(gdata)
-# sheet numbers to load
-# sheet numbers to load
-dataset_names <- excel_sheets("data/processed/seal_data_largest_clust_and_pop.xlsx")
+library(devtools)
+library(stringr)
+library(pophelper)
+library(magrittr)
 
-load_dataset <- function(dataset_names) {
-    read_excel("data/processed/seal_data_largest_clust_and_pop.xlsx", sheet = dataset_names)
-}
-# load all datasets
-all_seals <- lapply(dataset_names, load_dataset)
-names(all_seals) <- dataset_names
 
-names(all_seals)
+seal_data <- "data/processed/seal_data_largest_clust_and_pop.xlsx"
+all_seals <- sealABC::read_excel_sheets(seal_data)
 
+# just load full species datasets
 all_seals <- all_seals[1:28]
 dataset_names <- dataset_names[1:28]
 # sanity checks data
 lapply(all_seals, function(x) range(x[, 4:ncol(x)], na.rm = TRUE))
 
 # process structure results ------------------------------------------------------------------------
-library(devtools)
-library(stringr)
-library(pophelper)
-library(magrittr)
+
 # preparation
 
 # folder that contains output from STRUCTURE, whereby each seal species has its own folder
@@ -206,7 +197,7 @@ all_seals_clusters_final <- lapply(all_seals_clusters, function(x){
                                                             })
 names(all_seals_clusters_final) <- dataset_names
 
-#### check whether necessary
+#### check whether necessary!!!!
 modify_locus_names <- function(df) {
     loci_names <- names(df)
     loci_names <- str_replace(loci_names, "Locus_", "")
@@ -214,9 +205,11 @@ modify_locus_names <- function(df) {
     names(df) <- loci_names
     df
 }
+
 # seal_data <- lapply(all_seals_clusters_final, modify_locus_names)
 
 seal_data <- all_seals_clusters_final
+
 
 # check
 lapply(seal_data, names)
@@ -228,6 +221,7 @@ list_to_df <- function(species, dfs, envir){
     assign(species, dfs[[species]], envir)
 }
 lapply(dataset_names, list_to_df, seal_data, envir)
+
 WriteXLS(dataset_names, ExcelFileName = "all_seals_clusters.xls")
 
 

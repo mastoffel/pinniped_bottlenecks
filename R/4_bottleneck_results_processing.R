@@ -20,8 +20,8 @@ bottleneck_out_hw <- read_excel("data/processed/out_bottleneck_stats_HW.xls")
 
 bottleneck_out <- rbind(bottleneck_out, bottleneck_out_hw)
 names(bottleneck_out)[1] <- "id"
-# extract pure names
 
+# extract pure names
 bottleneck_out$id <- sapply(strsplit(bottleneck_out$id, "_genepop"), `[[`, 1)
 
 # numeric
@@ -47,44 +47,30 @@ bottleneck <- cbind(bottleneck_out[!exc_cols], sep_cols)
 bottleneck <- bottleneck[, !(str_detect(names(bottleneck), "TPM99"))]
 
 # just take datasets in HW and largest cluster
-ids <- c("weddell_seal_cl_2",
-         "stellers_sea_lion_cl_2_HW",
-         "south_american_sea_lion",
-         "south_american_fur_seal_cl_2",
-         "ses_cl_1_HW",
-         "saimaa_ringed_seal_cl_2_HW",
-         "ross_seal",
-         "ringed_seal",
-         "northern_fur_seal_cl_1",
-         "new_zealand_sea_lion_cl_1_HW",
-         "new_zealand_fur_seal_HW",
-         "nes_cl_2_HW",
-         "mediterranean_monk_seal_HW",
-         "leopard_seal_HW",
-         "lagoda_ringed_seal_HW",
-         "hooded_seal",
-         "hawaiian_monk_seal_HW",
-         "harbour_seal_waddensee_cl_1",
-         "grey_seal_orkneys_HW",
-         "galapagos_sea_lion",
-         "galapagos_fur_seal",
-         "crabeater_seal_recoded",
-         "california_sea_lion_HW",
-         "bearded_seal_cl_1",
-         "baltic_ringed_seal_HW",
-         "australian_fur_seal",
-         "atlantic_walrus_schafer_cl_1_HW",
-         "antarctic_fur_seal")
+ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_2",
+    "grey_seal_orkneys", "harbour_seal_waddensee_cl_2", "galapagos_sea_lion",
+    "south_american_fur_seal_cl_2", "hooded_seal", "mediterranean_monk_seal",
+    "hawaiian_monk_seal", "bearded_seal_cl_2", "crabeater_seal",
+    "leopard_seal", "arctic_ringed_seal", "ross_seal",
+    "weddell_seal_cl_1", "northern_fur_seal_cl_1", "atlantic_walrus_cl_1",
+    "nes_cl_1", "ses_cl_1", "california_sea_lion", "south_american_sea_lion",
+    "new_zealand_sea_lion", "saimaa_ringed_seal_cl_2", "lagoda_ringed_seal",
+    "baltic_ringed_seal", "new_zealand_fur_seal", "australian_fur_seal")
 
 
+bottleneck$id[11] <- "crabeater_seal" # crabeater_seal_recoded to crabeater_seal
+bottleneck$id[7] <- ids[11] # bearded seal is now cluster 2 --> still has to be changed in the bottleneck tests
+bottleneck$id[33] <- ids[14] # ringed seal to arctic ringed seal
 # check if all names written correctly
-ids %in% bottleneck$id
+ids %in%  bottleneck$id 
+
+
+# some name changes due to renaming , also bearded seal is now cl_2 (has to be changed in bottleneck)
 
 unique_seals <- bottleneck[bottleneck$id %in% ids, ]
 bottleneck <- unique_seals
 
 # change names to unique names
-
 simple_names <- function(seals) {
     seals$id
 }
@@ -122,7 +108,7 @@ bottle_tests_ratio <- bottleneck[, het_exc_ratios]
 bottle_tests$id <- bottleneck$id
 bottle_tests_ratio$id <- bottleneck$id
 
-save(bottle_tests, bottle_tests_ratio, file = "bottleneck_results.RData")
+# save(bottle_tests, bottle_tests_ratio, file = "bottleneck_results.RData")
 
 library(reshape2)
 library(ggplot2)
