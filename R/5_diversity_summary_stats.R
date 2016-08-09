@@ -2,6 +2,15 @@
 library(stringr)
 library(sealABC)
 library(readxl)
+library(inbreedR)
+library(ggplot2)
+library(dplyr)
+library(xlsx)
+library(adegenet)
+library(PopGenReport)
+library(strataG)
+library(hierfstat)
+library(strataG)
 all_seals <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop.xlsx")
 
 # get 28 datasets, biggest clusters
@@ -22,18 +31,15 @@ names(all_seals) <- str_replace(names(all_seals), "_cl_[1-9]", "")
 
 
 #### load bottleneck data
-load("bottleneck_results.RData")
+bottleneck <- read_excel("data/processed/bottleneck_results.xlsx")
+
 # rename all seals
 rename_species <- function(bottle_tests){
     bottle_tests$id <- str_replace(bottle_tests$id, "_cl_[1-9]", "")
     bottle_tests$id <- str_replace(bottle_tests$id, "_HW", "")
     bottle_tests
 }
-bottleneck <- lapply(list(bottle_tests, bottle_tests_ratio), rename_species)
-names(bottleneck) <- c("p_val", "ratio")
-
-bottleneck_p_val <- bottleneck$p_val
-bottleneck_ratio <- bottleneck$ratio
+bottleneck <- rename_species(bottleneck)
 
 
 #### load additional data
@@ -42,37 +48,24 @@ harem_data <- read_excel("data/processed/overview.xlsx", sheet = 2)
 harem_data <- harem_data[!(is.na(harem_data$species)), ]
 
 
-# g2 and heterozygosity
+### diversity
+# g2 
 library(inbreedR)
-
 calc_g2s <- function(genotypes){
     g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 1000, nperm = 1000)
 }
-
-g2s <- lapply(all_seals, calc_g2s)
+# g2s <- lapply(all_seals, calc_g2s)
 # save(g2s, file = "all_g2s.RData")
 load("all_g2s.RData")
 
+# put it all in one data frame
 options(scipen = 999)
 g2_summary <- as.data.frame(do.call(rbind, lapply(g2s, function(x) c(x$g2, x$CI_boot, x$p_val))))
 names(g2_summary ) <- c("g2", "CIlow", "CIup", "p_val")
 g2_summary$species <- row.names(g2_summary)
 
-library(dplyr)
-g2_summary$species <- factor(g2_summary$species, levels = g2_summary$species[order(g2_summary$g2, 
-    decreasing = TRUE)])
-g2_summary <- g2_summary %>% mutate(p_val_ht = as.factor(as.numeric(p_val < 0.05)))
 
-library(ggplot2)
-
-ggplot(g2_summary, aes(x=species, y=g2, label = species, color = p_val_ht)) + 
-    geom_errorbar(aes(ymin=CIlow, ymax=CIup), width=.1) +
-    geom_line() +
-    geom_point() +
-    geom_text(angle = 90, vjust = 1.4, hjust = -0.5, size = 3) +
-    theme(axis.text.x = element_blank())
-
-library(inbreedR)
+# heterozygosity
 calc_hets <- function(genotypes){
     MLH(convert_raw(genotypes[, 4:ncol(genotypes)]))
 }
@@ -82,101 +75,92 @@ all_hets_plus_name <- lapply(c(1:length(all_hets)), function(x) data.frame(het =
 all_hets_df <- do.call(rbind, all_hets_plus_name)
 
 
-all_hets_df$species <- factor(all_hets_df$species, levels = all_hets_df$species[order(all_hets_df$g2, 
-    decreasing = TRUE)])
+### relationship between heteorzygosity and number of loci or number of individuals?
+sum_hets <- all_hets_df %>% 
+                group_by(species) %>%
+                summarise(mean_het = mean(het, na.rm = TRUE),
+                          sd_het = sd(het, na.rm = TRUE)) 
+# get loci and individuals
+desc_seals <- do.call(rbind, lapply(all_seals, function(x) out <- data.frame(nloc = (ncol(x)-3)/2, nind = nrow(x))))
 
-ggplot(all_hets_df, aes(x=reorder(as.factor(species), -het, FUN = median), y=het, label = as.factor(species))) + 
-    geom_boxplot() +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+# put het, nloc and nind in one data.frame
+sumstats_diversity <- cbind(sum_hets , desc_seals)
+
+# plotting
+# ggplot(data = sumstats_diversity, aes(x = mean_het, y = nloc)) + geom_point()
+# # model including both nloc and nind
+# mod <- glm(data = sumstats_diversity, mean_het ~ nloc + nind)
+# summary(mod)
+# plot(mod)
 
 
-# make data.frame with all data
-g2_summary
+diversity_stats <- cbind(g2_summary, sumstats_diversity)
 # save(g2_summary, file = "g2_summary")
 
-all_seal_data <- g2_summary
-all_seal_data <- all_seal_data[, c(5,1,2,3,4,6)]
-
-# empirical heterozygosity
-mean_mlh <- unlist(lapply(all_hets, mean, na.rm = TRUE))
-var_mlh <- unlist(lapply(all_hets, var, na.rm = TRUE))
-
-library(strataG)
-# expected heterozygosity
-exp_het <- function(genotypes) {
-    msats <- new("gtypes", gen.data = genotypes[, 4:ncol(genotypes)], ploidy = 2)
-    # using modified version of LDgenepop
-    He <- exptdHet(msats)
-    out <- mean(He, na.rm = TRUE)
-}
-
-all_exp_het <- unlist(lapply(all_seals, exp_het))
-all_exp_het - het
-
-# add to data
-all_seal_data$mean_mlh <- mean_mlh
-all_seal_data$var_mlh <- var_mlh
-all_seal_data$exp_mlh <- all_exp_het
-all_seal_data$species <- as.character(all_seal_data$species)
+# add mssumstats to data
+seal_stats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x[4:ncol(x)], type = "microsats")))
+diversity_stats <- cbind(diversity_stats, seal_stats)
 
 # put together bottleneck results
-bottleneck <- cbind(bottleneck_p_val, bottleneck_ratio)
-bottleneck[[6]] <- NULL
 bottleneck$id
 
 # match names
-bottleneck$id[[10]] <- "arctic_ringed_seal"
-reorder <- unlist(lapply(all_seal_data$species, function(x) which(str_detect(bottleneck$id, x))))
+reorder <- unlist(lapply(as.character(diversity_stats$species), function(x) which(str_detect(bottleneck$id, x))))
 bottleneck <- bottleneck[reorder, ]
 
 # put everything together
-all_seal_info <- cbind(all_seal_data, bottleneck)
-all_seal_info$id <- NULL
+all_seal_data <- cbind(diversity_stats, bottleneck)
+all_seal_data$id <- NULL
+names(all_seal_data)
 
 # load harem data
-library(readxl)
+
 # sheet numbers to load
 dataset_names <- excel_sheets("data/processed/overview.xlsx")
 # load all datasets
 harem_data <- read_excel("data/processed/overview.xlsx", sheet = 2)
 
-
 # put everything together
-seals <- cbind(harem_data[1:28, ], all_seal_info)
-seals[[9]] <- NULL
+seals <- cbind(harem_data[1:28, ], all_seal_data)
+# delete doubled species column
+seals <- seals[-which(duplicated(names(seals)))]
+# delete rownames
+rownames(seals) <- 1:nrow(seals)
 
-# get sample size and locus number
-names(all_seals)
-seals$sample_size <- unlist(lapply(all_seals, nrow))
-seals$loci_number <- unlist(lapply(all_seals, function(x) (ncol(x) - 3) / 2 ))
+# check how many NAs
+lapply(all_seals, function(x) rowSums(is.na(x)))
 
-save(seals, file = "seal_summary_data.RData")
+# calculate allelic richness
+?allele2locus
 
+seals_new <- lapply(all_seals, function(x) {
+    names(x) <- str_replace_all(names(x), ".", "_")
+    x
+})
 
-
-
-
-
-
-
-
-
-# allelic richness
-library(strataG)
-
-allelic_richness <- function(genotypes) {
-    msats <- new("gtypes", gen.data = genotypes[, 4:ncol(genotypes)], ploidy = 2)
-    # using modified version of LDgenepop
-    ar <- allelicRichness(msats)
-    out <- mean(ar, na.rm = TRUE)
+calc_allelic_richness <- function(genotypes, min.alleles = 80) {
+   # join_alleles <- sealABC::allele2locus(genotypes[4:ncol(genotypes)], "/")
+    g_types_geno <- strataG::df2gtypes(genotypes, ploidy = 2, id.col = NULL, strata.col = NULL,
+        loc.col = 4)
+    genind_geno <- gtypes2genind(g_types_geno)
+    all_rich <- allel.rich(genind_geno, min.alleles)
+    out <- as.numeric(all_rich$mean.richness)
 }
+# idea: maybe always subsample lowest number of loci (5?) , calculate allelic richness and then take average
+all_richness <- unlist(lapply(seals_new, calc_allelic_richness, 60))
 
-AR <- unlist(lapply(all_seals, allelic_richness))
-names(AR) <- names(all_seals)
-AR
-lagoda <- all_seals$lagoda_ringed_seal
-msats_lagoda <- new("gtypes", gen.data = lagoda[, 4:ncol(lagoda)], ploidy = 2)
-allelicRichness(msats_lagoda)
+seals$allelic_richness <- all_richness
+
+write.xlsx(seals, file = "data/processed/all_data_seals.xlsx", row.names = FALSE)
+
+# save(seals, file = "seal_summary_data.RData")
+
+
+
+
+
+
+
 
 
 

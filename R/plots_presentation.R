@@ -1,14 +1,20 @@
 # plots for the talk
 
-# load phyologenetic sequence
+library(stringr)
 library(readxl)
+library(reshape2)
+library(ggplot2)
+library(dplyr)
+library(ggthemes)
+library(stringr)
+
+# load phyologenetic sequence
+
 # load all datasets
 phylo <- read_excel("data/raw/phylogeny_overview.xlsx", sheet = 2, col_names = F)
-
-load("seal_summary_data.RData")
+seals <- read_excel("data/processed/all_data_seals.xlsx")
 seals
 
-library(stringr)
 
 # get phylo order
 reorder <- unlist(lapply(phylo$X3, function(x) which(str_detect(seals$species, x))))
@@ -19,30 +25,25 @@ seals[, 2:6] <- lapply(seals[, 2:6], as.numeric)
 krueger_data <- read_excel("data/processed/seal_data_krueger.xlsx", sheet = 1, col_names = T)
 
 # decide at some point whether to include ringed seal subspecies
-krueger_data <- krueger_data[1:35, ]
+krueger_data <- krueger_data[1:38, ]
 krueger_data <- krueger_data[!is.na(krueger_data$dataset_name), ]
 
 # prepare krueger data for matching
-seals
 seals$species %in% krueger_data$dataset_name 
+# reorder krueger data
 reorder <- unlist(lapply(seals$species, function(x) which(str_detect(krueger_data$dataset_name, x))))
 krueger_data <- krueger_data[reorder, ]
-NA_df <- as.data.frame(matrix(nrow = 3, ncol = ncol(krueger_data)))
-names(NA_df) <- names(krueger_data)
-krueger_data <- rbind(krueger_data[1:24, ], NA_df, krueger_data[25, ] )
-names(krueger_data) <- str_replace_all(names(krueger_data), " ", "_")
-
+# bind seals and krueger_data
 seals <- cbind(seals, krueger_data)
 
-library(reshape2)
-library(ggplot2)
-library(dplyr)
-library(ggthemes)
-library(stringr)
-names(seals)
-
+# rename the hookers sea lion
 seal_names_real <- phylo$X2[1:28]
 seal_names_real[10] <- "New Zealand Sea Lion"
+
+# delete doubled species column
+seals <- seals[-which(duplicated(names(seals)))]
+# delete rownames
+rownames(seals) <- 1:nrow(seals)
 
 
 ## heatmap for ratio
@@ -244,3 +245,36 @@ ggplot2::ggsave(p3,
     height = 12, units = "in",
     dpi = 300)
 
+
+
+## diversity
+names(seals)
+genetic_diversity <- seals %>% select_("species", "mean_het", "Hexp", "Hobs", "TPM70_ratio", "TPM90_ratio") 
+gen_div <- melt(genetic_diversity, id.vars = "species")
+
+p <- ggplot(gen_div, aes(x= variable, y = species, fill = value)) + 
+    #facet_grid(.~dataset) + 
+    geom_tile(color = "white", size = 0.1) +
+    labs(x = "microsat mutation model", y = "") +
+    # scale_fill_gradientn(colours=c("#ffffd9", "#edf8b1", "#c7e9b4", "#1d91c0", "#225ea8", "#0c2c84", "#081d58")) +
+    #scale_fill_gradientn(colours=c("#fff7fb", "#d0d1e6", "#67a9cf", "#02818a", "#014636")) +
+    #scale_fill_gradientn(colours=c("#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#cb181d", "#a50f15", "#67000d")) +
+    # scale_fill_gradientn(colours=c("#ffffd9", "#edf8b1", "#c7e9b4", "#41b6c4", "#225ea8", "#253494", "#081d58")) +
+    # for p_val
+    # scale_fill_gradientn(colours=c("#081d58",  "#1d91c0", "#41b6c4", "#7fcdbb", "#c7e9b4", "#edf8b1", "#ffffd9"), 
+    #     name = "p-val") +
+    
+    scale_fill_gradientn(colours=c( "#ffffd9","#c7e9b4", "#7fcdbb", "#1d91c0", "#253494", "#081d58"), 
+        name = "prop. \nhet-exc") +
+    
+    scale_x_discrete(labels=c("IAM", "TPM70", "TPM90", "TPM95", "SMM")) +
+    scale_y_discrete(labels = rev(seal_names_real)) +
+    # scale_fill_gradient(name = "p-value", label = comma,  breaks = c(0.05, 0.5)) +
+    theme_tufte(base_family="Helvetica") +
+    coord_equal() +
+    theme(plot.title=element_text(hjust=0),
+        axis.ticks=element_blank(),
+        axis.text=element_text(size=10),
+        legend.title=element_text(size=10),
+        legend.text=element_text(size=9), 
+        axis.text.x = element_text(angle = 50, hjust = 1))

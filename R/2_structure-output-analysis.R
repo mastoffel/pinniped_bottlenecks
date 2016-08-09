@@ -16,21 +16,16 @@ library(devtools)
 library(stringr)
 library(pophelper)
 library(magrittr)
+library(sealABC)
 
 
-seal_data <- "data/processed/seal_data_largest_clust_and_pop.xlsx"
+seal_data <- "data/processed/seal_genotypes_basic_28.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
 
-# just load full species datasets
-all_seals <- all_seals[1:28]
-dataset_names <- dataset_names[1:28]
-# sanity checks data
-lapply(all_seals, function(x) range(x[, 4:ncol(x)], na.rm = TRUE))
-
+dataset_names <- names(all_seals)
 # process structure results ------------------------------------------------------------------------
 
 # preparation
-
 # folder that contains output from STRUCTURE, whereby each seal species has its own folder
 path_to_structure_out <- "output/structure/structure_results/"
 
@@ -164,6 +159,7 @@ runs_to_df_reduced <- lapply(runs_to_df, extract_and_name_runs)
 clusters <- as.data.frame(best_clustering) 
 names(runs_to_df_reduced)
 
+# get individual cluster membership
 get_cluster_info <- function(species, runs_to_df_reduced, clusters) {
     species_runs <- runs_to_df_reduced[[species]]
     num_clust <- clusters[species, ]
@@ -179,13 +175,11 @@ get_cluster_info <- function(species, runs_to_df_reduced, clusters) {
 }
 
 all_clusters <- lapply(seal_species_names, get_cluster_info, runs_to_df_reduced, clusters)
-# check seal_species_names[7] --> weird species runs
-
 
 # add cluster membership to genotypes
 names(all_clusters) <- dataset_names
 add_cluster_to_geno <- function(species, all_clusters, all_seals){
-    out <- cbind(all_seals[[species]][1:2], all_clusters[species], all_seals[[species]][4:ncol(all_seals[[species]])])
+    out <- cbind(all_seals[[species]][1:2], all_clusters[species], all_seals[[species]][3:ncol(all_seals[[species]])])
 }
 
 all_seals_clusters <- lapply(dataset_names, add_cluster_to_geno, all_clusters, all_seals)
@@ -198,14 +192,13 @@ all_seals_clusters_final <- lapply(all_seals_clusters, function(x){
 names(all_seals_clusters_final) <- dataset_names
 
 #### check whether necessary!!!!
-modify_locus_names <- function(df) {
-    loci_names <- names(df)
-    loci_names <- str_replace(loci_names, "Locus_", "")
-    loci_names <- c(loci_names[1:3], paste0("L_", loci_names[4:length(loci_names)]))
-    names(df) <- loci_names
-    df
-}
-
+# modify_locus_names <- function(df) {
+#     loci_names <- names(df)
+#     loci_names <- str_replace(loci_names, "Locus_", "")
+#     loci_names <- c(loci_names[1:3], paste0("L_", loci_names[4:length(loci_names)]))
+#     names(df) <- loci_names
+#     df
+# }
 # seal_data <- lapply(all_seals_clusters_final, modify_locus_names)
 
 seal_data <- all_seals_clusters_final
@@ -215,15 +208,7 @@ seal_data <- all_seals_clusters_final
 lapply(seal_data, names)
 
 # write excel file with each dataset plus clusters
-library(WriteXLS)
-envir <- environment()
-list_to_df <- function(species, dfs, envir){
-    assign(species, dfs[[species]], envir)
-}
-lapply(dataset_names, list_to_df, seal_data, envir)
-
-WriteXLS(dataset_names, ExcelFileName = "all_seals_clusters.xls")
-
+write_dflist_to_xls(seal_data, "all_seals_clusters.xls")
 
 # make new dataframes
 cluster_df <- function(species, all_seals_clusters_final){
@@ -250,7 +235,6 @@ all_seals_extended <- append(seal_data, cluster_geno)
 
 
 # extract largest single population and add to genotypes list -------------------------------------
-
 # make new dataframes
 pop_df <- function(species, all_seals_clusters_final){
     seal_df <- all_seals_clusters_final[[species]]
@@ -276,26 +260,21 @@ names(largest_pops_geno) <- names_pops
 all_seals_clusts_pops <- append(all_seals_extended, largest_pops_geno)
 names(all_seals_clusts_pops)
 
-# write excel file with each dataset 
-library(WriteXLS)
-envir <- environment()
-list_to_df <- function(species, dfs, envir){
-    assign(species, dfs[[species]], envir)
-}
-lapply(names(all_seals_clusts_pops), list_to_df, all_seals_clusts_pops, envir)
-WriteXLS(names(all_seals_clusts_pops), ExcelFileName = "seal_data_largest_clust_and_pop.xls")
+# write excel file with each dataset plus clusters
+write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and_pop.xls")
 
 
+#### used to exctract an additional elephant seal cluster
 # extract nes k = 2 and add data.frame to file --> decision for k = 2 due to assignment plot
-nes_k2 <- runs_to_df_reduced[["nes"]]$K_2
-cluster <- apply(nes_k2, 1, which.max)
-table(nes$pop)
-nes <- all_seals_clusts_pops[["nes"]]
-nes <- cbind(nes[1:2], cluster, nes[4:ncol(nes)])
-all_seals_clusts_pops$nes_cl_2 <- nes[nes$cluster==2, ]
-names(all_seals_clusts_pops)
-nes_cl_2 <- all_seals_clusts_pops$nes_cl_2
-WriteXLS(names(all_seals_clusts_pops), ExcelFileName = "seal_data_largest_clust_and_pop.xls")
+# nes_k2 <- runs_to_df_reduced[["nes"]]$K_2
+# cluster <- apply(nes_k2, 1, which.max)
+# table(nes$pop)
+# nes <- all_seals_clusts_pops[["nes"]]
+# nes <- cbind(nes[1:2], cluster, nes[4:ncol(nes)])
+# all_seals_clusts_pops$nes_cl_2 <- nes[nes$cluster==2, ]
+# names(all_seals_clusts_pops)
+# nes_cl_2 <- all_seals_clusts_pops$nes_cl_2
+# WriteXLS(names(all_seals_clusts_pops), ExcelFileName = "seal_data_largest_clust_and_pop.xls")
 
 
 save(all_seals_clusts_pops, file = "data/processed/seals_full.RData")

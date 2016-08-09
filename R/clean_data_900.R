@@ -1,6 +1,6 @@
 # This script cleans all ice breeding and ringed seal datasets by exchanging
 # the 900 + genotypes. For the species from Davis (2008), it will remove the leading
-# 9. For the species from Nyman (2014), i.e. the 3 ringed seal subspecies, it willö
+# 9. For the species from Nyman (2014), i.e. the 3 ringed seal subspecies, it will
 # remove the last digit.
 
 

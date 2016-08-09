@@ -12,6 +12,10 @@ library(ggthemes)    # has a clean theme for ggplot2
 library(viridis)     # best. color. palette. evar.
 library(knitr)       # kable : prettier data.frame output
 library(stringr)
+library(reshape2)
+library(xlsx)
+library(ggthemes)
+
 # load data with original population names ---------------------------------------------------------
 library(readxl)
 # sheet numbers to load
@@ -38,6 +42,7 @@ split_up <- function(x){
 }
 
 sep_cols <- do.call(cbind, lapply(bottleneck_out[exc_cols], split_up))
+
 names(sep_cols) <- str_replace(names(sep_cols), "X1", "het_def")
 names(sep_cols) <- str_replace(names(sep_cols), "X2", "het_exc")
 names(sep_cols) <- str_replace(names(sep_cols), "Def.Exc.", "")
@@ -64,9 +69,7 @@ bottleneck$id[33] <- ids[14] # ringed seal to arctic ringed seal
 # check if all names written correctly
 ids %in%  bottleneck$id 
 
-
 # some name changes due to renaming , also bearded seal is now cl_2 (has to be changed in bottleneck)
-
 unique_seals <- bottleneck[bottleneck$id %in% ids, ]
 bottleneck <- unique_seals
 
@@ -91,15 +94,6 @@ names(all_ratios) <- c("IAM_ratio", "TPM70_ratio","TPM90_ratio", "TPM95_ratio", 
 
 bottleneck <- cbind(bottleneck, all_ratios)
 
-# bottle_tests <- bottleneck %>%
-#                     mutate(IAM_het_exc_ratio = IAM_Heq / IAM_het_def) %>%
-#                     mutate(TPM70_het_exc_ratio = TPM70_Heq / TPM70_het_def) %>%
-#                     mutate(TPM95_het_exc_ratio = TPM95_Heq / TPM95_het_def) %>%
-#                     mutate(TPM99_het_exc_ratio = TPM99_Heq / TPM99_het_def) %>%
-#                     mutate(SMM_het_exc_ratio = SMM_Heq / SMM_het_def) 
-
-# extract sign tests for all models
-
 wilc_tests <- str_detect(names(bottleneck), "Wilc_Exc")
 het_exc_ratios <- str_detect(names(bottleneck), "_ratio")
 
@@ -108,17 +102,16 @@ bottle_tests_ratio <- bottleneck[, het_exc_ratios]
 bottle_tests$id <- bottleneck$id
 bottle_tests_ratio$id <- bottleneck$id
 
+
+bottleneck_results <- merge(bottle_tests, bottle_tests_ratio, by = "id")
+write.xlsx(bottleneck_results, file = "data/processed/bottleneck_results.xlsx", row.names = FALSE)
 # save(bottle_tests, bottle_tests_ratio, file = "bottleneck_results.RData")
 
-library(reshape2)
-library(ggplot2)
-library(dplyr)
 bot <- melt(bottle_tests, id.vars = "id")
 bot$value <- as.numeric(bot$value)
 
 names(bot) <- c("id", "mutation_model", "value")
 
-library(ggthemes)
 ggplot(bot, aes(x= mutation_model, y = id, fill = value)) + 
             #facet_grid(.~dataset) + 
             geom_tile(color = "white", size = 0.1) +

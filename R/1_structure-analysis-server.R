@@ -6,11 +6,8 @@ library(ParallelStructure)
 library(sealABC)
 
 ## load a list of genetic data frames and runs STRUCTURE in parallel on all of them
-seal_data <- "data/processed/seal_data_largest_clust_and_pop.xlsx"
+seal_data <- "../../data/seal_genotypes_basic_28.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
-
-# just get the 28 single species
-all_seals <- all_seals[1:28]
 
 # prepare data
 all_seals_struc <- lapply(all_seals, function(x){
@@ -27,6 +24,11 @@ seals_no_clus <- lapply(seals_no_pop, function(x){
                             x$cluster <- NULL
                             x
 } )
+
+seals <- lapply(seals, function(x){
+                             x$id <- 1:nrow(x)
+                             x
+})
 
 options(scipen=999)
 # format

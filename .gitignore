@@ -10,3 +10,7 @@
 /information
 /ABC_2016_5_16-1
 /server
+/data_acquisition
+*.RData
+*.xls
+*.xlsx
