@@ -51,22 +51,29 @@ names(sep_cols) <- str_replace(names(sep_cols), "Def.Exc.", "")
 bottleneck <- cbind(bottleneck_out[!exc_cols], sep_cols)
 bottleneck <- bottleneck[, !(str_detect(names(bottleneck), "TPM99"))]
 
-# just take datasets in HW and largest cluster
-ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_2",
-    "grey_seal_orkneys", "harbour_seal_waddensee_cl_2", "galapagos_sea_lion",
-    "south_american_fur_seal_cl_2", "hooded_seal", "mediterranean_monk_seal",
-    "hawaiian_monk_seal", "bearded_seal_cl_2", "crabeater_seal",
-    "leopard_seal", "arctic_ringed_seal", "ross_seal",
-    "weddell_seal_cl_1", "northern_fur_seal_cl_1", "atlantic_walrus_cl_1",
-    "nes_cl_1", "ses_cl_1", "california_sea_lion", "south_american_sea_lion",
-    "new_zealand_sea_lion", "saimaa_ringed_seal_cl_2", "lagoda_ringed_seal",
-    "baltic_ringed_seal", "new_zealand_fur_seal", "australian_fur_seal")
+# just take datasets in largest cluster cluster
+# ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_2",
+#     "grey_seal_orkneys", "harbour_seal_waddensee_cl_2", "galapagos_sea_lion",
+#     "south_american_fur_seal_cl_2", "hooded_seal", "mediterranean_monk_seal",
+#     "hawaiian_monk_seal", "bearded_seal_cl_2", "crabeater_seal",
+#     "leopard_seal", "arctic_ringed_seal", "ross_seal",
+#     "weddell_seal_cl_1", "northern_fur_seal_cl_1", "atlantic_walrus_cl_1",
+#     "nes_cl_1", "ses_cl_1", "california_sea_lion", "south_american_sea_lion",
+#     "new_zealand_sea_lion", "saimaa_ringed_seal_cl_2", "lagoda_ringed_seal",
+#     "baltic_ringed_seal", "new_zealand_fur_seal", "australian_fur_seal")
 
-
+# correct naming of species from the bottleneck program
 bottleneck$id[11] <- "crabeater_seal" # crabeater_seal_recoded to crabeater_seal
-bottleneck$id[7] <- ids[11] # bearded seal is now cluster 2 --> still has to be changed in the bottleneck tests
-bottleneck$id[33] <- ids[14] # ringed seal to arctic ringed seal
+bottleneck$id[7] <- "bearded_seal_cl_2" # bearded seal is now cluster 2 --> still has to be changed in the bottleneck tests
+bottleneck$id[33] <- "arctic_ringed_seal" # ringed seal to arctic ringed seal
 # check if all names written correctly
+
+
+###### take full datasets
+ids <- bottleneck$id[!str_detect(bottleneck$id, "cl")]
+ids <- ids[!str_detect(ids, "HW")]
+ids <- ids[!str_detect(ids, "pop")]    
+
 ids %in%  bottleneck$id 
 
 # some name changes due to renaming , also bearded seal is now cl_2 (has to be changed in bottleneck)
@@ -74,14 +81,12 @@ unique_seals <- bottleneck[bottleneck$id %in% ids, ]
 bottleneck <- unique_seals
 
 # change names to unique names
-simple_names <- function(seals) {
-    seals$id
-}
 
+# dont run for full datasets
 # add factor for full / pop / cl
-bottleneck$dataset[str_detect(bottleneck$id, "_pop")] <- "pop"
-bottleneck$dataset[str_detect(bottleneck$id, "_cl")] <- "cl"
-bottleneck$dataset[is.na(bottleneck$dataset)] <- "full"
+# bottleneck$dataset[str_detect(bottleneck$id, "_pop")] <- "pop"
+# bottleneck$dataset[str_detect(bottleneck$id, "_cl")] <- "cl"
+# bottleneck$dataset[is.na(bottleneck$dataset)] <- "full"
 
 prop_het_exc <- function(mut_mod){
     het_exc <- paste0(mut_mod, "_het_exc")

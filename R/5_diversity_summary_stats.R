@@ -14,21 +14,31 @@ library(strataG)
 all_seals <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop.xlsx")
 
 # get 28 datasets, biggest clusters
-ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_2",
-    "grey_seal_orkneys", "harbour_seal_waddensee_cl_2", "galapagos_sea_lion",
-    "south_american_fur_seal_cl_2", "hooded_seal", "mediterranean_monk_seal",
-    "hawaiian_monk_seal", "bearded_seal_cl_2", "crabeater_seal",
+
+
+ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_1",
+    "grey_seal_orkneys", "harbour_seal_waddensee_cl_1", "galapagos_sea_lion",
+    "south_american_fur_seal_cl_1", "hooded_seal", "mediterranean_monk_seal",
+    "hawaiian_monk_seal", "bearded_seal_cl_1", "crabeater_seal",
     "leopard_seal", "arctic_ringed_seal", "ross_seal",
-    "weddell_seal_cl_1", "northern_fur_seal_cl_1", "atlantic_walrus_cl_1",
-    "nes_cl_1", "ses_cl_1", "california_sea_lion", "south_american_sea_lion",
-    "new_zealand_sea_lion", "saimaa_ringed_seal_cl_2", "lagoda_ringed_seal",
+    "weddell_seal_cl_2", "northern_fur_seal_cl_1", "atlantic_walrus_cl_2",
+    "nes_cl_2", "ses_cl_4", "california_sea_lion", "south_american_sea_lion",
+    "new_zealand_sea_lion", "saimaa_ringed_seal_cl_1", "lagoda_ringed_seal",
     "baltic_ringed_seal", "new_zealand_fur_seal", "australian_fur_seal")
 
+# take all full datasets
+ids <- names(all_seals)[1:28]
+
+
+ids %in% names(all_seals)
 # filter for 28 species datasets
 all_seals <- all_seals[ids]
 # rename all seals
 names(all_seals) <- str_replace(names(all_seals), "_cl_[1-9]", "")
 
+#####################################################################################
+######### for final set of data re-compute bottleneck data here #####################
+#####################################################################################
 
 #### load bottleneck data
 bottleneck <- read_excel("data/processed/bottleneck_results.xlsx")
@@ -54,7 +64,7 @@ library(inbreedR)
 calc_g2s <- function(genotypes){
     g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 1000, nperm = 1000)
 }
-# g2s <- lapply(all_seals, calc_g2s)
+g2s <- lapply(all_seals, calc_g2s)
 # save(g2s, file = "all_g2s.RData")
 load("all_g2s.RData")
 
@@ -102,8 +112,10 @@ seal_stats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x[4:ncol(x
 diversity_stats <- cbind(diversity_stats, seal_stats)
 
 # put together bottleneck results
-bottleneck$id
-
+bottleneck$id %in% diversity_stats$species
+# bottleneck[ 2, "id"] <- "atlantic_walrus"
+# bottleneck[ 7, "id"] <- "crabeater_seal"
+# bottleneck[ 21, "id"] <- "arctic_ringed_seal"
 # match names
 reorder <- unlist(lapply(as.character(diversity_stats$species), function(x) which(str_detect(bottleneck$id, x))))
 bottleneck <- bottleneck[reorder, ]

@@ -14,6 +14,7 @@ library(readxl)
 library(gdata)
 library(devtools)
 library(stringr)
+library(dplyr)
 library(pophelper)
 library(magrittr)
 library(sealABC)
@@ -32,8 +33,17 @@ path_to_structure_out <- "output/structure/structure_results/"
 # get names for all structure files that end with f
 seal_species_names <- names(all_seals)
 
+
 # create folder for STRUCTURE summary plots
+if (dir.exists("output/structure/cluster_summary_plots")) {
+    system("rm -r output/structure/cluster_summary_plots")
+}
 system("mkdir output/structure/cluster_summary_plots")
+
+# create folder for STRUCTURE result tables
+if (dir.exists("output/structure/structure_result_tables")) {
+    system("rm -r output/structure/structure_result_tables")
+}
 system("mkdir output/structure/structure_result_tables")
 
 # structure output summary and lnK plots -----------------------------------------------------------
@@ -62,8 +72,16 @@ for (i in 1:length(seal_species_names)) {
 names(seals_structure_summary)
 
 
+
+# use clumpp to sort data
 clumpp_path <- "output/structure/clumpp"
+
+if (dir.exists(clumpp_path)) {
+    system(paste("rm -r output/structure/clumpp"))
+}
 system("mkdir output/structure/clumpp")
+
+
 for (i in 1:length(seal_species_names)) {
     # lists all files in structure output folder 
     all_files <- list.files(paste0(path_to_structure_out, seal_species_names[i]))
@@ -89,7 +107,12 @@ for (i in 1:length(seal_species_names)) {
 
 
 # collectCLumppOutput and plot
+
+if (dir.exists("output/structure/structure_assignment_plots")) {
+    system(paste("rm -r output/structure/structure_assignment_plots"))
+}
 system("mkdir output/structure/structure_assignment_plots")
+
 for (i in 1:length(seal_species_names)) {
     current_dir <- getwd()
     setwd(paste0("/Users/martin/Dropbox/projects/current/bottleneck/output/structure/clumpp/",
@@ -117,6 +140,7 @@ for (i in 1:length(seal_species_names)) {
 #       if not, use evanno-method (delta K) to decide which k
 
 optimal_k <- function(x) {
+    x <- x[1:5, ] # evaluate with a maximum of 5 clusters. 
     elpd <- which.max(x$elpdmean)
     if (elpd == 1) {
         return(1)
@@ -250,7 +274,7 @@ pop_df <- function(species, all_seals_clusters_final){
 
 largest_pop <- lapply(dataset_names, pop_df, seal_data)
 
-# get rid of non-cluster populations (NULL anyway) and keep new largest cluster data.frames
+# add pops
 largest_pops_for_clustered <- largest_pop[!sapply(largest_pop, is.null)]
 names_pops <- unlist(lapply(largest_pops_for_clustered , function(x) x[1]))
 largest_pops_geno <- lapply(largest_pops_for_clustered, function(x) x[[2]])
@@ -261,7 +285,7 @@ all_seals_clusts_pops <- append(all_seals_extended, largest_pops_geno)
 names(all_seals_clusts_pops)
 
 # write excel file with each dataset plus clusters
-write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and_pop.xls")
+sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and_pop.xls")
 
 
 #### used to exctract an additional elephant seal cluster

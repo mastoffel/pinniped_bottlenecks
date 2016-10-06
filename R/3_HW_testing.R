@@ -6,8 +6,8 @@ library(pegas)
 library("ape")
 library("pegas")
 library("seqinr")
-library("ggplot2")
 library("adegenet")
+library(ggplot2)
 library(stringr)
 library(dplyr)
 library(sealABC)
@@ -68,6 +68,12 @@ check_na_genotypes <- function(df) {
 seal_data_locus_format <- lapply(seal_data_locus_format, check_na_genotypes)
 
 
+
+if (dir.exists("output/genind_formatted")) {
+    system(paste("rm -r output/genind_formatted"))
+}
+system("mkdir output/genind_formatted")
+
 # write to txt files
 for (i in 1:length(seal_data_locus_format)) {
         write.table(seal_data_locus_format[[i]], file = paste("output/genind_formatted/", names(seal_data_locus_format[i]), ".txt", sep = ""
@@ -92,9 +98,12 @@ total_genotypes <- sample_size * loci_full
 # load("seal_data_pegas.RData")
 
 #### hardy weinberg tests on everything
-# all_hw <- lapply(seal_data_pegas, hw.test, B = 10000)
-# save(all_hw, file = "data/processed/all_hw_10000iter.RData")
-load("data/processed/all_hw_10000iter.RData")
+all_hw <- lapply(seal_data_pegas, hw.test, B = 10000)
+save(all_hw, file = "data/processed/all_hw_10000iter.RData")
+
+
+
+# load("data/processed/all_hw_10000iter.RData")
 all_non_hw <- lapply(all_hw, function(x) {
                                     x <- as.data.frame(x)
                                     x[which(x["Pr.exact"] < 0.05), ]
