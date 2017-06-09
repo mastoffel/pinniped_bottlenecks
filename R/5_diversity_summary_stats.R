@@ -44,12 +44,12 @@ names(all_seals) <- str_replace(names(all_seals), "_cl_[1-9]", "")
 bottleneck <- read_excel("data/processed/bottleneck_results.xlsx")
 
 # rename all seals
-rename_species <- function(bottle_tests){
-    bottle_tests$id <- str_replace(bottle_tests$id, "_cl_[1-9]", "")
-    bottle_tests$id <- str_replace(bottle_tests$id, "_HW", "")
-    bottle_tests
-}
-bottleneck <- rename_species(bottleneck)
+# rename_species <- function(bottle_tests){
+#     bottle_tests$id <- str_replace(bottle_tests$id, "_cl_[1-9]", "")
+#     bottle_tests$id <- str_replace(bottle_tests$id, "_HW", "")
+#     bottle_tests
+# }
+# bottleneck <- rename_species(bottleneck)
 
 
 #### load additional data
@@ -103,15 +103,14 @@ sumstats_diversity <- cbind(sum_hets , desc_seals)
 # summary(mod)
 # plot(mod)
 
-
 diversity_stats <- cbind(g2_summary, sumstats_diversity)
 # save(g2_summary, file = "g2_summary")
 
 # add mssumstats to data
-seal_stats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x[4:ncol(x)], type = "microsats")))
+seal_stats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x[4:ncol(x)], type = "microsats", data_type = "empirical")))
 diversity_stats <- cbind(diversity_stats, seal_stats)
 
-# put together bottleneck results
+ # put together bottleneck results
 bottleneck$id %in% diversity_stats$species
 # bottleneck[ 2, "id"] <- "atlantic_walrus"
 # bottleneck[ 7, "id"] <- "crabeater_seal"

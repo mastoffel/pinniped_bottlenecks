@@ -6,7 +6,7 @@ library(readxl)
 library(ggthemr)
 library(sealABC)
 library(dplyr)
-
+library(GGally)
 ggthemr('fresh', spacing = 1, text_size = 15)
 
 # ggthemr_reset()
@@ -15,7 +15,7 @@ seals <- read_excel("data/processed/seal_data_complete.xlsx")
 names(seals)[11] <- "IUCN_rating"
 seal_names <- seals$seal_names_real
 
-
+ggcorr(all_sumstats, nbreaks = 7, label = TRUE)
 
 
 all_sumstats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x[4:ncol(x)], type = "microsats", data_type = "empirical")))
@@ -25,15 +25,15 @@ all_sumstats %<>%
     slice(1:28) %>%
     mutate(species = names_all_sumstats[1:28])
 
-ggplot(all_sumstats, aes(num_alleles_mean, het_excess)) +
+ggplot(all_sumstats, aes(species, mratio_mean)) +
     geom_point(size = 3, alpha = 0.5) +
-    theme(axis.text.x = element_text(angle = 50, hjust = 1))
+    theme(axis.text.x = element_text(angle = 50, hjust = 1)) 
 
 
 
-arrow <- arrow(length = unit(0.4, "cm"), type = "closed")
+carrow <- arrow(length = unit(0.4, "cm"), type = "closed")
 
-ggplot(seals, aes(num_alleles_mean, mratio_mean_new)) +
+ggplot(seals, aes(species, AR_mean)) +
     geom_point(size = 3, alpha = 0.5) +
     theme(axis.text.x = element_text(angle = 50, hjust = 1))
     geom_label_repel(aes(label = seal_names), size = 2) 
