@@ -10,9 +10,9 @@ library(ggthemr)
 # ggthemr_reset()
 
 # load abc posterior data
-load("data/processed/abc_estimates/abc_1500k_complete.RData")
+load("data/processed/abc_estimates/abc_5000k_complete.RData")
 # load parameter distributions
-abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
+# abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
 
 # unnest the abc posterior values for plotting
 abc <- unnest(abc_complete)
