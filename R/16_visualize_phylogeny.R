@@ -10,6 +10,7 @@ library(ggtree)
 library(ggthemr)
 library(reshape2)
 library(cowplot)
+library(ggthemes)
 # ggthemr('dust')
 # prepare data
 # load descriptive data
@@ -109,11 +110,19 @@ bot_res <- all_stats_tree[c("TPM70_ratio", "mratio_mean")] %>%
             mutate(TPM70_ratio = 1-TPM70_ratio) %>% 
             apply(2, scale) %>% 
             as.data.frame()
-bot_res <- cbind(id, bot_res)
+bot_res <- cbind(all_stats_tree$latin, bot_res)
+names(bot_res)[1] <- "species"
+correct_levels <- as.character(bot_res$species)
+# to check correct sequence just plot tree with node number
+bot_res$species <- factor(bot_res$species, levels = plot_seq)
 
 # ABC probs
 abc_probs <- all_stats_tree[c("bot", "neut")]
-rownames(abc_probs) <- tree_final$tip.label
+abc_probs <- cbind(all_stats_tree$latin, abc_probs)
+names(abc_probs)[1] <- "species"
+correct_levels <- as.character(abc_probs$species)
+# to check correct sequence just plot tree with node number
+abc_probs$species <- factor(abc_probs$species, levels = plot_seq)
 
 
 # add nodes
@@ -131,10 +140,11 @@ tree_final <- groupOTU(tree_final, cls)
 #tree_final <- groupClade(tree_final, node = 1)
 
 p <- ggtree(tree_final, aes(color=group)) + #layout="circular" , "fan"open.angle=180
-    ggtitle("Pinniped Phylogeny") +
-    geom_tiplab(size=2, color="black") + # tiplap 2 for circular
-    ggplot2::xlim(0, 15) +
-    geom_text(aes(label=node)) +
+    # ggtitle("Pinniped Phylogeny") +
+    # geom_tiplab(size=2, color="black") + # tiplap 2 for circular
+    ggplot2::xlim(0, 12) +
+    theme(   plot.margin=unit(c(30,0,20,0),"points") ) +
+    # geom_text(aes(label=node)) +
     # geom_cladelabel(node=41, label="Phocidae", angle = 270, align=T, hjust='center', offset = 5, 
     #     offset.text=1, color = "cornflowerblue",  barsize=0.5) +
     # geom_cladelabel(node=31, label="Otariidae", align=T,angle = 270, hjust='center', offset = 5,
@@ -143,7 +153,7 @@ p <- ggtree(tree_final, aes(color=group)) + #layout="circular" , "fan"open.angle
     #     offset.text=6, barsize=0.5) +
     scale_color_manual(values=c("black","darkgrey", "goldenrod", "cornflowerblue" ))
 p
-p1 <- flip(p, 42, 49)
+# p1 <- flip(p, 42, 49)
 
 # diversity
 stand_div_lf <- stand_div %>% melt(id.vars = "species")
@@ -151,16 +161,68 @@ stand_div_lf <- stand_div %>% melt(id.vars = "species")
 p_div <- ggplot(stand_div_lf, aes(x = variable, y = species, fill = value)) + 
     geom_tile(color = "white", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
-    scale_fill_viridis(option="magma") +
+    scale_fill_viridis(option="plasma") +
+    theme_tufte(base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
-        # axis.text.x = element_text(angle = 50, hjust = 1),
-        axis.text.x = element_blank(),
+        axis.text.x = element_text(angle = 70, hjust = 1),
+        # axis.text.x = element_blank(),
         legend.position="non",
-        plot.margin=unit(c(30,0,20,0),"points"),
-        axis.title.x=element_blank()) +
+        plot.margin=unit(c(38,-300,7,-260),"points"),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(), 
+        axis.text.y = element_text(hjust=0)) +
+    coord_fixed(ratio = 0.7) +
+    scale_x_discrete(labels=c("AR","HET","ARA","LFA"), 
+        position = "bottom") 
+
+# grid.arrange(p, p_div, nrow = 1)
+plot_grid(p, p_div, nrow = 1)
+
+# het-excess and mratio
+bot_res_lf <- bot_res %>% melt(id.vars = "species")
+p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) + 
+    geom_tile(color = "white", size = 0.1) +
+    # labs(x = "microsat mutation model", y = "") +
+    scale_fill_viridis(option = "viridis") +
+    theme_tufte(base_family="Helvetica") +
+    theme(plot.title=element_text(hjust=0),
+        axis.ticks=element_blank(),
+        axis.text.x = element_text(angle = 70, hjust = 1),
+        # axis.text.x = element_blank(),
+        legend.position="non",
+        plot.margin=unit(c(38,-670,7, -690),"points"),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(), 
+        axis.text.y = element_blank()) +
+    scale_x_discrete(labels=c("PHE","M")) +
+    #labs(x=NULL, y=NULL) +
     coord_fixed(ratio = 0.7) 
-grid.arrange(p, p_div, nrow = 1)
+
+plot_grid(p, p_div, p_bot, nrow = 1)
+
+# abs results
+abc_probs_lf <- abc_probs %>% melt(id.vars = "species")
+p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) + 
+    geom_tile(color = "white", size = 0.1) +
+    # labs(x = "microsat mutation model", y = "") +
+    scale_fill_viridis(option = "viridis", direction = -1) +
+    theme_tufte(base_family="Helvetica") +
+    theme(plot.title=element_text(hjust=0),
+        axis.ticks=element_blank(),
+        axis.text.x = element_text(angle = 70, hjust = 1),
+        # axis.text.x = element_blank(),
+        legend.position="non",
+        plot.margin=unit(c(38,-420,3, -660),"points"),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(), 
+        axis.text.y = element_blank()) +
+    scale_x_discrete(labels=c("Bott","Const")) +
+    #labs(x=NULL, y=NULL) +
+    coord_fixed(ratio = 0.7) 
+
+plot_grid(p, p_div, p_bot, p_abc, nrow = 1)
+
 
 
 bot_res_lf <- bot_res %>% melt(id.vars = "id") %>% mutate(.panel='bottleneck')
