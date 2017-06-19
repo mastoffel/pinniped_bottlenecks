@@ -4,8 +4,8 @@ library(dplyr)
 library(data.table)
 library(tidyr)
 library(ggplot2)
-
 library(ggthemr)
+library(cowplot)
 # ggthemr("fresh", text_size = 12, spacing = 2, layout = "clean")
 # ggthemr_reset()
 
@@ -31,30 +31,32 @@ species_names <- c(
     "south_american_fur_seal" = "South American Fur Seal"
 )
 
+abc$species <- factor(abc$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
+    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal"))
 # plot nbot
-ggplot(data = filter(abc, pars == "nbot"), aes(x = adj_vals)) +
+p1 <- ggplot(data = filter(abc, pars == "nbot"), aes(x = adj_vals)) +
     # geom_density(adjust = 1.5) +
     geom_line(stat="density", adjust = 2, size = 1, col = "cornflowerblue") +
     geom_line(aes(x=unadj_vals), stat="density", adjust = 2, size = 0.5, col = "goldenrod") +
     geom_hline(yintercept = 0, linetype="twodash", col = "black", size = 0.5, alpha = 0.5) + 
     # geom_histogram() + 
-    facet_wrap(~ species, scales = "free_y", nrow = 5, labeller = as_labeller(species_names)) +
+    facet_wrap(~ species, scales = "free_y", nrow = 10, labeller = as_labeller(species_names)) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
         strip.background = element_blank()) +
-    scale_x_continuous(limits = c(0, 600)) +
+    scale_x_continuous(limits = c(-20, 1000)) +
     xlab("bottleneck Ne") +
     ylab("posterior density")
 
 
-ggplot(data = filter(abc, pars == "mut_rate"), aes(x = adj_vals)) +
+p2 <- ggplot(data = filter(abc, pars == "mut_rate"), aes(x = adj_vals)) +
     # geom_density(adjust = 1.5) +
     geom_line(stat="density", adjust = 2, size = 1, col = "cornflowerblue") +
     geom_line(aes(x=unadj_vals), stat="density", adjust = 2, size = 0.5, col = "goldenrod") +
     geom_hline(yintercept = 0, linetype="twodash", col = "black", size = 1, alpha = 0.5) + 
     # geom_histogram() + 
-    facet_wrap(~ species, scales = "free_y", nrow = 5, labeller = as_labeller(species_names)) +
+    facet_wrap(~ species, scales = "free_y", nrow = 10, labeller = as_labeller(species_names)) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -63,13 +65,13 @@ ggplot(data = filter(abc, pars == "mut_rate"), aes(x = adj_vals)) +
     xlab("mutation rate") +
     ylab("posterior density")
 
-ggplot(data = filter(abc, pars == "gsm_param"), aes(x = adj_vals)) +
+p3 <- ggplot(data = filter(abc, pars == "gsm_param"), aes(x = adj_vals)) +
     # geom_density(adjust = 1.5) +
     geom_line(stat="density", adjust = 2, size = 1, col = "cornflowerblue") +
     geom_line(aes(x=unadj_vals), stat="density", adjust = 2, size = 0.5, col = "goldenrod") +
     geom_hline(yintercept = 0, linetype="twodash", col = "black", size = 1, alpha = 0.5) + 
     # geom_histogram() + 
-    facet_wrap(~ species, scales = "free_y", nrow = 5, labeller = as_labeller(species_names)) +
+    facet_wrap(~ species, scales = "free_y", nrow = 10, labeller = as_labeller(species_names)) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -77,6 +79,9 @@ ggplot(data = filter(abc, pars == "gsm_param"), aes(x = adj_vals)) +
     # scale_x_continuous(limits = c(0, 600)) +
     xlab("prop. multistep mutations") +
     ylab("posterior density")
+
+plot_grid(p1, p2, p3, ncol = 3)
+
 
 ggplot(data = filter(abc, pars == "tbotend"), aes(x = adj_vals)) +
     # geom_density(adjust = 1.5) +
