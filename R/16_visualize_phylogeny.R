@@ -330,8 +330,8 @@ p_final
 
 # create a column of stars
 p_abc_star <- ggplot(abc_star, aes(x = variable, y = species, color = bot)) + 
-    geom_point(size = 2.5, alpha = 1) +
-    scale_color_manual(values = c("cornflowerblue", "white")) +
+    geom_point(size = 2, alpha = 1, shape = 19) +
+    scale_color_manual(values = c("#a50f15", "white")) +
     theme_tufte(base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
