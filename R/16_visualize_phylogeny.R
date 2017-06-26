@@ -14,10 +14,14 @@ library(ggthemes)
 library(ggimage)
 library(RColorBrewer)
 library(scales)
+library(forcats)
 # ggthemr('dust')
-# prepare data
+
+
+# data preparation
+
 # load descriptive data
-load("data/processed/seal_ss_rarefaction40ind.RData")
+load("data/processed/seal_ss_rarefaction16ind.RData")
 # load all datasets
 seals <- read_excel("data/processed/seal_data_complete.xlsx")
 names(seals)[11] <- "IUCN_rating"
@@ -25,19 +29,27 @@ names(seals)[11] <- "IUCN_rating"
 # load model probablities from ABC
 model_probs <- read.table("data/processed/sims_5000k_large_bot_model_selection.txt")
 
-# are all names overlapping?
+# are all names overlapping? --> if 28 then yes..
 sum(rownames(all_sumstats_full) %in% seals$species)
 
+# reorder all_sumstats_full (output from rarefaction summary stats calculation with sealABC::mssumstats) 
+# and seals (full descriptive dataset)
+# reorder LIKE seals$species
 ind_reorder <- NULL
 for (i in seals$species){
     ind_reorder <- c(ind_reorder, which(rownames(all_sumstats_full) == i))
 }
-
 # reorder sumstats according to seal descriptives file
 sumstats <- all_sumstats_full[ind_reorder, ]
-modelprobs <- model_probs[ind_reorder, ]
+modelprobs <- model_probs[ind_reorder, ] # works because modelprobs has same sequence as sumstats
+
+# quick check
+sum(rownames(sumstats) == rownames(modelprobs))
+sum(rownames(sumstats) == seals$species)
 # create new data.frame as a combination
-all_stats <- cbind(seals[c(1:17, 36:56)], sumstats, modelprobs)
+all_stats_rownames <- rownames(all_stats)
+all_stats <- cbind(seals[c(1:17, 36:56)], sumstats, modelprobs) %>% 
+    mutate(abc = ifelse(bot > 0.5, "bot", "neut"))
 
 # load higdon phylogeny
 tree_final <- read.tree("data/raw/phylogeny/higdon_mod_28.tre")
@@ -64,34 +76,39 @@ all_stats_tree <- all_stats[as.numeric(reorder_ind), ]
 
 # row names in all_stats_tree apparently have to match the tree tip labels
 # mutate has to be before naming rows
-all_stats_tree <- mutate(all_stats_tree, abc = ifelse(bot > 0.5, "bot", "neut"))
 rownames(all_stats_tree) <- tree_final$tip.label
 id <- rownames(all_stats_tree)
+
 # create data.frames for heatmaps -------------
-# diversity
+
+# DIVERSITY
 stand_div <- all_stats_tree[c("obs_het_mean", "num_alleles_mean",  
                             "mean_allele_range", "prop_low_afs_mean")] %>% 
     apply(2, scale) %>% 
     as.data.frame()
 # for ggtree
 # stand_div <- cbind(id, stand_div)
-
+# bind real names to df
 stand_div <- cbind(all_stats_tree$latin, all_stats_tree$seal_names_real, stand_div, all_stats_tree$abc)
 names(stand_div)[1] <- "species"
 names(stand_div)[2] <- "species_common"
 names(stand_div)[ncol(stand_div)] <- "abc"
 
 # reverse df for plotting
-correct_levels_latin <- as.character(stand_div$species)
-correct_levels_common <- as.character(stand_div$species_common)
+stand_div$species <- stand_div$species %>% fct_inorder()
+stand_div$species_common <- stand_div$species_common %>% fct_inorder()
+
 # to check correct sequence just plot tree with node number
 plotTree(tree_final)
 tiplabels()
 edgelabels()
-# plot inds needed within diversity plot later
+# plot inds needed within diversity plot later // this is the sequence in which the tree is plotted
 plot_inds <- c(1:2, 10:12, 3:5, 9, 6:8, 13,14, 19,20, 18,17,15,16,27,28,25,26,21,22,23,24)
-plot_seq_latin <- correct_levels_latin[c(1:2, 10:12, 3:5, 9, 6:8, 13,14, 19,20, 18,17,15,16,27,28,25,26,21,22,23,24)]
-stand_div$species <- factor(stand_div$species, levels = plot_seq_latin)
+
+# plot_seq_latin <- correct_levels_latin[c(1:2, 10:12, 3:5, 9, 6:8, 13,14, 19,20, 18,17,15,16,27,28,25,26,21,22,23,24)]
+stand_div$species <- reorder(stand_div$species, plot_inds)
+stand_div$species_common <- reorder(stand_div$species_common, plot_inds)
+#stand_div$species <- factor(stand_div$species, levels = plot_seq_latin)
 
 #plot_seq_common <- correct_levels_common[c(1:2, 10:12, 3:5, 9, 6:8, 13,14, 19,20, 18,17,15,16,27,28,25,26,21,22,23,24)] 
 # stand_div$species_common <- factor(stand_div$species_common, levels = plot_seq_common)
@@ -104,23 +121,30 @@ bot_res <- all_stats_tree[c("IAM_ratio", "TPM70_ratio", "TPM90_ratio","TPM95_rat
             # mutate(mratio_mean= 1-mratio_mean) %>% 
             #apply(2, scale) %>% 
             #as.data.frame()
-bot_res <- cbind(all_stats_tree$latin, bot_res)
+bot_res <- cbind(all_stats_tree$latin, all_stats_tree$seal_names_real, bot_res)
 names(bot_res)[1] <- "species"
+names(bot_res)[2] <- "species_common"
+
 # correct_levels <- as.character(bot_res$species)
 # to check correct sequence just plot tree with node number
-bot_res$species <- factor(bot_res$species, levels = plot_seq_latin)
+# bot_res$species <- factor(bot_res$species, levels = plot_seq_latin)
+bot_res$species  <- reorder(bot_res$species , plot_inds)
+bot_res$species_common <- reorder(bot_res$species_common, plot_inds)
+
 
 # ABC probs
 abc_probs <- all_stats_tree[c("bot", "neut")]
-abc_probs <- cbind(all_stats_tree$latin, abc_probs)
+abc_probs <- cbind(all_stats_tree$latin,all_stats_tree$seal_names_real, abc_probs)
 names(abc_probs)[1] <- "species"
+names(abc_probs)[2] <- "species_common"
 # correct_levels <- as.character(abc_probs$species)
 # to check correct sequence just plot tree with node number
-abc_probs$species <- factor(abc_probs$species, levels = plot_seq_latin)
+abc_probs$species <- reorder(abc_probs$species , plot_inds)
+abc_probs$species_common <- reorder(abc_probs$species_common, plot_inds)
 
 # abc star
-abc_star <- abc_probs_lf %>% filter(variable == "bot") %>% mutate(bot = ifelse(value > 0.5, "bot", "const"))
-abc_star$species <- factor(abc_star$species, levels = plot_seq_latin)
+#abc_star <- abc_probs_lf %>% filter(variable == "bot") %>% mutate(bot = ifelse(value > 0.5, "bot", "const"))
+#abc_star$species <- factor(abc_star$species, levels = plot_seq_latin)
 
 # add nodes
 # plotTree(tree_final,node.numbers=T)
@@ -138,9 +162,7 @@ tree_final <- groupOTU(tree_final, cls)
 #img <- c("phylo_figures/AFS.jpg")
 #names(img) <- "31"
 
-# create tree view
-p <- ggtree(tree_final, color = "#969696") #aes(color = group)
-
+# prepare data frame
 all_stats_for_tree <- cbind(rownames(all_stats_tree), all_stats_tree)
 all_stats_for_tree$IUCN_rating[is.na(all_stats_for_tree$IUCN_rating)] <- "data deficient"
 all_stats_for_tree$IUCN_rating <- factor(all_stats_for_tree$IUCN_rating, levels = c("least concern", "vulnerable", "near threatened", "endangered",
@@ -151,6 +173,19 @@ names(all_stats_for_tree)[1] <- "taxa"
 #test <- all_stats_for_tree %>% 
 #    mutate(abund_classes = ifelse(Abundance > 1000000, "1000k", )
 
+## node coloring problem
+# convert the 1st column to 'node' number and stored in an additional column called 'node' will solve this issue.
+
+# all_stats_for_tree$node <- NA
+# tipnode <- seq_along(tree_final$tip.label)
+# names(tipnode) <- tree_final$tip.label
+# all_stats_for_tree$node <- tipnode[all_stats_for_tree$taxa] ## convert the tip label to tip node number
+# i <- is.na(all_stats_for_tree$node)
+# all_stats_for_tree$node[i] =all_stats_for_tree$taxa[i] ## fill in internal node number
+
+
+# create tree view
+p <- ggtree(tree_final, color = "#737373") #aes(color = group)
 # add data
 p <- p %<+% all_stats_for_tree 
 
@@ -159,28 +194,35 @@ p + geom_tippoint() #aes(color=IUCN_rating)
 #library(ggthemr)
 #ggthemr(text_size = 3)
 
-# pictures
-img <- c("phylo_figures/NES.jpg", "phylo_figures/AFS.jpg", "phylo_figures/med_monk_seal.jpg")
-d_img <- data.frame(x = c(0.5, 1, 2),
-    y = c(0.5, 1, 2),
-    image = img)
+# # pictures
+# img <- c("phylo_figures/NES.jpg", "phylo_figures/AFS.jpg", "phylo_figures/med_monk_seal.jpg")
+# d_img <- data.frame(x = c(0.5, 1, 2),
+#     y = c(0.5, 1, 2),
+#     image = img)
 
 p <- p + #layout="circular" , "fan"open.angle=180
     # scale_color_manual(values=c("black", "#9e9ac8","#6a51a3", "#bcbddc" )) +
-    geom_tippoint(aes(size = Abundance, fill=IUCN_rating),stroke=0.3, color = "#737373", shape=21) + #shape=21,stroke=0.5
+    geom_tippoint(aes(size = Abundance, fill=IUCN_rating),stroke=0.9, color = "#737373", shape=21) + #shape=21,stroke=0.5 #color = "#737373"
+    # geom_point(aes(color = abc, size = Abundance), shape=21) +
+     # geom_treescale() + 
     # ggtitle("Pinniped Phylogeny") +
     #geom_tiplab(size=5, color="black") + # tiplap 2 for circular
     #ggplot2::xlim(0, 15) +
     # scale_color_manual(values = c("#66c2a5", "#fdae61", "#f46d43", "#d53e4f", "#000000")) +
     # scale_color_manual(values = c("lightblue", "goldenrod", "red", "darkred", "grey")) +
-    scale_fill_manual(values = c("#fee8c8", "#fc8d59", "#d7301f", "#7f0000", "lightgrey")) +
+    # scale_fill_manual(values = c("#fee8c8", "#fc8d59", "#d7301f", "#7f0000", "white")) +
+    scale_fill_manual(values = c("#FDE4A6FF", "#FB8861FF", "#B63679FF", "#000004FF", "white")) +
+    
+    # for coloring branches
+    # scale_color_manual(na.value = "#969696", values = c("#cb181d", "#969696")) +
+    
     #scale_color_manual(values = c("#c7e9b4", "#41b6c4", "#225ea8", "#081d58", "lightgrey")) +
-    scale_size_continuous(range = c(1.5, 5), trans = "sqrt", breaks=c(1000, 10000, 100000, 1000000),
+    scale_size_continuous(range = c(1.5, 6), trans = "sqrt", breaks=c(1000, 10000, 100000, 1000000),
                       labels = c(expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6}))
                        ) + #range = c(0.1,5), , breaks=c(500, 1000, 10000, 100000, 1000000)
     guides(fill = guide_legend(title = "IUCN rating", title.position = "top", direction = "vertical", order = 2),
            size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1)
-           ) +
+           ) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
     theme(plot.margin=unit(c(52, -5,10,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0)
           legend.position= c(0.26,0.95), #legend.direction = "horizontal",
           legend.spacing = unit(5, "points"),
@@ -203,7 +245,7 @@ p <- p + #layout="circular" , "fan"open.angle=180
     #     offset.text=6, barsize=0.5) +
     #scale_color_manual(values=c("black","darkgrey", "goldenrod", "cornflowerblue" )) +
 
-
+p
 
 
 # p1 <- flip(p,  42, 49)
@@ -216,8 +258,8 @@ stand_div_lf <- stand_div %>% melt(id.vars = c("species","species_common", "abc"
 #plot_col_div <- viridis(20)
 #plot_col_div <- rev(plot_col_div[c(rep(FALSE,4), TRUE)]) # get every 5th element
 
-plot_col_div <- viridis(100)
-plot_col_div <- rev(plot_col_div[c(rep(FALSE,30), TRUE)])
+#plot_col_div <- viridis(100)
+#plot_col_div <- rev(plot_col_div[c(rep(FALSE,30), TRUE)])
 
 #color names
 #numColors <- length(levels(stand_div_lf$abc))
@@ -225,14 +267,19 @@ plot_col_div <- rev(plot_col_div[c(rep(FALSE,30), TRUE)])
 #myPalette <- getColors(numColors)
 abc_cols <- c("#a50f15", "#525252")
 
+plot_col <- magma(40)
+plot_col <- plot_col[c(rep(FALSE,2), TRUE)] # get every 5th element
+
 # cols <- ifelse(stand_div_lf$abc == "neut", "grey", "red")
-p_div <- ggplot(stand_div_lf, aes(x = variable, y = species, fill = value)) + 
+p_div <- ggplot(stand_div_lf, aes(x = variable, y = species_common, fill = value)) + 
     geom_tile(color = "white", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
     # scale_fill_viridis() +
     #scale_fill_gradientn(colours=c( "#ffffd9","#c7e9b4", "#7fcdbb", "#1d91c0", "#253494", "#081d58"), 
      #   name = "prop. \nhet-exc") +
-    scale_fill_gradientn(colours=c("#081d58", "#253494", "#1d91c0", "#7fcdbb", "#c7e9b4", "#ffffd9"), 
+    #scale_fill_gradientn(colours=c("#081d58", "#253494", "#1d91c0", "#7fcdbb", "#c7e9b4", "#ffffd9"), 
+    #    name = "Standardized \ndiversity") +
+    scale_fill_gradientn(colours=plot_col, 
         name = "Standardized \ndiversity") +
    # scale_fill_gradientn(colours=plot_col_div, 
     #   name = "prop. \nhet-exc") +
@@ -262,7 +309,7 @@ plot_grid(p, p_div, nrow = 1)
 plot_col <- magma(40)
 plot_col <- rev(plot_col[c(rep(FALSE,2), TRUE)]) # get every 5th element
 
-bot_res_lf <- bot_res %>% melt(id.vars = "species")
+bot_res_lf <- bot_res %>% melt(id.vars = c("species", "species_common"))
 p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) + 
     geom_tile(color = "white", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
@@ -297,7 +344,7 @@ plot_grid(p, p_div, p_bot, nrow = 1)
 plot_col_abc <- magma(40)
 plot_col_abc <- rev(plot_col_abc[c(rep(FALSE,2), TRUE)])
 
-abc_probs_lf <- abc_probs %>% melt(id.vars = "species")
+abc_probs_lf <- abc_probs %>% melt(id.vars = c("species", "species_common"))
 p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) + 
     geom_tile(color = "white", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
@@ -329,22 +376,22 @@ p_final
 # some stars
 
 # create a column of stars
-p_abc_star <- ggplot(abc_star, aes(x = variable, y = species, color = bot)) + 
-    geom_point(size = 2, alpha = 1, shape = 19) +
-    scale_color_manual(values = c("#a50f15", "white")) +
-    theme_tufte(base_family="Helvetica") +
-    theme(plot.title=element_text(hjust=0),
-        axis.ticks=element_blank(),
-        axis.text.x = element_blank(),
-        # axis.text.x = element_blank(),
-        legend.position="none",
-        plot.margin=unit(c(59,10,23,-5),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank(),
-        axis.text.y = element_blank()
-        )
+# p_abc_star <- ggplot(abc_star, aes(x = variable, y = species, color = bot)) + 
+#     geom_point(size = 2, alpha = 1, shape = 19) +
+#     scale_color_manual(values = c("#a50f15", "white")) +
+#     theme_tufte(base_family="Helvetica") +
+#     theme(plot.title=element_text(hjust=0),
+#         axis.ticks=element_blank(),
+#         axis.text.x = element_blank(),
+#         # axis.text.x = element_blank(),
+#         legend.position="none",
+#         plot.margin=unit(c(59,10,23,-5),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
+#         axis.title.x=element_blank(),
+#         axis.title.y=element_blank(),
+#         axis.text.y = element_blank()
+#         )
 
-p_final <- plot_grid(p, p_div, p_bot, p_abc, p_abc_star, nrow = 1, rel_widths = c(0.2, 0.18, 0.09, 0.05, 0.02))
+p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.18, 0.09, 0.05, 0.02))
 p_final
 
 save_plot("phylo_plot.pdf", p_final,

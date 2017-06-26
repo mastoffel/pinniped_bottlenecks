@@ -7,6 +7,9 @@ library(ggplot2)
 library(ggthemr)
 library(cowplot)
 library('ggthemes')
+library(scales)
+library(viridis)
+show_col(magma(20))
 
 ggthemr("fresh", text_size = 30,spacing = 4, layout = "clean")
 # ggthemr("fresh", text_size = 12, spacing = 2, layout = "clean")
@@ -84,27 +87,28 @@ create_dens_plot <- function(species, parameter){
     max_dens <- max(dens_obj$data[[1]]$density)
     # plotting
     p <- ggplot(data =temp_data, aes(adj_vals)) +
-        geom_line(stat = "density", adjust = 2) +
+        geom_line(stat = "density", adjust = 2, color = "#969696") +
         geom_errorbarh(data = df_summed, aes(x = mode_par, xmin = HPD_low_95, xmax = HPD_high_95, y = max_dens/2),  
-            inherit.aes = FALSE, height = 0, size = 0.5) +
+            inherit.aes = FALSE, height = 0, size = 0.4, color = "#6B1D81FF") +
         geom_errorbarh(data = df_summed, aes(x = mode_par, xmin = HPD_low_50, xmax = HPD_high_50, y = max_dens/2),  
-            inherit.aes = FALSE, height = 0, size = 1.5) +
-        geom_point(data = df_summed, aes(x  =mode_par, y = max_dens/2), size = 3) +
+            inherit.aes = FALSE, height = 0, size = 1, color = "#6B1D81FF") +
+        geom_point(data = df_summed, aes(x  =mode_par, y = max_dens/2), size = 2, color = "#FCFDBFFF") + #"#FCFDBFFF"
+        geom_point(data = df_summed, aes(x  =mode_par, y = max_dens/2), size = 2, color = "black", shape = 1) +
         # scale_y_continuous(breaks = c(max_dens/2), labels = df_summed$species) +
         theme_tufte(ticks = TRUE, base_family = "Helvetica", base_size = 16) +
         theme(axis.title.x=element_blank(),
             axis.title.y = element_blank(),
             axis.text.x = element_blank(),
             axis.text.y = element_blank(),
-            plot.margin=unit(c(0, 5 , 5, 5), "points"),
+            plot.margin=unit(c(8, 5 , 5, 5), "points"),
             axis.line.x = element_line(),
             axis.ticks.y = element_blank(),
-            plot.title = element_text(size = 10, face = "bold")) 
+            plot.title = element_text(size = 9, colour = "#525252")) 
       
     
     if(parameter == "nbot"){
         p <- p +  
-             scale_x_continuous(limits = c(-20, 1000), breaks = c(10,100,200,300,400,500,750,1000)) +
+             scale_x_continuous(limits = c(-20, 1000), breaks = c(0,100,300,500,700,900)) +
              ggtitle(species_names[as.character(df_summed$species)])
     } else if (parameter == "mut_rate"){
         p <- p + scale_x_continuous(limits = c(-0.0001, 6e-04), breaks = c( 0.0001, 0.0003, 0.0005), 
@@ -114,30 +118,60 @@ create_dens_plot <- function(species, parameter){
         p <- p +  ggtitle(" ")
     }
        
-     if(species == levels(abc$species)[length(levels(abc$species))]){
-         p <- p + theme(axis.text.x = element_text(size = 10, angle = 50),
+     if(species == levels(abc$species)[length(levels(abc$species))] |
+             species == levels(abc$species)[length(levels(abc$species))/2]){
+         p <- p + theme(axis.text.x = element_text(size = 8, angle = 50),
              axis.line.x = element_line(),
-             plot.margin=unit(c(0, 15, 0, 15), "points"))
+             plot.margin=unit(c(8, 5, 0, 5), "points"))
      }
     p 
 }
 # bottleneck plots
 all_plots_nbot <- lapply(levels(abc$species), create_dens_plot, "nbot")
-p_nbot <- do.call(plot_grid, c(all_plots_nbot, ncol = 1, list(rel_heights = c(rep(1,9), 1.2))))
-# mutation plots
-all_plots_mut <- lapply(levels(abc$species), create_dens_plot, "mut_rate")
-p_mut <- do.call(plot_grid, c(all_plots_mut, ncol = 1, list(rel_heights = c(rep(1,9), 1.2))))
-# gsm plots
-all_plots_gsm <- lapply(levels(abc$species), create_dens_plot, "gsm_param")
-p_gsm <- do.call(plot_grid, c(all_plots_gsm, ncol = 1, list(rel_heights = c(rep(1,9), 1.2))))
 
+#### all this code is for plotting all three parameter distributions
+# p_nbot <- do.call(plot_grid, c(all_plots_nbot, ncol = 1, list(rel_heights = c(rep(1,9), 1.2))))
+# # mutation plots
+# all_plots_mut <- lapply(levels(abc$species), create_dens_plot, "mut_rate")
+# p_mut <- do.call(plot_grid, c(all_plots_mut, ncol = 1, list(rel_heights = c(rep(1,9), 1.2))))
+# # gsm plots
+# all_plots_gsm <- lapply(levels(abc$species), create_dens_plot, "gsm_param")
+# p_gsm <- do.call(plot_grid, c(all_plots_gsm, ncol = 1, list(rel_heights = c(rep(1,9), 1.2))))
 # 
-all_plots <- c(all_plots_nbot, all_plots_mut, all_plots_gsm)
+# # 
+# all_plots <- c(all_plots_nbot, all_plots_mut, all_plots_gsm)
+# 
+# # resort
+# inds <- unlist(lapply(1:10, function(x) out <- c(x, x+10, x+20)))
+# p_all <- do.call(plot_grid, c(all_plots[inds], ncol = 3, list(rel_heights = c(rep(1,9), 1.3))))
+# p_all
 
-# resort
-inds <- unlist(lapply(1:10, function(x) out <- c(x, x+10, x+20)))
-p_all <- do.call(plot_grid, c(all_plots[inds], ncol = 3, list(rel_heights = c(rep(1,9), 1.3))))
-p_all
+# maybe just the bottlenecks
+inds <- c(1,6,2,7,3,8,4,9,5,10)
+p_nbot <- do.call(plot_grid, c(all_plots_nbot[inds], ncol = 2, list(rel_heights = c(rep(1,9), 1.25))))
+p_nbot
+
+p <- ggdraw(add_sub(p_nbot, "Bottleneck Ne", size = 10))
+
+#p + draw_label("posterior density", x = 0, y = 0.5,
+#    vjust = 0, hjust = 0, size = 10, fontface = 'bold', angle = 90)
+
+p_test <- ggdraw(add_sub(p, "posterior density",vpadding=grid::unit(-4, "lines"),
+          x = 0, y = 14, angle = 90, size = 10, vjust = -0.2
+    )) #vpadding=grid::unit(-5, "lines")
+p_test
+
+save_plot("abc_plot_2.pdf", p_test,
+    ncol = 2, # we're saving a grid plot of 2 columns
+    nrow = 1, # and 2 rows
+    # each individual subplot should have an aspect ratio of 1.3
+    # base_aspect_ratio = 0.9,
+    base_height = 6,
+    base_width = 2
+)
+
+
+
 
 p_gsm
 p_mut
@@ -150,14 +184,6 @@ p
 
 
 
-save_plot("abc_plot_2.pdf", p,
-    ncol = 2, # we're saving a grid plot of 2 columns
-    nrow = 1, # and 2 rows
-    # each individual subplot should have an aspect ratio of 1.3
-    # base_aspect_ratio = 0.9,
-    base_height = 12,
-    base_width = 2
-)
 
 
 title <- ggdraw() + draw_label("species")
