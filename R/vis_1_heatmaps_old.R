@@ -1,3 +1,6 @@
+## initial heatmap plotting (later on there is a more advanced script also including the
+# phylogeny)
+
 # plots for the talk
 # install_github("mastoffel/sealABC", dependecies = TRUE)
 library(stringr)

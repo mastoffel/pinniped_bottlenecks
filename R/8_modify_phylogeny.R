@@ -17,27 +17,21 @@ library(ggimage)
 # ggthemr('dust')
 # prepare data
 # load descriptive data
-load("data/processed/seal_ss_rarefaction40ind.RData")
+
+
 # load all datasets
-seals <- read_excel("data/processed/seal_data_complete.xlsx")
-names(seals)[11] <- "IUCN_rating"
+seals <- read_csv("data/processed/seal_data_complete_rarefac10.csv")
 
 # load model probablities from ABC
-model_probs <- read.table("data/processed/sims_5000k_large_bot_model_selection.txt")
+model_probs <- read_delim("data/processed/sims_5000k_large_bot_model_selection.txt", 
+    delim = " ", col_names = c("species", "bot", "neut"), skip = 1)
 
 # are all names overlapping?
-sum(rownames(all_sumstats_full) %in% seals$species)
+sum(seals$species %in% seals$species)
 
-ind_reorder <- NULL
-for (i in seals$species){
-    ind_reorder <- c(ind_reorder, which(rownames(all_sumstats_full) == i))
-}
+# join
+seals <- left_join(seals, model_probs, by = "species")
 
-# reorder sumstats according to seal descriptives file
-sumstats <- all_sumstats_full[ind_reorder, ]
-modelprobs <- model_probs[ind_reorder, ]
-# create new data.frame as a combination
-all_stats <- cbind(seals[c(1:17, 36:56)], sumstats, modelprobs)
 
 # load higdon phylogeny
 tree <- read.tree("data/raw/phylogeny/higdon.tre")

@@ -11,30 +11,39 @@ library(PopGenReport)
 library(strataG)
 library(hierfstat)
 library(strataG)
+library(readr)
 all_seals <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop.xlsx")
 
-# get 28 datasets, biggest clusters
 
+# set to TRUE is largest clusters instead of full datasets
+calc_on_cluster <- FALSE
 
-ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_1",
-    "grey_seal_orkneys", "harbour_seal_waddensee_cl_1", "galapagos_sea_lion",
-    "south_american_fur_seal_cl_1", "hooded_seal", "mediterranean_monk_seal",
-    "hawaiian_monk_seal", "bearded_seal_cl_1", "crabeater_seal",
-    "leopard_seal", "arctic_ringed_seal", "ross_seal",
-    "weddell_seal_cl_2", "northern_fur_seal_cl_1", "atlantic_walrus_cl_2",
-    "nes_cl_2", "ses_cl_4", "california_sea_lion", "south_american_sea_lion",
-    "new_zealand_sea_lion", "saimaa_ringed_seal_cl_1", "lagoda_ringed_seal",
-    "baltic_ringed_seal", "new_zealand_fur_seal", "australian_fur_seal")
+if (calc_on_cluster){
+    
+    # get 28 datasets, biggest clusters
+    ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_1",
+        "grey_seal_orkneys", "harbour_seal_waddensee_cl_1", "galapagos_sea_lion",
+        "south_american_fur_seal_cl_1", "hooded_seal", "mediterranean_monk_seal",
+        "hawaiian_monk_seal", "bearded_seal_cl_1", "crabeater_seal",
+        "leopard_seal", "arctic_ringed_seal", "ross_seal",
+        "weddell_seal_cl_2", "northern_fur_seal_cl_1", "atlantic_walrus_cl_2",
+        "nes_cl_2", "ses_cl_4", "california_sea_lion", "south_american_sea_lion",
+        "new_zealand_sea_lion", "saimaa_ringed_seal_cl_1", "lagoda_ringed_seal",
+        "baltic_ringed_seal", "new_zealand_fur_seal", "australian_fur_seal")
+    
+    # filter for 28 species datasets
+    all_seals <- all_seals[ids]
+    # rename all seals
+    names(all_seals) <- str_replace(names(all_seals), "_cl_[1-9]", "")
+    
+} else {
+    # take all full datasets
+    ids <- names(all_seals)[1:28]
+    ids %in% names(all_seals)
+    # filter for 28 species datasets
+    all_seals <- all_seals[ids]
+}
 
-# take all full datasets
-ids <- names(all_seals)[1:28]
-
-
-ids %in% names(all_seals)
-# filter for 28 species datasets
-all_seals <- all_seals[ids]
-# rename all seals
-names(all_seals) <- str_replace(names(all_seals), "_cl_[1-9]", "")
 
 #####################################################################################
 ######### for final set of data re-compute bottleneck data here #####################
@@ -53,123 +62,90 @@ bottleneck <- read_excel("data/processed/bottleneck_results.xlsx")
 
 
 #### load additional data
-# sheet numbers to load
+# sheet numbers to load // just load second sheet
 harem_data <- read_excel("data/processed/overview.xlsx", sheet = 2)
 harem_data <- harem_data[!(is.na(harem_data$species)), ]
 
 
 ### diversity
 # g2 
-library(inbreedR)
-calc_g2s <- function(genotypes){
-    g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 1000, nperm = 1000)
+# check if calculated
+if(!file.exists("data/processed/g2_summary_full_data.txt")){
+    library(inbreedR)
+    calc_g2s <- function(genotypes){
+        g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 0, nperm = 0)
+    }
+    g2s <- lapply(all_seals, calc_g2s)
+    # save(g2s, file = "data/processed/full_data_all_g2s.RData")
+    load("data/processed/full_data_all_g2s.RData")
+    g2s_full <- g2s
+    
+    # put it all in one data frame
+    options(scipen = 999)
+    g2_summary <- as.data.frame(do.call(rbind, lapply(g2s_full, function(x) c(x$g2, x$CI_boot, x$p_val))))
+    names(g2_summary ) <- c("g2", "CIlow", "CIup", "p_val")
+    g2_summary$species <- row.names(g2_summary)
+    # reorder columns
+    g2_summary <- g2_summary[c("species", "g2", "CIlow", "CIup", "p_val")]
+    # write to txt
+    readr::write_delim(g2_summary, path = "data/processed/g2_summary_full_data.txt", col_names = TRUE)
 }
-g2s <- lapply(all_seals, calc_g2s)
-# save(g2s, file = "all_g2s.RData")
-load("all_g2s.RData")
+# load g2s
+g2s <- read_delim("data/processed/g2_summary_full_data.txt", delim = " ")
 
-# put it all in one data frame
-options(scipen = 999)
-g2_summary <- as.data.frame(do.call(rbind, lapply(g2s, function(x) c(x$g2, x$CI_boot, x$p_val))))
-names(g2_summary ) <- c("g2", "CIlow", "CIup", "p_val")
-g2_summary$species <- row.names(g2_summary)
+# calculate other summary statistics based on resampling 10 individuals
+?mssumstats
 
+if(!file.exists("data/processed/sumstats.txt")){
+    
+sumstats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x, start_geno = 4, mratio = "loose", 
+            rarefaction = TRUE, nresamp = 100, nind = 10)))
 
-# heterozygosity
-calc_hets <- function(genotypes){
-    MLH(convert_raw(genotypes[, 4:ncol(genotypes)]))
+readr::write_delim(sumstats, path = "data/processed/sumstats.txt", col_names = TRUE)
 }
-
-all_hets <- lapply(all_seals, calc_hets)
-all_hets_plus_name <- lapply(c(1:length(all_hets)), function(x) data.frame(het = all_hets[[x]], species = names(all_hets)[[x]]))
-all_hets_df <- do.call(rbind, all_hets_plus_name)
+sumstats <- read_delim("data/processed/sumstats.txt", delim = " ")
 
 
-### relationship between heteorzygosity and number of loci or number of individuals?
-sum_hets <- all_hets_df %>% 
-                group_by(species) %>%
-                summarise(mean_het = mean(het, na.rm = TRUE),
-                          sd_het = sd(het, na.rm = TRUE)) 
-# get loci and individuals
-desc_seals <- do.call(rbind, lapply(all_seals, function(x) out <- data.frame(nloc = (ncol(x)-3)/2, nind = nrow(x))))
-
-# put het, nloc and nind in one data.frame
-sumstats_diversity <- cbind(sum_hets , desc_seals)
-
-# plotting
-# ggplot(data = sumstats_diversity, aes(x = mean_het, y = nloc)) + geom_point()
-# # model including both nloc and nind
-# mod <- glm(data = sumstats_diversity, mean_het ~ nloc + nind)
-# summary(mod)
-# plot(mod)
-
-diversity_stats <- cbind(g2_summary, sumstats_diversity)
+# bind
+diversity_stats <- cbind(g2s, sumstats)
 # save(g2_summary, file = "g2_summary")
 
-# add mssumstats to data
-seal_stats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x[4:ncol(x)], type = "microsats", data_type = "empirical")))
-diversity_stats <- cbind(diversity_stats, seal_stats)
+# plot diversity
+ggplot(diversity_stats, aes(x = mratio_mean, y = species)) +
+    geom_point() +
+    geom_errorbarh(aes(xmax = mratio_mean.CIhigh, xmin = mratio_mean.CIlow))
 
+# rename id variable in bottleneck table
+names(bottleneck)[1] <- "species"
  # put together bottleneck results
-bottleneck$id %in% diversity_stats$species
-# bottleneck[ 2, "id"] <- "atlantic_walrus"
+bottleneck[3, "species"] <- "atlantic_walrus"
+# check that all names are equal
+sum(bottleneck$species %in% diversity_stats$species)
 # bottleneck[ 7, "id"] <- "crabeater_seal"
 # bottleneck[ 21, "id"] <- "arctic_ringed_seal"
 # match names
-reorder <- unlist(lapply(as.character(diversity_stats$species), function(x) which(str_detect(bottleneck$id, x))))
-bottleneck <- bottleneck[reorder, ]
 
-# put everything together
-all_seal_data <- cbind(diversity_stats, bottleneck)
-all_seal_data$id <- NULL
+# join them together
+all_seal_data <- left_join(diversity_stats, bottleneck, by = "species")
 names(all_seal_data)
 
 # load harem data
-
 # sheet numbers to load
-dataset_names <- excel_sheets("data/processed/overview.xlsx")
-# load all datasets
-harem_data <- read_excel("data/processed/overview.xlsx", sheet = 2)
-
-# put everything together
-seals <- cbind(harem_data[1:28, ], all_seal_data)
-# delete doubled species column
-seals <- seals[-which(duplicated(names(seals)))]
-# delete rownames
-rownames(seals) <- 1:nrow(seals)
+# dataset_names <- excel_sheets("data/processed/overview.xlsx")
+# # load all datasets
+# harem_data <- read_excel("data/processed/overview.xlsx", sheet = 2)
+seals <- left_join(harem_data, all_seal_data, by = "species")
 
 # check how many NAs
 lapply(all_seals, function(x) rowSums(is.na(x)))
 
-# calculate allelic richness
-?allele2locus
+# get loci and individuals
+desc_seals <- do.call(rbind, lapply(all_seals, function(x) out <- data.frame(nloc = (ncol(x)-3)/2, nind = nrow(x))))
+seals <- cbind(seals, desc_seals)
 
-seals_new <- lapply(all_seals, function(x) {
-    names(x) <- str_replace_all(names(x), ".", "_")
-    x
-})
-
-calc_allelic_richness <- function(genotypes, min.alleles = 80) {
-   # join_alleles <- sealABC::allele2locus(genotypes[4:ncol(genotypes)], "/")
-    g_types_geno <- strataG::df2gtypes(genotypes, ploidy = 2, id.col = NULL, strata.col = NULL,
-        loc.col = 4)
-    genind_geno <- gtypes2genind(g_types_geno)
-    all_rich <- allel.rich(genind_geno, min.alleles)
-    out <- as.numeric(all_rich$mean.richness)
+if(!file.exists("data/processed/all_data_seals_rarefac10.csv")){
+write_excel_csv(seals, "data/processed/all_data_seals_rarefac10.csv")
 }
-# idea: maybe always subsample lowest number of loci (5?) , calculate allelic richness and then take average
-all_richness <- unlist(lapply(seals_new, calc_allelic_richness, 60))
-
-seals$allelic_richness <- all_richness
-
-write.xlsx(seals, file = "data/processed/all_data_seals.xlsx", row.names = FALSE)
-
-# save(seals, file = "seal_summary_data.RData")
-
-
-
-
-
 
 
 

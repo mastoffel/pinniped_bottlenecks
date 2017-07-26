@@ -55,7 +55,7 @@ empty_names <- c(
 
 head(abc)
 
-abc %>% group_by(species) %>% summarise(mean_val = mean(adj_val), median_val = median(adj_val)) 
+# abc %>% group_by(species) %>% summarise(mean_val = mean(adj_val), median_val = median(adj_val)) 
 
 # mode and HDI
 estimate_mode <- function(s) {
@@ -169,43 +169,6 @@ save_plot("abc_plot_2.pdf", p_test,
     base_height = 6,
     base_width = 2
 )
-
-
-
-
-p_gsm
-p_mut
-
-p <- do.call(plot_grid, c(all_plots, ncol = 1, list(rel_heights = c(rep(1,9), 1.2))))
-p
-
-p <- ggdraw(add_sub(p, "title"))
-p
-
-
-
-
-
-title <- ggdraw() + draw_label("species")
-title
-plot_grid(title, p)
-
-title <- ggdraw() + draw_label("Bottleneck Ne")
-plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1))
-
-library(gridGraphics)
-library(grid)
-library(gridExtra)
-
-
-
-p <- do.call(arrangeGrob, c(all_plots, ncol = 2, top = textGrob("Main Title", vjust = 1))) #gp = gpar(fontface = "bold", cex = 1.5)
-  
-
-# left = textGrob("Global Y-axis Label", rot = 90, vjust = 1)
-
-
-
 
 
 # plot nbot

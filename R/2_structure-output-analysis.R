@@ -300,7 +300,7 @@ sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and
 # nes_cl_2 <- all_seals_clusts_pops$nes_cl_2
 # WriteXLS(names(all_seals_clusts_pops), ExcelFileName = "seal_data_largest_clust_and_pop.xls")
 
-
+#### potentially delete, same data as above
 save(all_seals_clusts_pops, file = "data/processed/seals_full.RData")
 
 
