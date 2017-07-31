@@ -75,7 +75,7 @@ abc_summed <- abc %>%
         HPD_low_50 = HPDinterval(mcmc(adj_vals), 0.50)[1],
         HPD_high_50 = HPDinterval(mcmc(adj_vals), 0.50)[2])
 
-ggthemr("fresh", text_size = 10,spacing = 4, layout = "clean")
+ggthemr("fresh", text_size = 12,spacing = 4, layout = "clean")
 
 create_dens_plot <- function(species, parameter){
     # subset summary data
@@ -151,7 +151,7 @@ inds <- c(1,6,2,7,3,8,4,9,5,10)
 p_nbot <- do.call(plot_grid, c(all_plots_nbot[inds], ncol = 2, list(rel_heights = c(rep(1,9), 1.25))))
 p_nbot
 
-p <- ggdraw(add_sub(p_nbot, "Bottleneck Ne", size = 10))
+p <- ggdraw(add_sub(p_nbot, "Bottleneck Ne", size = 13))
 
 #p + draw_label("posterior density", x = 0, y = 0.5,
 #    vjust = 0, hjust = 0, size = 10, fontface = 'bold', angle = 90)
