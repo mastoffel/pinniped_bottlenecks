@@ -1,0 +1,252 @@
+---
+title: "Phylogenetic comparative analyses"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document: default
+---
+
+
+```{r, results = 'hide',  message=FALSE, warning=FALSE}
+# phylogenetic comparative analysis
+library(ggtree)
+library(ape)
+library(phytools)
+library(dplyr)
+library(readxl)
+library(stringr)
+library(ggthemr)
+library(reshape2)
+library(scales)
+library(forcats)
+library(readr)
+# for comparative analysis
+library(caper)
+library(yhat)
+library(dplyr)
+library(GGally)
+```
+
+Load the data and do some processing.
+
+```{r, results = 'hide',  message=FALSE, warning=FALSE}
+# phylogeny
+tree_final <- read.tree("data/raw/phylogeny/higdon_mod2_28.tre")
+
+# produce short names for plotting
+short <- c("W", "NFS", "SSL", "CSL", "GSL", "SASL", "AFS", "NZSL", "AntFS", "NZFS", "SAFS", "GFS", 
+    "BS", "HoS", "GS", "HS", "ARS", "SRS", "BRS", "LRS", "MMS", "HMS", "NES", "SES", "CS", "RS", "LS", "WS")
+# all_stats$short <- short
+
+# all other seal stats and demographic variables
+all_stats <- read_csv("data/processed/all_stats_tree.csv") %>% 
+    mutate(short = short) %>% 
+    mutate(SSD = male_weight/female_weight) %>% 
+    mutate(abc_out = ifelse(bot > 0.5, "bot", "neut")) %>% 
+    mutate(BreedingType = factor(BreedingType, levels = c("ice", "land", "both"))) %>% 
+    mutate(logAbundance = log(Abundance),
+        logharem_size = log(harem_size),
+        logmale_weight = log(male_weight)) %>% 
+    # order factors according to tree
+    mutate(tip_label = fct_inorder(factor(tip_label)),
+        species = fct_inorder(factor(species)),
+        latin = fct_inorder(factor(latin)),
+        common = fct_inorder(factor(common)),
+        short = fct_inorder(factor(short)))
+# count grey and harbour seal to land breeding
+all_stats[all_stats$BreedingType == "both", "BreedingType"] <- "land" 
+all_stats <- all_stats %>% mutate(BreedingType = as.factor(as.character(BreedingType))) %>% data.frame()
+```
+
+Here is the phlogeny.
+
+```{r, fig.height=7, fig.width=7}
+plot(tree_final)
+```
+
+
+Select variables for modeling.
+
+```{r}
+stats_mod <- all_stats %>% 
+                dplyr::select(TPM70_ratio, TPM90_ratio, num_alleles_mean, harem_size, SSD, BreedingType, 
+                              male_weight, breeding_season_length, lactation_length, life_span_years, 
+                              Abundance, Generation_time, Longevity, tip_label, mratio_mean,
+                              obs_het_mean, mean_allele_range, IUCN_rating, prop_low_afs_mean,
+                              nloc, nind, bot, logAbundance) %>% 
+                              data.frame()
+```
+
+
+# Phylogenetic mixed modeling: Inverse phylo matrix and define priors.
+
+```{r, results = 'hide',  message=FALSE, warning=FALSE}
+library(MCMCglmm)
+inv_phylo <- inverseA(tree_final, nodes="TIPS")$Ainv #,scale=TRUE
+prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
+```
+
+### R2 for mixed models (marginal)
+```{r}
+# function to calculate the R2 for gaussian MCMCglmm models
+mcmcR2 <- function(mod, type = "marginal", family = "gaussian"){
+    if (type != "marginal") stop("At the moment, there is just the marginal R2")
+    if (family != "gaussian") stop("At the moment just gaussian errors are supported")
+    # based on Shinichis answer on Researchgate
+    mVarF <- var(as.vector(apply(mod$Sol,2,mean) %*% t(mod$X)))
+    R2 <- mVarF/(mVarF+sum(apply(mod$VCV,2,mean)))
+    
+    # alternative with crebile intervals
+    mcmc_chain_length <- nrow(mod$VCV)
+    vmVarF<-numeric(mcmc_chain_length)
+    
+    vmVarF <- vapply(1:mcmc_chain_length, function(x) out <- var(as.vector(mod$Sol[x,] %*% t(mod$X))), 
+                    FUN.VALUE = numeric(length(mcmc_chain_length)))
+    
+    R2m<-vmVarF/(vmVarF+ rowSums(mod$VCV)) # include here all random effects plus errors
+    outR2m <- R2m
+    class(R2m) <- "mcmc"
+    R2m<-vmVarF/(vmVarF+mod$VCV[,1]+mod$VCV[,2])
+    
+    #mean(R2m)
+    #posterior.mode(R2m)
+    #data.frame(HPDinterval(R2m), row.names = NULL)
+    
+    out <- list("partR2" = data.frame("meanR2" = mean(R2m), "modeR2" =  posterior.mode(R2m), data.frame(HPDinterval(R2m)), row.names = NULL),
+                "R2_chain" = outR2m)
+}
+```
+
+
+# Hypothesis (1) How is heterozygosity-excess as a bottleneck signature correlated to typical diversity indices?
+
+First, standardize input variables to make the estimates comparable.
+```{r}
+stats_mod_div <- stats_mod %>% 
+                    mutate(num_alleles_mean = scale(num_alleles_mean),
+                           obs_het_mean = scale(obs_het_mean),
+                           prop_low_afs_mean = scale(prop_low_afs_mean))
+```
+
+```{r}
+mod_gen <- MCMCglmm(TPM70_ratio ~ num_alleles_mean +  obs_het_mean + prop_low_afs_mean, #
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_div,nitt=110000,burnin=10000,thin=50, verbose = FALSE)
+```
+
+```{r}
+summary(mod_gen)
+```
+
+
+```{r, echo = TRUE, fig.height= 10, fig.width= 6}
+plot(mod_gen$Sol)
+```
+
+```{r}
+plot(mod_gen$VCV)
+```
+
+
+```{r}
+autocorr(mod_gen$Sol)
+```
+
+
+```{r}
+autocorr(mod_gen$VCV)
+```
+
+### R2
+
+```{r}
+R2 <- mcmcR2(mod_gen)
+R2$partR2
+```
+
+
+
+# Hypothesis (2) Which life-history or demographic traits explain genetic diversity?
+
+### Standardize by 2 sd to make estimates comparable with binary BreedingHabitat variable (Gelman (2008), Schielzeth (2014))
+```{r}
+stats_mod_div <- 
+    stats_mod %>% 
+    mutate(Abundance = ((Abundance - mean(Abundance)) / (2*sd(Abundance))), 
+        Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
+        SSD = (SSD - mean(SSD) / (2*sd(SSD))),
+        logAbundance = ((logAbundance - mean(logAbundance)) / (2*sd(logAbundance))))
+```
+
+Running the model.
+
+```{r}
+mod_div <- MCMCglmm(num_alleles_mean ~ logAbundance + BreedingType + Generation_time + SSD, # , #+ Abundance BreedingType
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_div,nitt=110000,burnin=10000,thin=50, verbose = FALSE)
+```
+
+```{r}
+summary(mod_div)
+```
+
+```{r, echo = TRUE, fig.height= 10, fig.width= 6}
+plot(mod_div$Sol)
+```
+
+
+```{r}
+plot(mod_div$VCV)
+```
+
+```{r}
+autocorr(mod_div$Sol)
+```
+
+```{r}
+autocorr(mod_div$VCV)
+```
+
+```{r}
+R2 <- mcmcR2(mod_div)
+R2$partR2
+```
+
+
+# Hypothesis (3) Which life-history or demographic traits explain heterozygosity-excess (bottleneck signature)?
+
+```{r}
+mod_bot <- MCMCglmm(TPM70_ratio ~ BreedingType + Generation_time + SSD, # 
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_div,nitt=110000,burnin=10000,thin=50, verbose = FALSE)
+```
+
+```{r}
+summary(mod_bot)
+```
+
+```{r, echo = TRUE, fig.height= 8, fig.width= 5}
+plot(mod_bot$Sol)
+```
+
+
+```{r}
+plot(mod_bot$VCV)
+```
+
+```{r}
+autocorr(mod_bot$Sol)
+```
+
+```{r}
+autocorr(mod_bot$VCV)
+```
+
+```{r}
+R2 <- mcmcR2(mod_bot)
+R2$partR2
+```
+

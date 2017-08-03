@@ -1,7 +1,4 @@
 
-mod <- mod1
-
-
 # function to calculate the R2 for gaussian MCMCglmm models
 mcmcR2 <- function(mod, type = "marginal", family = "gaussian"){
     if (type != "marginal") stop("At the moment, there is just the marginal R2")
@@ -30,8 +27,6 @@ mcmcR2 <- function(mod, type = "marginal", family = "gaussian"){
                 "R2_chain" = outR2m)
 }
 
-out <- mcmcR2(mod)
-out
 
 # partition the R2 into variation unique and common to the predictors
 partR2 <- function(mod, partvars = NULL, data = NULL, inv_phylo = NULL, prior = NULL, nitt=10000,burnin=1000, thin=50){
@@ -60,7 +55,7 @@ partR2 <- function(mod, partvars = NULL, data = NULL, inv_phylo = NULL, prior = 
         mod_red <- MCMCglmm(new_formula,
             random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
             family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=data,nitt=nitt,burnin=burning,thin=thin)
+            data=data,nitt=nitt,burnin=burnin,thin=thin)
         
         R2_red <- mcmcR2(mod_red)
         # R2 mode
@@ -77,24 +72,3 @@ partR2 <- function(mod, partvars = NULL, data = NULL, inv_phylo = NULL, prior = 
     out <- data.frame("combinations" = all_comb_names, R2_out)
     out
 }
-
-out2 <- partR2(mod, partvars = partvars)
-
-
-
-gsub('(a|e|i|o|u)', '', x = "BreedingType")
-
-
-
-
-mod0 <- lm(TPM70_ratio ~ obs_het_mean + num_alleles_mean + mean_allele_range + prop_low_afs_mean, data = stats_mod) #prop_low_afs_mean + 
-summary(mod0)
-calc.yhat(mod0)
-
-
-mod1 <- lm(TPM70_ratio ~ obs_het_mean + num_alleles_mean + mean_allele_range , data = stats_mod)
-
-sum_mod0 <- summary(mod0)
-sum_mod1 <- summary(mod1)
-
-sum_mod0$r.squared - sum_mod1$r.squared

@@ -162,7 +162,9 @@ stats_mod %>% dplyr::select(c("logAbundance", "BreedingType", "Generation_time",
 mod1 <- MCMCglmm(num_alleles_mean ~ logAbundance + BreedingType + Generation_time + SSD, # , #+ Abundance BreedingType
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=stats_mod,nitt=100000,burnin=1000,thin=10)
+    data=stats_mod,nitt=1100000,burnin=100000,thin=1000)
+
+
 
 summary(mod1)
 out <- partR2(mod1, partvars = c( "BreedingType", "logAbundance", "Generation_time", "SSD"))#"Generation_time", "Abundance",

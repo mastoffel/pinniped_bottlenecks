@@ -23,56 +23,56 @@ library(dplyr)
 library(ggrepel)
 library(GGally)
 library(ggthemr)
-#load modified phylogeny and all stats
-tree_final <- read.tree("data/raw/phylogeny/higdon_mod2_28.tre")
-all_stats <- read_csv("data/processed/all_stats_tree.csv") %>% 
-                mutate(SSD = male_weight/female_weight) %>% 
-                mutate(abc_out = ifelse(bot > 0.5, "bot", "neut")) %>% 
-                mutate(BreedingType = factor(BreedingType, levels = c("ice", "land", "both")))
 
+
+# phylogeny
+tree_final <- read.tree("data/raw/phylogeny/higdon_mod2_28.tre")
 # produce short names for plotting
 short <- c("W", "NFS", "SSL", "CSL", "GSL", "SASL", "AFS", "NZSL", "AntFS", "NZFS", "SAFS", "GFS", 
     "BS", "HoS", "GS", "HS", "ARS", "SRS", "BRS", "LRS", "MMS", "HMS", "NES", "SES", "CS", "RS", "LS", "WS")
-all_stats$short <- short
 
-# order factors according to tree
-all_stats <- all_stats %>% 
+all_stats <- read_csv("data/processed/all_stats_tree.csv") %>% 
+    mutate(SSD = male_weight/female_weight) %>% 
+    mutate(abc_out = ifelse(bot > 0.5, "bot", "neut")) %>% 
+    mutate(BreedingType = factor(BreedingType, levels = c("ice", "land", "both"))) %>% 
+    mutate(logAbundance = log(Abundance),
+        logharem_size = log(harem_size),
+        logmale_weight = log(male_weight),
+        logbreed_season = log(breeding_season_length),
+        loglactation_length = log(lactation_length)) %>% 
+    # order factors according to tree
     mutate(tip_label = fct_inorder(factor(tip_label)),
         species = fct_inorder(factor(species)),
         latin = fct_inorder(factor(latin)),
         common = fct_inorder(factor(common)),
         short = fct_inorder(factor(short)))
+# count grey and harbour seal to land breeding
+all_stats[all_stats$BreedingType == "both", "BreedingType"] <- "land" 
+all_stats <- all_stats %>% mutate(BreedingType = as.factor(as.character(BreedingType))) %>% data.frame()
 
-# WriteXLS(all_stats, "seal_stats_and_LH.xls")
-
-# cdat <- comparative.data(tree_final, as.data.frame(all_stats), names.col = "tip_label")
 
 # pairs plot for all important variables -----------------------------------------------------------
 stats_mod <- all_stats %>% 
                 dplyr::select(TPM70_ratio, num_alleles_mean, harem_size, SSD, BreedingType, 
                               male_weight, breeding_season_length, lactation_length, life_span_years, 
                               Abundance, Generation_time) %>% 
-                              mutate(Abundance = log(Abundance),
-                                     harem_size = log(harem_size),
-                                     male_weight = log(male_weight)) %>% 
                               rename(AlleleNumber = num_alleles_mean, TPM70 = TPM70_ratio,
                                      BreedSeasonLength= breeding_season_length , LogHaremSize =  harem_size,
                                      LifeSpan = life_span_years, GenTime = Generation_time,
                                      LogAbundance = Abundance, LogMaleWeight = male_weight,
                                      LactLength = lactation_length )
 
-# gg duo makes a nice pairs plot, not used here
-# stats_mod %>%                   
-#     ggduo(types = list(continuous = "smooth_loess", 
-#     comboVertical =  'box', 
-#     comboHorizontal = "facethist",
-#     discrete = "ratio")) +
-#     # ggscatmat(columns = c("AlleleNumber", "TPM70", "BreedSeasonLength")) +
-#     theme_minimal()
-
-
 
 ## modeling and plotting 
+
+# plot (1) het-exc vs genetic diversity
+stats_mod <- all_stats %>% 
+    dplyr::select(TPM70_ratio, TPM90_ratio, num_alleles_mean, obs_het_mean, 
+        mean_allele_range, prop_low_afs_mean, mratio_mean,
+        nloc, nind, bot) %>% 
+    data.frame()
+
+
 
 # figure 1 - Allelic Richness vs. Global Abundance-------------------------------------------------
 all_stats_div <- all_stats %>% 
