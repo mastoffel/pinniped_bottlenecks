@@ -16,11 +16,11 @@ library(RColorBrewer)
 library(scales)
 library(forcats)
 library(readr)
+library(extrafont)
 # ggthemr('dust')
 
 # load all datasets
 seals <- read_csv("data/processed/seal_data_complete_rarefac10.csv")
-
 # load model probablities from ABC
 model_probs <- read_delim("data/processed/sims_5000k_large_bot_model_selection.txt", 
     delim = " ", col_names = c("species", "bot", "neut"), skip = 1)
@@ -33,7 +33,7 @@ seals <- left_join(seals, model_probs, by = "species")
 
 #### stopped here
 # load higdon phylogeny
-tree_final <- read.tree("data/raw/phylogeny/higdon_mod2_28.tre")
+tree_final <- read.tree("data/raw/phylogeny/28_species_10ktrees.tre")
 plot(tree_final)
 tree_final$tip.label
 
@@ -62,13 +62,15 @@ seals <- seals %>%
 # # plot inds needed within diversity plot later // this is the sequence in which the tree is plotted
 # plot_inds <- c(1:2, 10:12, 3:5, 9, 6:8, 13,14, 19,20, 18,17,15,16,27,28,25,26,21,22,23,24)
 
+ggtree(tree_final) + geom_tiplab() + xlim(0, 100)
+
 # creat a data.frame where factor levels are in the ggtree plotting sequence
-plotting_sequence <- c("weddell_seal", "leopard_seal" , "ross_seal", "crabeater_seal", "ses", "nes",
+plotting_sequence <- c("weddell_seal", "leopard_seal" ,  "crabeater_seal","ross_seal", "ses", "nes",
                         "hawaiian_monk_seal", "mediterranean_monk_seal", "lagoda_ringed_seal", "saimaa_ringed_seal",
-                        "baltic_ringed_seal", "arctic_ringed_seal", "harbour_seal_waddensee",
-                        "grey_seal_orkneys", "hooded_seal", "bearded_seal", "galapagos_fur_seal", "south_american_fur_seal",
-                        "new_zealand_fur_seal", "antarctic_fur_seal", "new_zealand_sea_lion", "australian_fur_seal", 
-                        "south_american_sea_lion", "galapagos_sea_lion", "california_sea_lion",
+                        "baltic_ringed_seal", "arctic_ringed_seal",   "grey_seal_orkneys", "harbour_seal_waddensee",
+                        "hooded_seal", "bearded_seal", "galapagos_fur_seal", "south_american_fur_seal",
+                        "new_zealand_fur_seal", "antarctic_fur_seal", "new_zealand_sea_lion", "south_american_sea_lion",
+                        "australian_fur_seal", "galapagos_sea_lion", "california_sea_lion",
                         "stellers_sea_lion", "northern_fur_seal", "atlantic_walrus")
 
 
@@ -105,7 +107,6 @@ if(!file.exists("data/processed/all_stats_tree.csv")){
 stand_div <- all_stats_tree %>% 
              dplyr::select(obs_het_mean, 
                     num_alleles_mean,
-                    mean_allele_range,
                     prop_low_afs_mean) %>% 
              apply(2, scale) %>% 
              as_tibble() %>% 
@@ -152,7 +153,7 @@ tree_final <- groupOTU(tree_final, cls)
 # prepare data frame
 all_stats_for_tree <- all_stats_tree
 # all_stats_for_tree$IUCN_rating[is.na(all_stats_for_tree$IUCN_rating)] <- "data deficient"
-all_stats_for_tree$IUCN_rating <- factor(all_stats_for_tree$IUCN_rating, levels = c("least concern", "vulnerable", "near threatened", "endangered"))
+all_stats_for_tree$IUCN_rating <- factor(all_stats_for_tree$IUCN_rating, levels = c("least concern", "near threatened", "vulnerable", "endangered"))
 # check whther necessary
 names(all_stats_for_tree)[1] <- "taxa"
 
@@ -177,18 +178,9 @@ p <- p %<+% all_stats_for_tree
 
 p + geom_tippoint() #aes(color=IUCN_rating)
 
-#library(ggthemr)
-#ggthemr(text_size = 3)
-
-# # pictures
-# img <- c("phylo_figures/NES.jpg", "phylo_figures/AFS.jpg", "phylo_figures/med_monk_seal.jpg")
-# d_img <- data.frame(x = c(0.5, 1, 2),
-#     y = c(0.5, 1, 2),
-#     image = img)
-
 p <- p + #layout="circular" , "fan"open.angle=180
-    # scale_color_manual(values=c("black", "#9e9ac8","#6a51a3", "#bcbddc" )) +
-    geom_tippoint(aes(size = Abundance, fill=IUCN_rating),stroke=0.9, color = "#737373", shape=21) + #shape=21,stroke=0.5 #color = "#737373"
+    # scale_color_manual(values=c("black", "#9e9ac8","#6a51a3", "#bcbddc" )) + #color = "#737373"
+    geom_tippoint(aes(size = Abundance, fill=IUCN_rating),stroke=0.5, color = "#737373", shape=21) + #shape=21,stroke=0.5 #color = "#737373"
     # geom_point(aes(color = abc, size = Abundance), shape=21) +
      # geom_treescale() + 
     # ggtitle("Pinniped Phylogeny") +
@@ -197,8 +189,9 @@ p <- p + #layout="circular" , "fan"open.angle=180
     # scale_color_manual(values = c("#66c2a5", "#fdae61", "#f46d43", "#d53e4f", "#000000")) +
     # scale_color_manual(values = c("lightblue", "goldenrod", "red", "darkred", "grey")) +
     # scale_fill_manual(values = c("#fee8c8", "#fc8d59", "#d7301f", "#7f0000", "white")) +
-    scale_fill_manual(values = c("#FDE4A6FF", "#FB8861FF", "#B63679FF", "#000004FF", "white")) +
-    
+  # scale_fill_manual(values = c("#FDE4A6FF", "#FB8861FF", "#B63679FF", "#000004FF", "white")) +
+    # scale_fill_manual(values = c("#ffffd4", "#fed98e", "#fe9929", "#cc4c02", "white")) +
+    scale_fill_manual(values = c("#f7f7f7", "#cccccc", "#525252", "#000000", "white")) +
     # for coloring branches
     # scale_color_manual(na.value = "#969696", values = c("#cb181d", "#969696")) +
     
@@ -209,28 +202,16 @@ p <- p + #layout="circular" , "fan"open.angle=180
     guides(fill = guide_legend(title = "IUCN rating", title.position = "top", direction = "vertical", order = 2),
            size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1)
            ) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
-    theme(plot.margin=unit(c(52, -5,10,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
+    theme(plot.margin=unit(c(52, -5,15,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
           legend.position= c(0.26,0.95), #legend.direction = "horizontal",
           legend.spacing = unit(5, "points"),
         legend.key.height=unit(1,"line"),
         legend.key.width = unit(1, "line"), 
         legend.title = element_text(size = 9),
         legend.text = element_text(size = 8),
-        legend.title.align = 0.5) 
+        legend.title.align = 0.5,
+        text=element_text(family='Lato')) 
     # geom_image(data = d_img, aes(image = image), size = 0.2)
-
-# flip(p, 41, 52) %>% flip(42, 49) %>% flip(32, 51)
-            
-   #c(30,-50,20,0)
-    #geom_text(aes(label=node)) +
-    # geom_cladelabel(node=41, label="Phocidae", angle = 270, align=T, hjust='center', offset = 5, 
-    #     offset.text=1, color = "cornflowerblue",  barsize=0.5) +
-    # geom_cladelabel(node=31, label="Otariidae", align=T,angle = 270, hjust='center', offset = 5,
-    #     offset.text=1, barsize=0.5, color = "goldenrod") +
-    # geom_cladelabel(node=1, label="Odobenidae", align=T,angle = 270, color = "darkgrey", hjust=0.7, 
-    #     offset.text=6, barsize=0.5) +
-    #scale_color_manual(values=c("black","darkgrey", "goldenrod", "cornflowerblue" )) +
-
 p
 
 
@@ -238,7 +219,7 @@ p
 
 # diversity
 stand_div_lf <- stand_div %>% melt(id.vars = c("species","common"), 
-                measure.vars = c("obs_het_mean", "num_alleles_mean", "mean_allele_range",
+                measure.vars = c("obs_het_mean", "num_alleles_mean", #"mean_allele_range",
                                  "prop_low_afs_mean"))
 
 #plot_col_div <- viridis(20)
@@ -251,11 +232,13 @@ stand_div_lf <- stand_div %>% melt(id.vars = c("species","common"),
 #numColors <- length(levels(stand_div_lf$abc))
 #getColors <- brewer_pal('qual')
 #myPalette <- getColors(numColors)
-abc_cols <- c("#a50f15", "#525252")
+# abc_cols <- c("#a50f15", "#525252")
+# 
+# plot_col <- magma(40)
+# plot_col <- plot_col[c(rep(FALSE,2), TRUE)] # get every 5th element
 
-plot_col <- magma(40)
-plot_col <- plot_col[c(rep(FALSE,2), TRUE)] # get every 5th element
-
+#pal <- colorRampPalette(c("cornflowerblue", "white", "darkgrey"))
+pal <- colorRampPalette(c("darkblue", "#f0f0f0", "#737373"))
 # cols <- ifelse(stand_div_lf$abc == "neut", "grey", "red")
 p_div <- ggplot(stand_div_lf, aes(x = variable, y = common, fill = value)) + 
     geom_tile(color = "white", size = 0.1) +
@@ -265,8 +248,10 @@ p_div <- ggplot(stand_div_lf, aes(x = variable, y = common, fill = value)) +
      #   name = "prop. \nhet-exc") +
     #scale_fill_gradientn(colours=c("#081d58", "#253494", "#1d91c0", "#7fcdbb", "#c7e9b4", "#ffffd9"), 
     #    name = "Standardized \ndiversity") +
-    scale_fill_gradientn(colours=plot_col, 
+    scale_fill_gradientn(colours=pal(5), 
         name = "Standardized \ndiversity") +
+   # scale_fill_distiller(name = "Standardized \ndiversity", palette = "RdGy", direction = 1) +
+    #scale_fill_distiller(pal(5)) +
    # scale_fill_gradientn(colours=plot_col_div, 
     #   name = "prop. \nhet-exc") +
     theme_tufte(base_family="Helvetica") +
@@ -275,34 +260,38 @@ p_div <- ggplot(stand_div_lf, aes(x = variable, y = common, fill = value)) +
         axis.text.x = element_text(angle = 70, hjust = 1, size = 8),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(0,10,0,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260)
+        plot.margin=unit(c(0,10,5,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_text(hjust=0, size = 9, colour = "#525252"), #abc_cols[stand_div$abc][plot_inds]
         legend.title = element_text(size = 9),
         legend.text = element_text(size = 8),
-        legend.title.align = 0.5) +
+        legend.title.align = 0.5, 
+        text=element_text(family='Lato')) +
     # coord_fixed(ratio = 0.7) +
     scale_x_discrete(labels=c("HET", "AR","ARA","LFA"), 
         position = "bottom") +
-    guides(fill = guide_colorbar(barwidth = 6, barheight = 0.5, 
+    guides(fill = guide_colorbar(barwidth = 5, barheight = 0.5, 
             title.position = "top", label.position = "bottom")) 
 
 # grid.arrange(p, p_div, nrow = 1)
 plot_grid(p, p_div, nrow = 1)
 
 # het-excess and mratio
-plot_col <- magma(40)
-plot_col <- rev(plot_col[c(rep(FALSE,2), TRUE)]) # get every 5th element
 
+pal2 <- colorRampPalette(c("darkred", "#f0f0f0", "#737373"))
 bot_res_lf <- bot_res %>% melt(id.vars = c("species", "common", "latin"))
+
 p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) + 
     geom_tile(color = "white", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
     #scale_fill_viridis(option = "viridis", direction = -1) +
     #scale_fill_gradientn(colours=c( "#ffffd9","#c7e9b4", "#7fcdbb", "#1d91c0", "#253494", "#081d58"), 
     #    name = "prop. \nhet-exc") +
-    scale_fill_gradientn(colours=plot_col, 
+    #scale_fill_gradientn(colours=plot_col, 
+    #    name = "Prop. of loci \nin heterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,1)) +
+    
+    scale_fill_gradientn(colours=rev(pal2(5)),
         name = "Prop. of loci \nin heterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,1)) +
     theme_tufte(base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0),
@@ -310,13 +299,14 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         axis.text.x = element_text(angle = 70, hjust = 1, size = 9),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(0,10,-4,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
+        plot.margin=unit(c(0,10,1,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(), 
         legend.title = element_text(size = 9),
         legend.text = element_text(size = 8),
-        legend.title.align = 0.5) +
+        legend.title.align = 0.5, 
+        text=element_text(family='Lato')) +
     # scale_x_discrete(labels=c("PHE","M")) +
     scale_x_discrete(labels=c("IAM", "70", "90","95", "SMM")) +
     #labs(x=NULL, y=NULL) +
@@ -326,16 +316,14 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
 
 plot_grid(p, p_div, p_bot, nrow = 1)
 
-# abs results
-plot_col_abc <- magma(40)
-plot_col_abc <- rev(plot_col_abc[c(rep(FALSE,2), TRUE)])
 
+pal3 <- colorRampPalette(c("darkgreen", "#f0f0f0", "#737373"))
 abc_probs_lf <- abc_probs %>% melt(id.vars = c("species", "common", "latin"))
 p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) + 
     geom_tile(color = "white", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
     # scale_fill_viridis(option = "viridis", direction = -1) +
-    scale_fill_gradientn(colours=plot_col_abc, 
+    scale_fill_gradientn(colours=rev(pal3(5)), 
         name = "ABC \nprob. %", labels=c(0, 50, 100), breaks = c(0,0.5,1)) +
     theme_tufte(base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0),
@@ -343,44 +331,27 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
         axis.text.x = element_text(angle = 70, hjust = 1, size = 9),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(0,10,-5,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
+        plot.margin=unit(c(0,10,0,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(),
         legend.title = element_text(size = 9),
         legend.text = element_text(size = 8),
-        legend.title.align = 0.5) +
+        legend.title.align = 0.5,
+        text=element_text(family='Lato')) +
     scale_x_discrete(labels=c("Bott","Const")) +
     #labs(x=NULL, y=NULL) +
     # coord_fixed(ratio = 0.7) +
     guides(fill = guide_colorbar(barwidth = 2.5, barheight = 0.5, 
         title.position = "top")) 
 
-p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.18, 0.09, 0.05))
+p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.5, 0.33, 0.21, 0.11))
 p_final
 
-# some stars
+#p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.16, 0.09, 0.05, 0.02))
+#p_final
 
-# create a column of stars
-# p_abc_star <- ggplot(abc_star, aes(x = variable, y = species, color = bot)) + 
-#     geom_point(size = 2, alpha = 1, shape = 19) +
-#     scale_color_manual(values = c("#a50f15", "white")) +
-#     theme_tufte(base_family="Helvetica") +
-#     theme(plot.title=element_text(hjust=0),
-#         axis.ticks=element_blank(),
-#         axis.text.x = element_blank(),
-#         # axis.text.x = element_blank(),
-#         legend.position="none",
-#         plot.margin=unit(c(59,10,23,-5),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
-#         axis.title.x=element_blank(),
-#         axis.title.y=element_blank(),
-#         axis.text.y = element_blank()
-#         )
-
-p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.16, 0.09, 0.05, 0.02))
-p_final
-
-save_plot("phylo_plot.pdf", p_final,
+save_plot("figures/phylo_plot.jpg", p_final,
     ncol = 2, # we're saving a grid plot of 2 columns
     nrow = 1, # and 2 rows
     # each individual subplot should have an aspect ratio of 1.3

@@ -18,8 +18,11 @@ tree_full$edge.length[30] <- tree_full$edge.length[30] - 1.5
 plot(tree_full)
 nodelabels() # shorten Node 44
 tiplabels()
-length(tree$tip.label)
-?drop.tip
+
+# rename like dataset
+tree_full$tip.label[17] <- "Lobodon_carcinophagus"
+tree_full$tip.label[8] <- "Otaria_flavescens" 
+# flavescens carcinophagus
 
 write.tree(tree_full, file = "data/raw/phylogeny/28_species_10ktrees.tre")
 
