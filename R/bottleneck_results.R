@@ -6,6 +6,8 @@
 
 # run these bash commands on all files in bottleneck/out to remove header information
 # make sure it works
+
+system("for i in ../output/bottleneck_out/*.txt; do cat $i | awk '/SIGN/,0' > ../output/bottleneck_out/$i.edit.txt; done")
 # for i in *.txt; do cat $i | awk '/SIGN/,0' > $i.edit.txt; done
 
 library(stringr)
@@ -13,16 +15,16 @@ library(dplyr)
 library(plyr)
 
 # paths to full datasets
-in_1 <- paste("output/bottleneck_out/", list.files(path = "output/bottleneck_out", pattern="*1.txt.edit.txt"), sep = "")
-in_2 <- paste("output/bottleneck_out/", list.files(path = "output/bottleneck_out", pattern="*2.txt.edit.txt"), sep = "")
-in_3 <- paste("output/bottleneck_out/", list.files(path = "output/bottleneck_out", pattern="*3.txt.edit.txt"), sep = "")
-in_4 <- paste("output/bottleneck_out/", list.files(path = "output/bottleneck_out", pattern="*4.txt.edit.txt"), sep = "")
+in_1 <- paste("../output/bottleneck_out/", list.files(path = "../output/bottleneck_out", pattern="*1.txt.edit.txt"), sep = "")
+in_2 <- paste("../output/bottleneck_out/", list.files(path = "../output/bottleneck_out", pattern="*2.txt.edit.txt"), sep = "")
+in_3 <- paste("../output/bottleneck_out/", list.files(path = "../output/bottleneck_out", pattern="*3.txt.edit.txt"), sep = "")
+#in_4 <- paste("../output/bottleneck_out/", list.files(path = "../output/bottleneck_out", pattern="*4.txt.edit.txt"), sep = "")
 
 # paths to datasets in hwe
-in1_hw <- paste("output/bottleneck_out/hw/", list.files(path = "output/bottleneck_out/hw", pattern="*1.txt.edit.txt"), sep = "")
-in2_hw <- paste("output/bottleneck_out/hw/", list.files(path = "output/bottleneck_out/hw", pattern="*2.txt.edit.txt"), sep = "")
-in3_hw <- paste("output/bottleneck_out/hw/", list.files(path = "output/bottleneck_out/hw", pattern="*3.txt.edit.txt"), sep = "")
-in4_hw <- paste("output/bottleneck_out/hw/", list.files(path = "output/bottleneck_out/hw", pattern="*4.txt.edit.txt"), sep = "")
+in1_hw <- paste("../output/bottleneck_out/hw/", list.files(path = "../output/bottleneck_out/hw", pattern="*1.txt.edit.txt"), sep = "")
+in2_hw <- paste("../output/bottleneck_out/hw/", list.files(path = "../output/bottleneck_out/hw", pattern="*2.txt.edit.txt"), sep = "")
+in3_hw <- paste("../output/bottleneck_out/hw/", list.files(path = "../output/bottleneck_out/hw", pattern="*3.txt.edit.txt"), sep = "")
+#in4_hw <- paste("../output/bottleneck_out/hw/", list.files(path = "../output/bottleneck_out/hw", pattern="*4.txt.edit.txt"), sep = "")
 
 import_files <- function(file){
         file <- readLines(file)
@@ -31,12 +33,12 @@ import_files <- function(file){
 bottleneck_out1 <- lapply(in_1, import_files)
 bottleneck_out2 <- lapply(in_2, import_files)
 bottleneck_out3 <- lapply(in_3, import_files)
-bottleneck_out4 <- lapply(in_4, import_files)
+#bottleneck_out4 <- lapply(in_4, import_files)
 
 bottleneck_out1_hw <- lapply(in1_hw, import_files)
 bottleneck_out2_hw <- lapply(in2_hw, import_files)
 bottleneck_out3_hw <- lapply(in3_hw, import_files)
-bottleneck_out4_hw <- lapply(in4_hw, import_files)
+#bottleneck_out4_hw <- lapply(in4_hw, import_files)
 
 # x <- bottleneck_out1#[[2]]
 # y <- bottleneck_out2#[[2]]
@@ -50,7 +52,8 @@ get_vals <- function(x) {
 if (grepl("Caution", x[19]) == TRUE) {
         run_1 <- x[-c(19,20)]} else {
         run_1 <- x
-}
+        }
+        
 # get vals from first file
 iam <- data.frame(run_1[c(3,4,5,20,31,32,33)])
 colnames(iam) <- "out"
@@ -67,7 +70,7 @@ out1 <- lapply(bottleneck_out1, get_vals)
 out1_hw <- lapply(bottleneck_out1_hw, get_vals)
 
 #------------------------------------------------------------------------------
-# function to get the main values from bottleneck output file 2, TPM 95
+# function to get the main values from bottleneck output file 2, TPM 80
 
 get_vals2 <- function(y) {
 # remove caution messages if present
@@ -85,7 +88,7 @@ out2 <- lapply(bottleneck_out2, get_vals2)
 out2_hw <- lapply(bottleneck_out2_hw, get_vals2)
 
 #------------------------------------------------------------------------------
-# function to get the main values from bottleneck output file 3, TPM 99
+# function to get the main values from bottleneck output file 3, TPM 90
 
 get_vals3 <- function(y) {
         # remove caution messages if present
@@ -103,7 +106,7 @@ out3 <- lapply(bottleneck_out3, get_vals3)
 out3_hw <- lapply(bottleneck_out3_hw, get_vals3)
 
 #------------------------------------------------------------------------------
-# function to get the main values from bottleneck output file 4, TPM 90
+# function to get the main values from bottleneck output file 4, TPM X
 
 get_vals4 <- function(y) {
         # remove caution messages if present
@@ -117,14 +120,14 @@ get_vals4 <- function(y) {
         tpm90 <- tpm90
 }
 
-out4 <- lapply(bottleneck_out4, get_vals4)
-out4_hw <- lapply(bottleneck_out4_hw, get_vals4)
+#out4 <- lapply(bottleneck_out4, get_vals4)
+#out4_hw <- lapply(bottleneck_out4_hw, get_vals4)
 
 #------------------------------------------------------------------------------
 # rbind all vals together
 
-data <- mapply(rbind, out1, out4, out2, out3, SIMPLIFY=F)
-data_hw <- mapply(rbind, out1_hw, out4_hw, out2_hw, out3_hw, SIMPLIFY=F)
+data <- mapply(rbind, out1, out2, out3, SIMPLIFY=F)
+data_hw <- mapply(rbind, out1_hw, out2_hw, out3_hw, SIMPLIFY=F)
 
 # grep everything out that we don't need
 
@@ -156,21 +159,22 @@ get_colnames <- function(x) {
                          "TPM70_Heq", "TPM70_Def/Exc", "TPM70_Sign", "TPM70_Stand_Diff", "TPM70_Wilc_Def", "TPM70_Wilc_Exc", "TPM70_Wilc_2Tail",
                          "SMM_Heq", "SMM_Def/Exc", "SMM_Sign", "SMM_Stand_Diff", "SMM_Wilc_Def", "SMM_Wilc_Exc", "SMM_Wilc_2Tail",
                          "Mode_Shift",
-                         "TPM90_Heq", "TPM90_Def/Exc", "TPM90_Sign", "TPM90_Stand_Diff", "TPM90_Wilc_Def", "TPM90_Wilc_Exc", "TPM90_Wilc_2Tail",
-                         "TPM95_Heq", "TPM95_Def/Exc", "TPM95_Sign", "TPM95_Stand_Diff", "TPM95_Wilc_Def", "TPM95_Wilc_Exc", "TPM95_Wilc_2Tail",
-                         "TPM99_Heq", "TPM99_Def/Exc", "TPM99_Sign", "TPM99_Stand_Diff", "TPM99_Wilc_Def", "TPM99_Wilc_Exc", "TPM99_Wilc_2Tail")
-        x <- x[c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,15,16,17,18,19,20,21,22)] # CHECK THIS
+                         "TPM80_Heq", "TPM80_Def/Exc", "TPM80_Sign", "TPM80_Stand_Diff", "TPM80_Wilc_Def", "TPM80_Wilc_Exc", "TPM80_Wilc_2Tail",
+                         "TPM90_Heq", "TPM90_Def/Exc", "TPM90_Sign", "TPM90_Stand_Diff", "TPM90_Wilc_Def", "TPM90_Wilc_Exc", "TPM90_Wilc_2Tail")
+        x <- x[c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36)] # CHECK THIS
+        #x <- x[c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,15,16,17,18,19,20,21,22)] # CHECK THIS
 
 }
 
 
 out <- lapply(out, get_colnames)
+
 out_hw <- lapply(out_hw, get_colnames)
 
 #------------------------------------------------------------------------------
 # specify dataset names
 library(plyr)
-dataset_names <-list.files(path = "output/bottleneck_out", pattern="*2.txt.edit.txt")
+dataset_names <-list.files(path = "../output/bottleneck_out", pattern="*2.txt.edit.txt")
 names(out) <- dataset_names
 out <- ldply(out, data.frame)
 
@@ -180,8 +184,8 @@ out_hw <- ldply(out_hw, data.frame)
 
 # write out files
 library(WriteXLS)
-WriteXLS(out, ExcelFileName = "output/out_bottleneck_stats.xls", na = "", row.names = F, col.names = T)
-WriteXLS(out_hw, ExcelFileName = "output/out_bottleneck_stats_HW.xls", na = "", row.names = F, col.names = T)
+WriteXLS(out, ExcelFileName = "../output/out_bottleneck_stats.xls", na = "", row.names = F, col.names = T)
+WriteXLS(out_hw, ExcelFileName = "../output/out_bottleneck_stats_HW.xls", na = "", row.names = F, col.names = T)
 
-# write.csv(out, file = "output/out_bottleneck_stats.csv", na = "", row.names = F, col.names = T, quote = F)
-# write.csv(out_hw, file = "output/out_bottleneck_stats_HW.csv", na = "", row.names = F, col.names = T, quote = F)
+write.csv(out, file = "../output/out_bottleneck_stats.csv", na = "", row.names = F, col.names = T, quote = F)
+write.csv(out_hw, file = "../output/out_bottleneck_stats_HW.csv", na = "", row.names = F, col.names = T, quote = F)

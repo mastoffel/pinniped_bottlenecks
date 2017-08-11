@@ -10,6 +10,7 @@ library('ggthemes')
 library(scales)
 library(viridis)
 library(ggjoy)
+source("martin.R")
 # load abc posterior data
 load("data/processed/abc_estimates/abc_5000k_complete.RData")
 # load parameter distributions
@@ -32,8 +33,8 @@ species_names <- c(
     "south_american_fur_seal" = "South American Fur Seal"
 )
 
-abc$species <- factor(abc$species, levels = rev(c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
-    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys",  "south_american_fur_seal", "california_sea_lion")))
+abc$species <- factor(abc$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
+    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys",  "south_american_fur_seal", "california_sea_lion"))
 
 empty_names <- c(
     "antarctic_fur_seal" = " ",
@@ -111,13 +112,16 @@ p <- abc %>% filter(pars == "nbot") %>%
     #stat_summary(fun.y = "mean", colour = "blue", geom = "point") +
     theme_martin() +
    # scale_fill_cyclical(values = c("lightgrey", "darkgrey")) +
-    ylim(0, 1000) +
+    #ylim(0, 900) +
     scale_x_discrete(labels = species_names) + 
+    scale_y_continuous(breaks = c(seq(from = 0, to = 900, by = 100)), limits = c(0,900)) +
     #scale_y_discrete(expand = c(0.01, 0))+
     xlab("") +
     ylab(expression(Bottleneck~N[e])) +
-    coord_flip() 
-   
-ggsave(filename = "abc_posteriors.jpg", plot = p, width = 4, height = 7)
+    coord_flip() +
+    theme(plot.margin = unit(c(0.5,1.5,0.5,0), "cm"))
+
+p
+ggsave(filename = "figures/abc_posteriors.jpg", plot = p, width = 5.5, height = 6.5)
 
 

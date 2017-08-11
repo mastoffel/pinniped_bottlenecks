@@ -18,13 +18,21 @@ library(GGally)
 library(reshape2)
 library(magrittr)
 library(tibble)
+library(mcmcR2)
+library(ggrepel)
+source("martin.R")
+
+
+
 #load modified phylogeny and all stats
+tree_final <- read.tree("data/raw/phylogeny/28_species_10ktrees.tre")
 #load modified phylogeny and all stats
-tree_final <- read.tree("data/raw/phylogeny/higdon_mod2_28.tre")
+#tree_final <- read.tree("data/raw/phylogeny/higdon_mod2_28.tre")
 # produce short names for plotting
 short <- c("W", "NFS", "SSL", "CSL", "GSL", "SASL", "AFS", "NZSL", "AntFS", "NZFS", "SAFS", "GFS", 
     "BS", "HoS", "GS", "HS", "ARS", "SRS", "BRS", "LRS", "MMS", "HMS", "NES", "SES", "CS", "RS", "LS", "WS")
 
+# all_stats_tree is from 10_visualise_phylogeny.R
 all_stats <- read_csv("data/processed/all_stats_tree.csv") %>% 
     mutate(SSD = male_weight/female_weight) %>% 
     mutate(abc_out = ifelse(bot > 0.5, "bot", "neut")) %>% 
@@ -56,7 +64,7 @@ all_stats %>% # interesting: breed_season, logAbundance, Longevity,
 
 # select variables for modeling -----------------------------------------------------------
 stats_mod <- all_stats %>% 
-                dplyr::select(TPM70_ratio, TPM90_ratio, num_alleles_mean, harem_size, SSD, BreedingType, 
+                dplyr::select(common, TPM70_ratio,TPM80_ratio, TPM90_ratio, num_alleles_mean, harem_size, SSD, BreedingType, 
                               male_weight, breeding_season_length, lactation_length, life_span_years, 
                               Abundance, Generation_time, Longevity, tip_label, mratio_mean,
                               obs_het_mean, mean_allele_range, IUCN_rating, prop_low_afs_mean,
@@ -64,8 +72,10 @@ stats_mod <- all_stats %>%
                               data.frame()
 
 
-# phylogenetic mixed model -------------------------------
-# phylogenetic mixed model
+
+
+# phylogenetic mixed model -------------------------------------------------------------------------
+# phylogenetic mixed model preparation
 library("kinship2")
 library(MCMCglmm)
 
@@ -74,19 +84,20 @@ library(MCMCglmm)
 plot(tree_final)
 
 # construct inverse phylo matrix and priors
-inv_phylo <- inverseA(tree_final, nodes="TIPS")$Ainv #,scale=TRUE
+inv_phylo <- inverseA(tree_final, nodes="TIPS",scale=FALSE)$Ainv #,scale=TRUE
 prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
 
 
-## model 1: genetic diversity vs. het excess -------------------------------------------------------
-# make sure here that the df isn't a tibble
 
+## model 1: genetic diversity vs. het excess -------------------------------------------------------
+
+# make sure here that the df isn't a tibble
 # (1) check the relationship between Het excess and the other genetic variables
-stats_mod %>% 
-    dplyr::select(c("obs_het_mean","TPM90_ratio", "TPM70_ratio", "num_alleles_mean", 
-        "mean_allele_range", "prop_low_afs_mean"
-                )) %>% #"Generation_time", "Abundance", "logAbundance", "SSD", "BreedingType"
-    ggduo()
+# stats_mod %>% 
+#     dplyr::select(c("obs_het_mean","TPM90_ratio", "TPM70_ratio", "num_alleles_mean", 
+#         "mean_allele_range", "prop_low_afs_mean"
+#                 )) %>% #"Generation_time", "Abundance", "logAbundance", "SSD", "BreedingType"
+#     ggduo()
 
 # standardize by 2 sd to make estimates comparable with BreedingHabitat variable(
 # Gelman (2008), Schielzeth (2014)
@@ -94,35 +105,71 @@ stats_mod_gen <-
     stats_mod %>% 
     mutate(num_alleles_mean = ((num_alleles_mean - mean(num_alleles_mean)) / (2*sd(num_alleles_mean))), 
         obs_het_mean = (obs_het_mean - mean(obs_het_mean) / (2*sd(obs_het_mean))),
-        prop_low_afs_mean = (prop_low_afs_mean - mean(prop_low_afs_mean) / (2*sd(prop_low_afs_mean))))
+        prop_low_afs_mean = (prop_low_afs_mean - mean(prop_low_afs_mean) / (2*sd(prop_low_afs_mean)))) %>% 
+    as.data.frame()
 
 
-mod_gen <- MCMCglmm(TPM70_ratio ~ num_alleles_mean +  obs_het_mean + prop_low_afs_mean, #
+# model 1, check convergence
+mod_gen <- MCMCglmm(TPM80_ratio ~ num_alleles_mean +  obs_het_mean + prop_low_afs_mean, #
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_gen,nitt=1100000,burnin=100000,thin=1000)
+mod_gen2 <- MCMCglmm(TPM80_ratio ~ num_alleles_mean +  obs_het_mean + prop_low_afs_mean, #
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_gen,nitt=1100000,burnin=100000,thin=1000)
+mod_gen3 <- MCMCglmm(TPM80_ratio ~ num_alleles_mean +  obs_het_mean + prop_low_afs_mean, #
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
     data=stats_mod_gen,nitt=1100000,burnin=100000,thin=1000)
 
+# diagnostics chain convergence
+plot(mcmc.list(mod_gen$Sol, mod_gen2$Sol, mod_gen3$Sol))
+# gelman rubin criterion
+gelman.diag(mcmc.list(mod_gen$Sol, mod_gen2$Sol, mod_gen3$Sol))
+# summary
+summary(mod_gen)
+# 
+# visually inspecting chain convergence
+plot(mod_gen$Sol)
+plot(mod_gen$VCV)
+autocorr(mod_gen$Sol)
+autocorr(mod_gen$VCV)
+
+# variation explained by phylogeny
+var_phy <- mod_gen$VCV[, "tip_label"] / (mod_gen$VCV[, "tip_label"] + mod_gen$VCV[, "units"])
+posterior.mode(var_phy)
+median(var_phy)
+HPDinterval(var_phy)
+
+# R2s
+R2_gen <- mcmcR2::partR2(mod_gen, partvars = c("num_alleles_mean", "obs_het_mean", "prop_low_afs_mean"),
+                 data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, 
+                 nitt = 1100000, burnin = 100000, thin = 1000)
+
+R2_gen$R2 %>% write_delim("data/processed/models/mod_gen_R2.txt")
+R2_gen$SC %>% write_delim("data/processed/models/mod_gen_SC.txt")
+# structure coefficients
+
+mod_sum <- summary(mod_gen)
 # save summary to file
 sum_mod_gen <- mod_gen %>% 
                     summary() %$%
                     solutions %>% 
                     as.data.frame() %>% 
                     rownames_to_column("components") %>% 
-                    write_delim("data/processed/models/mod_gen.txt")
+                    mutate(post_median = apply(mod_gen$Sol, 2, median)) %>% 
+                    mutate(post_mode = posterior.mode(mod_gen$Sol)) %>% 
+                    .[c(1,2,7,8,3:6)] %>% 
+                    rename(post_mean= post.mean,
+                           lower =  "l-95% CI",
+                           upper = "u-95% CI") %>% 
+                    write_delim("data/processed/models/mod_gen_beta.txt")
 
-R2_gen <- mcmcR2(mod_gen)
 
-# model checks
-plot(mod_gen$Sol)
-plot(mod_gen$VCV)
-autocorr(mod_gen$Sol)
-autocorr(mod_gen$VCV)
 
-source("R/mcmcR2.R")
 
-mod_gen_R2 <- partR2(mod_gen, partvars = c("num_alleles_mean", "obs_het_mean", "prop_low_afs_mean"), 
-       data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, nitt=1100000,burnin=100000,thin=1000)
-mod_gen_R2
+
 
 ## Model for Hypothesis (2) - Genetic diversity and demography -------------------------------------
 
@@ -137,12 +184,49 @@ stats_mod_div <-
         logAbundance = ((logAbundance - mean(logAbundance)) / (2*sd(logAbundance))),
         logbreed_season = ((logbreed_season - mean(logbreed_season, na.rm = TRUE)) / (2*sd(logbreed_season, na.rm = TRUE))))
 
+# plot
+
 stats_mod_div <- stats_mod_div %>% mutate(BreedingType = relevel(BreedingType, ref = "land"))
-mod1 <- MCMCglmm(num_alleles_mean ~ logAbundance + BreedingType + Generation_time + SSD, # , #+ Abundance BreedingType
+
+mod1 <- MCMCglmm(num_alleles_mean ~ logAbundance + BreedingType + SSD, # , #+ Abundance BreedingType
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
     data=stats_mod_div,nitt=1100000,burnin=100000,thin=1000)
+
+mod2 <- MCMCglmm(num_alleles_mean ~ logAbundance + BreedingType + SSD, # , #+ Abundance BreedingType
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_div,nitt=1100000,burnin=100000,thin=1000)
+
+mod3 <- MCMCglmm(num_alleles_mean ~ logAbundance + BreedingType + SSD, # , #+ Abundance BreedingType
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_div,nitt=1100000,burnin=100000,thin=1000)
+
+# diagnostics chain convergence
+plot(mcmc.list(mod1$Sol, mod2$Sol, mod3$Sol))
+# gelman rubin criterion
+gelman.diag(mcmc.list(mod1$Sol, mod2$Sol, mod3$Sol))
+# summary
 summary(mod1)
+# 
+# model checks
+plot(mod1$Sol)
+plot(mod1$VCV)
+autocorr(mod1$Sol)
+autocorr(mod1$VCV)
+
+# summary(lm(formula = num_alleles_mean~logAbundance + BreedingType + SSD, data = stats_mod_div))
+
+# R2s
+R2_div <- mcmcR2::partR2(mod1, partvars = c("logAbundance", "BreedingType", "SSD"),
+    data = stats_mod_div, inv_phylo = inv_phylo, prior = prior, 
+    nitt = 1100000, burnin = 100000, thin = 1000)
+
+# out <- R2mcmc(mod1)
+# out$partR2
+R2_div$R2 %>% write_delim("data/processed/models/mod_div_R2.txt")
+R2_div$SC %>% write_delim("data/processed/models/mod_div_SC.txt")
 
 # save summary to file
 sum_mod_gen <- mod1 %>% 
@@ -150,7 +234,44 @@ sum_mod_gen <- mod1 %>%
     solutions %>% 
     as.data.frame() %>% 
     rownames_to_column("components") %>% 
-    write_delim("data/processed/models/mod_gen_vs_lh.txt")
+    mutate(post_median = apply(mod1$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod1$Sol)) %>% 
+    .[c(1,2,7,8,3:6)] %>% 
+    rename(post_mean= post.mean,
+        lower =  "l-95% CI",
+        upper = "u-95% CI") %>% 
+    write_delim("data/processed/models/mod_div_beta.txt")
+
+
+
+
+
+# investigation of breeding season length vs allelic richness
+stats_mod_div %>% 
+    filter(BreedingType == "land") %>% 
+    ggplot(aes(num_alleles_mean, logbreed_season)) + 
+    geom_point() + 
+    geom_smooth(method = "lm", se = FALSE) + theme_martin() +
+    geom_label_repel(aes(label = common))
+
+mod_land_df <- stats_mod_div %>% 
+    filter(BreedingType == "land")
+
+mod_land <- MCMCglmm(num_alleles_mean ~ logbreed_season, # , #+ Abundance BreedingType
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=mod_land_df,nitt=1100000,burnin=100000,thin=1000)
+
+summary(mod_land)
+
+
+
+
+
+
+
+
+
 
 
 test <- MCMCglmm(num_alleles_mean ~ SSD, # , #+ Abundance BreedingType

@@ -32,7 +32,26 @@ mcmcR2 <- function(mod, type = "marginal", family = "gaussian"){
 partR2 <- function(mod, partvars = NULL, data = NULL, inv_phylo = NULL, prior = NULL, nitt=10000,burnin=1000, thin=50){
     
     if (is.null(partvars)) stop("partvars has to contain the variables for the commonality analysis")
-        
+    
+    chain_length <- nrow(mod$VCV)
+    
+    # calculate structure coefficients -----------------------------
+    partvar <- partvars[1]
+    calc_struc_coef <- function(mcmc_iter, partvar, mod){
+        out <- stats::cor(data[[partvar]], MCMCglmm::predict.MCMCglmm(mod, it = mcmc_iter))
+        out
+    }
+    calc_struc_coef_full <- function(partvar, mod){
+        all_coef <- sapply(1:chain_length, calc_struc_coef,  partvar, mod)
+        class(all_coef) <- "mcmc"
+        out <- data.frame("pred" = partvar, modSC = MCMCglmm::posterior.mode(all_coef), HPDinterval(all_coef))
+        row.names(out) <- NULL
+        out
+    }
+    
+    all_SC <- do.call(rbind, lapply(partvars, calc_struc_coef_full, mod))
+    
+    # calculate common and unique R2 --------------------------------
     model_formula <- mod$Fixed$formula
     
     # just unique effects

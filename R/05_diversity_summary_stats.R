@@ -50,7 +50,7 @@ if (calc_on_cluster){
 #####################################################################################
 
 #### load bottleneck data
-bottleneck <- read_excel("data/processed/bottleneck_results.xlsx")
+bottleneck <- read_delim("data/processed/bottleneck_results.txt", col_names = TRUE, delim = " ")
 
 # rename all seals
 # rename_species <- function(bottle_tests){
@@ -99,7 +99,7 @@ g2s <- read_delim("data/processed/g2_summary_full_data.txt", delim = " ")
 if(!file.exists("data/processed/sumstats.txt")){
     
 sumstats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x, start_geno = 4, mratio = "loose", 
-            rarefaction = TRUE, nresamp = 100, nind = 10)))
+            rarefaction = TRUE, nresamp = 1000, nind = 10)))
 
 readr::write_delim(sumstats, path = "data/processed/sumstats.txt", col_names = TRUE)
 }
@@ -118,7 +118,7 @@ ggplot(diversity_stats, aes(x = mratio_mean, y = species)) +
 # rename id variable in bottleneck table
 names(bottleneck)[1] <- "species"
  # put together bottleneck results
-bottleneck[3, "species"] <- "atlantic_walrus"
+# bottleneck[3, "species"] <- "atlantic_walrus"
 # check that all names are equal
 sum(bottleneck$species %in% diversity_stats$species)
 # bottleneck[ 7, "id"] <- "crabeater_seal"

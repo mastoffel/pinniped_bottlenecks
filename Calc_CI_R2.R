@@ -130,6 +130,7 @@ HPDinterval(R2m)
 # MCMCglmm - conditional
 
 (mVarF+sum(apply(mmF$VCV,2,mean)[-3]))/(mVarF+sum(apply(mmF$VCV,2,mean)))
+
 # alternative with crebile intervals
 
 R2c<-(vmVarF+mmF$VCV[,1]+mmF$VCV[,2])/(vmVarF+mmF$VCV[,1]+mmF$VCV[,2]+mmF$VCV[,3])

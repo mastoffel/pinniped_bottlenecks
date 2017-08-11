@@ -95,6 +95,9 @@ if(!file.exists("data/processed/all_stats_tree.csv")){
     write_excel_csv(all_stats_tree, "data/processed/all_stats_tree.csv")
 }
 
+all_stats_tree[all_stats_tree$BreedingType == "both", "BreedingType"] <- "land" 
+all_stats_tree <- all_stats_tree %>% mutate(BreedingType = as.factor(as.character(BreedingType))) %>% data.frame()
+
 
 # row names in all_stats_tree apparently have to match the tree tip labels
 # mutate has to be before naming rows
@@ -117,13 +120,13 @@ plotTree(tree_final)
 tiplabels()
 edgelabels()
 
-p <- ggtree(tree_final) + geom_text(aes(label=node))
-p
+ggtree(tree_final) + geom_text(aes(label=node))
+
 # BOTTLENECK
 bot_res <- all_stats_tree %>% 
-            dplyr::select(latin, common, species,
-                   IAM_ratio, TPM70_ratio, TPM90_ratio, 
-                   TPM95_ratio, SMM_ratio) 
+            dplyr::select(latin, common, species, #IAM_ratio, 
+                   TPM70_ratio, TPM80_ratio, 
+                   TPM90_ratio, SMM_ratio) 
 
 # ABC probs
 abc_probs <- all_stats_tree %>% 
@@ -140,10 +143,10 @@ abc_probs <- all_stats_tree %>%
 # all_stats_tree <- cbind(id, all_stats_tree)
 
 # group into families
-cls <- list(phocids=tree_final$tip.label[13:28],
-            otarids= tree_final$tip.label[2:12],
-            odobenids = tree_final$tip.label[1])
-tree_final <- groupOTU(tree_final, cls)
+#cls <- list(phocids=tree_final$tip.label[13:28],
+#            otarids= tree_final$tip.label[2:12],
+#            odobenids = tree_final$tip.label[1])
+#tree_final <- groupOTU(tree_final, cls)
 
 #tree_final <- groupClade(tree_final, node = 31)
 #tree_final <- groupClade(tree_final, node = 1)
@@ -157,6 +160,8 @@ all_stats_for_tree$IUCN_rating <- factor(all_stats_for_tree$IUCN_rating, levels 
 # check whther necessary
 names(all_stats_for_tree)[1] <- "taxa"
 
+library(magrittr)
+all_stats_for_tree %<>% mutate(color_breed = ifelse(BreedingType == "land", "#737373", "cornflowerblue"))
 #test <- all_stats_for_tree %>% 
 #    mutate(abund_classes = ifelse(Abundance > 1000000, "1000k", )
 
@@ -171,16 +176,20 @@ names(all_stats_for_tree)[1] <- "taxa"
 # all_stats_for_tree$node[i] =all_stats_for_tree$taxa[i] ## fill in internal node number
 
 
-# create tree view
-p <- ggtree(tree_final, color = "#737373") #aes(color = group)
+## alternative ----------------------------------
 # add data
+
+# create tree view
+p <- ggtree(tree_final, color = "#737373")
+
+table(all_stats_for_tree$BreedingType)
 p <- p %<+% all_stats_for_tree 
 
 p + geom_tippoint() #aes(color=IUCN_rating)
 
-p <- p + #layout="circular" , "fan"open.angle=180
-    # scale_color_manual(values=c("black", "#9e9ac8","#6a51a3", "#bcbddc" )) + #color = "#737373"
-    geom_tippoint(aes(size = Abundance, fill=IUCN_rating),stroke=0.5, color = "#737373", shape=21) + #shape=21,stroke=0.5 #color = "#737373"
+p <- p +  #layout="circular" , "fan"open.angle=180 
+    # scale_color_manual(values=c("black", "#9e9ac8","#6a51a3", "#bcbddc" )) + #color = "#737373" , color = "#737373"
+    geom_tippoint(aes(size = Abundance, fill=IUCN_rating),stroke=0.5,color = "#737373", shape=21) + #shape=21,stroke=0.5 #color = "#737373"
     # geom_point(aes(color = abc, size = Abundance), shape=21) +
      # geom_treescale() + 
     # ggtitle("Pinniped Phylogeny") +
@@ -191,10 +200,11 @@ p <- p + #layout="circular" , "fan"open.angle=180
     # scale_fill_manual(values = c("#fee8c8", "#fc8d59", "#d7301f", "#7f0000", "white")) +
   # scale_fill_manual(values = c("#FDE4A6FF", "#FB8861FF", "#B63679FF", "#000004FF", "white")) +
     # scale_fill_manual(values = c("#ffffd4", "#fed98e", "#fe9929", "#cc4c02", "white")) +
-    scale_fill_manual(values = c("#f7f7f7", "#cccccc", "#525252", "#000000", "white")) +
+    #scale_fill_manual(values = c("#f7f7f7", "#cccccc", "#525252", "#000000", "white")) +
+    #scale_fill_manual(values = c("#e0ecf4", "#9ebcda", "#8c6bb1", "#4d004b", "white")) +
+    scale_fill_manual(values = c("#f7f7f7", "#d9d9d9", "#969696", "#252525", "white")) +
     # for coloring branches
     # scale_color_manual(na.value = "#969696", values = c("#cb181d", "#969696")) +
-    
     #scale_color_manual(values = c("#c7e9b4", "#41b6c4", "#225ea8", "#081d58", "lightgrey")) +
     scale_size_continuous(range = c(1.5, 6), trans = "sqrt", breaks=c(1000, 10000, 100000, 1000000),
                       labels = c(expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6}))
@@ -202,7 +212,7 @@ p <- p + #layout="circular" , "fan"open.angle=180
     guides(fill = guide_legend(title = "IUCN rating", title.position = "top", direction = "vertical", order = 2),
            size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1)
            ) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
-    theme(plot.margin=unit(c(52, -5,15,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
+    theme(plot.margin=unit(c(52, -5,13,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
           legend.position= c(0.26,0.95), #legend.direction = "horizontal",
           legend.spacing = unit(5, "points"),
         legend.key.height=unit(1,"line"),
@@ -238,8 +248,15 @@ stand_div_lf <- stand_div %>% melt(id.vars = c("species","common"),
 # plot_col <- plot_col[c(rep(FALSE,2), TRUE)] # get every 5th element
 
 #pal <- colorRampPalette(c("cornflowerblue", "white", "darkgrey"))
-pal <- colorRampPalette(c("darkblue", "#f0f0f0", "#737373"))
+pal <- colorRampPalette(c("darkblue", "#f0f0f0", "#4d4d4d"))
+#pal <- colorRampPalette(c("#d8b365", "#f5f5f5", "#5ab4ac"))
+#pal <- colorRampPalette(c("#ef8a62", "#f7f7f7", "#67a9cf"))
+#pal <- colorRampPalette(c("#8c510a", "#e0e0e0", "#01665e"))
+#pal <- colorRampPalette(c("#d6604d", "#e0e0e0", "#878787"))
+#pal <- colorRampPalette(c("#542788", "#e0e0e0", "#b35806"))
 # cols <- ifelse(stand_div_lf$abc == "neut", "grey", "red")
+pal <- colorRampPalette(c("#2166ac", "#ece7f2", "#525252")) ##d0d1e6 #"#f0f0f0"
+pal <- colorRampPalette(c("#016c59", "#ece7f2", "#525252"))
 p_div <- ggplot(stand_div_lf, aes(x = variable, y = common, fill = value)) + 
     geom_tile(color = "white", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
@@ -269,7 +286,7 @@ p_div <- ggplot(stand_div_lf, aes(x = variable, y = common, fill = value)) +
         legend.title.align = 0.5, 
         text=element_text(family='Lato')) +
     # coord_fixed(ratio = 0.7) +
-    scale_x_discrete(labels=c("HET", "AR","ARA","LFA"), 
+    scale_x_discrete(labels=c("HET", "AR", "LFA"),  ##"ARA",
         position = "bottom") +
     guides(fill = guide_colorbar(barwidth = 5, barheight = 0.5, 
             title.position = "top", label.position = "bottom")) 
@@ -279,7 +296,11 @@ plot_grid(p, p_div, nrow = 1)
 
 # het-excess and mratio
 
-pal2 <- colorRampPalette(c("darkred", "#f0f0f0", "#737373"))
+#pal2 <- colorRampPalette(c("darkred", "#f0f0f0", "#737373"))
+#pal2 <- colorRampPalette(c("#d8b365", "#f5f5f5", "#5ab4ac"))
+#pal2 <- colorRampPalette(c("#ef8a62", "#f7f7f7", "#67a9cf"))
+pal2 <- colorRampPalette(c("#2166ac", "#ece7f2", "#525252")) ##d0d1e6 #"#f0f0f0"
+#pal2 <- colorRampPalette(c("#f0f0f0", "#737373"))
 bot_res_lf <- bot_res %>% melt(id.vars = c("species", "common", "latin"))
 
 p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) + 
@@ -292,7 +313,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
     #    name = "Prop. of loci \nin heterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,1)) +
     
     scale_fill_gradientn(colours=rev(pal2(5)),
-        name = "Prop. of loci \nin heterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,1)) +
+        name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95)) +
     theme_tufte(base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
@@ -308,17 +329,20 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         legend.title.align = 0.5, 
         text=element_text(family='Lato')) +
     # scale_x_discrete(labels=c("PHE","M")) +
-    scale_x_discrete(labels=c("IAM", "70", "90","95", "SMM")) +
+    scale_x_discrete(labels=c("70", "80","90", "100 ")) + # "IAM",
     #labs(x=NULL, y=NULL) +
     # coord_fixed(ratio = 0.7) +
-    guides(fill = guide_colorbar(barwidth = 7, barheight = 0.5, 
+    guides(fill = guide_colorbar(barwidth = 5.6, barheight = 0.5, 
         title.position = "top")) 
 
 plot_grid(p, p_div, p_bot, nrow = 1)
 
 
-pal3 <- colorRampPalette(c("darkgreen", "#f0f0f0", "#737373"))
+#pal3 <- colorRampPalette(c("darkgreen", "#f0f0f0", "#737373"))
+#pal3 <- colorRampPalette(c("#ef8a62", "#f7f7f7", "#67a9cf"))
+pal3 <- colorRampPalette(c("#525252","#bdbdbd", "#f0f0f0"))
 abc_probs_lf <- abc_probs %>% melt(id.vars = c("species", "common", "latin"))
+
 p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) + 
     geom_tile(color = "white", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
@@ -331,7 +355,7 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
         axis.text.x = element_text(angle = 70, hjust = 1, size = 9),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(0,10,0,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
+        plot.margin=unit(c(0,10,2,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(),
@@ -339,13 +363,13 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
         legend.text = element_text(size = 8),
         legend.title.align = 0.5,
         text=element_text(family='Lato')) +
-    scale_x_discrete(labels=c("Bott","Const")) +
+    scale_x_discrete(labels=c("Bot","Con")) +
     #labs(x=NULL, y=NULL) +
     # coord_fixed(ratio = 0.7) +
     guides(fill = guide_colorbar(barwidth = 2.5, barheight = 0.5, 
         title.position = "top")) 
 
-p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.5, 0.33, 0.21, 0.11))
+p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.5, 0.33, 0.17, 0.11))
 p_final
 
 #p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.16, 0.09, 0.05, 0.02))
