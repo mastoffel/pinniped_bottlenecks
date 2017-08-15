@@ -171,6 +171,7 @@ ggsave('figures/gen_div_simple.jpg',p_final,  width=6, height=3)
 
 
 
+
 # different
 p3 <- ggplot(aes(prop_low_afs_mean, TPM70_ratio), data = stats_mod) +
     geom_smooth(method = "lm", col = "lightgrey", fill = "grey",  alpha = 0.2) +

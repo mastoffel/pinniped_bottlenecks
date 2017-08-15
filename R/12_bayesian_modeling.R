@@ -20,7 +20,8 @@ library(magrittr)
 library(tibble)
 library(mcmcR2)
 library(ggrepel)
-source("martin.R")
+#source("martin.R")
+library(mcmcR2)
 
 
 
@@ -246,13 +247,95 @@ sum_mod_gen <- mod1 %>%
 
 
 
+
+
+
+## Model for Hypothesis (3) - Het-excess and demography ---------------
+
+stats_mod_het <- 
+    stats_mod %>% 
+    mutate(Abundance = ((Abundance - mean(Abundance)) / (2*sd(Abundance))), 
+        Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
+        SSD = (SSD - mean(SSD) / (2*sd(SSD))),
+        logAbundance = ((logAbundance - mean(logAbundance)) / (2*sd(logAbundance))),
+        logbreed_season = ((logbreed_season - mean(logbreed_season, na.rm = TRUE)) / (2*sd(logbreed_season, na.rm = TRUE))))
+
+
+stats_mod_het <- stats_mod_het %>% mutate(BreedingType = relevel(BreedingType, ref = "land"))
+
+mod1 <- MCMCglmm(TPM80_ratio ~ SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_het,nitt=1100000,burnin=100000,thin=1000)
+mod2 <- MCMCglmm(TPM80_ratio ~ SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_het,nitt=1100000,burnin=100000,thin=1000)
+mod3 <- MCMCglmm(TPM80_ratio ~ SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_het,nitt=1100000,burnin=100000,thin=1000)
+
+# diagnostics chain convergence
+plot(mcmc.list(mod1$Sol, mod2$Sol, mod3$Sol))
+# gelman rubin criterion
+gelman.diag(mcmc.list(mod1$Sol, mod2$Sol, mod3$Sol))
+# summary
+summary(mod1)
+# 
+# model checks
+plot(mod1$Sol)
+plot(mod1$VCV)
+autocorr(mod1$Sol)
+autocorr(mod1$VCV)
+
+summary(mod1)
+
+R2_het <- mcmcR2::partR2(mod1, partvars = c("SSD", "BreedingType"),
+    data = stats_mod_het, inv_phylo = inv_phylo, prior = prior, 
+    nitt = 1100000, burnin = 100000, thin = 1000)
+
+R2_het
+
+out <- R2mcmc(mod1)
+# out$partR2
+R2_het$R2 %>% write_delim("data/processed/models/mod_het_R2.txt")
+R2_het$SC %>% write_delim("data/processed/models/mod_het_SC.txt")
+
+# save summary to file
+sum_mod_gen <- mod1 %>% 
+    summary() %$%
+    solutions %>% 
+    as.data.frame() %>% 
+    rownames_to_column("components") %>% 
+    mutate(post_median = apply(mod1$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod1$Sol)) %>% 
+    .[c(1,2,7,8,3:6)] %>% 
+    rename(post_mean= post.mean,
+        lower =  "l-95% CI",
+        upper = "u-95% CI") %>% 
+    write_delim("data/processed/models/mod_het_beta.txt")
+
+
+
+
+
+
+
+
+ggplot(aes(TPM70_ratio,Generation_time), data = stats_mod) + geom_point() + geom_smooth(method = "lm")
+
+
+
 # investigation of breeding season length vs allelic richness
 stats_mod_div %>% 
-    filter(BreedingType == "land") %>% 
+    #filter(BreedingType == "land") %>% 
     ggplot(aes(num_alleles_mean, logbreed_season)) + 
-    geom_point() + 
-    geom_smooth(method = "lm", se = FALSE) + theme_martin() +
-    geom_label_repel(aes(label = common))
+    geom_point(aes(color = "BreedingType")) + 
+    geom_smooth(method = "lm", se = FALSE, aes(color = "BreedingType")) + theme_martin() 
+   # geom_label_repel(aes(label = common))
+
+
 
 mod_land_df <- stats_mod_div %>% 
     filter(BreedingType == "land")

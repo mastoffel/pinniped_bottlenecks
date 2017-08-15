@@ -69,17 +69,19 @@ names(mod_out) <- c("comps", "pe", "cilow", "cihigh")
 p1 <- ggplot(aes(Abundance, num_alleles_mean), data = stats_mod) +
     geom_point(size = 4, alpha = 0.4, aes(color = BreedingType)) + # abc_out
     geom_point(size = 4, alpha = 0.8, shape = 21, col = "black") +
-    geom_line(stat = "smooth", method = "lm",  alpha = 0.3,  aes(color = BreedingType)) +
-    geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=0.1, 
+    geom_line(stat = "smooth", method = "lm",  alpha = 0.6,  aes(color = BreedingType)) +
+    geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=0.08, 
         aes(fill = BreedingType)) +
-    scale_color_manual(values = c("black", "cornflowerblue")) +
-    scale_fill_manual(values = c("black", "cornflowerblue")) +
+    scale_color_manual(values = c("cornflowerblue", "black"), name = "Breeding Habitat") +
+    scale_fill_manual(values = c("cornflowerblue", "black"), name = "Breeding Habitat") +
     theme_martin() +
     scale_x_log10(breaks = c(100, 1000, 10000, 100000, 1000000), 
         labels = c(expression(10^{2}), expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6})) ) + 
-    theme(legend.position=c(0.2, 0.8)) +
+    theme(legend.position=c(0.2, 0.8),
+        plot.margin = unit(c(1, 0.2, 0.3, 0.2), "cm")) +
     xlab("Abundance") +
-    ylab("Allelic richness")
+    ylab("Allelic richness") 
+    #guides(fill = guide_legend(title = "Breeding Habitat"))
 p1
 
 
@@ -97,7 +99,8 @@ p2 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) +
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
-        axis.text.y = element_blank()) +
+        axis.text.y = element_blank(),
+        plot.margin = unit(c(1,0,0.5,1.5), "cm")) +
     #scale_y_discrete(labels = c("Breeding\nhabitat\nice vs. land", "log(Abundance)", 
     #    "Sexual Size\nDimorphism")) +
     xlab(expression(paste("Effect size ", beta))) +
@@ -118,10 +121,12 @@ p3 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
-        axis.title.y = element_blank()) +
+        axis.title.y = element_blank(),
+        axis.text.y = element_text(hjust = c(0.5)),
+        plot.margin = unit(c(1,0.2,0.2,0.1), "cm")) +
     scale_y_discrete(labels = c("Breeding\nhabitat\nice vs. land", "Abundance", 
         "Sexual Size\nDimorphism (SSD)")) +
-    xlab(expression(paste("Structure coefficient", " r(", hat(Y),",x)") ))
+    xlab(expression(paste("Structure coefficient", " r(", hat(Y),",x)") )) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1)
 p3
 
@@ -140,7 +145,9 @@ p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
-        axis.title.y = element_blank()) +
+        axis.title.y = element_blank(),
+        axis.text.y = element_text(hjust = c(0.5)),
+        plot.margin = unit(c(0.3, 0.2, 0.3, 0.2), "cm")) +
     scale_y_discrete(labels = rev(c("Full model", "Abundance", "Breeding Habitat", "SSD", "Abundance &\nBreeding Habitat",
                     "Abundance &\nSSD", "Breeding Habitat &\nSSD"))) +
     xlab(expression(paste(R^{2}))) +
@@ -154,17 +161,20 @@ p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
 p4
 
 
-p_top <- plot_grid(p1, p4, rel_widths = c(1.5,1))
+p_top <- plot_grid(p1, p4, rel_widths = c(1.4,1), labels = c("A", "B"),label_fontfamily = "Lato",
+    label_x = 0.1, label_y = 0.98)
 p_top 
-p_bot <- plot_grid(p2, p3)
+p_bot <- plot_grid(p2, p3, labels = c("C", "D"),label_fontfamily = "Lato",
+    label_x = 0.2, label_y = 1, rel_widths = c(1, 1.2))
 p_bot
 
-p_final <- plot_grid(p_top, p_bot, ncol = 1)
+p_final <- plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(1.4,1))
 p_final
 
-p_effect <- plot_grid(p4, p5, ncol = 1, labels = c("B", "C"), label_fontfamily = "Lato",
-    label_x = 0.9, label_y = 0.95)
-p_effect
+ggsave('figures/gen_div_vs_lh.jpg',p_final,  width=6.7, height=5.5)
+
+
+
 
 
 

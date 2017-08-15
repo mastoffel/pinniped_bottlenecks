@@ -187,9 +187,9 @@ p <- p %<+% all_stats_for_tree
 
 p + geom_tippoint() #aes(color=IUCN_rating)
 
-p <- p +  #layout="circular" , "fan"open.angle=180 
+p <- p +  #layout="circular" , "fan"open.angle=180  #,color = "#737373"
     # scale_color_manual(values=c("black", "#9e9ac8","#6a51a3", "#bcbddc" )) + #color = "#737373" , color = "#737373"
-    geom_tippoint(aes(size = Abundance, fill=IUCN_rating),stroke=0.5,color = "#737373", shape=21) + #shape=21,stroke=0.5 #color = "#737373"
+    geom_tippoint(aes(size = Abundance, fill=IUCN_rating),stroke=0.85,color = "#737373", shape=21) + #shape=21,stroke=0.5 #color = "#737373"
     # geom_point(aes(color = abc, size = Abundance), shape=21) +
      # geom_treescale() + 
     # ggtitle("Pinniped Phylogeny") +
@@ -202,6 +202,7 @@ p <- p +  #layout="circular" , "fan"open.angle=180
     # scale_fill_manual(values = c("#ffffd4", "#fed98e", "#fe9929", "#cc4c02", "white")) +
     #scale_fill_manual(values = c("#f7f7f7", "#cccccc", "#525252", "#000000", "white")) +
     #scale_fill_manual(values = c("#e0ecf4", "#9ebcda", "#8c6bb1", "#4d004b", "white")) +
+   # scale_color_manual(values = c( "blue", "black")) +
     scale_fill_manual(values = c("#f7f7f7", "#d9d9d9", "#969696", "#252525", "white")) +
     # for coloring branches
     # scale_color_manual(na.value = "#969696", values = c("#cb181d", "#969696")) +
@@ -257,17 +258,18 @@ pal <- colorRampPalette(c("darkblue", "#f0f0f0", "#4d4d4d"))
 # cols <- ifelse(stand_div_lf$abc == "neut", "grey", "red")
 pal <- colorRampPalette(c("#2166ac", "#ece7f2", "#525252")) ##d0d1e6 #"#f0f0f0"
 pal <- colorRampPalette(c("#016c59", "#ece7f2", "#525252"))
+
 p_div <- ggplot(stand_div_lf, aes(x = variable, y = common, fill = value)) + 
-    geom_tile(color = "white", size = 0.1) +
+    geom_tile(color = "grey", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
-    # scale_fill_viridis() +
+    #scale_fill_viridis(name = "Standardized \ndiversity", begin = 0, end = 1) +
     #scale_fill_gradientn(colours=c( "#ffffd9","#c7e9b4", "#7fcdbb", "#1d91c0", "#253494", "#081d58"), 
      #   name = "prop. \nhet-exc") +
     #scale_fill_gradientn(colours=c("#081d58", "#253494", "#1d91c0", "#7fcdbb", "#c7e9b4", "#ffffd9"), 
     #    name = "Standardized \ndiversity") +
-    scale_fill_gradientn(colours=pal(5), 
-        name = "Standardized \ndiversity") +
-   # scale_fill_distiller(name = "Standardized \ndiversity", palette = "RdGy", direction = 1) +
+    #scale_fill_gradientn(colours=pal(5), 
+    #    name = "Standardized \ndiversity") +
+    scale_fill_distiller(name = "Standardized \ndiversity", palette = "RdYlBu", direction = 1) +
     #scale_fill_distiller(pal(5)) +
    # scale_fill_gradientn(colours=plot_col_div, 
     #   name = "prop. \nhet-exc") +
@@ -304,16 +306,19 @@ pal2 <- colorRampPalette(c("#2166ac", "#ece7f2", "#525252")) ##d0d1e6 #"#f0f0f0"
 bot_res_lf <- bot_res %>% melt(id.vars = c("species", "common", "latin"))
 
 p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) + 
-    geom_tile(color = "white", size = 0.1) +
+    geom_tile(color = "grey", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
-    #scale_fill_viridis(option = "viridis", direction = -1) +
+    #scale_fill_viridis(option = "magma", direction = -1,  
+    #    name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95)) +
     #scale_fill_gradientn(colours=c( "#ffffd9","#c7e9b4", "#7fcdbb", "#1d91c0", "#253494", "#081d58"), 
     #    name = "prop. \nhet-exc") +
     #scale_fill_gradientn(colours=plot_col, 
     #    name = "Prop. of loci \nin heterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,1)) +
-    
-    scale_fill_gradientn(colours=rev(pal2(5)),
-        name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95)) +
+    scale_fill_distiller(palette="RdBu",
+        name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95),
+        direction = -1) +
+   # scale_fill_gradientn(colours=rev(pal2(5)),
+    #    name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95)) +
     theme_tufte(base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
@@ -344,11 +349,15 @@ pal3 <- colorRampPalette(c("#525252","#bdbdbd", "#f0f0f0"))
 abc_probs_lf <- abc_probs %>% melt(id.vars = c("species", "common", "latin"))
 
 p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) + 
-    geom_tile(color = "white", size = 0.1) +
+    geom_tile(color = "grey", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
-    # scale_fill_viridis(option = "viridis", direction = -1) +
-    scale_fill_gradientn(colours=rev(pal3(5)), 
-        name = "ABC \nprob. %", labels=c(0, 50, 100), breaks = c(0,0.5,1)) +
+    #scale_fill_viridis(option = "magma", direction = -1,
+    #    name = "ABC \nprob. %", labels=c(0, 50, 100), breaks = c(0,0.5,1)) +
+    #scale_fill_gradientn(colours=rev(pal3(5)), 
+    #    name = "ABC \nprob. %", labels=c(0, 50, 100), breaks = c(0,0.5,1)) +
+    scale_fill_distiller(palette = "RdBu",
+        name = "ABC \nprob. %", labels=c(0, 50, 100), breaks = c(0,0.5,1),
+        direction = -1) +
     theme_tufte(base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
@@ -369,13 +378,13 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
     guides(fill = guide_colorbar(barwidth = 2.5, barheight = 0.5, 
         title.position = "top")) 
 
-p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.5, 0.33, 0.17, 0.11))
+p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.4, 0.27, 0.17, 0.10))
 p_final
 
 #p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.16, 0.09, 0.05, 0.02))
 #p_final
 
-save_plot("figures/phylo_plot.jpg", p_final,
+save_plot("figures/phylo_plot_test.jpg", p_final,
     ncol = 2, # we're saving a grid plot of 2 columns
     nrow = 1, # and 2 rows
     # each individual subplot should have an aspect ratio of 1.3
