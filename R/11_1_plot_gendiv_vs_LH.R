@@ -29,7 +29,7 @@ library(extrafontdb)
 # phylogeny
 tree_final <- read.tree("data/raw/phylogeny/higdon_mod2_28.tre")
 # produce short names for plotting
-short <- c("W", "NFS", "SSL", "CSL", "GSL", "SASL", "AFS", "NZSL", "AntFS", "NZFS", "SAFS", "GFS", 
+short <- c("W", "NFS", "SSL", "CSL", "GSL", "AFS","SASL", "NZSL", "AntFS", "NZFS", "SAFS", "GFS", 
     "BS", "HoS", "GS", "HS", "ARS", "SRS", "BRS", "LRS", "MMS", "HMS", "NES", "SES", "CS", "RS", "LS", "WS")
 
 all_stats <- read_csv("data/processed/all_stats_tree.csv") %>% 
@@ -64,7 +64,7 @@ mod_R2 <- read_delim("data/processed/models/mod_div_R2.txt", delim = " ")
 mod_SC <- read_delim("data/processed/models/mod_div_SC.txt", delim = " ")
 
 
-names(mod_out) <- c("comps", "pe", "cilow", "cihigh")
+# names(mod_out) <- c("comps", "pe", "cilow", "cihigh")
 
 p1 <- ggplot(aes(Abundance, num_alleles_mean), data = stats_mod) +
     geom_point(size = 4, alpha = 0.4, aes(color = BreedingType)) + # abc_out
@@ -72,8 +72,8 @@ p1 <- ggplot(aes(Abundance, num_alleles_mean), data = stats_mod) +
     geom_line(stat = "smooth", method = "lm",  alpha = 0.6,  aes(color = BreedingType)) +
     geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=0.08, 
         aes(fill = BreedingType)) +
-    scale_color_manual(values = c("cornflowerblue", "black"), name = "Breeding Habitat") +
-    scale_fill_manual(values = c("cornflowerblue", "black"), name = "Breeding Habitat") +
+    scale_color_manual(values = c("cornflowerblue", "#d8b365"), name = "Breeding Habitat") +
+    scale_fill_manual(values = c("cornflowerblue", "#d8b365"), name = "Breeding Habitat") +
     theme_martin() +
     scale_x_log10(breaks = c(100, 1000, 10000, 100000, 1000000), 
         labels = c(expression(10^{2}), expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6})) ) + 
@@ -100,7 +100,8 @@ p2 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) +
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
         axis.text.y = element_blank(),
-        plot.margin = unit(c(1,0,0.5,1.5), "cm")) +
+        plot.margin = unit(c(1,0,0.5,1.5), "cm"),
+        axis.title.x=element_text(margin=margin(t=0.5, unit = "cm"))) +
     #scale_y_discrete(labels = c("Breeding\nhabitat\nice vs. land", "log(Abundance)", 
     #    "Sexual Size\nDimorphism")) +
     xlab(expression(paste("Effect size ", beta))) +
@@ -123,9 +124,9 @@ p3 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
         axis.text.y = element_text(hjust = c(0.5)),
-        plot.margin = unit(c(1,0.2,0.2,0.1), "cm")) +
-    scale_y_discrete(labels = c("Breeding\nhabitat\nice vs. land", "Abundance", 
-        "Sexual Size\nDimorphism (SSD)")) +
+        plot.margin = unit(c(1,0.2,0.65,0.1), "cm")) +
+    scale_y_discrete(labels = c("Breeding\nhabitat", "Abundance", 
+        "SSD")) +
     xlab(expression(paste("Structure coefficient", " r(", hat(Y),",x)") )) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1)
 p3
@@ -181,50 +182,3 @@ ggsave('figures/gen_div_vs_lh.jpg',p_final,  width=6.7, height=5.5)
 
 
 
-
-
-# 
-
-stats_mod <- all_stats %>% 
-    dplyr::select(num_alleles_mean, logbreed_season, SSD,  BreedingType, logAbundance) %>% 
-    data.frame()
-
-p1 <- ggplot(aes(logAbundance, num_alleles_mean), data = stats_mod) +
-    geom_point(size = 4, alpha = 0.4, aes(color = BreedingType)) + # abc_out size = 4,
-    geom_point(size = 4, alpha = 0.8, shape = 21, col = "black") + #size = 4,
-    geom_line(stat = "smooth", method = "lm",  alpha = 0.3,  aes(color = BreedingType)) +
-    geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=0.1, 
-        aes(fill = BreedingType)) +
-    scale_color_manual(values = c("black", "cornflowerblue")) +
-    scale_fill_manual(values = c("black", "cornflowerblue")) +
-    theme_martin() +
-    theme(legend.position=c(0.2, 0.8)) +
-    xlab("log(Abundance)") +
-    ylab("Allelic richness")
-p1
-
-
-
-
-
-mod_out
-p2 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) + 
-    # geom_point(size = 3, color = "grey69") + # abc_out
-    geom_errorbarh(alpha=0.4, color="black",height = 0) +
-    geom_point(size = 3, shape = 21, col = "black", fill = "grey69") +
-    # geom_errorbarh(alpha=0.4, color="black",height = 0) +
-    theme_martin() +
-    theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.line.x = element_line(color = '#333333'),
-        axis.title.y = element_blank()) +
-    scale_y_discrete(labels = c("Ice-breeding", "Generation time", 
-        "log(Global\nabundance)", "Sexual\nweight dimorphism")) +
-    xlab("Effect size") +
-    geom_vline(xintercept = 0, color = "black", alpha = 0.1)
-p2
-
-
-p_final <- plot_grid(p1, p2, ncol = 2)
-
-ggsave('figures/gen_div_vs_lh.jpg',p_final,  width=8, height=3)

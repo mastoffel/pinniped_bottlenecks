@@ -21,7 +21,6 @@ library(tibble)
 library(mcmcR2)
 library(ggrepel)
 #source("martin.R")
-library(mcmcR2)
 
 
 
@@ -42,7 +41,8 @@ all_stats <- read_csv("data/processed/all_stats_tree.csv") %>%
         logharem_size = log(harem_size),
         logmale_weight = log(male_weight),
         logbreed_season = log(breeding_season_length),
-        loglactation_length = log(lactation_length)) %>% 
+        loglactation_length = log(lactation_length),
+        logSSD = log(SSD)) %>% 
     # order factors according to tree
     mutate(tip_label = fct_inorder(factor(tip_label)),
         species = fct_inorder(factor(species)),
@@ -69,10 +69,8 @@ stats_mod <- all_stats %>%
                               male_weight, breeding_season_length, lactation_length, life_span_years, 
                               Abundance, Generation_time, Longevity, tip_label, mratio_mean,
                               obs_het_mean, mean_allele_range, IUCN_rating, prop_low_afs_mean,
-                              nloc, nind, bot, logAbundance, logbreed_season) %>% 
+                              nloc, nind, bot, logAbundance, logbreed_season, logSSD) %>% 
                               data.frame()
-
-
 
 
 # phylogenetic mixed model -------------------------------------------------------------------------
@@ -183,6 +181,7 @@ stats_mod_div <-
         Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
         SSD = (SSD - mean(SSD) / (2*sd(SSD))),
         logAbundance = ((logAbundance - mean(logAbundance)) / (2*sd(logAbundance))),
+        logSSD = (logSSD - mean(logSSD) / (2*sd(logSSD))),
         logbreed_season = ((logbreed_season - mean(logbreed_season, na.rm = TRUE)) / (2*sd(logbreed_season, na.rm = TRUE))))
 
 # plot
@@ -258,11 +257,14 @@ stats_mod_het <-
         Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
         SSD = (SSD - mean(SSD) / (2*sd(SSD))),
         logAbundance = ((logAbundance - mean(logAbundance)) / (2*sd(logAbundance))),
-        logbreed_season = ((logbreed_season - mean(logbreed_season, na.rm = TRUE)) / (2*sd(logbreed_season, na.rm = TRUE))))
-
+        logbreed_season = ((logbreed_season - mean(logbreed_season, na.rm = TRUE)) / (2*sd(logbreed_season, na.rm = TRUE))),
+        logSSD = (logSSD - mean(logSSD) / (2*sd(logSSD))),
+        logharem_size = (log(harem_size))) %>% 
+    mutate(logharem_size = (logharem_size - mean(logharem_size) / (2*sd(logharem_size))))
 
 stats_mod_het <- stats_mod_het %>% mutate(BreedingType = relevel(BreedingType, ref = "land"))
 
+# modeling with SSD
 mod1 <- MCMCglmm(TPM80_ratio ~ SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
@@ -295,6 +297,10 @@ R2_het <- mcmcR2::partR2(mod1, partvars = c("SSD", "BreedingType"),
     data = stats_mod_het, inv_phylo = inv_phylo, prior = prior, 
     nitt = 1100000, burnin = 100000, thin = 1000)
 
+R2_het <- mcmcR2::partR2(mod1, partvars = c("mating_system", "BreedingType"),
+    data = stats_mod_het, inv_phylo = inv_phylo, prior = prior, 
+    nitt = 1100000, burnin = 100000, thin = 1000)
+
 R2_het
 
 out <- R2mcmc(mod1)
@@ -318,7 +324,29 @@ sum_mod_gen <- mod1 %>%
 
 
 
+# modeling with harem_size
 
+stats_mod_het %>% filter(BreedingType == "land") %>% 
+    ggplot(aes(logharem_size, TPM80_ratio)) + geom_point() + geom_smooth(method = "lm")
+
+mod1 <- MCMCglmm(TPM80_ratio ~ logharem_size + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_het,nitt=1100000,burnin=100000,thin=1000)
+summary(mod1)
+
+summary(mod1)
+summary(mod2)
+out1 <- R2mcmc(mod1)
+out2 <- R2mcmc(mod2)
+out1$partR2
+out2$partR2
+part_mod1 <- partR2(mod1, partvars = c("logharem_size", "BreedingType"), data =stats_mod_het, inv_phylo = inv_phylo, prior = prior, 
+    nitt = 110000, burnin = 10000, thin = 100)
+part_mod2 <- partR2(mod2, partvars = c("SSD", "BreedingType"), data =stats_mod_het, inv_phylo = inv_phylo, prior = prior, 
+    nitt = 110000, burnin = 10000, thin = 100)
+part_mod1$R2
+part_mod2$R2
 
 
 

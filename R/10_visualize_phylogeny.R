@@ -18,6 +18,7 @@ library(forcats)
 library(readr)
 library(extrafont)
 # ggthemr('dust')
+source("martin.R")
 
 # load all datasets
 seals <- read_csv("data/processed/seal_data_complete_rarefac10.csv")
@@ -161,7 +162,7 @@ all_stats_for_tree$IUCN_rating <- factor(all_stats_for_tree$IUCN_rating, levels 
 names(all_stats_for_tree)[1] <- "taxa"
 
 library(magrittr)
-all_stats_for_tree %<>% mutate(color_breed = ifelse(BreedingType == "land", "#737373", "cornflowerblue"))
+# all_stats_for_tree %<>% mutate(color_breed = ifelse(BreedingType == "land", "#737373", "cornflowerblue"))
 #test <- all_stats_for_tree %>% 
 #    mutate(abund_classes = ifelse(Abundance > 1000000, "1000k", )
 
@@ -179,17 +180,40 @@ all_stats_for_tree %<>% mutate(color_breed = ifelse(BreedingType == "land", "#73
 ## alternative ----------------------------------
 # add data
 
+
+# produce new data.frame with nrow == edge number
+
+stats_for_tree_resorted <- data.frame(taxa = tree_final$tip.label)
+stats_df <- left_join(stats_for_tree_resorted, all_stats_for_tree, by = "taxa")
+
+new_df <- data.frame(matrix(ncol = ncol(stats_df), nrow = 26))
+names(new_df) <- names(stats_df)
+tree_df <- rbind(stats_df, new_df)
+tree_df <- data.frame(node = 1:54, tree_df)
+
+test_df <- mutate(tree_df, 
+    color = case_when(is.na(BreedingType) ~ "#bdbdbd",
+        BreedingType == "ice"~ "cornflowerblue",
+        BreedingType == "land" ~ "#d8b365"))
+
+##### former ######
+tree_final$edge
 # create tree view
-p <- ggtree(tree_final, color = "#737373")
+# p <- ggtree(tree_final, color = "#737373") #
 
 table(all_stats_for_tree$BreedingType)
-p <- p %<+% all_stats_for_tree 
 
-p + geom_tippoint() #aes(color=IUCN_rating)
+##### newer
+p <- ggtree(tree_final)
+p <- p %<+% test_df
+# p + geom_tippoint() #aes(color=IUCN_rating)
 
 p <- p +  #layout="circular" , "fan"open.angle=180  #,color = "#737373"
+    aes(color = I(color)) +
     # scale_color_manual(values=c("black", "#9e9ac8","#6a51a3", "#bcbddc" )) + #color = "#737373" , color = "#737373"
-    geom_tippoint(aes(size = Abundance, fill=IUCN_rating),stroke=0.85,color = "#737373", shape=21) + #shape=21,stroke=0.5 #color = "#737373"
+    geom_tippoint(aes(size = Abundance, fill=IUCN_rating, color = color),stroke=0.5, shape=21) + #shape=21,stroke=0.5 #color = "#737373" color = "#737373"
+    scale_color_manual(name = "Breeding habitat", values = c("#bdbdbd", "#d8b365", "cornflowerblue"),
+                        breaks = c("cornflowerblue","#d8b365" ), labels = c("ice", "land")) +
     # geom_point(aes(color = abc, size = Abundance), shape=21) +
      # geom_treescale() + 
     # ggtitle("Pinniped Phylogeny") +
@@ -211,10 +235,10 @@ p <- p +  #layout="circular" , "fan"open.angle=180  #,color = "#737373"
                       labels = c(expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6}))
                        ) + #range = c(0.1,5), , breaks=c(500, 1000, 10000, 100000, 1000000)
     guides(fill = guide_legend(title = "IUCN rating", title.position = "top", direction = "vertical", order = 2),
-           size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1)
-           ) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
+           size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1),
+           color = guide_legend(title.position = "top", direction = "horizontal", order = 3)) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
     theme(plot.margin=unit(c(52, -5,13,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
-          legend.position= c(0.26,0.95), #legend.direction = "horizontal",
+          legend.position= c(0.26,0.90), #legend.direction = "horizontal",
           legend.spacing = unit(5, "points"),
         legend.key.height=unit(1,"line"),
         legend.key.width = unit(1, "line"), 
@@ -384,7 +408,7 @@ p_final
 #p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.16, 0.09, 0.05, 0.02))
 #p_final
 
-save_plot("figures/phylo_plot_test.jpg", p_final,
+save_plot("figures/phylo_plot2.jpg", p_final,
     ncol = 2, # we're saving a grid plot of 2 columns
     nrow = 1, # and 2 rows
     # each individual subplot should have an aspect ratio of 1.3
