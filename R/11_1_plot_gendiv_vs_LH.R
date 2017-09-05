@@ -30,7 +30,7 @@ library(extrafontdb)
 tree_final <- read.tree("data/raw/phylogeny/higdon_mod2_28.tre")
 # produce short names for plotting
 short <- c("W", "NFS", "SSL", "CSL", "GSL", "AFS","SASL", "NZSL", "AntFS", "NZFS", "SAFS", "GFS", 
-    "BS", "HoS", "GS", "HS", "ARS", "SRS", "BRS", "LRS", "MMS", "HMS", "NES", "SES", "CS", "RS", "LS", "WS")
+    "BS", "HoS", "HS", "GS", "ARS", "BRS", "SRS", "LRS", "MMS", "HMS", "NES", "SES", "RS", "CS", "LS", "WS")
 
 all_stats <- read_csv("data/processed/all_stats_tree.csv") %>% 
     mutate(SSD = male_weight/female_weight) %>% 

@@ -245,11 +245,7 @@ sum_mod_gen <- mod1 %>%
 
 
 
-
-
-
-
-## Model for Hypothesis (3) - Het-excess and demography ---------------
+## Model for Hypothesis (3) - Het-excess and demography --------------------------------------------
 
 stats_mod_het <- 
     stats_mod %>% 
@@ -324,7 +320,67 @@ sum_mod_gen <- mod1 %>%
 
 
 
-# modeling with harem_size
+### supplementary, modeling within land breeding seals ---------------------------------------------
+mod_land_df <- stats_mod_div %>% 
+    filter(BreedingType == "land")
+
+mod1 <- MCMCglmm(TPM80_ratio ~ SSD, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=mod_land_df ,nitt=1100000,burnin=100000,thin=1000)
+mod2 <- MCMCglmm(TPM80_ratio ~ SSD, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=mod_land_df ,nitt=1100000,burnin=100000,thin=1000)
+mod3 <- MCMCglmm(TPM80_ratio ~ SSD, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=mod_land_df ,nitt=1100000,burnin=100000,thin=1000)
+
+# diagnostics chain convergence
+plot(mcmc.list(mod1$Sol, mod2$Sol, mod3$Sol))
+# gelman rubin criterion
+gelman.diag(mcmc.list(mod1$Sol, mod2$Sol, mod3$Sol))
+
+plot(mod1$Sol)
+plot(mod1$VCV)
+autocorr(mod1$Sol)
+autocorr(mod1$VCV)
+
+summary(mod1)
+out <- R2mcmc(mod1)
+out$partR2
+
+var_phy <- mod1$VCV[, "tip_label"] / (mod1$VCV[, "tip_label"] + mod1$VCV[, "units"])
+posterior.mode(var_phy)
+median(var_phy)
+HPDinterval(var_phy)
+
+R2_land_het <- mcmcR2::partR2(mod1, partvars = c("SSD"),
+    data = mod_land_df, inv_phylo = inv_phylo, prior = prior, 
+    nitt = 1100000, burnin = 100000, thin = 1000)
+
+# out$partR2
+R2_land_het$R2 %>% write_delim("data/processed/models/mod_het_land_R2.txt")
+R2_land_het$SC %>% write_delim("data/processed/models/mod_het_land_SC.txt")
+
+# save summary to file
+sum_mod_het_land <- mod1 %>% 
+    summary() %$%
+    solutions %>% 
+    as.data.frame() %>% 
+    rownames_to_column("components") %>% 
+    mutate(post_median = apply(mod1$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod1$Sol)) %>% 
+    .[c(1,2,7,8,3:6)] %>% 
+    rename(post_mean= post.mean,
+        lower =  "l-95% CI",
+        upper = "u-95% CI") %>% 
+    write_delim("data/processed/models/mod_het_land_beta.txt")
+
+
+
+# modeling with harem_size -------------------------------------------------------------------------
 
 stats_mod_het %>% filter(BreedingType == "land") %>% 
     ggplot(aes(logharem_size, TPM80_ratio)) + geom_point() + geom_smooth(method = "lm")
@@ -355,213 +411,144 @@ ggplot(aes(TPM70_ratio,Generation_time), data = stats_mod) + geom_point() + geom
 
 
 
-# investigation of breeding season length vs allelic richness
-stats_mod_div %>% 
-    #filter(BreedingType == "land") %>% 
-    ggplot(aes(num_alleles_mean, logbreed_season)) + 
-    geom_point(aes(color = "BreedingType")) + 
-    geom_smooth(method = "lm", se = FALSE, aes(color = "BreedingType")) + theme_martin() 
-   # geom_label_repel(aes(label = common))
+# supplmentary: het-exc vs. bot --------------------------------------------------------------------
 
+# plot
+stats_mod <- stats_mod %>% mutate(BreedingType = relevel(BreedingType, ref = "land"))
 
-
-mod_land_df <- stats_mod_div %>% 
-    filter(BreedingType == "land")
-
-mod_land <- MCMCglmm(num_alleles_mean ~ logbreed_season, # , #+ Abundance BreedingType
+mod1 <- MCMCglmm(TPM80_ratio ~ bot, # , #+ Abundance BreedingType
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=mod_land_df,nitt=1100000,burnin=100000,thin=1000)
-
-summary(mod_land)
-
-
-
-
-
-
-
-
-
-
-
-test <- MCMCglmm(num_alleles_mean ~ SSD, # , #+ Abundance BreedingType
+    data=stats_mod,nitt=1100000,burnin=100000,thin=1000)
+mod2 <- MCMCglmm(TPM80_ratio ~ bot, # , #+ Abundance BreedingType
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=stats_mod_div,nitt=110000,burnin=10000,thin=100)
-summary(test)
-
-test <- stats_mod_div %>% mutate(logbreed_season = ifelse(is.na(logbreed_season), mean(logbreed_season, na.rm = TRUE), logbreed_season))
-stats_mod_div
-mod2 <- MCMCglmm(num_alleles_mean ~ logAbundance + BreedingType + BreedingType * logbreed_season, # , #+ Abundance BreedingType
+    data=stats_mod,nitt=1100000,burnin=100000,thin=1000)
+mod3 <- MCMCglmm(TPM80_ratio ~ bot, # , #+ Abundance BreedingType
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=test,nitt=1100000,burnin=100000,thin=1000)
-summary(mod2)
-
-
-
-
-mod2 <- MCMCglmm(num_alleles_mean ~ logAbundance + BreedingType + logbreed_season + logbreed_season * BreedingType, # , #+ Abundance BreedingType
-    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=stats_mod_div,nitt=500000,burnin=1000,thin=500)
-
-summary(mod1)
-R2mod1 <- mcmcR2(mod1)
-R2mod1
-
-mod2 <- lm(num_alleles_mean ~ logAbundance + BreedingType + Generation_time + SSD,  data=stats_mod_div)
-summary(mod2)
-
-mod1 <- MCMCglmm(TPM70_ratio ~ logAbundance + BreedingType + Generation_time + SSD, # , #+ Abundance BreedingType
-    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=stats_mod_div,nitt=10000,burnin=1000,thin=50)
-summary(mod1)
-
-out <- mcmcR2(mod1)
-
-
-mod2 <- lm(TPM70_ratio ~ logAbundance + BreedingType + Generation_time + SSD, data = stats_mod_div)
-summary(mod2)
-
-
-mod1 <- MCMCglmm(bot ~ logAbundance + BreedingType + Generation_time + SSD, # , #+ Abundance BreedingType
-    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=stats_mod_div,nitt=1000000,burnin=1000,thin=1000)
+    data=stats_mod,nitt=1100000,burnin=100000,thin=1000)
 summary(mod1)
 
 
-vmVarF<-numeric(9900)
-
-for(i in 1:9900){
-    
-    Var<-var(as.vector(mod3$Sol[i,] %*% t(mod3$X)))
-    
-    vmVarF[i]<-Var
-}
-
-
-R2m<-vmVarF/(vmVarF+mod3$VCV[,1]+mod3$VCV[,2])
-
-mean(R2m)
-
-
-
-ggplot(all_stats, aes(x = TPM90_ratio, y = prop_low_afs_mean)) + geom_point(size = 4, alpha = 0.5) + geom_smooth(method = "lm")  #+ scale_x_continuous(trans = "log")
- 
-# An alternative way for getting the same result
-mVarF <- var(as.vector(apply(mmF$Sol,2,mean) %*% t(mmF$X)))
-
-
-R2m<-vmVarF/(vmVarF+mmF$VCV[,1]+mmF$VCV[,2]+mmF$VCV[,3])
-
-
-
-summary(mod1)
-summary(mod2)
-
+# diagnostics chain convergence
+plot(mcmc.list(mod1$Sol, mod2$Sol, mod3$Sol))
+# gelman rubin criterion
+gelman.diag(mcmc.list(mod1$Sol, mod2$Sol, mod3$Sol))
 
 plot(mod1$Sol)
 plot(mod1$VCV)
+autocorr(mod1$Sol)
+autocorr(mod1$VCV)
 
-posterior.mode(mod1$VCV)
-posterior.mode(mod1$Sol)
-HPDinterval(mod1$VCV)
-HPDinterval(mod1$Sol)
-
-
-# R2
-mFixed <- mean(mod1$Sol[,2]) * mod1$X[, 2] + mean(mod1$Sol[, 3]) * mod1$X[, 3] 
-mFixed
-mVarF<- var(mFixed)
-
-# An alternative way for getting the same result
-mVarF <- var(as.vector(apply(mmF$Sol,2,mean) %*% t(mmF$X)))
-
-# R2GLMM(m) - marginal R2GLMM
-# Equ. 26, 29 and 30
-
-# MCMCglmm - marginal
-mVarF/(mVarF+sum(apply(mod1$VCV,2,mean)))
-
-# alternative with crebile intervals
-vmVarF<-numeric(198)
-
-for(i in 1:198){
-    Var<-var(as.vector(mod1$Sol[i,] %*% t(mod1$X)))
-    vmVarF[i]<-Var
-}
-
-R2m<-vmVarF/(vmVarF+mod1$VCV[,1]+mod1$VCV[,2]) # include here all random effects plus errors
-mean(R2m)
-
-posterior.mode(R2m)
-HPDinterval(R2m)
-
-# R2GLMM(c) - conditional R2GLMM for full model
-# Equ. 30
-(VarF + VarCorr(mF)$Container[1] + VarCorr(mF)$Population[1])/(VarF + VarCorr(mF)$Container[1] + VarCorr(mF)$Population[1] + (attr(VarCorr(mF), "sc")^2))
-# MCMCglmm - conditional
-(mVarF+sum(apply(mmF$VCV,2,mean)[-3]))/(mVarF+sum(apply(mmF$VCV,2,mean)))
-# alternative with crebile intervals
-R2c<-(vmVarF+mmF$VCV[,1]+mmF$VCV[,2])/(vmVarF+mmF$VCV[,1]+mmF$VCV[,2]+mmF$VCV[,3])
-mean(R2c)
-posterior.mode(R2c)
-HPDinterval(R2c) 
-
-
-
-autocorr.diag(model_simple$Sol)
-plot(model_simple$VCV)
-autocorr.diag(model_simple$VCV)
-autocorr.plot(model_simple$VCV)
-autocorr(model_simple$VCV)
-heidel.diag(model_simple$VCV)
-geweke.plot(model_simple$VCV)
-geweke.plot(model_simple$Sol)
-
-gelman.plot()
-
-summary(model_simple)
-plot(model_simple)
-
-
-data("bird.families")
-phylo.effect<-rbv(bird.families, 1, nodes="TIPS") 
-phenotype<-phylo.effect+rnorm(dim(phylo.effect)[1], 0, 1)  
-test.data<-data.frame(phenotype=phenotype, taxon=row.names(phenotype))
-
-
-bird.families <- makeNodeLabel(bird.families)
-some.families <- c("Certhiidae", "Paridae", "Gruidae","Struthionidae")
-
-Nphylo <- drop.tip(bird.families, setdiff(bird.families$tip.label,some.families))
-INphylo <- inverseA(Nphylo)
-INphylo$pedigree
-
-Aphylo <- vcv.phylo(Nphylo, cor = T)
-
-
-
-## tryout phylogenetic models -----------------------------
-test <- INphylo$Ainv
-sum(rownames(test) %in% all_stats$tip_label)
-data(shorebird)
-seal <- comparative.data(tree_final, data.frame(all_stats), "phylo", vcv = TRUE)
-mod <- pgls(num_alleles_mean~Abundance + SSD + Generation_time, seal)
-summary(mod)
-pgls.profile(mod)
-mod1 <- lm(num_alleles_mean~ Abundance + SSD + Generation_time + abc_out, data = all_stats_div)
 summary(mod1)
-crunch_mod <- crunch(num_alleles_mean~Abundance + SSD + Generation_time, seal)
-summary(crunch_mod)
+out <- R2mcmc(mod1)
+out$partR2
+
+
+R2_het_abc <- mcmcR2::partR2(mod1, partvars = c("bot"),
+    data = stats_mod, inv_phylo = inv_phylo, prior = prior, 
+    nitt = 1100000, burnin = 100000, thin = 1000)
+
+# out$partR2
+R2_het_abc$R2 %>% write_delim("data/processed/models/mod_het_abc_R2.txt")
+R2_het_abc$SC %>% write_delim("data/processed/models/mod_het_abc_SC.txt")
+
+# save summary to file
+R2_het_abc <- mod1 %>% 
+    summary() %$%
+    solutions %>% 
+    as.data.frame() %>% 
+    rownames_to_column("components") %>% 
+    mutate(post_median = apply(mod1$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod1$Sol)) %>% 
+    .[c(1,2,7,8,3:6)] %>% 
+    rename(post_mean= post.mean,
+        lower =  "l-95% CI",
+        upper = "u-95% CI") %>% 
+    write_delim("data/processed/models/mod_het_abc_beta.txt")
 
 
 
-ggplot(data = all_stats, aes(x = TPM90_ratio, y = bot)) + geom_point() + geom_smooth(method = "lm")
+# supplmentary: gen_div vs. IUCN -------------------------------------------------------------------
 
-summary(lm(TPM90_ratio~bot, data = all_stats))
+# plot
+stats_mod_IUCN <- stats_mod %>% 
+                    mutate(IUCN_binary = case_when(IUCN_rating == "vulnerable" ~ "concerned",
+                                                   IUCN_rating == "near threatened" ~ "concerned",
+                                                   IUCN_rating == "endangered" ~ "concerned",
+                                                   IUCN_rating == "least concern" ~ "least concern"))
+
+ggplot(stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) + geom_boxplot() + geom_point(size = 3)
+
+mod1 <- MCMCglmm(num_alleles_mean ~ IUCN_binary, # , #+ Abundance BreedingType
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_IUCN,nitt=1100000,burnin=100000,thin=1000)
+
+summary(mod1)
+
+# save summary to file
+mod1 %>% 
+    summary() %$%
+    solutions %>% 
+    as.data.frame() %>% 
+    rownames_to_column("components") %>% 
+    mutate(post_median = apply(mod1$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod1$Sol)) %>% 
+    .[c(1,2,7,8,3:6)] %>% 
+    rename(post_mean= post.mean,
+        lower =  "l-95% CI",
+        upper = "u-95% CI") %>% 
+    write_delim("data/processed/models/mod_IUCN_vs_AR_beta.txt")
+
+
+# supplmentary: Het-excs vs. IUCN ------------------------------------------------------------------
+
+mod1 <- MCMCglmm(TPM80_ratio ~ IUCN_binary, # , #+ Abundance BreedingType
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_IUCN,nitt=1100000,burnin=100000,thin=1000)
+
+summary(mod1)
+
+# save summary to file
+mod1 %>% 
+    summary() %$%
+    solutions %>% 
+    as.data.frame() %>% 
+    rownames_to_column("components") %>% 
+    mutate(post_median = apply(mod1$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod1$Sol)) %>% 
+    .[c(1,2,7,8,3:6)] %>% 
+    rename(post_mean= post.mean,
+        lower =  "l-95% CI",
+        upper = "u-95% CI") %>% 
+    write_delim("data/processed/models/mod_IUCN_vs_hetexc_beta.txt")
+
+
+
+# supplmentary: bot vs. IUCN -----------------------------------------------------------------------
+
+mod1 <- MCMCglmm(bot ~ IUCN_binary, # , #+ Abundance BreedingType
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_IUCN,nitt=1100000,burnin=100000,thin=1000)
+
+summary(mod1)
+
+# save summary to file
+mod1 %>% 
+    summary() %$%
+    solutions %>% 
+    as.data.frame() %>% 
+    rownames_to_column("components") %>% 
+    mutate(post_median = apply(mod1$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod1$Sol)) %>% 
+    .[c(1,2,7,8,3:6)] %>% 
+    rename(post_mean= post.mean,
+        lower =  "l-95% CI",
+        upper = "u-95% CI") %>% 
+    write_delim("data/processed/models/mod_IUCN_vs_ABCprob_beta.txt")
+
 

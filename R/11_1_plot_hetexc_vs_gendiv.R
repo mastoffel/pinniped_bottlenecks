@@ -26,8 +26,8 @@ library(ggthemr)
 source("martin.R")
 
 # produce short names for plotting
-short <- c("W", "NFS", "SSL", "CSL", "GSL", "SASL", "AFS", "NZSL", "AntFS", "NZFS", "SAFS", "GFS", 
-    "BS", "HoS", "GS", "HS", "ARS", "SRS", "BRS", "LRS", "MMS", "HMS", "NES", "SES", "CS", "RS", "LS", "WS")
+short <- c("W", "NFS", "SSL", "CSL", "GSL", "AFS","SASL", "NZSL", "AntFS", "NZFS", "SAFS", "GFS", 
+    "BS", "HoS", "HS", "GS", "ARS", "BRS", "SRS", "LRS", "MMS", "HMS", "NES", "SES", "RS", "CS", "LS", "WS")
 
 all_stats <- read_csv("data/processed/all_stats_tree.csv") %>% 
     mutate(SSD = male_weight/female_weight) %>% 
@@ -208,7 +208,7 @@ p2 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) +
         "Proportion of\nlow frequency\nalleles")) +
     xlab(expression(paste("Effect size ", beta))) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1)
-p4
+p2
 
 # structure coefficients
 mod_out_SC <- mod_SC[c("pred", "medianSC", "lower", "upper")]
