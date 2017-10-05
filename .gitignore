@@ -13,7 +13,9 @@
 /plots
 /server
 /data_acquisition
-
+/figures
+/olli_pics
+/others
 
 *.RData
 *.xls

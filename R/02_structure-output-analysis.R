@@ -18,9 +18,9 @@ library(dplyr)
 library(pophelper)
 library(magrittr)
 library(sealABC)
+source("R/old_parallel_structure_functions.R")
 
-
-seal_data <- "data/processed/seal_genotypes_basic_28.xlsx"
+seal_data <- "data/processed/seal_genotypes_basic_29.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
 
 dataset_names <- names(all_seals)
@@ -58,9 +58,11 @@ for (i in 1:length(seal_species_names)) {
     struc_out_paths <- str_c(paste0(path_to_structure_out, seal_species_names[i], "/"), struc_out_names)
     
     # pophelper summary functions
-    structure_summary <- tabulateRunsStructure(files=struc_out_paths) %>%
-        summariseRunsStructure() %>%
-        evannoMethodStructure(exportplot = T, imgtype = "pdf", writetable = TRUE)
+    structure_summary <- readQ(files = struc_out_paths) %>%
+                         tabulateQ() %>%
+                         summariseQ() %>%
+                         evannoMethodStructure(exportplot = T, imgtype = "pdf", writetable = TRUE)
+
     # move plot into plot folder and rename it
     system(paste0("mv evannoMethodStructure.pdf output/structure/cluster_summary_plots/", seal_species_names[i], ".pdf"))
     system(paste0("mv evannoMethodStructure.txt output/structure/structure_result_tables/", seal_species_names[i], ".txt"))
@@ -90,7 +92,7 @@ for (i in 1:length(seal_species_names)) {
     # creates character vector containing path to relevant files
     struc_out_paths <- str_c(paste0(path_to_structure_out, seal_species_names[i], "/"), struc_out_names)
     # basic usage
-    clumppExportStructure(files=struc_out_paths, prefix = seal_species_names[i])
+    clumppExport(readQ(files = struc_out_paths), prefix = seal_species_names[i])
     # create species directory in clumpp
     system(paste0("mkdir ", clumpp_path, "/", seal_species_names[i]))
     # copy all pophelper-prepared structure folders into clumpp/species
@@ -123,8 +125,10 @@ for (i in 1:length(seal_species_names)) {
     slist <- list.files(paste0(seal_species_names[i], "-aligned/"))
     # create paths to all files
     path_to_slist <- str_c(paste0(seal_species_names[i], "-aligned/"), slist)
-    # plot pdfs
-    plotRuns(files=path_to_slist, imgoutput = "tab", imgtype = "pdf", sortind = "all")
+    
+    Qfiles <- readQ(path_to_slist)
+    # plot Q files
+    plotQ(qlist = Qfiles, imgoutput = "join", imgtype = "pdf", sortind = "all")
     # create folder for pdfs
     system(paste0("mkdir /Users/martin/Dropbox/projects/current/bottleneck/output/structure/structure_assignment_plots/", seal_species_names[i]))
     # move plots to folders
@@ -232,7 +236,7 @@ seal_data <- all_seals_clusters_final
 lapply(seal_data, names)
 
 # write excel file with each dataset plus clusters
-write_dflist_to_xls(seal_data, "all_seals_clusters.xls")
+write_dflist_to_xls(seal_data, "all_seals_clusters_29.xls")
 
 # make new dataframes
 cluster_df <- function(species, all_seals_clusters_final){
@@ -285,7 +289,7 @@ all_seals_clusts_pops <- append(all_seals_extended, largest_pops_geno)
 names(all_seals_clusts_pops)
 
 # write excel file with each dataset plus clusters
-sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and_pop.xls")
+sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and_pop_29.xls")
 
 
 #### used to exctract an additional elephant seal cluster
@@ -301,6 +305,6 @@ sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and
 # WriteXLS(names(all_seals_clusts_pops), ExcelFileName = "seal_data_largest_clust_and_pop.xls")
 
 #### potentially delete, same data as above
-save(all_seals_clusts_pops, file = "data/processed/seals_full.RData")
+save(all_seals_clusts_pops, file = "data/processed/seals_full_29.RData")
 
 

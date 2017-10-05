@@ -5,16 +5,16 @@ library(devtools)
 library(readxl)
 
 # sheet numbers to load
-dataset_names <- excel_sheets("../data/processed/seal_data_largest_clust_and_pop.xlsx")
+dataset_names <- excel_sheets("../data/processed/seal_data_largest_clust_and_pop_29.xlsx") # seal_data_largest_clust_and_pop_29.xlsx
 
-dataset_names_hw <- excel_sheets("../data/processed/seal_data_largest_clust_and_pop_all_hw.xlsx")
+dataset_names_hw <- excel_sheets("../data/processed/seal_data_largest_clust_and_pop_29.xlsx")
 
 load_dataset <- function(dataset_names) {
-        read_excel("../data/processed/seal_data_largest_clust_and_pop.xlsx", sheet = dataset_names)
+        read_excel("../data/processed/seal_data_largest_clust_and_pop_29.xlsx", sheet = dataset_names)
 }
 
 load_dataset_hw <- function(dataset_names) {
-        read_excel("../data/processed/seal_data_largest_clust_and_pop_all_hw.xlsx", sheet = dataset_names)
+        read_excel("../data/processed/seal_data_largest_clust_and_pop_29.xlsx", sheet = dataset_names)
 }
 
 # load all datasets
@@ -26,11 +26,11 @@ names(all_seals_hw) <- dataset_names_hw
 
 # subset for biggest clusters
 
-all_seals <- all_seals[1:39]
-dataset_names <- dataset_names[1:39]
+all_seals <- all_seals[1:41] 
+dataset_names <- dataset_names[1:41] 
 
-all_seals_hw <- all_seals_hw[1:39]
-dataset_names_hw <- dataset_names_hw[1:39]
+all_seals_hw <- all_seals_hw[1:41] 
+dataset_names_hw <- dataset_names_hw[1:41] 
 
 # MAKE GENEPOP FILE
 

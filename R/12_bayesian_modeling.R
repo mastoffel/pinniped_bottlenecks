@@ -481,15 +481,18 @@ stats_mod_IUCN <- stats_mod %>%
 
 ggplot(stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) + geom_boxplot() + geom_point(size = 3)
 
-mod1 <- MCMCglmm(num_alleles_mean ~ IUCN_binary, # , #+ Abundance BreedingType
+mod_gendiv_IUCN <- MCMCglmm(num_alleles_mean ~ IUCN_binary, # , #+ Abundance BreedingType
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
     data=stats_mod_IUCN,nitt=1100000,burnin=100000,thin=1000)
 
-summary(mod1)
+summary(mod_gendiv_IUCN)
+
+# save R2
+R2mcmc(mod1)$partR2 %>%  write_delim("data/processed/models/mod_IUCN_AR_R2.txt")
 
 # save summary to file
-mod1 %>% 
+mod_gendiv_IUCN  %>% 
     summary() %$%
     solutions %>% 
     as.data.frame() %>% 
@@ -500,20 +503,23 @@ mod1 %>%
     rename(post_mean= post.mean,
         lower =  "l-95% CI",
         upper = "u-95% CI") %>% 
-    write_delim("data/processed/models/mod_IUCN_vs_AR_beta.txt")
+    write_delim("data/processed/models/mod_IUCN_AR_beta.txt")
 
 
 # supplmentary: Het-excs vs. IUCN ------------------------------------------------------------------
 
-mod1 <- MCMCglmm(TPM80_ratio ~ IUCN_binary, # , #+ Abundance BreedingType
+mod_hetexc_IUCN <- MCMCglmm(TPM80_ratio ~ IUCN_binary, # , #+ Abundance BreedingType
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
     data=stats_mod_IUCN,nitt=1100000,burnin=100000,thin=1000)
 
-summary(mod1)
+summary(mod_hetexc_IUCN)
+
+# save R2
+R2mcmc(mod_hetexc_IUCN)$partR2 %>%  write_delim("data/processed/models/mod_IUCN_hetexc_R2.txt")
 
 # save summary to file
-mod1 %>% 
+mod_hetexc_IUCN %>% 
     summary() %$%
     solutions %>% 
     as.data.frame() %>% 
@@ -524,21 +530,24 @@ mod1 %>%
     rename(post_mean= post.mean,
         lower =  "l-95% CI",
         upper = "u-95% CI") %>% 
-    write_delim("data/processed/models/mod_IUCN_vs_hetexc_beta.txt")
+    write_delim("data/processed/models/mod_IUCN_hetexc_beta.txt")
 
 
 
 # supplmentary: bot vs. IUCN -----------------------------------------------------------------------
 
-mod1 <- MCMCglmm(bot ~ IUCN_binary, # , #+ Abundance BreedingType
+mod_bot_IUCN <- MCMCglmm(bot ~ IUCN_binary, # , #+ Abundance BreedingType
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
     data=stats_mod_IUCN,nitt=1100000,burnin=100000,thin=1000)
 
-summary(mod1)
+summary(mod_bot_IUCN)
+
+# save R2
+R2mcmc(mod_bot_IUCN)$partR2 %>% write_delim("data/processed/models/mod_IUCN_bot_R2.txt")
 
 # save summary to file
-mod1 %>% 
+mod_bot_IUCN %>% 
     summary() %$%
     solutions %>% 
     as.data.frame() %>% 
@@ -549,6 +558,6 @@ mod1 %>%
     rename(post_mean= post.mean,
         lower =  "l-95% CI",
         upper = "u-95% CI") %>% 
-    write_delim("data/processed/models/mod_IUCN_vs_ABCprob_beta.txt")
+    write_delim("data/processed/models/mod_IUCN_bot_beta.txt")
 
 

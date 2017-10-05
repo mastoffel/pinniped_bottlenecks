@@ -175,17 +175,19 @@ out_hw <- lapply(out_hw, get_colnames)
 # specify dataset names
 library(plyr)
 dataset_names <-list.files(path = "../output/bottleneck_out", pattern="*2.txt.edit.txt")
+dataset_names <- gsub("_genepop_out2.txt.edit.txt", "", dataset_names)
 names(out) <- dataset_names
 out <- ldply(out, data.frame)
 
-dataset_names_hw <-list.files(path = "output/bottleneck_out/hw", pattern="*2.txt.edit.txt")
+dataset_names_hw <-list.files(path = "../output/bottleneck_out/hw", pattern="*2.txt.edit.txt")
+dataset_names_hw <- gsub("_genepop_out2.txt.edit.txt", "", dataset_names_hw)
 names(out_hw) <- dataset_names_hw
 out_hw <- ldply(out_hw, data.frame)
 
 # write out files
 library(WriteXLS)
-WriteXLS(out, ExcelFileName = "../output/out_bottleneck_stats.xls", na = "", row.names = F, col.names = T)
-WriteXLS(out_hw, ExcelFileName = "../output/out_bottleneck_stats_HW.xls", na = "", row.names = F, col.names = T)
+WriteXLS(out, ExcelFileName = "../output/out_bottleneck_stats_29.xls", na = "", row.names = F, col.names = T)
+WriteXLS(out_hw, ExcelFileName = "../output/out_bottleneck_stats_HW_29.xls", na = "", row.names = F, col.names = T)
 
-write.csv(out, file = "../output/out_bottleneck_stats.csv", na = "", row.names = F, col.names = T, quote = F)
-write.csv(out_hw, file = "../output/out_bottleneck_stats_HW.csv", na = "", row.names = F, col.names = T, quote = F)
+write.csv(out, file = "../output/out_bottleneck_stats_29.csv", na = "", row.names = F, col.names = T, quote = F)
+write.csv(out_hw, file = "../output/out_bottleneck_stats_HW_29.csv", na = "", row.names = F, col.names = T, quote = F)

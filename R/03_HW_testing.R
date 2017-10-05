@@ -15,7 +15,7 @@ library(sealABC)
 # load cleaned seal data
 library(readxl)
 
-seal_data <- "data/processed/seal_data_largest_clust_and_pop.xlsx"
+seal_data <- "data/processed/seal_data_largest_clust_and_pop_29.xls"
 all_seals <- sealABC::read_excel_sheets(seal_data)
 
 
@@ -99,7 +99,7 @@ total_genotypes <- sample_size * loci_full
 
 #### hardy weinberg tests on everything
 all_hw <- lapply(seal_data_pegas, hw.test, B = 10000)
-save(all_hw, file = "data/processed/all_hw_10000iter.RData")
+save(all_hw, file = "data/processed/all_hw_10000iter_29.RData")
 
 
 
@@ -164,7 +164,7 @@ seal_data_descr <- data.frame("names" = names(all_seals),
                               "non_hw_both_tests" = non_hw_both_bonf)
                               
 library(WriteXLS)
-WriteXLS(seal_data_descr, "data/processed/seal_data_descriptives.xls")
+WriteXLS(seal_data_descr, "data/processed/seal_data_descriptives_29.xls")
 
 
 ## get loci in HW according to exact test
@@ -208,7 +208,7 @@ unlist(lapply(all_seals_in_hw, function(x) ncol(x) - 3)) / 2
 # extract get data.frames just with loci in HW
 
 # write excel file with each dataset 
-write_dflist_to_xls(all_seals_in_hw, "seal_data_largest_clust_and_pop_all_hw.xls")
+write_dflist_to_xls(all_seals_in_hw, "seal_data_largest_clust_and_pop_all_hw_29.xls")
 
 
 ####### LAST step ######

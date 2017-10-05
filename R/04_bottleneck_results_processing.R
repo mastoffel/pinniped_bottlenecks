@@ -1,4 +1,4 @@
-# plotting bottleneck
+# old bottleneck results processing, has to be looked over
 
 library(data.table)  # faster fread() and better weekdays()
 library(dplyr)       # consistent data.frame operations
