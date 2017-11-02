@@ -1,0 +1,421 @@
+# phylogenetic comparative analysis
+library(ggtree)
+library(ape)
+library(phytools)
+library(dplyr)
+library(readxl)
+library(stringr)
+library(viridis)
+library(ggtree)
+library(ggthemr)
+library(reshape2)
+library(cowplot)
+library(ggthemes)
+library(ggimage)
+library(RColorBrewer)
+library(scales)
+library(forcats)
+library(readr)
+# for comparative analysis
+library(caper)
+library(yhat)
+library(dplyr)
+library(ggrepel)
+library(GGally)
+library(ggthemr)
+source("R/martin.R")
+library(MCMCglmm)
+
+## what should this script do:
+
+# modeling
+modeling <- FALSE
+save_models <- FALSE
+
+# plotting
+plotting <- TRUE
+save_plots <- FALSE
+
+
+# load data and prepare mixed models
+
+# load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
+tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
+
+# all_stats for modeling
+all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
+
+# phylogenetic mixed model preparation
+
+# construct inverse phylo matrix and priors
+inv_phylo <- inverseA(tree_final, nodes="TIPS",scale=FALSE)$Ainv #,scale=TRUE
+prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
+
+
+
+
+## model 1: het excess vs. LH -------------------------------------------------------
+
+# standardize by 2 sd to make estimates comparable with BreedingHabitat variable(
+# Gelman (2008), Schielzeth (2014)
+
+stats_mod_hetexc <- 
+    all_stats %>% 
+    mutate(Abundance = ((Abundance - mean(Abundance)) / (2*sd(Abundance))), 
+        Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
+        SSD = (SSD - mean(SSD) / (2*sd(SSD))),
+        logharem_size = (log(harem_size))) %>% 
+        mutate(logharem_size = (logharem_size - mean(logharem_size) / (2*sd(logharem_size)))) %>% 
+        mutate(harem_size = (harem_size - mean(harem_size) / (2*sd(harem_size)))) 
+        
+stats_mod_hetexc <- stats_mod_hetexc %>% mutate(BreedingType = as.factor(BreedingType)) %>% 
+                mutate(BreedingType = relevel(BreedingType, ref = "land"))
+
+
+second_var <- "SSD" # "logharem_size"
+
+if (second_var == "logharem_size"){
+    run_mod <- function(iter){
+        MCMCglmm(TPM80_ratio ~ logharem_size + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
+    }
+
+} else if (second_var == "SSD"){
+    run_mod <- function(iter){
+        MCMCglmm(TPM80_ratio ~ SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
+    }
+}
+library(purrr)
+library(readr)
+# check if model is saved
+model_file_name <- "gen_hetexc_lh_SSD.RData"
+
+if (!file.exists(paste0("output/mcmcmodels/", model_file_name))){
+    # run models
+    set.seed(1234)
+    models <- purrr::map(1:3, run_mod)
+    saveRDS(models, file = paste0("output/mcmcmodels/", model_file_name))
+}
+
+models <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name))
+
+# model checks according to holgers paper
+plot(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
+gelman.diag(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
+
+# one model
+mod_hetexc <- models[[1]]
+
+# summary
+summary(mod_hetexc)
+
+# visually inspecting chain convergence
+plot(mod_hetexc$Sol)
+plot(mod_hetexc$VCV)
+autocorr(mod_hetexc$Sol)
+autocorr(mod_hetexc$VCV)
+
+# variation explained by phylogeny
+var_phy <- mod_hetexc$VCV[, "tip_label"] / (mod_hetexc$VCV[, "tip_label"] + mod_hetexc$VCV[, "units"])
+posterior.mode(var_phy)
+median(var_phy)
+HPDinterval(var_phy)
+
+# commonality analyses and R2
+model_file_name_R2 <- "gen_hetexc_lh_SSD_R2.RData"
+
+if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
+    set.seed(324)
+    R2_hetexc <- mcmcR2::partR2(mod_hetexc, partvars = c("SSD", "BreedingType"),
+        data = stats_mod_hetexc, inv_phylo = inv_phylo, prior = prior, 
+        nitt = 1100000, burnin = 100000, thin = 1000)
+    saveRDS(R2_hetexc, file = paste0("output/mcmcmodels/", model_file_name_R2))
+}
+
+R2_hetexc <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
+R2_hetexc
+# out <- mcmcR2::R2mcmc(mod_hetexc)
+# out$partR2
+R2_hetexc$R2 %>% write_delim("data/processed/models/mod_hetexc_SSD_R2.txt")
+R2_hetexc$SC %>% write_delim("data/processed/models/mod_hetexc_SSD_SC.txt")
+
+# save summary to file
+mod_hetexc %>% 
+    summary() %$%
+    solutions %>% 
+    as.data.frame() %>% 
+    tibble::rownames_to_column("components") %>% 
+    mutate(post_median = apply(mod_hetexc$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod_hetexc$Sol)) %>% 
+    .[c(1,2,7,8,3:6)] %>% 
+    rename(post_mean= post.mean,
+        lower =  "l-95% CI",
+        upper = "u-95% CI") %>% 
+    write_delim("data/processed/models/mod_hetexc_SSD_beta.txt")
+
+
+
+
+# plotting
+
+# load model output
+mod_beta <- read_delim("data/processed/models/mod_hetexc_SSD_beta.txt", delim = " ")
+mod_R2 <- read_delim("data/processed/models/mod_hetexc_SSD_R2.txt", delim = " ")
+mod_SC <- read_delim("data/processed/models/mod_hetexc_SSD_SC.txt", delim = " ")
+
+
+mod_hetexc_plot <- MCMCglmm(TPM80_ratio ~ SSD, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
+
+#pred_df_hetexc <- data.frame(TPM80_ratio = 0,
+#    logharem_size = seq(from = 0, to = 4, by = 0.1),
+#    tip_label = all_stats$tip_label[1])
+
+pred_df_hetexc <- data.frame(TPM80_ratio = 0,
+        SSD = seq(from = 0.5, to = 7, by = 0.1),
+        tip_label = all_stats$tip_label[1])
+
+mod_preds_hetexc <- data.frame(predict(mod_hetexc_plot, pred_df_hetexc, interval = "confidence")) %>% 
+    mutate(SSD = seq(from = 0.5, to = 7, by = 0.1))
+
+ggplot(aes(SSD, TPM80_ratio), data = all_stats) +
+    geom_point(size = 4, alpha = 0.6) + # abc_out
+    geom_point(size = 4, alpha = 0.6, shape = 21, , color = "darkgrey") + #, aes(fill = BreedingType)
+    #scale_color_viridis(option = "magma", direction = -1,
+    #    name = "ABC bottleneck \nprobability %", labels=c("0", "50", "100"), breaks = c(0.05,0.5,1)) +
+    theme_martin() +
+    xlab("Sexual Weight Dimorphism\n(A proxy for mating system)") +
+    ylab("Bottleneck signature\n(heterozygosity-excess)") +
+    # scale_x_continuous(breaks = log(c(1,2,3,4,6,8,10,15,20,30,40,50)), labels = c(1,2,3,4,6,8,10,15,20,30,40,50)) + #breaks = c(1,2,3,4,5,6,7,8)
+    scale_x_continuous( breaks = c(1,2,3,4,5,6,7,8,9)) +
+    geom_line(data = mod_preds_hetexc, aes(y = fit), size = 1.2, alpha = 0.5, color = "grey") + 
+    scale_fill_manual(values = c("cornflowerblue", "goldenrod")) +
+    #ylab("Heterozygosity-excess") +
+    theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0.1,0.1,0.2,0.2), "cm") ,
+        #axis.title.x = element_text(margin = margin(t = 10)),
+        #axis.title.y = element_text(margin = margin(r = 10))
+        legend.direction = "vertical",
+        legend.position = c(0.9,0.3),
+        legend.title=element_text(size=10),
+        axis.title.x=element_text(margin=margin(t=0.5, unit = "cm"))
+    ) +
+    guides(color = guide_colorbar(barwidth = 0.5, barheight = 5, 
+        title.position = "left")) + #, label.position = "bottom"
+    scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1), limits = c(0.1, 1.13)) 
+   #geom_text_repel(aes(label = short),size = 3, alpha = 0.7, color = "black", #  aes(label = common) , 
+    #    segment.alpha= 0.2, box.padding = unit(0.7, "lines"), point.padding = unit(0.3, "lines"),
+     #   segment.size = 0.3,  force = 3, min.segment.length = unit(0.1, "lines"))
+ggsave("figures/SMM/hetexc_bw.jpg", width = 4.7, height = 4)
+
+
+p2 <-  ggplot(aes(BreedingType, TPM80_ratio), data = stats_mod) +
+    geom_boxplot(alpha = 0.3, col = "black",  size = 0.2, width = 0.4, aes(fill = BreedingType)) + #
+    geom_point(size = 3.5, alpha = 0.6, aes(color = BreedingType)) + # abc_out
+    geom_point(size = 3.5, alpha = 0.8, shape = 21, col = "black") +
+    theme_martin() +
+    scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
+    scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
+    xlab("Breeding Habitat") +
+    ylab("Heterozygosity-excess") +
+    guides(fill=FALSE, color = FALSE) +
+    scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1), limits = c(0.1, 1.13)) +
+    theme(#panel.grid.major = element_blank(),
+        plot.margin = unit(c(0.1,0.3,0.3,0.2), "cm") ,
+        axis.title.x=element_text(margin=margin(t=0.5, unit = "cm"))
+        #axis.title.x = element_text(margin = margin(t = 10)),
+        #axis.title.y = element_text(margin = margin(r = 10))
+    ) 
+# geom_text_repel(label = short,size = 3, alpha = 0.7, color = "black", #  aes(label = common) , 
+#        segment.alpha= 0.2, box.padding = unit(0.7, "lines"), point.padding = unit(0.3, "lines"),
+#       segment.size = 0.3,  force = 3, min.segment.length = unit(0.1, "lines"))
+p2
+
+plot_grid(p1, p2)
+
+
+# beta coefficients
+mod_out <- mod_beta[-1, c("components", "post_median", "lower", "upper")]
+names(mod_out) <- c("comps", "pe", "cilow", "cihigh")
+
+p3 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) + 
+    # geom_point(size = 3, color = "grey69") + # abc_out
+    geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
+    # geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    theme_martin() +
+    theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line.x = element_line(color = '#333333'),
+        axis.title.y = element_blank(),
+        axis.text.y = element_text(hjust = c(0.5)),
+        plot.margin = unit(c(1,0.2,0.33,0.1), "cm"),
+        axis.title.x=element_text(margin=margin(t=12))) +
+    scale_x_continuous(breaks = c(-0.4, -0.2, 0, 0.2)) +
+    scale_y_discrete(labels = c("Breeding\nhabitat",
+        "SSD")) +
+    xlab(expression(paste("Effect size ", beta))) +
+    geom_vline(xintercept = 0, color = "black", alpha = 0.1)
+p3
+
+# SC
+mod_out_SC <- mod_SC[, c("pred", "medianSC", "lower", "upper")]
+names(mod_out_SC ) <- c("comps", "pe", "cilow", "cihigh")
+
+# structure coefficients
+p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) + 
+    # geom_point(size = 3, color = "grey69") + # abc_out
+    geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
+    # geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    theme_martin() +
+    theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line.x = element_line(color = '#333333'),
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        plot.margin = unit(c(1,0.2,0.4,0.3), "cm"),
+        axis.text.x=element_text(margin=margin(t=0.5))) +
+    scale_y_discrete(labels = c("Breeding\nhabitat",
+        "SSD")) +
+    xlab(expression(paste("Structure coefficient", " r(", hat(Y),",x)") )) +
+    geom_vline(xintercept = 0, color = "black", alpha = 0.1)
+p4
+
+plot_grid(p3, p4)
+
+# R2
+col_legend <- "#969696"
+mod_out_R2 <- mod_R2[, c("combinations", "medianR2", "lower", "upper")][-4, ]
+names(mod_out_R2) <- c("comps", "pe", "cilow", "cihigh")
+mod_out_R2$comps <- factor(mod_out_R2$comps, levels = c("BreedingType", "SSD", "full model"))
+# mod_out_R2$comps <- rev(fct_inorder(factor(mod_out_R2$comps)))
+# structure coefficients
+p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) + 
+    # geom_point(size = 3, color = "grey69") + # abc_out
+    geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
+    # geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    theme_martin() +
+    theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line.x = element_line(color = '#333333'),
+        axis.title.y = element_blank(),
+        axis.text.y = element_text(hjust = c(0.5)),
+        plot.margin = unit(c(0.3, 1, 0.6, 0.4), "cm")) +
+    scale_y_discrete(labels = c( "Breeding\nhabitat", "SSD", "Full model")) +
+    xlab(expression(paste(R^{2}))) +
+    geom_vline(xintercept = 0, color = "black", alpha = 0.1) +
+    #annotate("segment", x = 0.9, xend = 0.9, y = 0.8, yend = 3.5, color = col_legend) +
+    #annotate("text", x = 0.98, xend = 0.95, y = 2, yend = 3, color = col_legend, label = c("common"), angle = 270) +
+    annotate("segment", x = 1.2, xend = 1.2, y = 0.8, yend = 2.2, color = col_legend) +
+    annotate("text", x = 1.3, xend = 1.3, y = 1.5, yend = 2.2, color = col_legend, label = c("unique"), angle = 270) +
+    annotate("segment", x = 1.2, xend = 1.2, y = 2.4, yend = 3.5, color = col_legend) +
+    annotate("text", x = 1.3, xend = 1.3, y = 2.9, yend = 3.5, color = col_legend, label = c("marginal"), angle = 270)
+p5
+
+
+p_top <- plot_grid(p2, p1, rel_widths = c(1.8, 3), labels = c("A", "B"))
+p_top
+
+p_bot <- plot_grid(p3, p4, p5, nrow = 1, rel_widths = c(1.5,1,1.6),
+    labels = c("C","D","E"))
+p_bot
+
+p_final <- plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(1.6,1))
+p_final
+
+ggsave('figures/hetexc_vs_ecol.jpg',p_final,  width=9, height=6.5)
+
+
+
+
+
+
+
+
+
+# plot for marine mammal conference
+
+p1 <- ggplot(aes(logharem_size, TPM80_ratio), data = all_stats) +
+    geom_point(size = 3.5, alpha = 0.3) + # abc_out
+    geom_point(size = 3.5, alpha = 0.8, shape = 21, col = "black") + #, aes(fill = BreedingType)
+    #scale_color_viridis(option = "magma", direction = -1,
+    #    name = "ABC bottleneck \nprobability %", labels=c("0", "50", "100"), breaks = c(0.05,0.5,1)) +
+    theme_martin() +
+    xlab("Harem Size") +
+    ylab("Heterozygosity-excess") +
+    scale_x_continuous(breaks = log(c(1,5,10,20,50)), labels = c(1,5,10,20,50)) + #breaks = c(1,2,3,4,5,6,7,8)
+    geom_line(data = mod_preds_hetexc, aes(y = fit), size = 1, alpha = 0.5) + 
+    #ylab("Heterozygosity-excess") +
+    theme(#panel.grid.minor = element_blank(),
+        #panel.grid.major = element_blank(),
+        #panel.grid.major.x = element_blank(),
+        plot.margin = unit(c(0.4,0.4,0.4,0.4), "cm") ,
+        #axis.line.x = element_line(color="#cccccc", size=0.3),
+        #axis.ticks.x = element_line(color="#cccccc", size=0.3),
+        #axis.text.x = element_text(margin = margin(t = 5)),
+        #axis.title.y = element_text(margin = margin(r = 10))
+        legend.direction = "vertical",
+        legend.position = c(0.85,0.25),
+        legend.title=element_text(size=10),
+        axis.title.x=element_text(margin=margin(t=0.5, unit = "cm"))
+    ) +
+    scale_color_distiller(palette = "RdBu",
+        direction = -1,
+        name = "ABC bottleneck \nprobability %", labels=c("0", "50", "100"), breaks = c(0.05,0.5,1)) +
+    
+    guides(color = guide_colorbar(barwidth = 0.5, barheight = 5, 
+        title.position = "left")) + #, label.position = "bottom"
+    scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1), limits = c(0.1, 1.13)) 
+   # geom_text_repel(aes(label = short),size = 3, alpha = 0.7, color = "black", #  aes(label = common) , 
+   #       segment.alpha= 0.2, box.padding = unit(0.7, "lines"), point.padding = unit(0.3, "lines"),
+    #    segment.size = 0.3,  force = 3, min.segment.length = unit(0.1, "lines"))
+p1
+
+ggsave("figures/SMM/p2_smm.jpg", width = 4, height = 3.5)
+
+
+
+p2 <- ggplot(aes(logharem_size, TPM80_ratio), data = all_stats) +
+    geom_point(size = 3.5, alpha = 0.3) + # abc_out
+    geom_point(size = 3.5, alpha = 0.8, shape = 21, aes(fill = BreedingType)) + #, aes(fill = BreedingType)
+    #scale_color_viridis(option = "magma", direction = -1,
+    #    name = "ABC bottleneck \nprobability %", labels=c("0", "50", "100"), breaks = c(0.05,0.5,1)) +
+    theme_martin() +
+    xlab("Harem Size") +
+    ylab("Heterozygosity-excess") +
+    scale_x_continuous(breaks = log(c(1,5,10,20,50)), labels = c(1,5,10,20,50)) + #breaks = c(1,2,3,4,5,6,7,8)
+    geom_line(data = mod_preds_hetexc, aes(y = fit), size = 1, alpha = 0.5) + 
+    #ylab("Heterozygosity-excess") +
+    theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.major.x = element_blank(),
+        plot.margin = unit(c(0.4,0.4,0.4,0.4), "cm") ,
+        axis.line.x = element_line(color="#cccccc", size=0.3),
+        axis.ticks.x = element_line(color="#cccccc", size=0.3),
+        axis.text.x = element_text(margin = margin(t = 5)),
+        #axis.title.y = element_text(margin = margin(r = 10))
+        legend.direction = "vertical",
+        legend.position = c(0.85,0.15),
+        legend.title=element_text(size=10),
+        axis.title.x=element_text(margin=margin(t=0.5, unit = "cm"))
+    ) +
+    scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
+    guides(color = guide_colorbar(barwidth = 0.5, barheight = 5, 
+        title.position = "left")) + #, label.position = "bottom"
+    scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1), limits = c(0.1, 1.13)) 
+# geom_text_repel(aes(label = short),size = 3, alpha = 0.7, color = "black", #  aes(label = common) , 
+#       segment.alpha= 0.2, box.padding = unit(0.7, "lines"), point.padding = unit(0.3, "lines"),
+#    segment.size = 0.3,  force = 3, min.segment.length = unit(0.1, "lines"))
+p2
+
+ggsave("figures/SMM/p3_smm.jpg", width = 4, height = 3.5)

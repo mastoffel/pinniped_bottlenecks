@@ -18,14 +18,14 @@ library(forcats)
 library(readr)
 library(extrafont)
 # ggthemr('dust')
-source("martin.R")
+source("R/martin.R")
 
 # load all datasets
-seals <- read_csv("data/processed/seal_data_complete_rarefac10.csv")
+seals <- read_csv("data/processed/seal_data_complete_rarefac10_29.csv")
 # load model probablities from ABC
 model_probs <- read_delim("data/processed/sims_5000k_large_bot_model_selection.txt", 
     delim = " ", col_names = c("species", "bot", "neut"), skip = 1)
-
+model_probs <- model_probs %>% rbind(., data.frame("species" = "subantarctic_fur_seal", "bot" = 0.4, "neut" = 0.6))
 # are all names overlapping?
 sum(seals$species %in% seals$species)
 
@@ -34,7 +34,7 @@ seals <- left_join(seals, model_probs, by = "species")
 
 #### stopped here
 # load higdon phylogeny
-tree_final <- read.tree("data/raw/phylogeny/28_species_10ktrees.tre")
+tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
 plot(tree_final)
 tree_final$tip.label
 
@@ -53,16 +53,6 @@ seals <- seals %>%
     .[reorder_data_for_tiplab, ] %>% 
     bind_cols(tibble(tip_label = tree_final$tip.label), .) 
 
-# how is everything plotted
-# if indexing tree_final$tip.label, this is the sequence how it is plotted
-# plot_inds <- c(1:2, 10:12, 3:5, 9, 6:8, 13,14, 19,20, 18,17,15,16,27,28,25,26,21,22,23,24)
-# 
-# # indices for reordering stats according to the sequence in tree labels
-# reorder_ind <- unlist(sapply(tree_lab, function(x) which(stats_lab == x)))
-# 
-# # plot inds needed within diversity plot later // this is the sequence in which the tree is plotted
-# plot_inds <- c(1:2, 10:12, 3:5, 9, 6:8, 13,14, 19,20, 18,17,15,16,27,28,25,26,21,22,23,24)
-
 ggtree(tree_final) + geom_tiplab() + xlim(0, 100)
 
 # creat a data.frame where factor levels are in the ggtree plotting sequence
@@ -70,7 +60,7 @@ plotting_sequence <- c("weddell_seal", "leopard_seal" ,  "crabeater_seal","ross_
     "hawaiian_monk_seal", "mediterranean_monk_seal", "lagoda_ringed_seal", "saimaa_ringed_seal",
     "baltic_ringed_seal", "arctic_ringed_seal",   "grey_seal_orkneys", "harbour_seal_waddensee",
     "hooded_seal", "bearded_seal", "galapagos_fur_seal", "south_american_fur_seal",
-    "new_zealand_fur_seal", "antarctic_fur_seal", "new_zealand_sea_lion", "south_american_sea_lion",
+    "new_zealand_fur_seal","subantarctic_fur_seal", "antarctic_fur_seal", "new_zealand_sea_lion", "south_american_sea_lion",
     "australian_fur_seal", "galapagos_sea_lion", "california_sea_lion",
     "stellers_sea_lion", "northern_fur_seal", "atlantic_walrus")
 
@@ -92,133 +82,78 @@ all_stats_tree <- all_stats_tree %>%
         common = fct_inorder(factor(common)))
 
 # write to file
-if(!file.exists("data/processed/all_stats_tree.csv")){
-    write_excel_csv(all_stats_tree, "data/processed/all_stats_tree.csv")
+if(!file.exists("data/processed/all_stats_tree.csv_29")){
+    write_excel_csv(all_stats_tree, "data/processed/all_stats_tree_29.csv")
 }
+all_stats_tree <- read_csv("data/processed/all_stats_tree_29.csv")
 
 all_stats_tree[all_stats_tree$BreedingType == "both", "BreedingType"] <- "land" 
 all_stats_tree <- all_stats_tree %>% mutate(BreedingType = as.factor(as.character(BreedingType))) %>% data.frame()
 
 
-# row names in all_stats_tree apparently have to match the tree tip labels
-# mutate has to be before naming rows
-# rownames(all_stats_tree) <- tree_final$tip.label
-# id <- rownames(all_stats_tree)
 
-# create data.frames for heatmaps -------------
-
-# DIVERSITY
-stand_div <- all_stats_tree %>% 
-    dplyr::select(obs_het_mean, 
-        num_alleles_mean,
-        prop_low_afs_mean) %>% 
-    apply(2, scale) %>% 
-    as_tibble() %>% 
-    bind_cols(all_stats_tree[c("latin", "common", "species")], .) 
-
-# to check correct sequence just plot tree with node number
-plotTree(tree_final)
-tiplabels()
-edgelabels()
-
-ggtree(tree_final) + geom_text(aes(label=node))
-
-# BOTTLENECK
-bot_res <- all_stats_tree %>% 
-    dplyr::select(latin, common, species, #IAM_ratio, 
-        TPM70_ratio, TPM80_ratio, 
-        TPM90_ratio, SMM_ratio) 
-
-# ABC probs
-abc_probs <- all_stats_tree %>% 
-    dplyr::select(latin, common, species,
-        bot, neut)
-
-# abc star
-#abc_star <- abc_probs_lf %>% filter(variable == "bot") %>% mutate(bot = ifelse(value > 0.5, "bot", "const"))
-#abc_star$species <- factor(abc_star$species, levels = plot_seq_latin)
-
-# add nodes
-# plotTree(tree_final,node.numbers=T)
-# id <- rownames(all_stats_tree)
-# all_stats_tree <- cbind(id, all_stats_tree)
-
-# group into families
-#cls <- list(phocids=tree_final$tip.label[13:28],
-#            otarids= tree_final$tip.label[2:12],
-#            odobenids = tree_final$tip.label[1])
-#tree_final <- groupOTU(tree_final, cls)
-
-#tree_final <- groupClade(tree_final, node = 31)
-#tree_final <- groupClade(tree_final, node = 1)
-#img <- c("phylo_figures/AFS.jpg")
-#names(img) <- "31"
-
-# prepare data frame
-all_stats_for_tree <- all_stats_tree
-# all_stats_for_tree$IUCN_rating[is.na(all_stats_for_tree$IUCN_rating)] <- "data deficient"
-all_stats_for_tree$IUCN_rating <- factor(all_stats_for_tree$IUCN_rating, levels = c("least concern", "near threatened", "vulnerable", "endangered"))
-# check whther necessary
-names(all_stats_for_tree)[1] <- "taxa"
-
-library(magrittr)
-# all_stats_for_tree %<>% mutate(color_breed = ifelse(BreedingType == "land", "#737373", "cornflowerblue"))
-#test <- all_stats_for_tree %>% 
-#    mutate(abund_classes = ifelse(Abundance > 1000000, "1000k", )
-
-## node coloring problem
-# convert the 1st column to 'node' number and stored in an additional column called 'node' will solve this issue.
-
-# all_stats_for_tree$node <- NA
-# tipnode <- seq_along(tree_final$tip.label)
-# names(tipnode) <- tree_final$tip.label
-# all_stats_for_tree$node <- tipnode[all_stats_for_tree$taxa] ## convert the tip label to tip node number
-# i <- is.na(all_stats_for_tree$node)
-# all_stats_for_tree$node[i] =all_stats_for_tree$taxa[i] ## fill in internal node number
+# create data.frames  -------------
+stats_df <- all_stats_tree %>% 
+                rename(taxa = tip_label) %>% 
+                dplyr::select(c("taxa", "species","common", "bot")) %>% 
+                mutate(model = ifelse(bot > 0.5, "bot", "neut"))
 
 
-## alternative ----------------------------------
-# add data
-
-
-# produce new data.frame with nrow == edge number
-
-stats_for_tree_resorted <- data.frame(taxa = tree_final$tip.label)
-stats_df <- left_join(stats_for_tree_resorted, all_stats_for_tree, by = "taxa")
-
-new_df <- data.frame(matrix(ncol = ncol(stats_df), nrow = 26))
-names(new_df) <- names(stats_df)
-tree_df <- rbind(stats_df, new_df)
-tree_df <- data.frame(node = 1:54, tree_df)
-
-test_df <- mutate(tree_df, 
-    color = case_when(is.na(BreedingType) ~ "#bdbdbd",
-        BreedingType == "ice"~ "cornflowerblue",
-        BreedingType == "land" ~ "#d8b365")) 
-
-##### former ######
-tree_final$edge
-# create tree view
-# p <- ggtree(tree_final, color = "#737373") #
-
-tree_final$tip.label
-
-tree_new <- tree_final
-tree_new$tip.label <- stats_df$common
-tree_final <- tree_new
-table(all_stats_for_tree$BreedingType)
-
-##### newer
-tree_final$tip.label <- as.character(tree_final$tip.label)
 
 p <- ggtree(tree_final, layout = "fan", open.angle = 110)
+p <- p %<+% stats_df
+p + geom_tiplab2(aes(label = common))
+p + geom_tiplab2(aes(label = common), offset = 3) +
+    xlim(0,70) 
+
+
+# resort data frame for plotting in ggtree
+df_tree <- data.frame("taxa" = tree_final$tip.label)
+tree_sorted_df <- left_join(df_tree, stats_df)
+
+# create matrix with all nodes
+new_df <- data.frame(matrix(ncol = ncol(tree_sorted_df), nrow = 27))
+names(new_df) <- names(tree_sorted_df)
+tree_df <- rbind(tree_sorted_df, new_df)
+tree_df <- data.frame(node = 1:56, tree_df)
+
+col_df <- mutate(tree_df, 
+    color = case_when(is.na(model) ~ "grey",
+        model == "bot"~ "grey", #"cornflowerblue"
+        model == "neut" ~ "grey")) 
+
+p <- ggtree(tree_final, layout = "fan", open.angle = 180, aes(color = I(color)))
+p <- p %<+% col_df
+p + geom_tiplab2(aes(label = common, color = I(color)), offset =3, size = 3) +
+    xlim(0,60)
+
+
+
+
+
+
+tree_final$
+
+names(col_df)[2] <- "tip.label"
+
+left_join(data.frame("tip.label"= tree_final$tip.label), col_df, by = "tip.label")
+
+##### newer
+#tree_final$tip.label <- as.character(tree_final$tip.label)
+
+p <- ggtree(tree_final, layout = "fan", open.angle = 110)
+p + geom_tiplab2()
+
+
+col_df
+tree_final$edge
 
 p + geom_tiplab2()
-p <- p %<+% test_df
-p
+p <- p %<+% col_df
+p + geom_tiplab2(aes(label = common))
 
 p$facet #geom_point(aes(color = BreedingType)) +
-p + geom_tiplab2(offset = 3) +
+p + geom_tiplab2(aes(label = common), offset = 3) +
     xlim(0,70) +
     aes(color = I(color))
 

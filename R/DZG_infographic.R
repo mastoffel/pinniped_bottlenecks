@@ -25,5 +25,5 @@ names(waffle_parts) <- c("near extinction", "heavily hunted",
     "hunted", "unknown",
     "never hunted substantially" )
 
-waffle(parts = waffle_parts, rows = 5, colors = c("#bd0026", "#f03b20", 
-    "#fd8d3c", "grey", "#33a02c"), legend_pos = "left")
+waffle(parts = waffle_parts, rows = 3, colors = c("#bd0026", "#f03b20", 
+    "#fd8d3c", "grey", "#33a02c"), legend_pos = "right", glyph_size = 10)

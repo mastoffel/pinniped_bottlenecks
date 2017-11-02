@@ -29,7 +29,7 @@ theme_martin <- function(grid=TRUE, legend.position=NA, base_family='Lato Light'
     th <- th + theme(axis.ticks = element_blank())
     
     th <- th + theme(axis.text.x=element_text(margin=margin(t=0.5)))
-    th <- th + theme(axis.text.y=element_text(margin=margin(r=0.5)))
+    th <- th + theme(axis.text.y=element_text(margin=margin(r=0.4)))
     
   # th <- th + theme(plot.title = element_text(family="Playfair Display"),
   #      plot.subtitle = element_text(margin=margin(b=15), family="Playfair Display"),
