@@ -16,25 +16,25 @@ library(hierfstat)
 # load all datasets
 phylo <- read_excel("data/raw/phylogeny_overview_29.xlsx", sheet = 2, col_names = F)[1:29, ]
 names(phylo) <- c("latin", "common", "species")
-# seals <- read_csv("data/processed/data_noLH_rarefac10.csv")
+
+# All genetic and some life history variables
 seals <- read_csv("data/processed/all_data_seals_rarefac10_29.csv")
 
 # join datasets
 seals2 <- left_join(phylo, seals, by = "species")
 
-# get krueger data and order
+# rest of the life history data
 krueger_data <- data.frame(read_excel("data/processed/seal_data_krueger.xlsx", sheet = 1, col_names = T))%>% 
                 dplyr::select(dataset_name, birth_mass:Age_primiparity) %>% 
                 rename(species = dataset_name)
 
-# join data to full dataset
+# join data to full dataset by dataset names
 seals3 <- dplyr::left_join(seals2, krueger_data, by = "species")
 
 # rearrange to have life-history data first
 seals_rearranged <- seals3[c(1:11, 76:86, 12:75)]
-seals_rearranged$common[seals_rearranged$species == "new_zealand_sea_lion"] <- "New Zealand Sea Lion"
-names(seals_rearranged)[9] <- "IUCN_rating"
 
+# write to excel
 write_excel_csv(seals_rearranged, "data/processed/seal_data_complete_rarefac10_29.csv")
 # 
 

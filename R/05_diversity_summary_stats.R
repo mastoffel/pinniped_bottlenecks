@@ -19,7 +19,7 @@ calc_on_cluster <- FALSE
 
 if (calc_on_cluster){
     
-    # get 28 datasets, biggest clusters
+    #### to be modified for cluster analysis #############
     ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_1",
         "grey_seal_orkneys", "harbour_seal_waddensee_cl_1", "galapagos_sea_lion",
         "south_american_fur_seal_cl_1", "hooded_seal", "mediterranean_monk_seal",
@@ -100,6 +100,7 @@ sumstats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x, start_gen
 
 readr::write_delim(sumstats, path = "data/processed/sumstats_29.txt", col_names = TRUE)
 }
+
 sumstats <- read_delim("data/processed/sumstats_29.txt", delim = " ")
 
 
@@ -114,7 +115,8 @@ ggplot(diversity_stats, aes(x = mratio_mean, y = species)) +
 
 # rename id variable in bottleneck table
 names(bottleneck)[1] <- "species"
- # put together bottleneck results
+ 
+# put together bottleneck results
 # check that all names are equal
 sum(bottleneck$species %in% diversity_stats$species)
 # match names
@@ -129,7 +131,8 @@ names(all_seal_data)
 # # load all datasets
 # harem_data <- read_excel("data/processed/overview.xlsx", sheet = 2)
 seals <- left_join(harem_data, all_seal_data, by = "species")
-
+# recode IUCN
+names(seals)[7] <- "IUCN_rating"
 # check how many NAs
 lapply(all_seals, function(x) rowSums(is.na(x)))
 
@@ -137,6 +140,7 @@ lapply(all_seals, function(x) rowSums(is.na(x)))
 desc_seals <- do.call(rbind, lapply(all_seals, function(x) out <- data.frame(nloc = (ncol(x)-3)/2, nind = nrow(x))))
 seals <- cbind(seals, desc_seals)
 
+# write all stats to file
 if(!file.exists("data/processed/all_data_seals_rarefac10_29.csv")){
 write_excel_csv(seals, "data/processed/all_data_seals_rarefac10_29.csv")
 }
