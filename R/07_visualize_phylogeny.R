@@ -7,7 +7,6 @@ library(readxl)
 library(stringr)
 library(viridis)
 library(ggtree)
-library(ggthemr)
 library(reshape2)
 library(cowplot)
 library(ggthemes)
@@ -100,11 +99,6 @@ all_stats_tree[all_stats_tree$BreedingType == "both", "BreedingType"] <- "land"
 all_stats_tree <- all_stats_tree %>% mutate(BreedingType = as.factor(as.character(BreedingType))) %>% data.frame()
 
 
-# row names in all_stats_tree apparently have to match the tree tip labels
-# mutate has to be before naming rows
-# rownames(all_stats_tree) <- tree_final$tip.label
-# id <- rownames(all_stats_tree)
-
 # create data.frames for heatmaps -------------
 
 # DIVERSITY
@@ -133,15 +127,6 @@ bot_res <- all_stats_tree %>%
 abc_probs <- all_stats_tree %>% 
               dplyr::select(latin, common, species,
                      bot, neut)
-
-# abc star
-#abc_star <- abc_probs_lf %>% filter(variable == "bot") %>% mutate(bot = ifelse(value > 0.5, "bot", "const"))
-#abc_star$species <- factor(abc_star$species, levels = plot_seq_latin)
-
-# add nodes
-# plotTree(tree_final,node.numbers=T)
-# id <- rownames(all_stats_tree)
-# all_stats_tree <- cbind(id, all_stats_tree)
 
 # group into families
 #cls <- list(phocids=tree_final$tip.label[13:28],
@@ -181,7 +166,7 @@ library(magrittr)
 # add data
 
 
-# produce new data.frame with nrow == edge number
+# produce new data.frame with nrow == edge number for plotting in ggtree
 
 stats_for_tree_resorted <- data.frame(taxa = tree_final$tip.label)
 stats_df <- left_join(stats_for_tree_resorted, all_stats_for_tree, by = "taxa")
@@ -408,7 +393,7 @@ p_final
 #p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.16, 0.09, 0.05, 0.02))
 #p_final
 
-save_plot("figures/phylo_plot2.jpg", p_final,
+save_plot("other_stuff/figures/phylo_plot_color.jpg", p_final,
     ncol = 2, # we're saving a grid plot of 2 columns
     nrow = 1, # and 2 rows
     # each individual subplot should have an aspect ratio of 1.3

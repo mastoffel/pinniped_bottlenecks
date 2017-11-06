@@ -29,7 +29,8 @@ source("R/martin.R")
 library(tidyr)
 library("kinship2")
 library(MCMCglmm)
-
+library(purrr)
+library(readr)
 ## what should this script do:
 
 # modeling
@@ -40,7 +41,6 @@ save_models <- FALSE
 plotting <- TRUE
 save_plots <- FALSE
 
-
 # load data and prepare mixed models
 
 # load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
@@ -48,6 +48,7 @@ tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
 
 # all_stats for modeling
 all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
+
 
 # phylogenetic mixed model preparation
 
@@ -57,34 +58,21 @@ prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
 
 
 
-
-
-
-## model 1: genetic diversity vs. het excess -------------------------------------------------------
-
-# make sure here that the df isn't a tibble
-# (1) check the relationship between Het excess and the other genetic variables
-# stats_mod %>%
-#     dplyr::select(c("obs_het_mean","TPM90_ratio", "TPM70_ratio", "num_alleles_mean",
-#         "mean_allele_range", "prop_low_afs_mean"
-#                 )) %>% #"Generation_time", "Abundance", "logAbundance", "SSD", "BreedingType"
-#     ggduo()
-
+## model 1: ABCprob(bot) ~ genetic diversity -------------------------------------------------------
 
 ### modeling variable at the beginning
 if(modeling){
     
-# standardize by 2 sd to make estimates comparable with BreedingHabitat variable(
-# Gelman (2008), Schielzeth (2014)
+# standardize variables (by 1 sd, as no binary predictor is involved)
 stats_mod_gen <- all_stats %>% 
-        mutate(num_alleles_mean = ((num_alleles_mean - mean(num_alleles_mean)) / (2*sd(num_alleles_mean))), 
-            obs_het_mean = (obs_het_mean - mean(obs_het_mean) / (2*sd(obs_het_mean))),
-            prop_low_afs_mean = (prop_low_afs_mean - mean(prop_low_afs_mean) / (2*sd(prop_low_afs_mean)))) %>% 
-        as.data.frame()
+            mutate(bot_stand = as.numeric(scale(bot))) %>% 
+            mutate(TPM80_ratio_stand = as.numeric(scale(TPM80_ratio)))
 
+
+## Genetic model (1): Allelic richness ~ ABC bottleneck probability
 # model specification
 run_mod <- function(iter){
-    MCMCglmm(TPM80_ratio ~ num_alleles_mean + obs_het_mean + prop_low_afs_mean, #
+    MCMCglmm(num_alleles_mean ~ bot_stand, #
         random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
         family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
         data=stats_mod_gen,nitt=1100000,burnin=100000,thin=1000)
@@ -92,16 +80,21 @@ run_mod <- function(iter){
 
 library(purrr)
 library(readr)
-# check if model is saved
-model_file_name <- "gen_hetexc_ar_het_afs.RData"
 
+# model name
+mod_name <- "gen1_bot"
+
+# check if model is saved
+model_file_name <- paste0(mod_name, ".RData")
+
+# run 3 independent chains for model checking
 if (!file.exists(paste0("output/mcmcmodels/", model_file_name))){
     # run models
     set.seed(1234)
     models <- purrr::map(1:3, run_mod)
     saveRDS(models, file = paste0("output/mcmcmodels/", model_file_name))
 }
-
+# load models
 models <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name))
 
 # model checks according to holgers paper
@@ -129,11 +122,11 @@ HPDinterval(var_phy)
 # R2s
 
 # check if model R2s are saved
-model_file_name_R2 <- "gen_hetexc_ar_het_afs_R2.RData"
+model_file_name_R2 <- paste0(mod_name,"_R2", ".RData")
 
 if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
     set.seed(324)
-    R2_gen <- mcmcR2::partR2(mod_gen, partvars = c("num_alleles_mean", "obs_het_mean", "prop_low_afs_mean"),
+    R2_gen <- mcmcR2::partR2(mod_gen, partvars = c("bot_stand"),
         data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, 
         nitt = 1100000, burnin = 100000, thin = 1000)
     saveRDS(R2_gen, file = paste0("output/mcmcmodels/", model_file_name_R2))
@@ -142,10 +135,9 @@ if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
 R2_gen <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
 
 if (save_models){
-    R2_gen$R2 %>% write_delim("data/processed/models/mod_gen_R2.txt")
-    R2_gen$SC %>% write_delim("data/processed/models/mod_gen_SC.txt")
-    # structure coefficients
-    
+    R2_gen$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
+    R2_gen$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
+    # summary
     mod_sum <- summary(mod_gen)
     # save summary to file
     sum_mod_gen <- mod_gen %>% 
@@ -159,7 +151,7 @@ if (save_models){
         rename(post_mean= post.mean,
             lower =  "l-95% CI",
             upper = "u-95% CI") %>% 
-        write_delim("data/processed/models/mod_gen_beta.txt")
+        write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
 }
 
 }
@@ -167,147 +159,201 @@ if (save_models){
 
 
 
+# simple models
 
 
 
+
+
+
+## model 2: het-exc(TPM80_ratio) ~ genetic diversity ----------------------------------------------
+
+### modeling variable at the beginning
+if(modeling){
+    
+    # standardize variables (by 1 sd, as no binary predictor is involved)
+    stats_mod_gen <- all_stats %>% 
+        mutate(bot_stand = as.numeric(scale(bot))) %>% 
+        mutate(TPM80_ratio_stand = as.numeric(scale(TPM80_ratio)))
+    
+    
+    ## Genetic model (2): Allelic richness ~ het-exc (standardised)
+    # model specification
+    run_mod <- function(iter){
+        MCMCglmm(num_alleles_mean ~ TPM80_ratio_stand, #
+            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+            data=stats_mod_gen,nitt=1100000,burnin=100000,thin=1000)
+    }
+    
+    # model name
+    mod_name <- "gen2_hetexc"
+    
+    # check if model is saved
+    model_file_name <- paste0(mod_name, ".RData")
+    
+    # run 3 independent chains for model checking
+    if (!file.exists(paste0("output/mcmcmodels/", model_file_name))){
+        # run models
+        set.seed(1234)
+        models <- purrr::map(1:3, run_mod)
+        saveRDS(models, file = paste0("output/mcmcmodels/", model_file_name))
+    }
+    # load models
+    models <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name))
+    
+    # model checks according to holgers paper
+    plot(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
+    gelman.diag(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
+    
+    # one model
+    mod_gen <- models[[1]]
+    
+    # summary
+    summary(mod_gen)
+    
+    # visually inspecting chain convergence
+    plot(mod_gen$Sol)
+    plot(mod_gen$VCV)
+    autocorr(mod_gen$Sol)
+    autocorr(mod_gen$VCV)
+    
+    # variation explained by phylogeny
+    var_phy <- mod_gen$VCV[, "tip_label"] / (mod_gen$VCV[, "tip_label"] + mod_gen$VCV[, "units"])
+    posterior.mode(var_phy)
+    median(var_phy)
+    HPDinterval(var_phy)
+    
+    # R2s
+    # check if model R2s are saved
+    model_file_name_R2 <- paste0(mod_name,"_R2", ".RData")
+    
+    if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
+        set.seed(324)
+        R2_gen <- mcmcR2::partR2(mod_gen, partvars = c("TPM80_ratio_stand"),
+            data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, 
+            nitt = 1100000, burnin = 100000, thin = 1000)
+        saveRDS(R2_gen, file = paste0("output/mcmcmodels/", model_file_name_R2))
+    }
+    
+    R2_gen <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
+    
+    if (save_models){
+        R2_gen$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
+        R2_gen$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
+        # summary
+        mod_sum <- summary(mod_gen)
+        # save summary to file
+        sum_mod_gen <- mod_gen %>% 
+            summary() %$%
+            solutions %>% 
+            as.data.frame() %>% 
+            rownames_to_column("components") %>% 
+            mutate(post_median = apply(mod_gen$Sol, 2, median)) %>% 
+            mutate(post_mode = posterior.mode(mod_gen$Sol)) %>% 
+            .[c(1,2,7,8,3:6)] %>% 
+            rename(post_mean= post.mean,
+                lower =  "l-95% CI",
+                upper = "u-95% CI") %>% 
+            write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
+    }
+    
+}
 
 # plots for paper ----------------------------------------------------------------------------------
-
-# plot (1) het-exc vs genetic diversity
-
-# "num_alleles_mean", "obs_het_mean", "prop_low_afs_mean"
 
 # some controls
 point_size <- 3.5
 point_alpha <- 0.3
 
-# (I) Heterozygosity-excess ------------------------------------------------------------------------
-# (1)vs. allelic richness
-mod_plot_AR <- MCMCglmm(num_alleles_mean ~ TPM80_ratio , #num_alleles_mean  + 
+######## plot (1) het-exc vs genetic diversity #########
+
+# re-run model, as we don't want standardized predictions for plotting
+mod_plot_AR1 <- MCMCglmm(num_alleles_mean ~ TPM80_ratio, #
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=all_stats,nitt=110000,burnin=10000,thin=100)
+    data=stats_mod_gen,nitt=110000,burnin=10000,thin=100)
 
-mean(all_stats$TPM80_ratio)
-pred_df_AR <- data.frame(num_alleles_mean =0,
-     TPM80_ratio = seq(from = 0.2, to = 1, by = 0.05), 
+pred_df_AR1 <- data.frame(num_alleles_mean =0,
+    TPM80_ratio= seq(from = 0.1, to = 1, by = 0.05), 
     tip_label = all_stats$tip_label[1])
 
-mod_preds_AR <- data.frame(predict(mod_plot_AR, pred_df_AR, interval = "confidence")) %>% 
-             mutate(TPM80_ratio = seq(from = 0.2, to = 1, by = 0.05))
+mod_preds_AR1 <- data.frame(predict(mod_plot_AR1, pred_df_AR1, interval = "confidence")) %>% 
+             mutate(TPM80_ratio= seq(from = 0.1, to = 1, by = 0.05))
 
+AR1_beta <- read_delim("output/mcmcmodels/gen2_hetexc_beta.txt", delim = " ")
+AR1_R2 <- read_delim("output/mcmcmodels/gen2_hetexc_R2.txt", delim = " ")
 
-p1 <- ggplot(aes(TPM80_ratio, num_alleles_mean), data = all_stats) +
-    geom_line(data = mod_preds_AR, aes(y = fit), size = 1, alpha = 0.5) +
+p1 <- ggplot(aes(x = TPM80_ratio, y = num_alleles_mean), data = all_stats) +
+    geom_line(data = mod_preds_AR1, aes(y = fit), size = 1, alpha = 0.5) +
     geom_point(size = point_size, alpha = point_alpha) + # abc_out
     geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
-    xlab("Heterozygosity-excess") +
+    scale_y_continuous(breaks = seq(from = 2, to = 10, by = 2), limits = c(1,10)) +
+    scale_x_continuous(breaks = seq(from = 0.2, to = 1, by = 0.2)) +
+    xlab("Heterozygosity-excess") + #Allelic richness
     ylab("Allelic richness") +
+    annotate("text", x = 0.33, y = 2, label = "R^2 == '0.02 [0, 0.2]'", 
+             parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+    annotate("text", x = 0.33, y = 1.3, label = "beta == '-0.18 [-0.92, 0.58]'", 
+             parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     theme_martin() +
-    theme(#panel.grid.major = element_blank(),
-        plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")
+    theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0.9,0.1,0.25,0.9), "cm"),
+        axis.line = element_line(colour = "#cccccc"),
+        axis.ticks = element_line(colour = "#cccccc")
         #axis.title.x = element_text(margin = margin(t = 10)),
         #axis.title.y = element_text(margin = margin(r = 10))
         )
 p1
 
+######## plot (2) ABCprob(bot) vs genetic diversity #########
 
-# (2) vs. heterozygosity
-
-mod_plot_het <- MCMCglmm(obs_het_mean ~ TPM80_ratio , #num_alleles_mean  + 
+# re-run model, as we don't want standardized predictions for plotting
+mod_plot_AR2 <- MCMCglmm(num_alleles_mean ~ bot, #
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=all_stats,nitt=110000,burnin=10000,thin=100)
+    data=stats_mod_gen,nitt=110000,burnin=10000,thin=100)
 
-pred_df_het <- data.frame(obs_het_mean =0,
-    TPM80_ratio = seq(from = 0.2, to = 1, by = 0.05), 
+pred_df_AR2 <- data.frame(num_alleles_mean =0,
+    bot= seq(from = 0, to = 1, by = 0.05), 
     tip_label = all_stats$tip_label[1])
 
-mod_preds_het <- data.frame(predict(mod_plot_het, pred_df_het, interval = "confidence")) %>% 
-    mutate(TPM80_ratio = seq(from = 0.2, to = 1, by = 0.05))
+mod_preds_AR2 <- data.frame(predict(mod_plot_AR2, pred_df_AR2, interval = "confidence")) %>% 
+    mutate(bot= seq(from = 0, to = 1, by = 0.05))
 
+AR2_beta <- read_delim("output/mcmcmodels/gen1_bot_beta.txt", delim = " ")
+AR2_R2 <- read_delim("output/mcmcmodels/gen1_bot_R2.txt", delim = " ")
 
-p2 <- ggplot(aes(TPM80_ratio, obs_het_mean), data = all_stats) +
-    geom_line(data = mod_preds_het, aes(y = fit), size = 1, alpha = 0.5) +
+p2 <- ggplot(aes(x = bot, y = num_alleles_mean), data = all_stats) +
+    geom_line(data = mod_preds_AR2, aes(y = fit), size = 1, alpha = 0.5) +
     geom_point(size = point_size, alpha = point_alpha) + # abc_out
     geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
-    xlab("Heterozygosity-excess") +
-    ylab("Observed heterozygosity") +
+    scale_y_continuous(breaks = seq(from = 2, to = 10, by = 2), limits = c(1,10)) +
+    scale_x_continuous(breaks = seq(from = 0, to = 1, by = 0.2)) +
+    xlab("Bottleneck model probability (ABC)") + #Allelic richness
+    ylab("") +
+    annotate("text", x = 0.24, y = 2, label = "R^2 == '0.49 [0.2, 0.7]'", 
+        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+    annotate("text", x = 0.24, y = 1.3, label = "beta == '-1.3 [-1.8, -0.78]'", 
+        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     theme_martin() +
-    theme(#panel.grid.major = element_blank(),
-        plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")
+    theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0.9,0.5,0.25,0.1), "cm"),
+        axis.line = element_line(colour = "#cccccc"),
+        axis.ticks = element_line(colour = "#cccccc")
         #axis.title.x = element_text(margin = margin(t = 10)),
         #axis.title.y = element_text(margin = margin(r = 10))
     )
 p2
 
+p_bot_vs_div <- plot_grid(p1, p2, ncol = 2, labels = c("A", "B"))
+p_bot_vs_div
 
-# (3) vs. low frequ alleles
-
-mod_plot_afs <- MCMCglmm(prop_low_afs_mean ~ TPM80_ratio , #num_alleles_mean  + 
-    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=all_stats,nitt=110000,burnin=10000,thin=100)
-
-pred_df_afs <- data.frame(prop_low_afs_mean =0,
-    TPM80_ratio = seq(from = 0.2, to = 1, by = 0.05), 
-    tip_label = all_stats$tip_label[1])
-
-mod_preds_afs <- data.frame(predict(mod_plot_afs, pred_df_afs, interval = "confidence")) %>% 
-    mutate(TPM80_ratio = seq(from = 0.2, to = 1, by = 0.05))
-
-
-p3 <- ggplot(aes(TPM80_ratio, prop_low_afs_mean), data = all_stats) +
-    geom_line(data = mod_preds_afs, aes(y = fit), size = 1, alpha = 0.5) +
-    geom_point(size = point_size, alpha = point_alpha) + # abc_out
-    geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
-    xlab("Heterozygosity-excess") +
-    ylab("% low frequency alleles") +
-    theme_martin() +
-    theme(#panel.grid.major = element_blank(),
-        plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")
-        #axis.title.x = element_text(margin = margin(t = 10)),
-        #axis.title.y = element_text(margin = margin(r = 10))
-    )
-p3
-
-
-
-
-
-# ABC bottleneck probability -----------------------------------------------------------------------
-
-mod_plot_AR_abc <- MCMCglmm(num_alleles_mean ~ bot, #num_alleles_mean  + 
-    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=all_stats,nitt=110000,burnin=10000,thin=100)
-
-
-pred_df_AR_abc <- data.frame(num_alleles_mean =0,
-    bot = seq(from = 0, to = 1, by = 0.05), 
-    tip_label = all_stats$tip_label[1])
-
-mod_preds_AR_abc <- data.frame(predict(mod_plot_AR_abc, pred_df_AR_abc, interval = "confidence")) %>% 
-    mutate(bot= seq(from = 0, to = 1, by = 0.05))
-
-
-p4 <- ggplot(aes(bot, num_alleles_mean), data = all_stats) +
-    geom_line(data = mod_preds_AR_abc, aes(y = fit), size = 1, alpha = 0.5) +
-    geom_point(size = point_size, alpha = point_alpha) + # abc_out
-    geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
-    xlab("Bottleneck model probability") +
-    ylab("Allelic richness") +
-    theme_martin() +
-    theme(#panel.grid.major = element_blank(),
-        plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")
-        #axis.title.x = element_text(margin = margin(t = 10)),
-        #axis.title.y = element_text(margin = margin(r = 10))
-    )
-p4
-
-
-
-
+# save it!
+cowplot::save_plot(filename = "other_stuff/figures/figures_final/fig2_bot_vs_div.jpg", 
+                                plot = p_bot_vs_div, base_height = 3, base_width = 7)
 
 
 

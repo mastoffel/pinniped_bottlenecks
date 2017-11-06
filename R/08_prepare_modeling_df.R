@@ -8,8 +8,8 @@ library(readr)
 tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
 
 # produce short names for plotting
-short <- c("W", "NFS", "SSL", "CSL", "GSL", "SASL", "AFS", "NZSL", "AntFS","SAntFS", "NZFS", "SAFS", "GFS", 
-    "BS", "HoS", "GS", "HS", "ARS", "SRS", "BRS", "LRS", "MMS", "HMS", "NES", "SES", "CS", "RS", "LS", "WS")
+short <- c("W", "NFS", "SSL", "CSL", "GSL", "AusFS", "SASL", "NZSL", "AntFS","SAntFS", "NZFS", "SAFS", "GFS", 
+    "BS", "HoS", "HS", "GS", "ARS", "BRS", "SRS", "LRS", "MMS", "HMS", "NES", "SES", "RS", "CS", "LS", "WS")
 
 # all_stats_tree is from 10_visualise_phylogeny.R
 all_stats <- read_csv("data/processed/all_stats_tree_29.csv") %>% 
