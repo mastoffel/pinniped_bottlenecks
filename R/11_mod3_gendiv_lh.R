@@ -58,6 +58,7 @@ prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
 
 stats_mod_genlh <- all_stats %>% 
     mutate(Abundance = ((Abundance - mean(Abundance)) / (2*sd(Abundance))), 
+        logAbundance = ((logAbundance - mean(logAbundance)) / (2*sd(logAbundance))),
         Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
         SSD = (SSD - mean(SSD) / (2*sd(SSD))),
         logharem_size = (log(harem_size))) %>% 
@@ -73,7 +74,7 @@ stats_mod_genlh <- stats_mod_genlh %>% mutate(BreedingType = as.factor(BreedingT
 # Gelman (2008), Schielzeth (2014)
 
 run_mod <- function(iter){
-    MCMCglmm(num_alleles_mean ~ Abundance + SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    MCMCglmm(num_alleles_mean ~ logAbundance + SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
         random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
         family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
         data=stats_mod_genlh,nitt=1100000,burnin=100000,thin=1000)
@@ -122,7 +123,7 @@ model_file_name_R2 <- paste0(mod_name, "_R2.RData")
 
 if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
     set.seed(324)
-    R2_genlh <- mcmcR2::partR2(mod_genlh, partvars = c("SSD", "BreedingType", "Abundance"),
+    R2_genlh <- mcmcR2::partR2(mod_genlh, partvars = c("SSD", "BreedingType", "logAbundance"),
         data = stats_mod_genlh, inv_phylo = inv_phylo, prior = prior, 
         nitt = 1100000, burnin = 100000, thin = 1000)
     saveRDS( R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2))
@@ -152,156 +153,83 @@ mod_genlh %>%
 
 
 
-# plots for SSD------------------------------------------------------------------------------------
+# plots ------------------------------------------------------------------------------------
 point_size = 3.5
-# boxplot 1 - bot -------------------
-p1 <- ggplot(aes(BreedingType, bot), data = all_stats) +
-    geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.7, width = 0.7, aes(fill = BreedingType), outlier.shape = NA) + #
-    # geom_point(size = point_size, alpha = point_alpha, aes(color = BreedingType)) + # abc_out
-    geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin() +
-    scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
-    scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
-    xlab("Breeding Habitat") +
-    ylab("Bottleneck model probability (ABC)") +
-    guides(fill=FALSE, color = FALSE) +
-    scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1), limits = c(0, 1.05)) +
-    theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        # panel.grid.major.y = element_line(colour = "lightgrey", size = 0.2),
-        plot.margin = unit(c(0.9,0.5,0.25,0.1), "cm"),
-        axis.line.x = element_line(colour = "#cccccc"),
-        axis.line.y = element_line(colour = "#cccccc"),
-        #axis.ticks.y = element_blank(),
-        axis.ticks = element_line(colour = "#cccccc")) 
+#
 
-p1
-
-# boxplot 2 - TPM80 -------------------
-p2 <- ggplot(aes(BreedingType, TPM80_ratio), data = all_stats) +
-    geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.7, width = 0.7, aes(fill = BreedingType), outlier.shape = NA) + #
-    # geom_point(size = point_size, alpha = point_alpha, aes(color = BreedingType)) + # abc_out
-    geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin() +
-    scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
-    scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
-    xlab("Breeding Habitat") +
-    ylab("Heterozygosity-excess") +
-    guides(fill=FALSE, color = FALSE) +
-    scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1), limits = c(0.1, 1.05)) +
-    theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        # panel.grid.major.y = element_line(colour = "lightgrey", size = 0.2),
-        plot.margin = unit(c(0.9,0.5,0.25,0.1), "cm"),
-        axis.line.x = element_line(colour = "#cccccc"),
-        axis.line.y = element_line(colour = "#cccccc"),
-        #axis.ticks.y = element_blank(),
-        axis.ticks = element_line(colour = "#cccccc")) 
-
-p2
-
-plot_grid(p1, p2)
-
-
-# scatterplot -----------------------
-mod_hetexc_plot <- MCMCglmm(TPM80_ratio ~ SSD, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+mod_div <- MCMCglmm(num_alleles_mean ~ logAbundance +  BreedingType + SSD, #
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=stats_mod_hetexc,nitt=110000,burnin=10000,thin=100)
+    data=all_stats,nitt=110000,burnin=10000,thin=100)
+summary(mod_div)
 
-pred_df_hetexc <- data.frame(TPM80_ratio = 0,
-    SSD = seq(from = 0.5, to = 8, by = 0.1),
+# prediction 
+pred_df <- data.frame(num_alleles_mean = 0, 
+    logAbundance = rep(seq(from = 5, to = 15.5, by = 0.5), each = 2),
+    BreedingType = c("land", "ice"), 
+    SSD = mean(all_stats$SSD), 
     tip_label = all_stats$tip_label[1])
 
-mod_preds_hetexc <- data.frame(predict(mod_hetexc_plot, pred_df_hetexc, interval = "confidence")) %>% 
-    mutate(SSD = seq(from = 0.5, to = 8, by = 0.1))
+mod_preds <- data.frame(predict(mod_div, pred_df, interval = "confidence"))
+
+mod_preds$logAbundance <- rep(seq(from = 5, to = 15.5, by = 0.5), each = 2)
+mod_preds$BreedingType <- c("land", "ice")
+#names(mod_preds)[3] <- "Abundance"
+
+# per land and ice breeding
+pred_df <- data.frame(num_alleles_mean = 0, logAbundance = rep(seq(from = 5, to = 15.5, by = 0.5), each = 2), 
+    BreedingType = c("land", "ice"), SSD = mean(all_stats$SSD), tip_label = all_stats$tip_label[1])
+
+mod_preds <- data.frame(predict(mod_div, pred_df, interval = "confidence"))
+
+mod_preds$logAbundance <- rep(seq(from = 5, to = 15.5, by = 0.5), each = 2)
+mod_preds$BreedingType <- c("land", "ice")
 
 
-p3 <- ggplot(aes(x = SSD, y = TPM80_ratio), data = all_stats) +
-    geom_line(data = mod_preds_hetexc, aes(y = fit), size = 0.2, alpha = 0.5) +
-    geom_point(size = point_size, alpha = 0.7,  aes(col = bot)) + # abc_out
-    geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
+p_div <- ggplot(aes(logAbundance, num_alleles_mean), data = all_stats) +
+    geom_point(size = 3.5, alpha = 0.7, aes(color = BreedingType)) + # abc_out
+    geom_point(size = 3.5, alpha = 0.8, shape = 21, col ="black") +
+    geom_line(data = mod_preds, aes(y = fit, color = BreedingType), size = 1, alpha = 0.5) +
+    #geom_line(stat = "smooth", method = "lm",  alpha = 0.6,  aes(color = BreedingType)) +
+    #geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=0.08, 
+    #aes(fill = BreedingType)) +
+    scale_color_manual(values = c("cornflowerblue", "#d8b365"), name = "Breeding Habitat") +
+    # scale_fill_manual(values = c("cornflowerblue", "#d8b365"), name = "Breeding Habitat") +
     theme_martin() +
-    xlab("Sexual Weight Dimorphism") +
-    ylab("Heterozygosity-excess") +
-    # scale_x_continuous(breaks = log(c(1,2,3,4,6,8,10,15,20,30,40,50)), labels = c(1,2,3,4,6,8,10,15,20,30,40,50)) + #breaks = c(1,2,3,4,5,6,7,8)
-    scale_x_continuous(breaks = c(1,2,3,4,5,6,7,8,9,10)) +
-    geom_line(data = mod_preds_hetexc, aes(y = fit), size = 1.2, alpha = 0.5, color = "grey") + 
-    scale_fill_manual(values = c("cornflowerblue", "goldenrod")) +
-    #ylab("Heterozygosity-excess") +
-    theme(panel.grid.major = element_blank(),
+    scale_x_continuous(trans = "log", breaks = c(log(100), log(1000), log(10000), log(100000), log(1000000), log(10000000)), 
+        labels = c(expression(10^{2}), expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6}),  expression(10^{7})),
+        limits = c(4.5, 16.2)) + 
+    scale_y_continuous(breaks = c(seq(from = 2, to = 10, by =2))) +
+    theme(legend.position=c(0.3, 0.8),
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         plot.margin = unit(c(0.9,0.2,0.25,0.1), "cm"),
         axis.line = element_line(colour = "#cccccc"),
         axis.ticks = element_line(colour = "#cccccc"),
-        legend.position = c(0.75,0.3),
-        legend.title=element_text(size=10)
-    ) +
-    guides(color = guide_colorbar(barwidth = 0.5, barheight = 3, 
-        title.position = "left")) + #, label.position = "bottom"
-    scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1), limits = c(0.1, 1)) +
-    scale_color_distiller(palette = "RdBu",
-        direction = -1, 
-        name = "ABC bottleneck \nprobability %", labels=c("0", "50", "100"), breaks = c(0.05,0.5,1)) +
+        legend.title=element_text(size=10)) +
+    xlab("Global abundance") +
+    ylab("Allelic richness") +
     geom_text_repel(label = all_stats$short,size = 2.5, alpha = 1, color = "grey50",#  aes(label = common) , 
         segment.alpha= 1,  box.padding = unit(0.4, "lines"), point.padding = unit(0.7, "lines"),
         segment.size = 0.1,  force = 1, min.segment.length = unit(0.01, "lines"))
-p3
 
-
-plot_grid(p1, p2, p3, nrow = 1, rel_widths = c(1,1,2), labels = c("A", "B", "C"), label_x = 0.1)
-# ggsave(filename = "other_stuff/figures/figures_final/fig3_hetexc_vs_lh.jpg", width = 9, height = 3)
+p_div
 
 
 # load model output
-mod_beta <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_beta.txt", delim = " ")
-mod_R2 <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_R2.txt", delim = " ")
-mod_SC <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_SC.txt", delim = " ")
+mod_beta <- read_delim("output/mcmcmodels/gendiv_vs_lh_beta.txt", delim = " ")
+mod_R2 <- read_delim("output/mcmcmodels/gendiv_vs_lh_R2.txt", delim = " ")
+mod_SC <- read_delim("output/mcmcmodels/gendiv_vs_lh_SC.txt", delim = " ")
 
-mod_beta2 <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_beta.txt", delim = " ")
-mod_R22 <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_R2.txt", delim = " ")
-mod_SC2 <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_SC.txt", delim = " ")
 
 # beta coefficients
 mod_out <- mod_beta[-1, c("components", "post_median", "lower", "upper")]
 names(mod_out) <- c("comps", "pe", "cilow", "cihigh")
-mod_out2 <- mod_beta2[-1, c("components", "post_median", "lower", "upper")]
-names(mod_out2) <- c("comps", "pe", "cilow", "cihigh")
 
-p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) + 
+p2 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) + 
     # geom_point(size = 3, color = "grey69") + # abc_out
-    geom_errorbarh(alpha=0.4, color="black",height = 0, position=position_nudge(y = 0.1)) +
-    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69", position=position_nudge(y = 0.1)) +
-    geom_errorbarh(data = mod_out2, alpha=0.4, color="black",height = 0, position=position_nudge(y = -0.1)) +
-    geom_point(data = mod_out2, size = 3.5, shape = 21, col = "black",fill = "white", position=position_nudge(y = -0.1)) +
-    # geom_errorbarh(alpha=0.4, color="black",height = 0) +
-    theme_martin() +
-    theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.line.x = element_line(color = '#333333'),
-        axis.title.y = element_blank(),
-        axis.text.y = element_text(hjust = c(0.5)),
-        plot.margin = unit(c(1,0.2,0.33,0.1), "cm"),
-        axis.title.x=element_text(margin=margin(t=12))) +
-    scale_x_continuous(breaks = c(-0.6, -0.4, -0.2, 0, 0.2)) +
-    scale_y_discrete(labels = c("Breeding\nhabitat",
-        "SSD")) +
-    xlab(expression(paste("Effect size ", beta))) +
-    geom_vline(xintercept = 0, color = "black", alpha = 0.1)
-p4
-
-# SC
-mod_out_SC <- mod_SC[, c("pred", "medianSC", "lower", "upper")]
-names(mod_out_SC ) <- c("comps", "pe", "cilow", "cihigh")
-mod_out_SC2 <- mod_SC2[, c("pred", "medianSC", "lower", "upper")]
-names(mod_out_SC2) <- c("comps", "pe", "cilow", "cihigh")
-# structure coefficients
-p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) + 
-    geom_errorbarh(alpha=0.4, color="black",height = 0, position=position_nudge(y = 0.1)) +
-    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69", position=position_nudge(y = 0.1)) +
-    geom_errorbarh(data = mod_out_SC2, alpha=0.4, color="black",height = 0, position=position_nudge(y = -0.1)) +
-    geom_point(data = mod_out_SC2, size = 3.5, shape = 21, col = "black",fill = "white", position=position_nudge(y = -0.1)) +
-    # geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
     # geom_errorbarh(alpha=0.4, color="black",height = 0) +
     theme_martin() +
     theme(panel.grid.major = element_blank(),
@@ -309,35 +237,23 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
         axis.text.y = element_blank(),
-        plot.margin = unit(c(1,0.2,0.33,0.3), "cm"),
-        axis.text.x=element_text(margin=margin(t=6))
-    ) +
-    scale_y_discrete(labels = c("Breeding\nhabitat",
-        "SSD")) +
-    xlab(expression(paste("Structure coefficient", " r(", hat(Y),",x)") )) +
+        plot.margin = unit(c(1,0,0.5,1.5), "cm"),
+        axis.title.x=element_text(margin=margin(t=0.5, unit = "cm"))) +
+    #scale_y_discrete(labels = c("Breeding\nhabitat\nice vs. land", "log(Abundance)", 
+    #    "Sexual Size\nDimorphism")) +
+    xlab(expression(paste("Effect size ", beta))) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1)
-p5
+p2
 
-plot_grid(p3, p4)
 
-# R2
-col_legend <- "#969696"
-mod_out_R2 <- mod_R2[, c("combinations", "medianR2", "lower", "upper")][-4, ]
-names(mod_out_R2) <- c("comps", "pe", "cilow", "cihigh")
-mod_out_R2$comps <- factor(mod_out_R2$comps, levels = c("BreedingType", "SSD", "full model"))
+mod_out_SC <- mod_SC[, c("pred", "medianSC", "lower", "upper")]
+names(mod_out_SC ) <- c("comps", "pe", "cilow", "cihigh")
 
-mod_out_R22 <- mod_R22[, c("combinations", "medianR2", "lower", "upper")][-4, ]
-names(mod_out_R22) <- c("comps", "pe", "cilow", "cihigh")
-mod_out_R22$comps <- factor(mod_out_R22$comps, levels = c("BreedingType", "SSD", "full model"))
-# mod_out_R2$comps <- rev(fct_inorder(factor(mod_out_R2$comps)))
 # structure coefficients
-p6 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) + 
+p3 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) + 
     # geom_point(size = 3, color = "grey69") + # abc_out
-    geom_errorbarh(alpha=0.4, color="black",height = 0, position=position_nudge(y = 0.1)) +
-    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69", position=position_nudge(y = 0.1)) +
-    geom_errorbarh(data = mod_out_R22, alpha=0.4, color="black",height = 0, position=position_nudge(y = -0.1)) +
-    geom_point(data = mod_out_R22, size = 3.5, shape = 21, col = "black",fill = "white", position=position_nudge(y = -0.1)) +
-    
+    geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
     # geom_errorbarh(alpha=0.4, color="black",height = 0) +
     theme_martin() +
     theme(panel.grid.major = element_blank(),
@@ -345,33 +261,57 @@ p6 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
         axis.text.y = element_text(hjust = c(0.5)),
-        plot.margin = unit(c(0.3, 1, 0.6, 0.4), "cm")) +
-    scale_y_discrete(labels = c( "Breeding\nhabitat", "SSD", "Full model")) +
+        plot.margin = unit(c(1,0.2,0.65,0.1), "cm")) +
+    scale_y_discrete(labels = c("Breeding\nhabitat", "Abundance", 
+        "SSD")) +
+    xlab(expression(paste("Structure coefficient", " r(", hat(Y),",x)") )) +
+    geom_vline(xintercept = 0, color = "black", alpha = 0.1)
+p3
+
+col_legend <- "#969696"
+
+mod_out_R2 <- mod_R2[, c("combinations", "medianR2", "lower", "upper")]
+names(mod_out_R2) <- c("comps", "pe", "cilow", "cihigh")
+mod_out_R2
+mod_out_R2$comps <- rev(fct_inorder(factor(mod_out_R2$comps)))
+mod_out_R2 <- mod_out_R2[-8, ]
+# structure coefficients
+p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) + 
+    # geom_point(size = 3, color = "grey69") + # abc_out
+    geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
+    # geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    theme_martin() +
+    theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line.x = element_line(color = '#333333'),
+        axis.title.y = element_blank(),
+        axis.text.y = element_text(hjust = c(0.5)),
+        plot.margin = unit(c(0.3, 0.2, 0.3, 0.2), "cm")) +
+    scale_y_discrete(labels = rev(c("Full model", "SSD", "Breeding Habitat",  "Abundance", 
+                                    "SSD &\nBreeding Habitat", "SSD &\nAbundance",  "Breeding Habitat &\nAbundance"))) +
     xlab(expression(paste(R^{2}))) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1) +
-    #annotate("segment", x = 0.9, xend = 0.9, y = 0.8, yend = 3.5, color = col_legend) +
-    #annotate("text", x = 0.98, xend = 0.95, y = 2, yend = 3, color = col_legend, label = c("common"), angle = 270) +
-    annotate("segment", x = 1.2, xend = 1.2, y = 0.8, yend = 2.2, color = col_legend) +
-    annotate("text", x = 1.3, xend = 1.3, y = 1.5, yend = 2.2, color = col_legend, label = c("unique"), angle = 270) +
-    annotate("segment", x = 1.2, xend = 1.2, y = 2.4, yend = 3.5, color = col_legend) +
-    annotate("text", x = 1.3, xend = 1.3, y = 2.9, yend = 3.5, color = col_legend, label = c("marginal"), angle = 270)
-p6
+    annotate("segment", x = 0.9, xend = 0.9, y = 0.8, yend = 3.5, color = col_legend) +
+    annotate("text", x = 0.98, xend = 0.95, y = 2, yend = 3, color = col_legend, label = c("common"), angle = 270) +
+    annotate("segment", x = 0.9, xend = 0.9, y = 4, yend = 6, color = col_legend) +
+    annotate("text", x = 0.98, xend = 0.95, y = 5, yend = 6.5, color = col_legend, label = c("unique"), angle = 270) +
+    annotate("segment", x = 0.9, xend = 0.9, y = 6.3, yend = 7.5, color = col_legend) +
+    annotate("text", x = 0.98, xend = 0.95, y = 7, yend = 8, color = col_legend, label = c("marginal"), angle = 270)
+p4
 
 
-p_top <- plot_grid(p1, p2, p3, nrow = 1, rel_widths = c(1,1,2), labels = c("A", "B", "C"), label_x = 0.1)
-p_top
-
-p_bot <- plot_grid(p4, p5, p6, nrow = 1, rel_widths = c(1.3,1,1.7),
-    labels = c("D","E","F"))
+p_top <- plot_grid(p_div, p4, rel_widths = c(1.4,1), labels = c("A", "B"),label_fontfamily = "Lato",
+    label_x = 0.1, label_y = 0.98)
+p_top 
+p_bot <- plot_grid(p2, p3, labels = c("C", "D"),label_fontfamily = "Lato",
+    label_x = 0.2, label_y = 1, rel_widths = c(1, 1.2))
 p_bot
 
-p_final <- plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(1.5,1))
+p_final <- plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(1.6,1))
 p_final
 
-ggsave('other_stuff/figures/figures_final/fig3_bot_vs_lh.jpg',p_final,  width=9, height=5.5)
-
-
-
+ggsave('other_stuff/figures/figures_final/gendiv_lh.jpg',p_final,  width=6.7, height=5.5)
 
 
 
