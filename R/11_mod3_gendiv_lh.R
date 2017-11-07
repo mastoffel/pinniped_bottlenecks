@@ -125,7 +125,7 @@ if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
     R2_genlh <- mcmcR2::partR2(mod_genlh, partvars = c("SSD", "BreedingType", "Abundance"),
         data = stats_mod_genlh, inv_phylo = inv_phylo, prior = prior, 
         nitt = 1100000, burnin = 100000, thin = 1000)
-    saveRDS(R2_hetexc, file = paste0("output/mcmcmodels/", model_file_name_R2))
+    saveRDS( R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2))
 }
 
 R2_genlh<- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
