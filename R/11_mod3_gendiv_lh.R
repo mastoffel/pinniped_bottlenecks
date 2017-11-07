@@ -56,7 +56,7 @@ inv_phylo <- inverseA(tree_final, nodes="TIPS",scale=FALSE)$Ainv #,scale=TRUE
 prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
 
 
-stats_mod_hetexc <- all_stats %>% 
+stats_mod_genlh <- all_stats %>% 
     mutate(Abundance = ((Abundance - mean(Abundance)) / (2*sd(Abundance))), 
         Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
         SSD = (SSD - mean(SSD) / (2*sd(SSD))),
@@ -64,37 +64,24 @@ stats_mod_hetexc <- all_stats %>%
     mutate(logharem_size = (logharem_size - mean(logharem_size) / (2*sd(logharem_size)))) %>% 
     mutate(harem_size = (harem_size - mean(harem_size) / (2*sd(harem_size)))) 
 
-stats_mod_hetexc <- stats_mod_hetexc %>% mutate(BreedingType = as.factor(BreedingType)) %>% 
+stats_mod_genlh <- stats_mod_genlh %>% mutate(BreedingType = as.factor(BreedingType)) %>% 
     mutate(BreedingType = relevel(BreedingType, ref = "land"))
 
-## model 1: het excess vs. LH with SSD -------------------------------------------------------
+## model 1: gen div vs. LH with SSD -------------------------------------------------------
 
 # standardize by 2 sd to make estimates comparable with BreedingHabitat variable(
 # Gelman (2008), Schielzeth (2014)
 
-second_var <- "SSD" # "logharem_size"
-
-if (second_var == "logharem_size"){
-    run_mod <- function(iter){
-        MCMCglmm(TPM80_ratio ~ logharem_size + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
-            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
-    }
-
-} else if (second_var == "SSD"){
-    run_mod <- function(iter){
-        MCMCglmm(TPM80_ratio ~ SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
-            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
-    }
+run_mod <- function(iter){
+    MCMCglmm(num_alleles_mean ~ Abundance + SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+        random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+        family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+        data=stats_mod_genlh,nitt=1100000,burnin=100000,thin=1000)
 }
-
 
 # check if model is saved
 # model name
-mod_name <- "hetexc_vs_lh_SSD"
+mod_name <- "gendiv_vs_lh"
 
 # check if model is saved
 model_file_name <- paste0(mod_name, ".RData")
@@ -113,19 +100,19 @@ plot(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
 gelman.diag(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
 
 # one model
-mod_hetexc <- models[[1]]
+mod_genlh <- models[[1]]
 
 # summary
-summary(mod_hetexc)
+summary(mod_genlh)
 
 # visually inspecting chain convergence
-plot(mod_hetexc$Sol)
-plot(mod_hetexc$VCV)
-autocorr(mod_hetexc$Sol)
-autocorr(mod_hetexc$VCV)
+plot(mod_genlh$Sol)
+plot(mod_genlh$VCV)
+autocorr(mod_genlh$Sol)
+autocorr(mod_genlh$VCV)
 
 # variation explained by phylogeny
-var_phy <- mod_hetexc$VCV[, "tip_label"] / (mod_hetexc$VCV[, "tip_label"] + mod_hetexc$VCV[, "units"])
+var_phy <- mod_genlh$VCV[, "tip_label"] / (mod_genlh$VCV[, "tip_label"] + mod_genlh$VCV[, "units"])
 posterior.mode(var_phy)
 median(var_phy)
 HPDinterval(var_phy)
@@ -135,27 +122,27 @@ model_file_name_R2 <- paste0(mod_name, "_R2.RData")
 
 if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
     set.seed(324)
-    R2_hetexc <- mcmcR2::partR2(mod_hetexc, partvars = c("SSD", "BreedingType"),
-        data = stats_mod_hetexc, inv_phylo = inv_phylo, prior = prior, 
+    R2_genlh <- mcmcR2::partR2(mod_genlh, partvars = c("SSD", "BreedingType", "Abundance"),
+        data = stats_mod_genlh, inv_phylo = inv_phylo, prior = prior, 
         nitt = 1100000, burnin = 100000, thin = 1000)
     saveRDS(R2_hetexc, file = paste0("output/mcmcmodels/", model_file_name_R2))
 }
 
-R2_hetexc <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-R2_hetexc
+R2_genlh<- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
+R2_genlh
 # out <- mcmcR2::R2mcmc(mod_hetexc)
 # out$partR2
-R2_hetexc$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
-R2_hetexc$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
+R2_genlh$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
+R2_genlh$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
 
 # save summary to file
-mod_hetexc %>% 
+mod_genlh %>% 
     summary() %$%
     solutions %>% 
     as.data.frame() %>% 
     tibble::rownames_to_column("components") %>% 
-    mutate(post_median = apply(mod_hetexc$Sol, 2, median)) %>% 
-    mutate(post_mode = posterior.mode(mod_hetexc$Sol)) %>% 
+    mutate(post_median = apply(mod_genlh$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod_genlh$Sol)) %>% 
     .[c(1,2,7,8,3:6)] %>% 
     rename(post_mean= post.mean,
         lower =  "l-95% CI",
@@ -163,339 +150,6 @@ mod_hetexc %>%
     write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
 
 
-## model 2: het excess vs. LH with logharem_size ---------------------------------------------------
-
-# standardize by 2 sd to make estimates comparable with BreedingHabitat variable(
-# Gelman (2008), Schielzeth (2014)
-
-stats_mod_hetexc <- 
-    all_stats %>% 
-    mutate(Abundance = ((Abundance - mean(Abundance)) / (2*sd(Abundance))), 
-        Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
-        SSD = (SSD - mean(SSD) / (2*sd(SSD))),
-        logharem_size = (log(harem_size))) %>% 
-    mutate(logharem_size = (logharem_size - mean(logharem_size) / (2*sd(logharem_size)))) %>% 
-    mutate(harem_size = (harem_size - mean(harem_size) / (2*sd(harem_size)))) 
-
-stats_mod_hetexc <- stats_mod_hetexc %>% mutate(BreedingType = as.factor(BreedingType)) %>% 
-    mutate(BreedingType = relevel(BreedingType, ref = "land"))
-
-
-second_var <- "logharem_size" # "logharem_size"
-
-if (second_var == "logharem_size"){
-    run_mod <- function(iter){
-        MCMCglmm(TPM80_ratio ~ logharem_size + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
-            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
-    }
-    
-} else if (second_var == "SSD"){
-    run_mod <- function(iter){
-        MCMCglmm(TPM80_ratio ~ SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
-            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
-    }
-}
-
-
-# check if model is saved
-# model name
-mod_name <- "hetexc_vs_lh_logharem_size"
-
-# check if model is saved
-model_file_name <- paste0(mod_name, ".RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name))){
-    # run models
-    set.seed(1234)
-    models <- purrr::map(1:3, run_mod)
-    saveRDS(models, file = paste0("output/mcmcmodels/", model_file_name))
-}
-
-models <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name))
-
-# model checks according to holgers paper
-plot(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
-gelman.diag(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
-
-# one model
-mod_hetexc <- models[[1]]
-
-# summary
-summary(mod_hetexc)
-
-# visually inspecting chain convergence
-plot(mod_hetexc$Sol)
-plot(mod_hetexc$VCV)
-autocorr(mod_hetexc$Sol)
-autocorr(mod_hetexc$VCV)
-
-# variation explained by phylogeny
-var_phy <- mod_hetexc$VCV[, "tip_label"] / (mod_hetexc$VCV[, "tip_label"] + mod_hetexc$VCV[, "units"])
-posterior.mode(var_phy)
-median(var_phy)
-HPDinterval(var_phy)
-
-# commonality analyses and R2
-model_file_name_R2 <- paste0(mod_name, "_R2.RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
-    set.seed(324)
-    R2_hetexc <- mcmcR2::partR2(mod_hetexc, partvars = c("SSD", "BreedingType"),
-        data = stats_mod_hetexc, inv_phylo = inv_phylo, prior = prior, 
-        nitt = 1100000, burnin = 100000, thin = 1000)
-    saveRDS(R2_hetexc, file = paste0("output/mcmcmodels/", model_file_name_R2))
-}
-
-R2_hetexc <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-R2_hetexc
-# out <- mcmcR2::R2mcmc(mod_hetexc)
-# out$partR2
-R2_hetexc$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
-R2_hetexc$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
-
-# save summary to file
-mod_hetexc %>% 
-    summary() %$%
-    solutions %>% 
-    as.data.frame() %>% 
-    tibble::rownames_to_column("components") %>% 
-    mutate(post_median = apply(mod_hetexc$Sol, 2, median)) %>% 
-    mutate(post_mode = posterior.mode(mod_hetexc$Sol)) %>% 
-    .[c(1,2,7,8,3:6)] %>% 
-    rename(post_mean= post.mean,
-        lower =  "l-95% CI",
-        upper = "u-95% CI") %>% 
-    write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
-
-
-
-point_size <- 3.5
-point_alpha <- 0.3
-
-## model 3: bot vs LH with SSH ---------------------------------------------------------------------
-
-# standardize by 2 sd to make estimates comparable with BreedingHabitat variable(
-# Gelman (2008), Schielzeth (2014)
-
-stats_mod_hetexc <- 
-    all_stats %>% 
-    mutate(Abundance = ((Abundance - mean(Abundance)) / (2*sd(Abundance))), 
-        Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
-        SSD = (SSD - mean(SSD) / (2*sd(SSD))),
-        logharem_size = (log(harem_size))) %>% 
-    mutate(logharem_size = (logharem_size - mean(logharem_size) / (2*sd(logharem_size)))) %>% 
-    mutate(harem_size = (harem_size - mean(harem_size) / (2*sd(harem_size)))) 
-
-stats_mod_hetexc <- stats_mod_hetexc %>% mutate(BreedingType = as.factor(BreedingType)) %>% 
-    mutate(BreedingType = relevel(BreedingType, ref = "land"))
-
-
-second_var <- "SSD" # "logharem_size"
-
-if (second_var == "logharem_size"){
-    run_mod <- function(iter){
-        MCMCglmm(bot ~ logharem_size + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
-            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
-    }
-    
-} else if (second_var == "SSD"){
-    run_mod <- function(iter){
-        MCMCglmm(bot ~ SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
-            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
-    }
-}
-
-
-# check if model is saved
-# model name
-mod_name <- "bot_vs_lh_SSD"
-
-# check if model is saved
-model_file_name <- paste0(mod_name, ".RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name))){
-    # run models
-    set.seed(1234)
-    models <- purrr::map(1:3, run_mod)
-    saveRDS(models, file = paste0("output/mcmcmodels/", model_file_name))
-}
-
-models <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name))
-
-# model checks according to holgers paper
-plot(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
-gelman.diag(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
-
-# one model
-mod_hetexc <- models[[1]]
-
-# summary
-summary(mod_hetexc)
-
-# visually inspecting chain convergence
-plot(mod_hetexc$Sol)
-plot(mod_hetexc$VCV)
-autocorr(mod_hetexc$Sol)
-autocorr(mod_hetexc$VCV)
-
-# variation explained by phylogeny
-var_phy <- mod_hetexc$VCV[, "tip_label"] / (mod_hetexc$VCV[, "tip_label"] + mod_hetexc$VCV[, "units"])
-posterior.mode(var_phy)
-median(var_phy)
-HPDinterval(var_phy)
-
-# commonality analyses and R2
-model_file_name_R2 <- paste0(mod_name, "_R2.RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
-    set.seed(324)
-    R2_hetexc <- mcmcR2::partR2(mod_hetexc, partvars = c("SSD", "BreedingType"),
-        data = stats_mod_hetexc, inv_phylo = inv_phylo, prior = prior, 
-        nitt = 1100000, burnin = 100000, thin = 1000)
-    saveRDS(R2_hetexc, file = paste0("output/mcmcmodels/", model_file_name_R2))
-}
-
-R2_hetexc <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-R2_hetexc
-# out <- mcmcR2::R2mcmc(mod_hetexc)
-# out$partR2
-R2_hetexc$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
-R2_hetexc$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
-
-# save summary to file
-mod_hetexc %>% 
-    summary() %$%
-    solutions %>% 
-    as.data.frame() %>% 
-    tibble::rownames_to_column("components") %>% 
-    mutate(post_median = apply(mod_hetexc$Sol, 2, median)) %>% 
-    mutate(post_mode = posterior.mode(mod_hetexc$Sol)) %>% 
-    .[c(1,2,7,8,3:6)] %>% 
-    rename(post_mean= post.mean,
-        lower =  "l-95% CI",
-        upper = "u-95% CI") %>% 
-    write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
-
-
-
-## model 4: bot vs LH with logharem_size -----------------
-
-stats_mod_hetexc <- 
-    all_stats %>% 
-    mutate(Abundance = ((Abundance - mean(Abundance)) / (2*sd(Abundance))), 
-        Generation_time = (Generation_time - mean(Generation_time) / (2*sd(Generation_time))),
-        SSD = (SSD - mean(SSD) / (2*sd(SSD))),
-        logharem_size = (log(harem_size))) %>% 
-    mutate(logharem_size = (logharem_size - mean(logharem_size) / (2*sd(logharem_size)))) %>% 
-    mutate(harem_size = (harem_size - mean(harem_size) / (2*sd(harem_size)))) 
-
-stats_mod_hetexc <- stats_mod_hetexc %>% mutate(BreedingType = as.factor(BreedingType)) %>% 
-    mutate(BreedingType = relevel(BreedingType, ref = "land"))
-
-
-second_var <- "logharem_size" # "logharem_size"
-
-if (second_var == "logharem_size"){
-    run_mod <- function(iter){
-        MCMCglmm(bot ~ logharem_size + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
-            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
-    }
-    
-} else if (second_var == "SSD"){
-    run_mod <- function(iter){
-        MCMCglmm(bot ~ SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
-            random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-            family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_hetexc,nitt=1100000,burnin=100000,thin=1000)
-    }
-}
-
-
-# check if model is saved
-# model name
-mod_name <- "bot_vs_lh_logharem_size"
-
-# check if model is saved
-model_file_name <- paste0(mod_name, ".RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name))){
-    # run models
-    set.seed(1234)
-    models <- purrr::map(1:3, run_mod)
-    saveRDS(models, file = paste0("output/mcmcmodels/", model_file_name))
-}
-
-models <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name))
-
-# model checks according to holgers paper
-plot(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
-gelman.diag(mcmc.list(models[[1]]$Sol, models[[2]]$Sol, models[[3]]$Sol))
-
-# one model
-mod_hetexc <- models[[1]]
-
-# summary
-summary(mod_hetexc)
-
-# visually inspecting chain convergence
-plot(mod_hetexc$Sol)
-plot(mod_hetexc$VCV)
-autocorr(mod_hetexc$Sol)
-autocorr(mod_hetexc$VCV)
-
-# variation explained by phylogeny
-var_phy <- mod_hetexc$VCV[, "tip_label"] / (mod_hetexc$VCV[, "tip_label"] + mod_hetexc$VCV[, "units"])
-posterior.mode(var_phy)
-median(var_phy)
-HPDinterval(var_phy)
-
-# commonality analyses and R2
-model_file_name_R2 <- paste0(mod_name, "_R2.RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
-    set.seed(324)
-    R2_hetexc <- mcmcR2::partR2(mod_hetexc, partvars = c("SSD", "BreedingType"),
-        data = stats_mod_hetexc, inv_phylo = inv_phylo, prior = prior, 
-        nitt = 1100000, burnin = 100000, thin = 1000)
-    saveRDS(R2_hetexc, file = paste0("output/mcmcmodels/", model_file_name_R2))
-}
-
-R2_hetexc <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-R2_hetexc
-# out <- mcmcR2::R2mcmc(mod_hetexc)
-# out$partR2
-R2_hetexc$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
-R2_hetexc$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
-
-# save summary to file
-mod_hetexc %>% 
-    summary() %$%
-    solutions %>% 
-    as.data.frame() %>% 
-    tibble::rownames_to_column("components") %>% 
-    mutate(post_median = apply(mod_hetexc$Sol, 2, median)) %>% 
-    mutate(post_mode = posterior.mode(mod_hetexc$Sol)) %>% 
-    .[c(1,2,7,8,3:6)] %>% 
-    rename(post_mean= post.mean,
-        lower =  "l-95% CI",
-        upper = "u-95% CI") %>% 
-    write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
-
-
-
-# some controls
-point_size <- 3.5
-point_alpha <- 0.6
 
 
 # plots for SSD------------------------------------------------------------------------------------
@@ -503,7 +157,7 @@ point_size = 3.5
 # boxplot 1 - bot -------------------
 p1 <- ggplot(aes(BreedingType, bot), data = all_stats) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.7, width = 0.7, aes(fill = BreedingType), outlier.shape = NA) + #
-   # geom_point(size = point_size, alpha = point_alpha, aes(color = BreedingType)) + # abc_out
+    # geom_point(size = point_size, alpha = point_alpha, aes(color = BreedingType)) + # abc_out
     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
     theme_martin() +
     scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
@@ -514,13 +168,13 @@ p1 <- ggplot(aes(BreedingType, bot), data = all_stats) +
     scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1), limits = c(0, 1.05)) +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-       # panel.grid.major.y = element_line(colour = "lightgrey", size = 0.2),
+        # panel.grid.major.y = element_line(colour = "lightgrey", size = 0.2),
         plot.margin = unit(c(0.9,0.5,0.25,0.1), "cm"),
         axis.line.x = element_line(colour = "#cccccc"),
         axis.line.y = element_line(colour = "#cccccc"),
         #axis.ticks.y = element_blank(),
         axis.ticks = element_line(colour = "#cccccc")) 
-  
+
 p1
 
 # boxplot 2 - TPM80 -------------------
@@ -657,7 +311,7 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
         axis.text.y = element_blank(),
         plot.margin = unit(c(1,0.2,0.33,0.3), "cm"),
         axis.text.x=element_text(margin=margin(t=6))
-        ) +
+    ) +
     scale_y_discrete(labels = c("Breeding\nhabitat",
         "SSD")) +
     xlab(expression(paste("Structure coefficient", " r(", hat(Y),",x)") )) +
@@ -759,9 +413,9 @@ p1 <- ggplot(aes(logharem_size, TPM80_ratio), data = all_stats) +
     guides(color = guide_colorbar(barwidth = 0.5, barheight = 5, 
         title.position = "left")) + #, label.position = "bottom"
     scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1), limits = c(0.1, 1.13)) 
-   # geom_text_repel(aes(label = short),size = 3, alpha = 0.7, color = "black", #  aes(label = common) , 
-   #       segment.alpha= 0.2, box.padding = unit(0.7, "lines"), point.padding = unit(0.3, "lines"),
-    #    segment.size = 0.3,  force = 3, min.segment.length = unit(0.1, "lines"))
+# geom_text_repel(aes(label = short),size = 3, alpha = 0.7, color = "black", #  aes(label = common) , 
+#       segment.alpha= 0.2, box.padding = unit(0.7, "lines"), point.padding = unit(0.3, "lines"),
+#    segment.size = 0.3,  force = 3, min.segment.length = unit(0.1, "lines"))
 p1
 
 ggsave("figures/SMM/p2_smm.jpg", width = 4, height = 3.5)
