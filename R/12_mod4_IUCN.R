@@ -384,9 +384,9 @@ p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
     xlab(" ") +
     ylab("Bottleneck model\nprobability (ABC)") +
-    annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.02 [0, 0.2]'", 
+    annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.1 [0, 0.38]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 1.5, y = 1.11, label = "beta == '0.0 [-0.16, 0.14]'", 
+    annotate("text", x = 1.5, y = 1.11, label = "beta == '-0.18 [-0.4, 0.02]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     scale_y_continuous(breaks = c(0,0.2,0.4,0.6,0.8,1), limits = c(0, 1.2)) +
     theme(panel.grid.major = element_blank(),
