@@ -403,8 +403,8 @@ p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
 # legend.position = "none") 
 p3
 
-plot_grid(p1,p2,p3, nrow = 1)
-
+p_final <- plot_grid(p1,p2,p3, nrow = 1, labels = c("A", "B", "C"))
+ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN.jpg", width = 9, height = 3.5)
 
 
 

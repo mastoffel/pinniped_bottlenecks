@@ -16,7 +16,7 @@ ggthemr("fresh", text_size = 30,spacing = 4, layout = "clean")
 # ggthemr_reset()
 
 # load abc posterior data
-load("data/processed/abc_estimates/abc_5000k_complete.RData")
+load("data/processed/abc_estimates/abc_10000k_bot_complete.RData")
 # load parameter distributions
 # abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
 
@@ -197,3 +197,4 @@ p1 <- ggplot(data = filter(abc, pars == "nbot"), aes(x = adj_vals)) +
     # xlab(paste0(c("bottleneck", bquote(atop(N[e]))))) +
     #xlab(paste0("bottleneck ", expression(N[e])), "\n  ") +
     ylab("scaled posterior density")
+p1

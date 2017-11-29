@@ -76,7 +76,7 @@ stats_mod_genlh <- stats_mod_genlh %>% mutate(BreedingType = as.factor(BreedingT
 # Gelman (2008), Schielzeth (2014)
 
 run_mod <- function(iter){
-    MCMCglmm(num_alleles_mean ~ logAbundance + SSD + BreedingType, # , #+ Abundance BreedingType  + BreedingType + Generation_time
+    MCMCglmm(num_alleles_mean ~ logAbundance + SSD + BreedingType + bot + TPM80_ratio, # , #+ Abundance BreedingType  + BreedingType + Generation_time
         random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
         family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
         data=stats_mod_genlh,nitt=1100000,burnin=100000,thin=1000)
@@ -84,7 +84,7 @@ run_mod <- function(iter){
 
 # check if model is saved
 # model name
-mod_name <- "gendiv_vs_lh"
+mod_name <- "gendiv_vs_lh_plus_bot"
 
 # check if model is saved
 model_file_name <- paste0(mod_name, ".RData")
@@ -160,17 +160,19 @@ mod_genlh %>%
 point_size = 3.5
 #
 
-mod_div <- MCMCglmm(num_alleles_mean ~ logAbundance +  BreedingType + SSD, #
+mod_div <- MCMCglmm(num_alleles_mean ~ logAbundance +  BreedingType + SSD + bot + TPM80_ratio, #
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
     data=all_stats,nitt=110000,burnin=10000,thin=100)
 summary(mod_div)
 
-# prediction short model
+# prediction long model
 pred_df <- data.frame(num_alleles_mean = 0, 
     logAbundance = rep(seq(from = 5, to = 15.5, by = 0.5), each = 2),
     BreedingType = c("land", "ice"), 
     SSD = mean(all_stats$SSD), 
+    bot = mean(all_stats$bot),
+    TPM80_ratio = mean(all_stats$TPM80_ratio),
     tip_label = all_stats$tip_label[1])
 
 mod_preds <- data.frame(predict(mod_div, pred_df, interval = "confidence"))
@@ -183,7 +185,8 @@ mod_preds$BreedingType <- c("land", "ice")
 
 # per land and ice breeding
 pred_df <- data.frame(num_alleles_mean = 0, logAbundance = rep(seq(from = 5, to = 15.5, by = 0.5), each = 2), 
-    BreedingType = c("land", "ice"), SSD = mean(all_stats$SSD), tip_label = all_stats$tip_label[1])
+    BreedingType = c("land", "ice"), SSD = mean(all_stats$SSD), bot = mean(all_stats$bot), 
+    TPM80_ratio = mean(all_stats$TPM80_ratio), tip_label = all_stats$tip_label[1])
 
 mod_preds <- data.frame(predict(mod_div, pred_df, interval = "confidence"))
 
@@ -222,14 +225,16 @@ p_div
 
 
 # load model output
-mod_beta <- read_delim("output/mcmcmodels/gendiv_vs_lh_beta.txt", delim = " ")
-mod_R2 <- read_delim("output/mcmcmodels/gendiv_vs_lh_R2.txt", delim = " ")
-mod_SC <- read_delim("output/mcmcmodels/gendiv_vs_lh_SC.txt", delim = " ")
+mod_beta <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_beta.txt", delim = " ")
+mod_R2 <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_R2.txt", delim = " ")
+mod_SC <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_SC.txt", delim = " ")
 
 
 # beta coefficients
 mod_out <- mod_beta[-1, c("components", "post_median", "lower", "upper")]
 names(mod_out) <- c("comps", "pe", "cilow", "cihigh")
+
+mod_out$comps <- factor(mod_out$comps, levels = c("bot", "TPM80_ratio", "SSD", "BreedingTypeice", "logAbundance"))
 
 p2 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) + 
     # geom_point(size = 3, color = "grey69") + # abc_out
@@ -252,8 +257,9 @@ p2
 
 
 mod_out_SC <- mod_SC[, c("pred", "medianSC", "lower", "upper")]
-names(mod_out_SC ) <- c("comps", "pe", "cilow", "cihigh")
+names(mod_out_SC) <- c("comps", "pe", "cilow", "cihigh")
 
+mod_out_SC$comps <- factor(mod_out_SC$comps, levels = c("bot", "TPM80_ratio", "SSD", "BreedingType", "logAbundance"))
 # structure coefficients
 p3 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) + 
     # geom_point(size = 3, color = "grey69") + # abc_out
@@ -267,11 +273,13 @@ p3 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
         axis.title.y = element_blank(),
         axis.text.y = element_text(hjust = c(0.5)),
         plot.margin = unit(c(1,0.2,0.65,0.1), "cm")) +
-    scale_y_discrete(labels = c("Breeding\nhabitat", "Abundance", 
-        "SSD")) +
+    scale_y_discrete(labels = c("P(bot)", "Het-excess", "SSD",  "Breeding\nhabitat", "Abundance"
+        )) +
     xlab(expression(paste("Structure coefficient", " r(", hat(Y),",x)") )) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1)
 p3
+
+plot_grid(p2, p3)
 
 col_legend <- "#969696"
 
@@ -294,7 +302,7 @@ p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
         axis.text.y = element_text(hjust = c(0.5)),
         plot.margin = unit(c(0.3, 0.2, 0.3, 0.2), "cm")) +
     scale_y_discrete(labels = rev(c("Full model", "SSD", "Breeding Habitat",  "Abundance", 
-                                    "SSD &\nBreeding Habitat", "SSD &\nAbundance",  "Breeding Habitat &\nAbundance"))) +
+        "SSD &\nBreeding Habitat", "SSD &\nAbundance",  "Breeding Habitat &\nAbundance"))) +
     xlab(expression(paste(R^{2}))) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1) +
     annotate("segment", x = 0.9, xend = 0.9, y = 0.8, yend = 3.5, color = col_legend) +

@@ -15,7 +15,7 @@ library(sealABC)
 # load cleaned seal data
 library(readxl)
 
-seal_data <- "data/processed/seal_data_largest_clust_and_pop_29.xls"
+seal_data <- "data/processed/seal_data_largest_clust_and_pop_29.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
 
 
