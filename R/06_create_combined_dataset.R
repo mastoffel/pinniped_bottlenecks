@@ -34,6 +34,15 @@ seals3 <- dplyr::left_join(seals2, krueger_data, by = "species")
 # rearrange to have life-history data first
 seals_rearranged <- seals3[c(1:11, 76:86, 12:75)]
 
+seals_rearranged$common
+
+# produce short names for plotting
+short <- c("W", "NFS", "GFS", "SAFS", "AntFS", "SAntFS", "NZFS", "AFS", "GSL", "CSL", "NZSL", "SASL", "SSL", "HMS", "MMS", "NES", "SES",
+            "CS", "WS", "LS", "RoS", "BS", "HoodS", "HS", "RS", "SRS", "LRS", "BRS", "GS")
+
+# add abreviations
+seals_rearranged$short <- short
+
 # write to excel
 write_excel_csv(seals_rearranged, "data/processed/seal_data_complete_rarefac10_29.csv")
 # 

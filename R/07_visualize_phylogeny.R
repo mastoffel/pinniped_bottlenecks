@@ -20,7 +20,8 @@ library(extrafont)
 source("R/martin.R")
 
 # load all datasets
-seals <- read_csv("data/processed/seal_data_complete_rarefac10_29.csv")
+seals <- read_csv("data/processed/seal_data_complete_rarefac10_29.csv") 
+
 # load model probablities from ABC
 model_probs <- read_delim("data/processed/sims_10000k_model_selection.txt", 
     delim = " ", col_names = c("species", "bot", "neut"), skip = 1)
@@ -51,6 +52,9 @@ reorder_data_for_tiplab <- as.numeric(unlist(sapply(tree_lab, function(x) which(
 seals <- seals %>% 
          .[reorder_data_for_tiplab, ] %>% 
          bind_cols(tibble(tip_label = tree_final$tip.label), .) 
+
+# create label including abbreviations
+seals$common_abbr <- paste0(seals$common, " (", seals$short, ")")
 
 # how is everything plotted
 # if indexing tree_final$tip.label, this is the sequence how it is plotted
@@ -88,7 +92,8 @@ all_stats_tree <- all_stats_tree %>%
                     mutate(tip_label = fct_inorder(factor(tip_label)),
                               species = fct_inorder(factor(species)),
                               latin = fct_inorder(factor(latin)),
-                              common = fct_inorder(factor(common)))
+                              common = fct_inorder(factor(common)),
+                              common_abbr = fct_inorder(factor(common_abbr)))
 
 # write to file
 if(!file.exists("data/processed/all_stats_tree_29.csv")){
@@ -104,11 +109,10 @@ all_stats_tree <- all_stats_tree %>% mutate(BreedingType = as.factor(as.characte
 # DIVERSITY
 stand_div <- all_stats_tree %>% 
              dplyr::select(obs_het_mean, 
-                    num_alleles_mean,
-                    prop_low_afs_mean) %>% 
+                    num_alleles_mean) %>% 
              apply(2, scale) %>% 
              as_tibble() %>% 
-             bind_cols(all_stats_tree[c("latin", "common", "species")], .) 
+             bind_cols(all_stats_tree[c("latin", "common", "species", "common_abbr")], .) 
 
 # to check correct sequence just plot tree with node number
 plotTree(tree_final)
@@ -222,7 +226,7 @@ p <- p +  #layout="circular" , "fan"open.angle=180  #,color = "#737373"
     guides(fill = guide_legend(title = "IUCN rating", title.position = "top", direction = "vertical", order = 2),
            size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1),
            color = guide_legend(title.position = "top", direction = "horizontal", order = 3)) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
-    theme(plot.margin=unit(c(52, -5,13,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
+    theme(plot.margin=unit(c(52, -5,30,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
           legend.position= c(0.26,0.90), #legend.direction = "horizontal",
           legend.spacing = unit(5, "points"),
         legend.key.height=unit(1,"line"),
@@ -238,9 +242,8 @@ p
 # p1 <- flip(p,  42, 49)
 
 # diversity
-stand_div_lf <- stand_div %>% melt(id.vars = c("species","common"), 
-                measure.vars = c("obs_het_mean", "num_alleles_mean", #"mean_allele_range",
-                                 "prop_low_afs_mean"))
+stand_div_lf <- stand_div %>% melt(id.vars = c("species","common","common_abbr"), 
+                measure.vars = c("obs_het_mean", "num_alleles_mean"))
 
 #plot_col_div <- viridis(20)
 #plot_col_div <- rev(plot_col_div[c(rep(FALSE,4), TRUE)]) # get every 5th element
@@ -259,16 +262,10 @@ stand_div_lf <- stand_div %>% melt(id.vars = c("species","common"),
 
 #pal <- colorRampPalette(c("cornflowerblue", "white", "darkgrey"))
 pal <- colorRampPalette(c("darkblue", "#f0f0f0", "#4d4d4d"))
-#pal <- colorRampPalette(c("#d8b365", "#f5f5f5", "#5ab4ac"))
-#pal <- colorRampPalette(c("#ef8a62", "#f7f7f7", "#67a9cf"))
-#pal <- colorRampPalette(c("#8c510a", "#e0e0e0", "#01665e"))
-#pal <- colorRampPalette(c("#d6604d", "#e0e0e0", "#878787"))
-#pal <- colorRampPalette(c("#542788", "#e0e0e0", "#b35806"))
-# cols <- ifelse(stand_div_lf$abc == "neut", "grey", "red")
 pal <- colorRampPalette(c("#2166ac", "#ece7f2", "#525252")) ##d0d1e6 #"#f0f0f0"
 pal <- colorRampPalette(c("#016c59", "#ece7f2", "#525252"))
 
-p_div <- ggplot(stand_div_lf, aes(x = variable, y = common, fill = value)) + 
+p_div <- ggplot(stand_div_lf, aes(x = variable, y = common_abbr, fill = value)) + 
     geom_tile(color = "grey", size = 0.1) +
     # labs(x = "microsat mutation model", y = "") +
     #scale_fill_viridis(name = "Standardized \ndiversity", begin = 0, end = 1) +
@@ -278,17 +275,17 @@ p_div <- ggplot(stand_div_lf, aes(x = variable, y = common, fill = value)) +
     #    name = "Standardized \ndiversity") +
     #scale_fill_gradientn(colours=pal(5), 
     #    name = "Standardized \ndiversity") +
-    scale_fill_distiller(name = "Standardized \ndiversity", palette = "RdYlBu", direction = 1) +
+    scale_fill_distiller(name = "Standardized \ngenetic diversity", palette = "RdYlBu", direction = 1) +
     #scale_fill_distiller(pal(5)) +
    # scale_fill_gradientn(colours=plot_col_div, 
     #   name = "prop. \nhet-exc") +
     theme_tufte(base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
-        axis.text.x = element_text(angle = 70, hjust = 1, size = 8),
+        axis.text.x = element_text(angle = 70, hjust = 1, size = 11),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(0,10,5,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260)
+        plot.margin=unit(c(0,10,22.5,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_text(hjust=0, size = 9, colour = "#525252"), #abc_cols[stand_div$abc][plot_inds]
@@ -297,9 +294,9 @@ p_div <- ggplot(stand_div_lf, aes(x = variable, y = common, fill = value)) +
         legend.title.align = 0.5, 
         text=element_text(family='Lato')) +
     # coord_fixed(ratio = 0.7) +
-    scale_x_discrete(labels=c("HET", "AR", "LFA"),  ##"ARA",
+    scale_x_discrete(labels=c(expression(H[o]),expression(A[r])), # c("Ho", "Ar"),  ##"ARA",
         position = "bottom") +
-    guides(fill = guide_colorbar(barwidth = 5, barheight = 0.5, 
+    guides(fill = guide_colorbar(barwidth = 4, barheight = 0.5, 
             title.position = "top", label.position = "bottom")) 
 
 # grid.arrange(p, p_div, nrow = 1)
@@ -324,7 +321,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
     #scale_fill_gradientn(colours=plot_col, 
     #    name = "Prop. of loci \nin heterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,1)) +
     scale_fill_distiller(palette="RdBu",
-        name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95),
+        name = "Prop. of loci with\nheterozyosity-excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95),
         direction = -1) +
    # scale_fill_gradientn(colours=rev(pal2(5)),
     #    name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95)) +
@@ -334,7 +331,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         axis.text.x = element_text(angle = 70, hjust = 1, size = 9),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(0,10,1,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
+        plot.margin=unit(c(0,10,6,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(), 
@@ -343,7 +340,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         legend.title.align = 0.5, 
         text=element_text(family='Lato')) +
     # scale_x_discrete(labels=c("PHE","M")) +
-    scale_x_discrete(labels=c("70", "80","90", "100 ")) + # "IAM",
+    scale_x_discrete(labels=c("TPM 70", "TPM 80","TPM 90", "SMM ")) + # "IAM",
     #labs(x=NULL, y=NULL) +
     # coord_fixed(ratio = 0.7) +
     guides(fill = guide_colorbar(barwidth = 5.6, barheight = 0.5, 
@@ -365,15 +362,15 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
     #scale_fill_gradientn(colours=rev(pal3(5)), 
     #    name = "ABC \nprob. %", labels=c(0, 50, 100), breaks = c(0,0.5,1)) +
     scale_fill_distiller(palette = "RdBu",
-        name = "ABC \nprob. %", labels=c(0, 50, 100), breaks = c(0,0.5,1),
+        name = "ABC model \nprobability %", labels=c(0, 50, 100), breaks = c(0,0.5,1),
         direction = -1) +
     theme_tufte(base_family="Helvetica") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
-        axis.text.x = element_text(angle = 70, hjust = 1, size = 9),
+        axis.text.x = element_text(angle = 70, hjust = 1, size = 11),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(0,10,2,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
+        plot.margin=unit(c(0,10,14,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(),
@@ -381,13 +378,13 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
         legend.text = element_text(size = 8),
         legend.title.align = 0.5,
         text=element_text(family='Lato')) +
-    scale_x_discrete(labels=c("Bot","Con")) +
+    scale_x_discrete(labels=c(expression(P[bot]),expression(P[neut]))) +
     #labs(x=NULL, y=NULL) +
     # coord_fixed(ratio = 0.7) +
-    guides(fill = guide_colorbar(barwidth = 2.5, barheight = 0.5, 
+    guides(fill = guide_colorbar(barwidth = 3.3, barheight = 0.5, 
         title.position = "top")) 
 
-p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.4, 0.27, 0.17, 0.10))
+p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.32, 0.27, 0.15, 0.09))
 p_final
 
 #p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.16, 0.09, 0.05, 0.02))
@@ -399,7 +396,7 @@ save_plot("other_stuff/figures/phylo_plot_color.jpg", p_final,
     # each individual subplot should have an aspect ratio of 1.3
    # base_aspect_ratio = 0.9,
     base_height = 6,
-    base_width = 5
+    base_width = 4.5
 )
 
 
