@@ -3,7 +3,9 @@
 # prepare the data.frame for modeling
 
 library(readr)
-
+library(ape)
+library(dplyr)
+library(forcats)
 # load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
 tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
 

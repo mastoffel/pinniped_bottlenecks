@@ -595,7 +595,7 @@ p3 <- ggplot(aes(x = SSD, y = TPM80_ratio), data = all_stats) +
 p3
 
 
-plot_grid(p1, p2, p3, nrow = 1, rel_widths = c(1,1,2), labels = c("A", "B", "C"), label_x = 0.1)
+plot_grid(p2, p1, p3, nrow = 1, rel_widths = c(1,1,2), labels = c("A", "B", "C"), label_x = 0.1)
 # ggsave(filename = "other_stuff/figures/figures_final/fig3_hetexc_vs_lh.jpg", width = 9, height = 3)
 
 
@@ -632,7 +632,7 @@ p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) +
     scale_x_continuous(breaks = c(-0.6, -0.4, -0.2, 0, 0.2)) +
     scale_y_discrete(labels = c("Breeding\nhabitat",
         "SSD")) +
-    xlab(expression(paste("Effect size ", beta))) +
+    xlab(expression(paste("Standardized ", beta))) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1)
 p4
 
@@ -655,7 +655,7 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
         axis.text.y = element_blank(),
-        plot.margin = unit(c(1,0.2,0.33,0.3), "cm"),
+        plot.margin = unit(c(1,0.2,0.36,0.3), "cm"),
         axis.text.x=element_text(margin=margin(t=6))
         ) +
     scale_y_discrete(labels = c("Breeding\nhabitat",
@@ -691,7 +691,7 @@ p6 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
         axis.text.y = element_text(hjust = c(0.5)),
-        plot.margin = unit(c(0.3, 1, 0.6, 0.4), "cm")) +
+        plot.margin = unit(c(0.3, 1, 0.5, 0.3), "cm")) +
     scale_y_discrete(labels = c( "Breeding\nhabitat", "SSD", "Full model")) +
     xlab(expression(paste(R^{2}))) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1) +
@@ -704,14 +704,14 @@ p6 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
 p6
 
 
-p_top <- plot_grid(p1, p2, p3, nrow = 1, rel_widths = c(1,1,2), labels = c("A", "B", "C"), label_x = 0.1)
+p_top <- plot_grid(p2, p1, p3, nrow = 1, rel_widths = c(1,1,2), labels = c("A", "B", "C"), label_x = 0.1)
 p_top
 
-p_bot <- plot_grid(p4, p5, p6, nrow = 1, rel_widths = c(1.3,1,1.7),
+p_bot <- plot_grid(p6, p4, p5, nrow = 1, rel_widths = c(1.6,1.4,1.2),
     labels = c("D","E","F"))
 p_bot
 
-p_final <- plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(1.5,1))
+p_final <- plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(2,1.5))
 p_final
 
 ggsave('other_stuff/figures/figures_final/fig3_bot_vs_lh.jpg',p_final,  width=9, height=5.5)

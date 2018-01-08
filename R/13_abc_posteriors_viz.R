@@ -9,9 +9,9 @@ library(cowplot)
 library('ggthemes')
 library(scales)
 library(viridis)
-library(ggjoy)
-source("martin.R")
-
+library(ggridges)
+source("R/martin.R")
+library(patchwork)   
 ## bottleneck posteriors -----
 
 # load abc posterior data
@@ -20,10 +20,10 @@ load("data/processed/abc_estimates/abc_10000k_bot_complete.RData")
 # abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
 
 # unnest the abc posterior values for plotting
-abc <- unnest(abc_complete)
+abc_bot <- unnest(abc_complete)
 # filter(abc, pars == "nbot")
 
-species_names <- c(
+species_names_bot <- c(
     "antarctic_fur_seal" = "Antarctic Fur Seal",
     "california_sea_lion" = "California Sea Lion",
     "galapagos_fur_seal" = "Galapagos Fur Seal", 
@@ -39,7 +39,7 @@ species_names <- c(
 # abc$species <- factor(abc$species, levels = rev(c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
 #    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal")))
 
-abc$species <- factor(abc$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
+abc_bot$species <- factor(abc$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
     "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal"))
 
 empty_names <- c(
@@ -54,8 +54,6 @@ empty_names <- c(
     "saimaa_ringed_seal" = " ",
     "south_american_fur_seal" = " "
 )
-source("R/martin.R")
-
 
 
 
@@ -66,7 +64,7 @@ estimate_mode <- function(s) {
     d$x[which.max(d$y)]
 }
 
-p <- abc %>% filter(pars == "nbot") %>% 
+p <- abc_bot %>% filter(pars == "nbot") %>% 
     group_by(species) %>% 
     #sample_n(4000) %>% 
     #filter(!(species == "hawaiian_monk_seal" | species == "saimaa_ringed_seal" | species == "mediterranean_monk_seal")) %>% 
@@ -89,38 +87,25 @@ p <- abc %>% filter(pars == "nbot") %>%
     theme(plot.margin = unit(c(0.5,1.5,0.5,0), "cm"))
 
 p
-ggsave(filename = "figures/abc_posteriors.jpg", plot = p, width = 3.5, height = 6.5)
+# ggsave(filename = "figures/abc_posteriors.jpg", plot = p, width = 3.5, height = 6.5)
 
 
+# SUPPLEMENTARY plots: Mut Rate
 
-p <- abc %>% filter(pars == "mut_rate") %>% 
-    group_by(species) %>% 
-    #sample_n(4000) %>% 
-    #filter(!(species == "hawaiian_monk_seal" | species == "saimaa_ringed_seal" | species == "mediterranean_monk_seal")) %>% 
-    ggplot(aes(y = adj_vals, x = species)) + 
-    geom_quasirandom(alpha = 0.01, size = 2, color = "#053061", width = 0.45, bandwidth = 1.5) +
-    # geom_beeswarm(priority='density', alpha = 0.5, cex = 0.2, color = "grey") +
-    # geom_jitter(size = 0.5, alpha = 0.1, width = 0.2, color = "grey") +
-    geom_boxplot(width = 0.4, outlier.shape = NA, color = "white", alpha = 0.5, size = 0.4) +
-    stat_summary(fun.y = "estimate_mode", colour = "black", geom = "point", size = 2, shape = 21, fill = "grey") +
-    #stat_summary(fun.y = "mean", colour = "blue", geom = "point") +
-    theme_martin() +
-    # scale_fill_cyclical(values = c("lightgrey", "darkgrey")) +
-    #ylim(0, 900) +
-    scale_x_discrete(labels = species_names) + 
-    scale_y_continuous(limits = c(0,0.0005)) + #breaks = c(seq(from = 100, to = 900, by = 200)), 
-    #scale_y_discrete(expand = c(0.01, 0))+
-    xlab("") +
-    ylab(expression(Bottleneck~N[e])) +
-    coord_flip() +
-    theme(plot.margin = unit(c(0.5,1.5,0.5,0), "cm"))
+p_mut_bot <- abc_bot %>% filter(pars == "mut_rate") %>%
+    ggplot(aes(adj_vals, y = species, fill = species)) +
+    geom_density_ridges(rel_min_height = 0.01, scale = 3, alpha = 0.7) +
+    scale_fill_cyclical(values = c("#4040B0", "#9090F0"), guide = "legend") +
+    theme_martin(legend.position='none') +
+    xlab(expression(mutation~rate~mu~(x~10^-4))) +
+    scale_y_discrete(labels = species_names_bot) +
+    scale_x_continuous(limits = c(-0.00005, 0.0006), breaks = c(0, 0.0001, 0.0002, 
+                                    0.0003, 0.0004, 0.0005), labels = c(0,1,2,3,4,5)) +
+    ylab("") +
+    ggtitle("Bottleneck model")
+p_mut_bot
 
-p
-
-
-ggsave(filename = "abc_posteriors_mutrate.jpg", plot = p, width = 4.5, height = 6.5)
-
-
+# ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate.jpg", plot = p_mut, width = 4.5, height = 6.5)
 
 
 
@@ -134,12 +119,12 @@ load("data/processed/abc_estimates/abc_10000k_neut_complete.RData")
 # abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
 
 # unnest the abc posterior values for plotting
-abc <- unnest(abc_complete)
+abc_neut <- unnest(abc_complete)
 # filter(abc, pars == "nbot")
 
-species_names <- c(
+species_names_neut <- c(
     "arctic_ringed_seal" = "Ringed Seal",
-     "atlantic_walrus "  = "Walrus",
+    "atlantic_walrus"  = "Walrus",
     "australian_fur_seal" = "Australian Fur Seal",
     "baltic_ringed_seal" = "Baltic Ringed Seal",
     "bearded_seal" = "Bearded Seal",
@@ -149,41 +134,39 @@ species_names <- c(
     "hooded_seal" = "Hooded Seal",
     "leopard_seal" = "Leopard Seal",
     "new_zealand_fur_seal" = "New Zealand Fur Seal",
+    "new_zealand_sea_lion" = "New Zealand Sea Lion",
     "northern_fur_seal" = "Northern Fur Seal",
     "ross_seal" = "Ross Seal",
     "ses" = "Southern Elephant Seal",
-    "south_american_seal_lion" = "South American Sea Lion",
+    "south_american_sea_lion" = "South American Sea Lion",
     "stellers_sea_lion" =  "Steller Sea Lion",
-    "weddel_seal" = "Weddel Seal"
+    "weddell_seal" = "Weddel Seal"
 )
 
 #abc$species <- factor(abc$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
 #    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal"))
 
-empty_names <- c(
-    "antarctic_fur_seal" = " ",
-    "california_sea_lion" = " ",
-    "galapagos_fur_seal" = " ", 
-    "grey_seal_orkneys" = " ",
-    "hawaiian_monk_seal" = " ",
-    "lagoda_ringed_seal" = " ",
-    "mediterranean_monk_seal" = " ",
-    "nes" = " ",
-    "saimaa_ringed_seal" = " ",
-    "south_american_fur_seal" = " "
-)
-source("R/martin.R")
+p_mut_neut <- abc_neut %>% filter(pars == "mut_rate") %>%
+    ggplot(aes(adj_vals, y = species, fill = species)) +
+    geom_density_ridges(rel_min_height = 0.01, scale = 3, alpha = 0.8) +
+    scale_fill_cyclical(values = c("#4040B0", "#9090F0"), guide = "legend") +
+    theme_martin(legend.position='none') +
+    xlab(expression(mutation~rate~mu~(x~10^-4))) +
+    scale_y_discrete(labels = species_names_neut) +
+    scale_x_continuous(limits = c(-0.00005, 0.0006), breaks = c(0, 0.0001, 0.0002, 0.0003, 
+                        0.0004, 0.0005), labels = c(0,1,2,3,4,5)) +
+    ylab("") +
+    ggtitle("Neutral model")
+
+ 
+
+## final figure
+p_final <- p_mut_bot + p_mut_neut
+p_final
+ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate.jpg", 
+    plot = p_final, width = 7.5, height = 5.5)
 
 
-
-head(abc)
-prior_dist <- data.frame(vals = rlnorm(5000, 10.5, 1), species = "prior")
-
-abc %>% filter(pars == "nhist") %>%
-    ggplot(aes(adj_vals, by = species)) +
-        geom_density() +
-        scale_x_continuous(limits = c(0, 100000)) +
-        geom_density(data = prior_dist, aes(vals), col = "blue")
 
 
 hist(rlnorm(100, 10.5, 1))

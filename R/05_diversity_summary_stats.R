@@ -94,7 +94,7 @@ bottleneck$id
 ?mssumstats
 
 if(!file.exists("data/processed/sumstats_29.txt")){
-    
+set.seed(1122)
 sumstats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x, start_geno = 4, mratio = "loose", 
             rarefaction = TRUE, nresamp = 1000, nind = 10)))
 
@@ -125,9 +125,6 @@ sum(bottleneck$species %in% diversity_stats$species)
 all_seal_data <- left_join(diversity_stats, bottleneck, by = "species")
 names(all_seal_data)
 
-# load harem data
-# sheet numbers to load
-# dataset_names <- excel_sheets("data/processed/overview.xlsx")
 # # load all datasets
 # harem_data <- read_excel("data/processed/overview.xlsx", sheet = 2)
 seals <- left_join(harem_data, all_seal_data, by = "species")

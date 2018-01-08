@@ -54,7 +54,6 @@ all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
 inv_phylo <- inverseA(tree_final, nodes="TIPS",scale=FALSE)$Ainv #,scale=TRUE
 prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
 
-
 # Models for for figure "do bottleneck signatures predict genetic diversity?"
 ## model 1: ABCprob(bot) ~ genetic diversity -------------------------------------------------------
 

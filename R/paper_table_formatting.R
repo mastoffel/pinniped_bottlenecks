@@ -31,6 +31,7 @@ library(MCMCglmm)
 library(purrr)
 library(readr)
 library(xtable)
+library(stargazer)
 ## what should this script do:
 
 
@@ -45,26 +46,52 @@ all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
 # number of genotypes
 sum(all_stats$nind * all_stats$nloc)
 
-
-
 # Table 1: IUCN, life history data and sample size/locus information
+all_stats_origin <- read_xlsx("data/raw/table_data.xlsx")
 all_stats_table <- all_stats %>% 
-                    dplyr::select(common, latin, IUCN_rating, Abundance, BreedingType, SSD, harem_size, nloc, nind) %>% 
+                    left_join(all_stats_origin, by = c("species", "common", "tip_label", "latin")) %>% 
                     dplyr::mutate(Genotypes = nloc * nind) %>% 
+                    dplyr::select(common, latin, IUCN_rating, Abundance, BreedingType, 
+                                  SSD, harem_size, nloc, nind, Genotypes, origin, published_short) %>% 
                     dplyr::rename(`Common name` = common,
                            `Scientific` = latin,
                            `IUCN status` = IUCN_rating,
                            `Breeding habitat` = BreedingType,
                            `Harem size` = harem_size,
                            `Loci` = nloc,
-                           `Individuals` = nind) %>% 
+                           `Individuals` = nind,
+                           `Sampling location` = origin,
+                           `Published` = published_short) %>% 
                     dplyr::arrange(-row_number())
-                  
-ndecimal <- c(0, 0,0,0,0,0,2,0,0,0,0)
+library(magrittr)
+library(huxtable)
+ht <- as_hux(all_stats_table[1:5], add_colnames = TRUE) %>% 
+    set_bold(1, everywhere, TRUE)       %>%
+    set_bottom_border(1, everywhere, 1) %>%
+  #  set_align(everywhere, 2, 'right')   %>%
+    set_right_padding(10)               %>%
+    set_left_padding(10)                %>%
+    set_width(0.9)                     %>%
+    set_number_format(2)
+quick_pdf(ht, file = "hux_out.pdf")
+
+ht
+right_padding(ht) <- 10
+left_padding(ht) <- 10
+bold(ht)[1,] <- TRUE
+bottom_border(ht)[1,] <- 1
+number_format(ht) <- 3
+width(ht) <- 0.1
+wrap(ht) <- TRUE
+
+quick_docx(ht, file = "hux_out.docx")
+
+
+ndecimal <- c(0, 0,0,0,0,0,2,0,0,0,0,0,0)
 
 bold <- function(x) {paste('{\\textbf{',x,'}}', sep ='')}
 
-print(xtable(all_stats_table, digits = ndecimal,  align = c("l", "l",">{\\itshape}l", rep("l", 8))),  #hline.after = c(1), 
+print(xtable(all_stats_table, digits = ndecimal,  align = c("l", "l",">{\\itshape}l", rep("l", 10))),  #hline.after = c(1), 
       include.rownames=FALSE, sanitize.colnames.function=bold, booktabs = TRUE, scalebox = 0.7, floating = TRUE) #floating.environment = "sidewaystable"
 
 # Table 2: Genetic information and outcome of the ABC
