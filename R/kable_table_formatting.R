@@ -36,10 +36,11 @@ kable(all_stats_table , format = "latex",  escape = F,
     row_spec(0, bold = TRUE) %>% 
     kable_as_image("my_latex_table", keep_pdf = TRUE)
 
+
 # Supplementary Table 2: genetic, bottleneck data
-# Table 2: Genetic information and outcome of the ABC
+# Table 2: Genetic summary statistics per 10 ind.
 transform_ss <- function(PE, CIlow, CIhigh) {
-    out <- paste0(PE, " (", CIlow," ,", CIhigh, ")")
+    out <- paste0(PE, " (", CIlow,", ", CIhigh, ")")
     out
 }
 
@@ -55,33 +56,76 @@ all_stats_table2 <- all_stats %>%
     mutate_if(is.numeric, funs(round(., 2))) 
 
 # bin ci and means together
-all_stats_table2_short <- data.frame(do.call(cbind, lapply(seq(from = 3, to = ncol(all_stats_table2 ), by = 3), 
+all_stats_table2_short <- data.frame(
+    do.call(cbind, lapply(seq(from = 3, to = ncol(all_stats_table2 ), by = 3), 
     function(x) transform_ss(all_stats_table2[[x]], all_stats_table2[[x + 1]], 
         all_stats_table2[[x + 2]])))) %>% 
-    dplyr::rename(`Allelic richness` = X1,
+    bind_cols(all_stats_table2[1:2], .) %>% 
+    dplyr::rename(
+        `Common name` = common,
+        `Scientific` = latin,
+        `Allelic richness` = X1,
         `Obs. heterozygosity` = X2,
         `Exp. heterozygosity` = X3,
         `Prop. low frequency alleles` = X4,
         `Allelic range` = X5,
         `M-ratio` = X6) %>% 
-    bind_cols(all_stats_table2[1:2], .) %>% 
-    dplyr::arrange(-row_number())
-
-
-
-
-all_stats_table <- all_stats %>% 
-    left_join(all_stats_origin, by = c("species", "common", "tip_label", "latin")) %>% 
-    dplyr::select(common, latin) %>% 
-    dplyr::rename(`Common name` = common,
-        `Scientific` = latin,
-        `IUCN status` = IUCN_rating,
-        `Breeding habitat` = BreedingType,
-        `Harem size` = harem_size,
-        `Loci` = nloc,
-        `Individuals` = nind,
-        `Sampling location` = origin,
-        `Published` = published_short) %>% 
     dplyr::arrange(-row_number()) %>% 
     mutate(Scientific = cell_spec(Scientific, italic = TRUE))
 
+kable(all_stats_table2_short, format = "latex",  escape = F, 
+    booktabs = TRUE, align = "c", digits = 3, linesep = "") %>% 
+    kable_styling(latex_options = c( "scale_down")) %>% 
+    row_spec(0, bold = TRUE) %>% 
+    kable_as_image("Sup_tab_2", keep_pdf = TRUE)
+
+# supplementary table 3: Bottleneck stats
+
+all_stats_table_sub3 <- all_stats %>% 
+    left_join(all_stats_origin, by = c( "common",  "latin")) %>% 
+    dplyr::select(4, 3, 78, 80, 82, 84, 89, 90) %>% 
+    dplyr::rename(`Common name` = common,
+        `Scientific` = latin,
+        `TPM 70` =  TPM70_ratio,
+        `TPM 80` = TPM80_ratio,
+        `TPM 90` = TPM90_ratio,
+        `SMM` = SMM_ratio,
+        `$\\boldsymbol{p_{bot}}$` = bot,
+        `$\\boldsymbol{p_{neut}}$` = neut) %>% 
+    dplyr::arrange(-row_number()) %>% 
+    mutate(Scientific = cell_spec(Scientific, italic = TRUE))
+
+kable(all_stats_table_sub3, format = "latex", escape = F, 
+    booktabs = TRUE, align = "c", digits = 3, linesep = "") %>% 
+    add_header_above(c(" "," ", "Heterozygosity-excess ($prop_{het-exc}$)" = 4, "ABC" = 2), escape = F) %>%
+    kable_styling(latex_options =  "scale_down") %>% 
+    row_spec(0, bold = TRUE) %>% 
+    kable_as_image("Sup_tab_3", keep_pdf = TRUE)
+
+
+# Supplementary table 3: Model fit ABC
+model_fit <- read_delim("output/model_evaluation/check3_modeval/sims_10000k_p_vals_fit.txt", 
+                        delim = " ") 
+
+all_stats_table_sub4_temp <- all_stats %>% 
+    left_join(all_stats_origin, by = c( "common",  "latin", "species")) %>% 
+    full_join(model_fit, by = c("species")) 
+ 
+all_stats_table_sub4 <-all_stats_table_sub4_temp %>% 
+    dplyr::select("common", "latin", "bot") %>% 
+    dplyr::mutate(model = ifelse(bot > 0.5, "bot", "neut")) %>% 
+    dplyr::mutate(p_val = ifelse(bot > 0.5, all_stats_table_sub4_temp$bot_p, 
+                                             all_stats_table_sub4_temp$neut_p)) %>% 
+    dplyr::select(-bot) %>% 
+    dplyr::rename(`Common name` = common,
+        `Scientific` = latin,
+        `Selected model` =  model,
+         `p value` = p_val) %>% 
+    dplyr::arrange(-row_number()) %>% 
+    mutate(Scientific = cell_spec(Scientific, italic = TRUE))
+
+kable(all_stats_table_sub4, format = "latex", escape = F, 
+    booktabs = TRUE, align = "c", digits = 3, linesep = "") %>% 
+    kable_styling(latex_options =  "scale_down") %>% 
+    row_spec(0, bold = TRUE) %>% 
+    kable_as_image("Sup_tab_4", keep_pdf = TRUE)

@@ -2,6 +2,7 @@
 # explained by life-history traits.
 
 # phylogenetic comparative analysis
+library(patchwork)
 library(ggtree)
 library(ape)
 library(phytools)
@@ -153,7 +154,7 @@ mod_genlh %>%
         upper = "u-95% CI") %>% 
     write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
 
-
+beta_genlh<- readr::read_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"), delim = " ")
 
 
 # plots ------------------------------------------------------------------------------------
@@ -164,6 +165,7 @@ point_size = 3.5
 ######## plot (2) ABCprob(bot) vs genetic diversity #########
 stats_mod_gen <- all_stats
 # re-run model, as we don't want standardized predictions for plotting
+set.seed(101)
 mod_plot_AR2 <- MCMCglmm(num_alleles_mean ~ bot, #
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
@@ -184,7 +186,7 @@ p1 <- ggplot(aes(x = bot, y = num_alleles_mean), data = all_stats) +
     geom_line(data = mod_preds_AR2, aes(y = fit), size = 1, alpha = 0.5) +
     geom_point(size = point_size, alpha = point_alpha) + # abc_out
     geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
-    scale_y_continuous(breaks = seq(from = 2, to = 10, by = 2), limits = c(1,10)) +
+    scale_y_continuous(breaks = seq(from = 2, to = 10, by = 2), limits = c(1.5,10), position = "right") +
     scale_x_continuous(breaks = seq(from = 0, to = 1, by = 0.2)) +
     xlab(expression(ABC~bottleneck~model~probability~(p[bot]))) + #Allelic richness
     ylab(expression(Allelic~richness~(A[r]))) +
@@ -197,7 +199,8 @@ p1 <- ggplot(aes(x = bot, y = num_alleles_mean), data = all_stats) +
         panel.grid.minor = element_blank(),
         plot.margin = unit(c(0.9,0.5,0.25,0.1), "cm"),
         axis.line = element_line(colour = "#cccccc"),
-        axis.ticks = element_line(colour = "#cccccc")) +
+        axis.ticks = element_line(colour = "#cccccc"),
+        axis.title.y.right = element_text(angle = 90, margin = margin(t = 0, r = 0, b = 0, l = 15))) +
     geom_text_repel(label = all_stats$short,size = 2.5, alpha = 1, color = "grey50",#  aes(label = common) , 
         segment.alpha= 1,  box.padding = unit(0.4, "lines"), point.padding = unit(0.7, "lines"),
         segment.size = 0.1,  force = 1, min.segment.length = unit(0.01, "lines"))
@@ -205,7 +208,7 @@ p1 <- ggplot(aes(x = bot, y = num_alleles_mean), data = all_stats) +
 
 p1
 
-
+set.seed(102)
 mod_div <- MCMCglmm(num_alleles_mean ~ logAbundance +  BreedingType + SSD + bot + TPM80_ratio, #
     random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
     family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
@@ -253,16 +256,16 @@ p2 <- ggplot(aes(logAbundance, num_alleles_mean), data = all_stats) +
     scale_x_continuous(trans = "log", breaks = c(log(100), log(1000), log(10000), log(100000), log(1000000), log(10000000)), 
         labels = c(expression(10^{2}), expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6}),  expression(10^{7})),
         limits = c(4.5, 16.2)) + 
-    scale_y_continuous(breaks = c(seq(from = 2, to = 10, by =2))) +
+    scale_y_continuous(breaks = c(seq(from = 0, to = 10, by =2)), limits = c(1.5, 10)) +
     theme(legend.position=c(0.3, 0.8),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        plot.margin = unit(c(0.9,0.2,0.25,0.1), "cm"),
+        plot.margin = unit(c(0.9,0.1,0.396,0.1), "cm"),
         axis.line = element_line(colour = "#cccccc"),
         axis.ticks = element_line(colour = "#cccccc"),
-        legend.title=element_text(size=10)) +
+        legend.title=element_text(size=10),
+        axis.title.y = element_blank()) +
     xlab("Global abundance") +
-    ylab("") +
     geom_text_repel(label = all_stats$short,size = 2.5, alpha = 1, color = "grey50",#  aes(label = common) , 
         segment.alpha= 1,  box.padding = unit(0.4, "lines"), point.padding = unit(0.7, "lines"),
         segment.size = 0.1,  force = 1, min.segment.length = unit(0.01, "lines"))
@@ -328,7 +331,7 @@ p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
 p4
 
 plot_grid(p3, p4)
-
+p3 + p4
 col_legend <- "#969696"
 
 mod_out_R2 <- mod_R2[, c("combinations", "medianR2", "lower", "upper")]
@@ -351,7 +354,7 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
         axis.text.y = element_text(hjust = c(0.5)),
-        plot.margin = unit(c(0.3, 0.5, 0.3, 0.2), "cm")) +
+        plot.margin = unit(c(0.35, 0.5, 0.3, 0.2), "cm")) +
     scale_y_discrete(labels = rev(c("Full model","Abundance","Breeding Habitat",
         "SSD", "Het-excess", expression(p[bot])))) +
     xlab(expression(paste(R^{2}))) +
@@ -359,15 +362,14 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
     #annotate("segment", x = 0.9, xend = 0.9, y = 0.8, yend = 3.5, color = col_legend) +
     #annotate("text", x = 0.98, xend = 0.95, y = 2, yend = 3, color = col_legend, label = c("common"), angle = 270) +
     annotate("segment", x = 1, xend = 1, y = 0.7, yend = 5.1, color = col_legend) +
-    annotate("text", x = 1.1, xend = 1.1, y = 3.2, yend = 3.5, color = col_legend, label = c("unique"), angle = 270) +
+    annotate("text", x = 1.1, xend = 1.1, y = 3.2, yend = 3.5, color = col_legend, label = c("unique"), angle = 270, size = 3) +
     annotate("segment", x = 1, xend = 1, y = 5.5, yend = 6.6, color = col_legend) +
-    annotate("text", x = 1.1, xend = 1.1, y = 6, yend = 6.6, color = col_legend, label = c("marginal"), angle = 270)
+    annotate("text", x = 1.1, xend = 1.1, y = 5.8, yend = 6.3, color = col_legend, label = c("marginal"), angle = 270, size = 3)
 p5
 
 
 
-
-p_top <- plot_grid(p1, p2, rel_widths = c(1,1.2), labels = c("A", "B"),label_fontfamily = "Lato",
+p_top <- plot_grid(p1, p2, rel_widths = c(1.1,1), labels = c("A", "B"),label_fontfamily = "Lato",
     label_x = 0.1, label_y = 0.98)
 p_top 
 p_bot <- plot_grid(p5, p3, p4, labels = c("C", "D", "E"),label_fontfamily = "Lato", rel_widths = c(1.5, 1, 1.4),
