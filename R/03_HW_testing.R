@@ -1,5 +1,17 @@
-# script to calculate HW for all seal microsatellite datasets and select HW loci and put these
-# into a new excel file as additional datasets
+# Estimate hardy-weinberg equlibrium for all microsatellite datasets, select just loci in HW
+# and put these into a new excel file as additional datasets
+
+# additional info
+# will create an output/genind folder containing genind formatted data for all species
+
+# files needed for this script:
+# (a) seal_data_largest_clust_and_pop_29.xlsx 
+
+# file output from this script:
+# (a) all_hw_10000iter_29.RData with all hw tests based on 10000 iterations
+# (b) seal_data_descriptives_29.xls provides an overview over the hw testing for all species
+# (c) seal_data_largest_clust_and_pop_all_hw_29.xls contains all full datasets, largest cluster
+# datasets and largest population datasets with just loci in HW equlibrium
 
 # Hardy Weinberg
 library(pegas)
@@ -67,8 +79,6 @@ check_na_genotypes <- function(df) {
 # MAIN FORMAT to convert to genind and loci classes
 seal_data_locus_format <- lapply(seal_data_locus_format, check_na_genotypes)
 
-
-
 if (dir.exists("output/genind_formatted")) {
     system(paste("rm -r output/genind_formatted"))
 }
@@ -100,7 +110,6 @@ total_genotypes <- sample_size * loci_full
 #### hardy weinberg tests on everything
 all_hw <- lapply(seal_data_pegas, hw.test, B = 10000)
 save(all_hw, file = "data/processed/all_hw_10000iter_29.RData")
-
 
 
 # load("data/processed/all_hw_10000iter.RData")
@@ -213,3 +222,10 @@ write_dflist_to_xls(all_seals_in_hw, "seal_data_largest_clust_and_pop_all_hw_29.
 
 ####### LAST step ######
 # save all xls files as xlsx for postprocessing 
+
+
+# which proportion of loci out of HW in both tests?
+all_hw_data <- read.xls("data/processed/seal_data_descriptives_29.xls")[1:29, ]
+
+sum(all_hw_data$non_hw_both_tests) / sum(all_hw_data$loci_full) 
+

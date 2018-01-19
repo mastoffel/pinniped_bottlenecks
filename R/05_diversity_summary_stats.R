@@ -1,3 +1,10 @@
+# Calculates rarified summary statistics
+
+# files needed:
+# (1) seal_data_largest_clust_and_pop_29.xlsx
+# (2) bottleneck_results_29.txt or bottleneck_results_29_cl.txt
+# (3) overview_29.xlsx
+
 # plots
 library(stringr)
 library(sealABC)
@@ -12,48 +19,24 @@ library(strataG)
 library(hierfstat)
 library(strataG)
 library(readr)
+library(stringr)
 all_seals <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop_29.xlsx")
-
-# set to TRUE is largest clusters instead of full datasets
-calc_on_cluster <- FALSE
-
-if (calc_on_cluster){
-    
-    #### to be modified for cluster analysis #############
-    ids <- c("antarctic_fur_seal", "galapagos_fur_seal", "stellers_sea_lion_cl_1",
-        "grey_seal_orkneys", "harbour_seal_waddensee_cl_1", "galapagos_sea_lion",
-        "south_american_fur_seal_cl_1", "hooded_seal", "mediterranean_monk_seal",
-        "hawaiian_monk_seal", "bearded_seal_cl_1", "crabeater_seal",
-        "leopard_seal", "arctic_ringed_seal", "ross_seal",
-        "weddell_seal_cl_2", "northern_fur_seal_cl_1", "atlantic_walrus_cl_2",
-        "nes_cl_2", "ses_cl_4", "california_sea_lion", "south_american_sea_lion",
-        "new_zealand_sea_lion", "saimaa_ringed_seal_cl_1", "lagoda_ringed_seal",
-        "baltic_ringed_seal", "new_zealand_fur_seal", "australian_fur_seal")
-    
-    # filter for 28 species datasets
-    all_seals <- all_seals[ids]
-    # rename all seals
-    names(all_seals) <- str_replace(names(all_seals), "_cl_[1-9]", "")
-    
-} else {
-    # take all full datasets
-    ids <- names(all_seals)[1:29] ### number of species now 29
-    ids %in% names(all_seals)
-    # filter for 28 species datasets
-    all_seals <- all_seals[ids]
-}
-
 
 #### load bottleneck data
 bottleneck <- read_delim("data/processed/bottleneck_results_29.txt", col_names = TRUE, delim = " ")
+bottleneck_cl <- read_delim("data/processed/bottleneck_results_29_cl.txt", col_names = TRUE, delim = " ")
 
-# rename all seals
-# rename_species <- function(bottle_tests){
-#     bottle_tests$id <- str_replace(bottle_tests$id, "_cl_[1-9]", "")
-#     bottle_tests$id <- str_replace(bottle_tests$id, "_HW", "")
-#     bottle_tests
-# }
-# bottleneck <- rename_species(bottleneck)
+# set to TRUE is largest clusters instead of full datasets
+calc_on_cluster <- TRUE
+
+if (calc_on_cluster){
+    all_seals <- all_seals[bottleneck_cl$id]
+    shortcut_save <- "cl"
+    bottleneck <- bottleneck_cl
+} else {
+    all_seals <- all_seals[bottleneck$id]
+    shortcut_save <- "full"
+}
 
 
 #### load additional data
@@ -65,7 +48,8 @@ harem_data <- harem_data[!(is.na(harem_data$species)), ]
 ### diversity
 # g2 
 # check if calculated
-if(!file.exists("data/processed/g2_summary_full_data.txt")){
+g2_file <- paste0("data/processed/g2_summary_", shortcut_save, "_data.txt")
+if(!file.exists(g2_file)){
     library(inbreedR)
     calc_g2s <- function(genotypes){
         g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 1000, nperm = 1000)
@@ -83,25 +67,25 @@ if(!file.exists("data/processed/g2_summary_full_data.txt")){
     # reorder columns
     g2_summary <- g2_summary[c("species", "g2", "CIlow", "CIup", "p_val")]
     # write to txt
-    readr::write_delim(g2_summary, path = "data/processed/g2_summary_full_data_29.txt", col_names = TRUE)
+    readr::write_delim(g2_summary, path = g2_file, col_names = TRUE)
 }
 # load g2s
-g2s <- read_delim("data/processed/g2_summary_full_data_29.txt", delim = " ")
+g2s <- read_delim(g2_file, delim = " ")
 
 bottleneck$id
 
 # calculate other summary statistics based on resampling 10 individuals
 ?mssumstats
-
-if(!file.exists("data/processed/sumstats_29.txt")){
-set.seed(1122)
-sumstats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x, start_geno = 4, mratio = "loose", 
-            rarefaction = TRUE, nresamp = 1000, nind = 10)))
-
-readr::write_delim(sumstats, path = "data/processed/sumstats_29.txt", col_names = TRUE)
+sumstats_file <- paste0("data/processed/sumstats_29_", shortcut_save, ".txt")
+if(!file.exists(sumstats_file)){
+    set.seed(1122)
+    sumstats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x, start_geno = 4, mratio = "loose", 
+                rarefaction = TRUE, nresamp = 1000, nind = 10)))
+    
+    readr::write_delim(sumstats, path = sumstats_file, col_names = TRUE)
 }
 
-sumstats <- read_delim("data/processed/sumstats_29.txt", delim = " ")
+sumstats <- read_delim(sumstats_file, delim = " ")
 
 
 # bind
@@ -115,7 +99,6 @@ ggplot(diversity_stats, aes(x = mratio_mean, y = species)) +
 
 # rename id variable in bottleneck table
 names(bottleneck)[1] <- "species"
- 
 # put together bottleneck results
 # check that all names are equal
 sum(bottleneck$species %in% diversity_stats$species)
@@ -124,6 +107,9 @@ sum(bottleneck$species %in% diversity_stats$species)
 # join them together
 all_seal_data <- left_join(diversity_stats, bottleneck, by = "species")
 names(all_seal_data)
+
+# remove cl names from all_seal_data to join with harem data
+all_seal_data$species <- str_replace(all_seal_data$species, "_cl_[1-9]", "")
 
 # # load all datasets
 # harem_data <- read_excel("data/processed/overview.xlsx", sheet = 2)
@@ -138,8 +124,11 @@ desc_seals <- do.call(rbind, lapply(all_seals, function(x) out <- data.frame(nlo
 seals <- cbind(seals, desc_seals)
 
 # write all stats to file
-if(!file.exists("data/processed/all_data_seals_rarefac10_29.csv")){
-write_excel_csv(seals, "data/processed/all_data_seals_rarefac10_29.csv")
+sumstats_data <- "data/processed/all_data_seals_rarefac10_29.csv"
+if (calc_on_cluster) sumstats_data <- "data/processed/all_data_seals_rarefac10_29_cl.csv"
+    
+if(!file.exists(sumstats_data)){
+     write_excel_csv(seals, sumstats_data)
 }
 
 

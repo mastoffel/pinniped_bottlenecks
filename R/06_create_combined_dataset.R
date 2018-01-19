@@ -11,14 +11,22 @@ library(ggthemes)
 library(stringr)
 library(hierfstat)
 ?hierfstat
-# load phyologenetic sequence
+
+# on cluster or full data?
+calc_on_cluster <- TRUE
+
+if (calc_on_cluster) {
+    save_files <- "_cl"    
+} else {
+    save_files <- ""
+}
 
 # load all datasets
 phylo <- read_excel("data/raw/phylogeny_overview_29.xlsx", sheet = 2, col_names = F)[1:29, ]
 names(phylo) <- c("latin", "common", "species")
 
 # All genetic and some life history variables
-seals <- read_csv("data/processed/all_data_seals_rarefac10_29.csv")
+seals <- read_csv(paste0("data/processed/all_data_seals_rarefac10_29", save_files, ".csv"))
 
 # join datasets
 seals2 <- left_join(phylo, seals, by = "species")
@@ -44,7 +52,7 @@ short <- c("W", "NFS", "GFS", "SAFS", "AntFS", "SAntFS", "NZFS", "AFS", "GSL", "
 seals_rearranged$short <- short
 
 # write to excel
-write_excel_csv(seals_rearranged, "data/processed/seal_data_complete_rarefac10_29.csv")
+write_excel_csv(seals_rearranged, paste0("data/processed/seal_data_complete_rarefac10_29", save_files, ".csv"))
 # 
 
 

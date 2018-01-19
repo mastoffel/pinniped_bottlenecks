@@ -1,4 +1,4 @@
-## script to analyse structure output for 28 seal species
+## script to analyse structure output for 29 seal species
 
 #(1) summarise structure output files with tables / graphs
 #(2) add cluster membership 
@@ -6,10 +6,17 @@
 #(4) create new data.frames with single largest (geographical) populations
 #(5) put all genotypes into a large list
 
+# files needed for this script:
+# (a) seal_genotypes_basic_29.xlsx
+# (b) old_parallel_structure_functions.R
 
-# summarising output with pophelper package from github
+# file output from this script:
+# (a) seal_data_largest_clust_and_pop_29.xls 
+# contains genotype data.frames for all 29 species, plus additional dataframes for the largest
+# genetic cluster (only for clustered species) and the largest population (sampling location)
+
+# 
 library(devtools)
-# load data with original population names ---------------------------------------------------------
 library(readxl)
 library(gdata)
 library(devtools)
@@ -18,13 +25,17 @@ library(dplyr)
 library(pophelper)
 library(magrittr)
 library(sealABC)
+
+# parallel structure changed, so using the old function here
 source("R/old_parallel_structure_functions.R")
 
 seal_data <- "data/processed/seal_genotypes_basic_29.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
-
+# naming
 dataset_names <- names(all_seals)
+
 # process structure results ------------------------------------------------------------------------
+# script will put all output in output/structure/.. and create folder if not present
 
 # preparation
 # folder that contains output from STRUCTURE, whereby each seal species has its own folder
@@ -32,7 +43,6 @@ path_to_structure_out <- "output/structure/structure_results/"
 
 # get names for all structure files that end with f
 seal_species_names <- names(all_seals)
-
 
 # create folder for STRUCTURE summary plots
 if (dir.exists("output/structure/cluster_summary_plots")) {
@@ -72,7 +82,6 @@ for (i in 1:length(seal_species_names)) {
     names(seals_structure_summary)[i] <- seal_species_names[i]
 }
 names(seals_structure_summary)
-
 
 
 # use clumpp to sort data
@@ -305,6 +314,11 @@ sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and
 # WriteXLS(names(all_seals_clusts_pops), ExcelFileName = "seal_data_largest_clust_and_pop.xls")
 
 #### potentially delete, same data as above
-save(all_seals_clusts_pops, file = "data/processed/seals_full_29.RData")
+# save(all_seals_clusts_pops, file = "data/processed/seals_full_29.RData")
 
+# which proportion of species were clustered?
+library(stringr)
+seal_data <- "data/processed/seal_data_largest_clust_and_pop_29.xlsx"
+all_seals <- sealABC::read_excel_sheets(seal_data)
 
+sum(str_detect(names(all_seals), "cl")) / 29

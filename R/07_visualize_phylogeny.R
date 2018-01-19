@@ -19,8 +19,15 @@ library(extrafont)
 # ggthemr('dust')
 source("R/martin.R")
 
+calc_on_cluster <- TRUE
+if (calc_on_cluster) {
+    save_files <- "_cl"    
+} else {
+    save_files <- ""
+}
+
 # load all datasets
-seals <- read_csv("data/processed/seal_data_complete_rarefac10_29.csv") 
+seals <- read_csv(paste0("data/processed/seal_data_complete_rarefac10_29", save_files, ".csv"))
 
 # load model probablities from ABC
 model_probs <- read_delim("data/processed/sims_10000k_model_selection.txt", 
