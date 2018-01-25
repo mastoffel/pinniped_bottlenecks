@@ -6,7 +6,7 @@ library(ParallelStructure)
 library(sealABC)
 
 ## load a list of genetic data frames and runs STRUCTURE in parallel on all of them
-seal_data <- "data/processed/seal_genotypes_basic_28.xlsx"
+seal_data <- "data/processed/seal_genotypes_basic_29.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
 
 # prepare data

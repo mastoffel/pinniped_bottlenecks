@@ -47,7 +47,6 @@ all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
 sum(all_stats$nind * all_stats$nloc)
 
 
-
 # Table 1: IUCN, life history data and sample size/locus information
 all_stats_table <- all_stats %>% 
     dplyr::select(common, latin, IUCN_rating, Abundance, BreedingType, SSD, harem_size, nloc, nind) %>% 

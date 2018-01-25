@@ -1,3 +1,13 @@
+# Create Fig.1 from paper
+
+# files needed:
+# (1) seal_data_complete_rarefac10_29.csv (all pinniped data)
+# (2) sims_10000k_model_selection.txt (ABC model probabilities)
+# (3) 29_species_10ktrees.tre (phylogenetic data)
+
+# creates:
+# all_stats_tree_29.csv (all stats plus tree variable)
+
 # plot phylogeny
 library(ggtree)
 library(ape)
@@ -30,11 +40,14 @@ if (calc_on_cluster) {
 seals <- read_csv(paste0("data/processed/seal_data_complete_rarefac10_29", save_files, ".csv"))
 
 # load model probablities from ABC
-model_probs <- read_delim("data/processed/sims_10000k_model_selection.txt", 
+model_probs <- read_delim(paste0("data/processed/sims_10000k", save_files, "_model_selection.txt"), 
     delim = " ", col_names = c("species", "bot", "neut"), skip = 1)
-
+# modify species names in model_probs as they still contain _cl_
+if (calc_on_cluster) {
+    model_probs$species <- str_replace(model_probs$species, "_cl_[1-9]", "")
+}
 # are all names overlapping?
-sum(seals$species %in% seals$species)
+sum(seals$species %in% model_probs$species)
 
 # join
 seals <- left_join(seals, model_probs, by = "species")
@@ -103,8 +116,8 @@ all_stats_tree <- all_stats_tree %>%
                               common_abbr = fct_inorder(factor(common_abbr)))
 
 # write to file
-if(!file.exists("data/processed/all_stats_tree_29.csv")){
-    write_excel_csv(all_stats_tree, "data/processed/all_stats_tree_29.csv")
+if(!file.exists(paste0("data/processed/all_stats_tree_29", save_files, ".csv"))){
+    write_excel_csv(all_stats_tree, paste0("data/processed/all_stats_tree_29", save_files, ".csv"))
 }
 
 all_stats_tree[all_stats_tree$BreedingType == "both", "BreedingType"] <- "land" 
@@ -397,7 +410,7 @@ p_final
 #p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.16, 0.09, 0.05, 0.02))
 #p_final
 
-save_plot("other_stuff/figures/phylo_plot_color.jpg", p_final,
+save_plot(paste0("other_stuff/figures/figures_final/phylo_plot_color", save_files, ".jpg"), p_final,
     ncol = 2, # we're saving a grid plot of 2 columns
     nrow = 1, # and 2 rows
     # each individual subplot should have an aspect ratio of 1.3

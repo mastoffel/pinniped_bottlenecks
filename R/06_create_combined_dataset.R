@@ -1,7 +1,10 @@
-# create combined dataset with Ollies data in the sequence of Phylogeny
+# create combined dataset with ecology/life-history/demography data in the sequence of Phylogeny
 
-# plots for the talk
-# install_github("mastoffel/sealABC", dependecies = TRUE)
+# files needed:
+# (1) phylogeny_overview_29.xlsx
+# (2) all_data_seals_rarefac10_29.csv
+# (3) seal_data_krueger.xlsx
+
 library(stringr)
 library(readxl)
 library(reshape2)
@@ -31,7 +34,7 @@ seals <- read_csv(paste0("data/processed/all_data_seals_rarefac10_29", save_file
 # join datasets
 seals2 <- left_join(phylo, seals, by = "species")
 
-# rest of the life history data
+# rest of the life history data from Krueger et al. 2014
 krueger_data <- data.frame(read_excel("data/processed/seal_data_krueger.xlsx", sheet = 1, col_names = T))%>% 
                 dplyr::select(dataset_name, birth_mass:Age_primiparity) %>% 
                 rename(species = dataset_name)

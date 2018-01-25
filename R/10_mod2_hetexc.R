@@ -30,6 +30,7 @@ source("R/martin.R")
 library(MCMCglmm)
 library(purrr)
 library(readr)
+library(extrafont)
 ## what should this script do:
 
 # modeling
@@ -508,6 +509,7 @@ out <- mcmcR2::partR2(mod_SSD, partvars = c("BreedingType"),
     nitt = 110000, burnin = 10000, thin = 100)
 
 
+
 # plots for SSD------------------------------------------------------------------------------------
 point_size = 3.5
 # boxplot 1 - bot -------------------
@@ -519,7 +521,7 @@ p1 <- ggplot(aes(BreedingType, bot), data = all_stats) +
     scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
     scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
     xlab("Breeding Habitat") +
-    ylab("Bottleneck model probability (ABC)") +
+    ylab(expression(ABC~bottleneck~probability~"("~p[bot]~")")) +
     guides(fill=FALSE, color = FALSE) +
     scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1), limits = c(0, 1.05)) +
     theme(panel.grid.major = element_blank(),
@@ -542,7 +544,7 @@ p2 <- ggplot(aes(BreedingType, TPM80_ratio), data = all_stats) +
     scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
     scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
     xlab("Breeding Habitat") +
-    ylab("Heterozygosity-excess") +
+    ylab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) +
     guides(fill=FALSE, color = FALSE) +
     scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1), limits = c(0.1, 1.05)) +
     theme(panel.grid.major = element_blank(),
@@ -552,7 +554,8 @@ p2 <- ggplot(aes(BreedingType, TPM80_ratio), data = all_stats) +
         axis.line.x = element_line(colour = "#cccccc"),
         axis.line.y = element_line(colour = "#cccccc"),
         #axis.ticks.y = element_blank(),
-        axis.ticks = element_line(colour = "#cccccc")) 
+        axis.ticks = element_line(colour = "#cccccc")
+        )
 
 p2
 
@@ -578,8 +581,9 @@ p3 <- ggplot(aes(x = SSD, y = TPM80_ratio), data = all_stats) +
     geom_point(size = point_size, alpha = 0.7,  aes(col = bot)) + # abc_out
     geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
     theme_martin() +
-    xlab("Sexual Weight Dimorphism") +
-    ylab("Heterozygosity-excess") +
+    xlab("Sexual Size Dimorphism (SSD)") +
+    ylab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) +
+    #ylab("Heterozygosity-excess") +
     # scale_x_continuous(breaks = log(c(1,2,3,4,6,8,10,15,20,30,40,50)), labels = c(1,2,3,4,6,8,10,15,20,30,40,50)) + #breaks = c(1,2,3,4,5,6,7,8)
     scale_x_continuous(breaks = c(1,2,3,4,5,6,7,8,9,10)) +
     geom_line(data = mod_preds_hetexc, aes(y = fit), size = 1.2, alpha = 0.5, color = "grey") + 
@@ -590,21 +594,30 @@ p3 <- ggplot(aes(x = SSD, y = TPM80_ratio), data = all_stats) +
         plot.margin = unit(c(0.9,0.2,0.25,0.1), "cm"),
         axis.line = element_line(colour = "#cccccc"),
         axis.ticks = element_line(colour = "#cccccc"),
-        legend.position = c(0.75,0.3),
+        legend.position = c(0.77,0.3),
         legend.title=element_text(size=10)
+        #legend.text.align = - 1
     ) +
-    guides(color = guide_colorbar(barwidth = 0.5, barheight = 3, 
-        title.position = "left")) + #, label.position = "bottom"
+    guides(color = guide_colorbar(
+        title = expression(p[bot]~"("~ABC~")"), 
+        #title = expression(paste("ABC bottleneck\nprobability (Pbot)")),
+        #title = expression(atop("ABC bottleneck", paste("probability p"[bot]))),
+        barwidth = 0.7, barheight = 3, 
+        title.position = "right")) + #, label.position = "bottom"
     scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1), limits = c(0.1, 1)) +
     scale_color_distiller(palette = "RdBu",
         direction = -1, 
-        name = "ABC bottleneck \nprobability %", labels=c("0", "50", "100"), breaks = c(0.05,0.5,1)) +
+        #name = expression(atop("ABC bottleneck", paste("probability p"[bot]))),
+        labels=c("0", "50", "100"), breaks = c(0.05,0.5,1)) +
     geom_text_repel(label = all_stats$short,size = 2.5, alpha = 1, color = "grey50",#  aes(label = common) , 
         segment.alpha= 1,  box.padding = unit(0.4, "lines"), point.padding = unit(0.7, "lines"),
         segment.size = 0.1,  force = 1, min.segment.length = unit(0.01, "lines"))
+
 p3
-
-
+# expression(atop("ABC bottleneck", paste("probability p" [reported]))))
+# expression(p[bot])
+# expression(Channel~Density~(km/km^2))
+# bquote('Assimilation ('*mu~ 'mol' ~CO[2]~ m^-2~s^-1*')')
 plot_grid(p2, p1, p3, nrow = 1, rel_widths = c(1,1,2), labels = c("A", "B", "C"), label_x = 0.1)
 # ggsave(filename = "other_stuff/figures/figures_final/fig3_hetexc_vs_lh.jpg", width = 9, height = 3)
 

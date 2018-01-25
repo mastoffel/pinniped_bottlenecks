@@ -1,6 +1,9 @@
 ## This script both models and produces the publication ready plot for hypothesis 1:
 # Genetic diversity and bottleneck signatures (het-excess) are correlated.
 
+# files needed
+# (1) all_stats_29_modeling.csv
+
 # packages
 library(tibble)
 library(dplyr)

@@ -2,10 +2,11 @@ library(readr)
 library(readxl)
 library(dplyr)
 library(knitr)
+# create tables for supplementary material
 library(kableExtra)
 # all_stats for modeling
 all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
-
+all_stats$latin[7] <- "Otaria byronia / flavescens"
 # number of genotypes
 sum(all_stats$nind * all_stats$nloc)
 
@@ -14,12 +15,13 @@ all_stats_origin <- read_xlsx("data/raw/table_data.xlsx")
 all_stats_table <- all_stats %>% 
     left_join(all_stats_origin, by = c("species", "common", "tip_label", "latin")) %>% 
     dplyr::mutate(Genotypes = nloc * nind) %>% 
-    dplyr::select(common, latin, IUCN_rating, Abundance, BreedingType, 
+    dplyr::select(common, latin, IUCN_rating, Abundance, BreedingType, Generation_time,
         SSD, harem_size, nloc, nind, Genotypes, origin, published_short) %>% 
     dplyr::rename(`Common name` = common,
         `Scientific` = latin,
         `IUCN status` = IUCN_rating,
         `Breeding habitat` = BreedingType,
+        `Generation time` = Generation_time,
         `Harem size` = harem_size,
         `Loci` = nloc,
         `Individuals` = nind,
@@ -30,8 +32,10 @@ all_stats_table <- all_stats %>%
 
 options(knitr.table.format = "latex")
 
+align_tab1 <- c("l", "l", rep(x = "c", ncol(all_stats_table) - 2))
+
 kable(all_stats_table , format = "latex",  escape = F, 
-      booktabs = TRUE, align = "c", digits = 3, linesep = "") %>% 
+      booktabs = TRUE, align = align_tab1, digits = 3, linesep = "") %>% 
     kable_styling(latex_options = c( "scale_down")) %>% 
     row_spec(0, bold = TRUE) %>% 
     kable_as_image("my_latex_table", keep_pdf = TRUE)
@@ -73,8 +77,10 @@ all_stats_table2_short <- data.frame(
     dplyr::arrange(-row_number()) %>% 
     mutate(Scientific = cell_spec(Scientific, italic = TRUE))
 
+align_tab2 <- c("l", "l", rep(x = "c", ncol(all_stats_table2_short ) - 2))
+
 kable(all_stats_table2_short, format = "latex",  escape = F, 
-    booktabs = TRUE, align = "c", digits = 3, linesep = "") %>% 
+    booktabs = TRUE, align = align_tab2, digits = 3, linesep = "") %>% 
     kable_styling(latex_options = c( "scale_down")) %>% 
     row_spec(0, bold = TRUE) %>% 
     kable_as_image("Sup_tab_2", keep_pdf = TRUE)
@@ -95,8 +101,10 @@ all_stats_table_sub3 <- all_stats %>%
     dplyr::arrange(-row_number()) %>% 
     mutate(Scientific = cell_spec(Scientific, italic = TRUE))
 
+align_tab3 <- c("l", "l", rep(x = "c", ncol(all_stats_table_sub3 ) - 2))
+
 kable(all_stats_table_sub3, format = "latex", escape = F, 
-    booktabs = TRUE, align = "c", digits = 3, linesep = "") %>% 
+    booktabs = TRUE, align = align_tab3, digits = 3, linesep = "") %>% 
     add_header_above(c(" "," ", "Heterozygosity-excess ($prop_{het-exc}$)" = 4, "ABC" = 2), escape = F) %>%
     kable_styling(latex_options =  "scale_down") %>% 
     row_spec(0, bold = TRUE) %>% 
@@ -124,8 +132,10 @@ all_stats_table_sub4 <-all_stats_table_sub4_temp %>%
     dplyr::arrange(-row_number()) %>% 
     mutate(Scientific = cell_spec(Scientific, italic = TRUE))
 
+align_tab4 <- c("l", "l", rep(x = "c", ncol(all_stats_table_sub4 ) - 2))
+
 kable(all_stats_table_sub4, format = "latex", escape = F, 
-    booktabs = TRUE, align = "c", digits = 3, linesep = "") %>% 
+    booktabs = TRUE, align = align_tab4 , digits = 3, linesep = "") %>% 
     kable_styling(latex_options =  "scale_down") %>% 
     row_spec(0, bold = TRUE) %>% 
     kable_as_image("Sup_tab_4", keep_pdf = TRUE)

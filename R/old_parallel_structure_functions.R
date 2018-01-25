@@ -1,3 +1,4 @@
+# this is the old function from the parallelstructure package to run the code without breaking.
 runsToDfStructure <- function(files = NULL)
 {
     if (is.null(files) | (length(files) == 0)) stop("runsToDfStructure: No input files.\n")

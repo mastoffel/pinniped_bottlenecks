@@ -324,7 +324,7 @@ p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
         axis.title.y = element_blank(),
         axis.text.y = element_text(hjust = c(0.5)),
         plot.margin = unit(c(1,0.64,0.2,0.1), "cm")) +
-    scale_y_discrete(labels = c(expression(p[bot]), "Het-excess", "SSD",  "Breeding habitat", "Abundance"
+    scale_y_discrete(labels = c(expression(p[bot]), expression(prop[het-exc]), "SSD",  "Breeding habitat", "Abundance"
         )) +
     xlab(expression(paste("Structure coefficient", " r(", hat(Y),",x)") )) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1)
@@ -356,7 +356,7 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
         axis.text.y = element_text(hjust = c(0.5)),
         plot.margin = unit(c(0.35, 0.5, 0.3, 0.2), "cm")) +
     scale_y_discrete(labels = rev(c("Full model","Abundance","Breeding Habitat",
-        "SSD", "Het-excess", expression(p[bot])))) +
+        "SSD", expression(prop[het-exc]), expression(p[bot])))) +
     xlab(expression(paste(R^{2}))) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1) +
     #annotate("segment", x = 0.9, xend = 0.9, y = 0.8, yend = 3.5, color = col_legend) +

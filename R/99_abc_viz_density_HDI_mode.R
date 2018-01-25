@@ -11,7 +11,7 @@ library(scales)
 library(viridis)
 show_col(magma(20))
 
-ggthemr("fresh", text_size = 30,spacing = 4, layout = "clean")
+# ggthemr("fresh", text_size = 30,spacing = 4, layout = "clean")
 # ggthemr("fresh", text_size = 12, spacing = 2, layout = "clean")
 # ggthemr_reset()
 
@@ -75,7 +75,7 @@ abc_summed <- abc %>%
         HPD_low_50 = HPDinterval(mcmc(adj_vals), 0.50)[1],
         HPD_high_50 = HPDinterval(mcmc(adj_vals), 0.50)[2])
 
-ggthemr("fresh", text_size = 12,spacing = 4, layout = "clean")
+#c ggthemr("fresh", text_size = 12,spacing = 4, layout = "clean")
 
 create_dens_plot <- function(species, parameter){
     # subset summary data
@@ -83,7 +83,8 @@ create_dens_plot <- function(species, parameter){
     # subset posterior data
     temp_data <- filter(abc, (pars == !!parameter) & (species == !!species))
     # create density object and extract maximum density
-    dens_obj <- print(ggplot(temp_data, aes(x=adj_vals)) + geom_density(adjust = 2))
+    p_temp <- ggplot(temp_data, aes(x=adj_vals)) + geom_density(adjust = 2)
+    dens_obj <- ggplot_build(p_temp)
     max_dens <- max(dens_obj$data[[1]]$density)
     # plotting
     p <- ggplot(data =temp_data, aes(adj_vals)) +

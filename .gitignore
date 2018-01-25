@@ -10,3 +10,4 @@
 *.xls
 *.xlsx
 *.Rproj
+/Rmarkdown
