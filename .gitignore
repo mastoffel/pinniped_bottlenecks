@@ -11,3 +11,4 @@
 *.xlsx
 *.Rproj
 /Rmarkdown
+/data_repo
