@@ -12,3 +12,6 @@
 *.Rproj
 /Rmarkdown
 /data_repo
+.gitignore
+.dropbox
+.DS_Store
