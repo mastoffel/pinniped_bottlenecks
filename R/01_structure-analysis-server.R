@@ -1,6 +1,6 @@
 # This script runs from a server where STRUCTURE is installed.
 # It uses the parallelStructure package to interface with STRUCTURE.
-
+# Run from a server.
 library(readxl)
 library(ParallelStructure)
 library(sealABC)
