@@ -1,0 +1,62 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Antarctic_fur_seal_genepop.txt
+Data type: Genepop format
+Title: title																						
+Estimation based on 1000 replications.
+
+
+Date: 22/02/2012  Time: 16:22:40.
+Population : 246	
+                 observed   |     under the I.A.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+pv9									  486  10 0.753 | 0.642 0.138  0.807 0.2160 
+hg63								  482  13 0.869 | 0.710 0.111  1.431 0.0060 
+Lw10								  488  17 0.909 | 0.775 0.083  1.613 0.0000 
+Hg810							  488   5 0.499 | 0.426 0.190  0.387 0.4440 
+Aa4									  492   6 0.745 | 0.481 0.183  1.445 0.0190 
+PvcA								  488   7 0.782 | 0.514 0.181  1.478 0.0130 
+PvcE								  490  14 0.875 | 0.724 0.106  1.422 0.0060 
+Hg13								  482  13 0.871 | 0.716 0.110  1.413 0.0010 
+M11a								  490  18 0.918 | 0.783 0.084  1.618 0.0000 
+Orr16							  478   4 0.578 | 0.343 0.198  1.186 0.1320 
+Orr8								  478   8 0.786 | 0.566 0.159  1.388 0.0230 
+Lw8									  474  13 0.903 | 0.711 0.112  1.708 0.0000 
+Hg610							  482  14 0.850 | 0.731 0.103  1.157 0.0440 
+Orr7								  490  12 0.851 | 0.685 0.117  1.413 0.0110 
+Lw15								  468  14 0.883 | 0.726 0.104  1.508 0.0000 
+Orr1								  476  10 0.789 | 0.637 0.142  1.076 0.0910 
+Agaz1							  484  13 0.872 | 0.706 0.115  1.439 0.0040 
+Agaz2							  476  10 0.793 | 0.639 0.134  1.146 0.0730 
+Ag10								  488   7 0.771 | 0.522 0.173  1.441 0.0250 
+Zcwb07						  424  12 0.853 | 0.698 0.120  1.291 0.0170 
+Zcwg04						  478  17 0.901 | 0.771 0.092  1.403 0.0020 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  12.44
+0 loci with heterozygosity deficiency and 21 loci with heterozygosity excess.
+Probability: 0.00002
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   6.060  Probability:  0.00000
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00000
+Probability (two tails for H excess and deficiency): 0.00000
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.709 | 0.190 | 0.051 | 0.038 | 0.004 | 0.004 | 0.004 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 22/02/2012  Time: 16:23:43.

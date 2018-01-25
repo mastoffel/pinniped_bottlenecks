@@ -1,0 +1,87 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\new_zealand_sea_lion_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes                 
+Estimation based on 10000 replications.
+
+
+Date: 08/02/2017  Time: 4:22:01 PM.
+Population : 1
+                 observed   |     under the I.A.M.      |     under the T.P.M.      |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob 
+L_Lc28        408   4 0.661 | 0.353 0.192  1.601 0.0290 | 0.446 0.168  1.283 0.0634 | 0.557 0.115  0.907 0.1680 
+L_Pv9         410   4 0.502 | 0.351 0.195  0.775 0.2876 | 0.445 0.168  0.336 0.4595 | 0.561 0.111 -0.536 0.2341 
+L_PvcA        408   9 0.720 | 0.613 0.146  0.731 0.2575 | 0.724 0.084 -0.048 0.3899 | 0.806 0.042 -2.043 0.0438 
+L_GIA         406   4 0.600 | 0.351 0.195  1.274 0.1036 | 0.443 0.167  0.933 0.1830 | 0.559 0.114  0.353 0.4397 
+L_Hg4_2       408  13 0.825 | 0.718 0.110  0.975 0.1205 | 0.810 0.053  0.284 0.4722 | 0.869 0.026 -1.684 0.0676 
+L_Pv11        410   7 0.727 | 0.534 0.167  1.159 0.0901 | 0.650 0.109  0.706 0.2603 | 0.747 0.061 -0.323 0.2915 
+L_Hg6_3       408   7 0.753 | 0.535 0.167  1.300 0.0482 | 0.650 0.109  0.940 0.1499 | 0.747 0.061  0.085 0.4487 
+L_HI16        410   9 0.710 | 0.612 0.149  0.663 0.3017 | 0.722 0.084 -0.134 0.3609 | 0.806 0.043 -2.204 0.0349 
+L_Hg6_1       408   8 0.655 | 0.577 0.157  0.498 0.3789 | 0.689 0.097 -0.353 0.2891 | 0.780 0.051 -2.481 0.0284 
+L_M11A        408   4 0.620 | 0.351 0.194  1.381 0.0817 | 0.446 0.167  1.041 0.1417 | 0.559 0.112  0.545 0.3442 
+L_Lc5         410   4 0.488 | 0.350 0.194  0.707 0.3190 | 0.448 0.165  0.240 0.4966 | 0.559 0.114 -0.627 0.2124 
+L_Hg8_10      404   5 0.468 | 0.427 0.185  0.223 0.4904 | 0.535 0.145 -0.463 0.2670 | 0.645 0.092 -1.931 0.0532 
+L_ZcwC03      394  13 0.809 | 0.720 0.107  0.831 0.1933 | 0.811 0.053 -0.030 0.4085 | 0.869 0.025 -2.434 0.0284 
+L_ZcCgDh5_16  408  17 0.902 | 0.782 0.082  1.455 0.0028 | 0.859 0.037  1.165 0.0630 | 0.901 0.023  0.043 0.4645 
+L_OrrFCB1     408   9 0.760 | 0.615 0.146  0.996 0.1321 | 0.723 0.084  0.450 0.3880 | 0.807 0.041 -1.132 0.1239 
+L_OrrFCB7     408   7 0.788 | 0.536 0.167  1.506 0.0116 | 0.652 0.106  1.280 0.0389 | 0.746 0.062  0.676 0.2700 
+L_ZcwE03      404   4 0.526 | 0.349 0.193  0.916 0.2187 | 0.451 0.165  0.458 0.3898 | 0.558 0.113 -0.280 0.3144 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   9.63
+0 loci with heterozygosity deficiency and 17 loci with heterozygosity excess.
+Probability: 0.00006
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  10.01
+5 loci with heterozygosity deficiency and 12 loci with heterozygosity excess.
+Probability: 0.23349
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  10.01
+11 loci with heterozygosity deficiency and 6 loci with heterozygosity excess.
+Probability: 0.04311
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 17 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   4.121  Probability:  0.00002
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   1.961  Probability:  0.02493
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -3.169  Probability:  0.00076
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00000
+Probability (two tails for H excess and deficiency): 0.00001
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.99605
+Probability (one tail for H excess): 0.00467
+Probability (two tails for H excess or deficiency): 0.00934
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.02238
+Probability (one tail for H excess): 0.98023
+Probability (two tails for H excess or deficiency): 0.04477
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.578 | 0.195 | 0.070 | 0.063 | 0.055 | 0.008 | 0.031 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 08/02/2017  Time: 5:50:22 PM.

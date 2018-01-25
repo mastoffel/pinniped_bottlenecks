@@ -1,0 +1,56 @@
+
+Using the parameter settings in the file: 
+''paramfile''
+
+Parameter settings
+----------------------- Main parameters -------------------------
+DATATYPE = 1
+INDFILE = 
+POPFILE = lagoda_ringed_seal_K4-combined.txt
+OUTFILE = lagoda_ringed_seal_K4-combined-merged.txt
+MISCFILE = lagoda_ringed_seal_K4-combined-miscfile.txt
+K = 4
+C = 16
+R = 5
+M = 2
+W = 0
+S = 2
+- Additional options for the Greedy and LargeKGreedy algorithms -
+GREEDY_OPTION = 2
+REPEATS = 20
+PERMUTATIONFILE = 
+----------------------- Optional outputs ------------------------
+PRINT_PERMUTED_DATA = 1
+PERMUTED_DATAFILE = lagoda_ringed_seal_K4-combined-aligned.txt
+PRINT_EVERY_PERM = 0
+EVERY_PERMFILE = 
+PRINT_RANDOM_INPUTORDER = 0
+RANDOM_INPUTORDERFILE = 
+----------------------- Advanced options ------------------------
+OVERRIDE_WARNINGS = 0
+ORDER_BY_RUN = 0
+
+
+In total, 20 configurations of runs and clusters will be tested.
+
+Results
+------------------------------
+The highest value of H' is: 0.99616684065392
+
+The list of permutations of the clusters that produces that
+H' value is (runs are listed sequentially on separate rows)
+
+3 2 4 1 
+1 2 3 4 
+2 3 1 4 
+1 2 3 4 
+2 1 4 3 
+
+The pairwise G' values for each pair of runs where the clusters
+of each run are permuted according to the list of permutations above
+
+1.0000 0.9968 0.9967 0.9968 0.9937 
+0.9968 1.0000 0.9969 1.0000 0.9946 
+0.9967 0.9969 1.0000 0.9969 0.9945 
+0.9968 1.0000 0.9969 1.0000 0.9946 
+0.9937 0.9946 0.9945 0.9946 1.0000 

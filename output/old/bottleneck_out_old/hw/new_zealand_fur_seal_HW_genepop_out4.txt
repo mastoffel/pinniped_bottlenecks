@@ -1,0 +1,55 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=90.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\emily_bottleneck\genepop_files_HW\new_zealand_fur_seal_HW_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes           
+Estimation based on 10000 replications.
+
+
+Date: 05.07.2016  Time: 12:34:09.
+Population : 1
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+L_Lc28        108  12 0.842 | 0.850 0.035 -0.218 0.3427 
+L_Pv9         108   9 0.834 | 0.794 0.053  0.760 0.2299 
+L_M11a        108  15 0.810 | 0.884 0.025 -2.927 0.0166 
+L_Lc5         108   6 0.776 | 0.687 0.087  1.013 0.1139 
+L_Hg810       108  17 0.903 | 0.901 0.021  0.112 0.4811 
+L_Hg14        102   8 0.836 | 0.769 0.062  1.085 0.0863 
+L_Hl16        108   9 0.825 | 0.792 0.054  0.593 0.3096 
+L_Hg42        108  14 0.880 | 0.875 0.028  0.194 0.5165 
+L_Pv11        106   9 0.649 | 0.795 0.052 -2.803 0.0178 
+L_Hg61        108   9 0.839 | 0.793 0.054  0.851 0.1816 
+L_3E3         100   3 0.294 | 0.428 0.153 -0.874 0.2066 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   6.48
+4 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
+Probability: 0.50232
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 11 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:  -0.667  Probability:  0.25232
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.58447
+Probability (one tail for H excess): 0.44922
+Probability (two tails for H excess or deficiency): 0.89844
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.649 | 0.189 | 0.126 | 0.018 | 0.000 | 0.009 | 0.000 | 0.000 | 0.009 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 05.07.2016  Time: 12:38:43.

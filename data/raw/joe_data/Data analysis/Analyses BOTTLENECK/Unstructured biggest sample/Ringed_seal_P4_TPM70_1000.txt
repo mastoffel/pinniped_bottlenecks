@@ -1,0 +1,54 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: G:\Ringed_seal_P4_genepop.txt
+Data type: Genepop format
+Title: title ringed seal population 4																
+Estimation based on 1000 replications.
+
+
+Date: 03/03/2012  Time: 09:41:55.
+Population : 189	
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+LS8									  214  19 0.903 | 0.887 0.028  0.565 0.3360 
+LS15								  214  24 0.941 | 0.915 0.020  1.295 0.0280 
+LS16								  214  21 0.915 | 0.901 0.022  0.661 0.2900 
+CS6									  214  18 0.866 | 0.879 0.030 -0.452 0.2670 
+CS18								  214  18 0.845 | 0.880 0.028 -1.257 0.0970 
+4.2									  214  27 0.920 | 0.927 0.020 -0.376 0.2530 
+6.1									  214  25 0.928 | 0.921 0.016  0.467 0.3890 
+6.3									  214  14 0.883 | 0.842 0.038  1.078 0.1070 
+8.1									  214  17 0.740 | 0.871 0.033 -3.898 0.0040 
+PV11								  214  23 0.882 | 0.910 0.020 -1.403 0.0920 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   5.85
+5 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
+Probability: 0.40490
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 10 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:  -1.049  Probability:  0.14700
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.46094
+Probability (one tail for H excess): 0.57715
+Probability (two tails for H excess or deficiency): 0.92188
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.869 | 0.097 | 0.029 | 0.000 | 0.005 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 03/03/2012  Time: 09:46:26.

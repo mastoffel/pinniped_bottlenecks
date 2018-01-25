@@ -1,0 +1,52 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Walrus_Andersen_WGR_genepop.txt
+Data type: Genepop format
+Title: title Atlantic Walrus Andersen WGR population										
+Estimation based on 1000 replications.
+
+
+Date: 01/03/2012  Time: 09:08:04.
+Population : 287	
+                 observed   |     under the I.A.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+hg61								  446   5 0.343 | 0.408 0.186 -0.350 0.3610 
+or16								  448  13 0.782 | 0.713 0.112  0.619 0.3040 
+or23								  446  15 0.877 | 0.750 0.098  1.289 0.0140 
+or24								  446  11 0.697 | 0.669 0.129  0.212 0.4790 
+Hgdii							  448   9 0.368 | 0.607 0.148 -1.614 0.0870 
+or11								  446  11 0.759 | 0.657 0.131  0.776 0.2380 
+orr7								  434  14 0.862 | 0.734 0.104  1.224 0.0260 
+sgpv								  444   8 0.696 | 0.572 0.159  0.781 0.2610 
+hg42								  448  13 0.657 | 0.712 0.116 -0.474 0.2410 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   5.34
+3 loci with heterozygosity deficiency and 6 loci with heterozygosity excess.
+Probability: 0.46700
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 9 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   0.821  Probability:  0.20592
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.84961
+Probability (one tail for H excess): 0.17969
+Probability (two tails for H excess and deficiency): 0.35938
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.727 | 0.121 | 0.071 | 0.040 | 0.010 | 0.010 | 0.000 | 0.020 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 01/03/2012  Time: 09:08:28.

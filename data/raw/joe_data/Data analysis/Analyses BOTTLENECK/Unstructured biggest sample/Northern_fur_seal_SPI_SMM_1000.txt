@@ -1,0 +1,50 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Northern_fur_seal_SPI_genepop.txt
+Data type: Genepop format
+Title: "title northern fur seal St Paul Island"								
+Estimation based on 1000 replications.
+
+
+Date: 02/03/2012  Time: 15:37:02.
+Population : 492	
+                 observed   |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+Hg3.7							  208  14 0.821 | 0.884 0.023 -2.738 0.0240 
+M11a								  208  14 0.894 | 0.884 0.023  0.438 0.3890 
+M2b								   212  21 0.901 | 0.925 0.012 -1.969 0.0460 
+Hg4.2							  212  16 0.876 | 0.900 0.018 -1.311 0.1020 
+Hg8.10						  206  15 0.879 | 0.892 0.019 -0.641 0.2270 
+Hg6.3							  194  12 0.858 | 0.863 0.027 -0.155 0.3730 
+Pv11								  212  10 0.365 | 0.833 0.037 -12.762 0.0000 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.07
+6 loci with heterozygosity deficiency and 1 loci with heterozygosity excess.
+Probability: 0.02419
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 7 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -7.233  Probability:  0.00000
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.01172
+Probability (one tail for H excess): 0.99219
+Probability (two tails for H excess or deficiency): 0.02344
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.775 | 0.157 | 0.059 | 0.000 | 0.000 | 0.000 | 0.000 | 0.010 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 02/03/2012  Time: 15:39:51.

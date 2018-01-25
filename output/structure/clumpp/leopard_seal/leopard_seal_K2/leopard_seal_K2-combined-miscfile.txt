@@ -1,0 +1,56 @@
+
+Using the parameter settings in the file: 
+''paramfile''
+
+Parameter settings
+----------------------- Main parameters -------------------------
+DATATYPE = 1
+INDFILE = 
+POPFILE = leopard_seal_K2-combined.txt
+OUTFILE = leopard_seal_K2-combined-merged.txt
+MISCFILE = leopard_seal_K2-combined-miscfile.txt
+K = 2
+C = 150
+R = 5
+M = 2
+W = 0
+S = 2
+- Additional options for the Greedy and LargeKGreedy algorithms -
+GREEDY_OPTION = 2
+REPEATS = 20
+PERMUTATIONFILE = 
+----------------------- Optional outputs ------------------------
+PRINT_PERMUTED_DATA = 1
+PERMUTED_DATAFILE = leopard_seal_K2-combined-aligned.txt
+PRINT_EVERY_PERM = 0
+EVERY_PERMFILE = 
+PRINT_RANDOM_INPUTORDER = 0
+RANDOM_INPUTORDERFILE = 
+----------------------- Advanced options ------------------------
+OVERRIDE_WARNINGS = 0
+ORDER_BY_RUN = 0
+
+
+In total, 20 configurations of runs and clusters will be tested.
+
+Results
+------------------------------
+The highest value of H' is: 0.98221855669892
+
+The list of permutations of the clusters that produces that
+H' value is (runs are listed sequentially on separate rows)
+
+2 1 
+1 2 
+1 2 
+1 2 
+1 2 
+
+The pairwise G' values for each pair of runs where the clusters
+of each run are permuted according to the list of permutations above
+
+1.0000 0.9897 0.9943 0.9875 0.9655 
+0.9897 1.0000 0.9906 0.9951 0.9721 
+0.9943 0.9906 1.0000 0.9876 0.9642 
+0.9875 0.9951 0.9876 1.0000 0.9756 
+0.9655 0.9721 0.9642 0.9756 1.0000 

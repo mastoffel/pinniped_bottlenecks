@@ -1,0 +1,2 @@
+pred modeSC medianSC lower upper
+SSD 1.0003258527246635 1 -1 1

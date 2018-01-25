@@ -1,0 +1,48 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\South_American_fur_seal_genepop.txt
+Data type: Genepop format
+Title: title south american fur seal																					
+Estimation based on 1000 replications.
+
+
+Date: 18/02/2012  Time: 19:37:06.
+Population : 226	
+                 observed   |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+M11a								  422  12 0.823 | 0.858 0.028 -1.233 0.1070 
+Hg6.3							  338  11 0.823 | 0.844 0.031 -0.653 0.2130 
+PvcA								  390   9 0.825 | 0.808 0.042  0.424 0.4000 
+PvcE								  272  11 0.827 | 0.847 0.031 -0.665 0.2090 
+Pv11								  352   9 0.744 | 0.808 0.042 -1.545 0.0810 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   2.90
+4 loci with heterozygosity deficiency and 1 loci with heterozygosity excess.
+Probability: 0.10346
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 5 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -1.642  Probability:  0.05031
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.03125
+Probability (one tail for H excess): 0.98438
+Probability (two tails for H excess or deficiency): 0.06250
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.596 | 0.269 | 0.096 | 0.019 | 0.019 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 18/02/2012  Time: 19:40:35.

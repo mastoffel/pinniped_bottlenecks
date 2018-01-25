@@ -1,0 +1,2 @@
+pred modeSC medianSC lower upper
+bot 0.9981878029386524 1 0.9999999999999998 1

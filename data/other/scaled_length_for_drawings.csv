@@ -1,0 +1,30 @@
+species,common,male_length,female_length,male_length_scaled,female_length_scaled
+atlantic_walrus,Walrus,300,250,1,0.83
+northern_fur_seal,Northern Fur Seal,213,135,1,0.63
+stellers_sea_lion,Steller Sea Lion,300,240.15,1,0.8
+california_sea_lion,California Sea Lion,225,180,1,0.8
+galapagos_sea_lion,Galapagos Sea Lion,NA,NA,NA,NA
+australian_fur_seal,Australian Fur Seal,215.6,157.2,1,0.73
+south_american_sea_lion,South American Sea Lion,234.88,188.86,1,0.8
+new_zealand_sea_lion,New Zealand Sea Lion,225,180,1,0.8
+antarctic_fur_seal,Antarctic Fur Seal,185.9,128.75,1,0.69
+subantarctic_fur_seal,Subantarctic Fur Seal,NA,NA,NA,NA
+new_zealand_fur_seal,New Zealand Fur Seal,199.38,141.88,1,0.71
+south_american_fur_seal,South American Fur Seal,189.25,141.25,1,0.75
+galapagos_fur_seal,Galapagos Fur Seal,151.25,120,1,0.79
+bearded_seal,Bearded Seal,230,230,1,1
+hooded_seal,Hooded Seal,260,206,1,0.79
+harbour_seal_waddensee,Harbor Seal,145,137.5,1,0.95
+grey_seal_orkneys,Grey Seal,216.35,180,1,0.83
+arctic_ringed_seal,Ringed Seal,129.3,128.9,1,1
+baltic_ringed_seal,Baltic Ringed Seal,NA,NA,NA,NA
+saimaa_ringed_seal,Saimaa Ringed Seal,132,132,1,1
+lagoda_ringed_seal,Ladoga Ringed Seal,NA,NA,NA,NA
+mediterranean_monk_seal,Mediterranean Monk Seal,254.75,364.6,1,1.43
+hawaiian_monk_seal,Hawaiian Monk Seal,214.2,233.7,1,1.09
+nes,Northern Elephant Seal,450,295,1,0.66
+ses,Southern Elephant Seal,467,270,1,0.58
+ross_seal,Ross Seal,199,214.6,1,1.08
+crabeater_seal,Crabeater Seal,226,228.5,1,1.01
+leopard_seal,Leopard Seal,287,322.48,1,1.12
+weddell_seal,Weddell Seal,250,259.5,1,1.04

@@ -1,0 +1,75 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\emily_bottleneck\genepop_files_HW\bearded_seal_HW_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes     
+Estimation based on 10000 replications.
+
+
+Date: 19.04.2016  Time: 14:08:48.
+Population : 1
+                 observed   |     under the I.A.M.      |     under the T.P.M.      |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob 
+WS7           238   5 0.543 | 0.451 0.179  0.512 0.3687 | 0.552 0.138 -0.066 0.3931 | 0.651 0.089 -1.217 0.1082 
+LS16          238  23 0.861 | 0.863 0.047 -0.036 0.3820 | 0.909 0.020 -2.374 0.0305 | 0.932 0.018 -3.899 0.0039 
+LS20          238   8 0.791 | 0.609 0.145  1.254 0.0441 | 0.706 0.090  0.948 0.1367 | 0.785 0.049  0.119 0.4685 
+CS28          238   8 0.795 | 0.610 0.145  1.273 0.0367 | 0.708 0.088  0.981 0.1285 | 0.786 0.048  0.172 0.5191 
+PV11          238   7 0.648 | 0.567 0.156  0.522 0.3672 | 0.668 0.102 -0.190 0.3401 | 0.754 0.058 -1.812 0.0564 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   2.94
+1 loci with heterozygosity deficiency and 4 loci with heterozygosity excess.
+Probability: 0.31803
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   2.95
+3 loci with heterozygosity deficiency and 2 loci with heterozygosity excess.
+Probability: 0.33489
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   2.96
+3 loci with heterozygosity deficiency and 2 loci with heterozygosity excess.
+Probability: 0.33289
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 5 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   1.577  Probability:  0.05743
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:  -0.313  Probability:  0.37708
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -2.969  Probability:  0.00150
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.98438
+Probability (one tail for H excess): 0.03125
+Probability (two tails for H excess and deficiency): 0.06250
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.50000
+Probability (one tail for H excess): 0.59375
+Probability (two tails for H excess or deficiency): 1.00000
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.07813
+Probability (one tail for H excess): 0.95313
+Probability (two tails for H excess or deficiency): 0.15625
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.706 | 0.098 | 0.137 | 0.020 | 0.000 | 0.020 | 0.020 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 19.04.2016  Time: 14:19:37.

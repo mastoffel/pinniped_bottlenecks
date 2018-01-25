@@ -1,0 +1,53 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Ringed_seal_genepop.txt
+Data type: Genepop format
+Title: title ringed seal																
+Estimation based on 1000 replications.
+
+
+Date: 23/02/2012  Time: 19:34:39.
+Population : 303	
+                 observed   |     under the I.A.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+LS8									  606  23 0.906 | 0.827 0.065  1.195 0.0300 
+LS15								  606  35 0.942 | 0.891 0.035  1.488 0.0050 
+LS16								  606  26 0.912 | 0.849 0.051  1.252 0.0380 
+CS6									  606  21 0.878 | 0.809 0.072  0.948 0.1320 
+CS18								  606  27 0.848 | 0.853 0.052 -0.092 0.3700 
+4.2									  606  32 0.925 | 0.879 0.040  1.162 0.0610 
+6.1									  606  31 0.919 | 0.873 0.045  1.009 0.0880 
+6.3									  606  16 0.882 | 0.746 0.102  1.337 0.0140 
+8.1									  606  23 0.726 | 0.824 0.067 -1.464 0.0860 
+PV11								  606  31 0.876 | 0.875 0.045  0.026 0.4110 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   6.05
+2 loci with heterozygosity deficiency and 8 loci with heterozygosity excess.
+Probability: 0.17608
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 10 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   2.170  Probability:  0.01501
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.95801
+Probability (one tail for H excess): 0.05273
+Probability (two tails for H excess and deficiency): 0.10547
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.909 | 0.068 | 0.019 | 0.000 | 0.004 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 23/02/2012  Time: 19:36:25.

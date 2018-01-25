@@ -1,0 +1,51 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=90.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\emily_bottleneck\genepop_files\south_american_fur_seal_cl_2_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes       
+Estimation based on 10000 replications.
+
+
+Date: 04.07.2016  Time: 18:17:59.
+Population : 1
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+L_M11a        280   8 0.822 | 0.740 0.072  1.134 0.0711 
+L_Hg63        228   8 0.785 | 0.747 0.068  0.554 0.3355 
+L_PvcA        262   9 0.792 | 0.770 0.061  0.365 0.4324 
+L_PvcE        152   9 0.769 | 0.784 0.056 -0.258 0.3177 
+L_Pv11        212   7 0.765 | 0.712 0.079  0.659 0.2829 
+L_Hg810       262   8 0.743 | 0.743 0.071  0.010 0.4188 
+L_Pv9         244   7 0.698 | 0.710 0.081 -0.146 0.3524 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.14
+2 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
+Probability: 0.40083
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 7 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   0.876  Probability:  0.19043
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.97266
+Probability (one tail for H excess): 0.03906
+Probability (two tails for H excess or deficiency): 0.07813
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.464 | 0.357 | 0.054 | 0.071 | 0.054 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 04.07.2016  Time: 18:22:23.

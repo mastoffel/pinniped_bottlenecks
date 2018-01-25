@@ -1,0 +1,51 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: G:\South_American_fur_seal_P_genepop.txt
+Data type: Genepop format
+Title: title south american fur seal Peruvian population																							
+Estimation based on 1000 replications.
+
+
+Date: 26/02/2012  Time: 17:36:54.
+Population : 226	
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+M11a								  354  10 0.816 | 0.752 0.074  0.872 0.1620 
+Hg6.3							  286   9 0.805 | 0.728 0.082  0.934 0.1440 
+PvcA								  330   9 0.805 | 0.729 0.085  0.906 0.1490 
+PvcE								  182   9 0.785 | 0.748 0.075  0.501 0.3570 
+Pv11								  248   8 0.780 | 0.708 0.086  0.845 0.1990 
+Hg8.10						  326   8 0.744 | 0.698 0.094  0.493 0.3710 
+Pv9									  306   8 0.721 | 0.698 0.092  0.254 0.4710 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.13
+0 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
+Probability: 0.02495
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 7 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   1.816  Probability:  0.03468
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00391
+Probability (two tails for H excess or deficiency): 0.00781
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.557 | 0.279 | 0.049 | 0.082 | 0.033 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 26/02/2012  Time: 17:40:07.

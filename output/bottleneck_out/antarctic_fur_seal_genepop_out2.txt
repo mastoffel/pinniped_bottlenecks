@@ -1,0 +1,63 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=80.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\antarctic_fur_seal_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes                     
+Estimation based on 10000 replications.
+
+
+Date: 07/31/2017  Time: 11:01:27 AM.
+Population : 1
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+L_Pv9         486  10 0.753 | 0.764 0.067 -0.153 0.3537 
+L_Hg63        482  13 0.869 | 0.818 0.049  1.038 0.1013 
+L_Lw10        488  17 0.909 | 0.865 0.033  1.335 0.0329 
+L_Hg810       488   5 0.499 | 0.553 0.134 -0.401 0.2822 
+L_Aa4         492   6 0.745 | 0.616 0.116  1.114 0.0885 
+L_PvcA        488   7 0.782 | 0.665 0.099  1.174 0.0618 
+L_PvcE        490  14 0.875 | 0.832 0.044  0.993 0.1249 
+L_Hg13        482  13 0.871 | 0.818 0.048  1.095 0.0893 
+L_M11a        490  18 0.918 | 0.872 0.032  1.462 0.0130 
+L_Orr16       478   4 0.578 | 0.468 0.158  0.697 0.2743 
+L_Orr8        478   8 0.786 | 0.705 0.088  0.923 0.1532 
+L_Lw8         474  13 0.903 | 0.818 0.048  1.766 0.0004 
+L_Hg610       482  14 0.850 | 0.831 0.044  0.422 0.3997 
+L_Orr7        490  12 0.851 | 0.803 0.054  0.895 0.1611 
+L_Lw15        468  14 0.883 | 0.833 0.043  1.182 0.0650 
+L_Orr1        476  10 0.789 | 0.762 0.068  0.403 0.4117 
+L_Agaz1       484  13 0.872 | 0.818 0.049  1.127 0.0786 
+L_Agaz2       476  10 0.793 | 0.763 0.066  0.443 0.3911 
+L_Ag10        488   7 0.771 | 0.665 0.101  1.058 0.0998 
+L_Zcwb07      427  12 0.852 | 0.804 0.053  0.901 0.1642 
+L_Zcwg04      478  17 0.901 | 0.864 0.033  1.102 0.0956 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  12.40
+2 loci with heterozygosity deficiency and 19 loci with heterozygosity excess.
+Probability: 0.00182
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   4.054  Probability:  0.00003
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00000
+Probability (two tails for H excess or deficiency): 0.00000
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.709 | 0.190 | 0.051 | 0.038 | 0.004 | 0.004 | 0.004 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 07/31/2017  Time: 1:17:24 PM.

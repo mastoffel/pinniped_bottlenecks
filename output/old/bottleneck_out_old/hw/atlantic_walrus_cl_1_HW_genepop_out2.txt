@@ -1,0 +1,53 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=95.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\emily_bottleneck\genepop_files_HW\atlantic_walrus_cl_1_HW_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes         
+Estimation based on 10000 replications.
+
+
+Date: 05.07.2016  Time: 10:28:58.
+Population : 1
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+L_Orr16       850  12 0.804 | 0.827 0.042 -0.552 0.2412 
+L_Orr7        858  14 0.879 | 0.852 0.034  0.810 0.2175 
+L_Orr9        836   6 0.616 | 0.663 0.094 -0.494 0.2460 
+L_Orr11       818   7 0.659 | 0.707 0.079 -0.606 0.2184 
+L_Orr23       846   8 0.761 | 0.743 0.067  0.268 0.4794 
+L_Hg61        818   4 0.416 | 0.515 0.136 -0.732 0.2077 
+L_Hgdii       854   7 0.331 | 0.707 0.079 -4.745 0.0015 
+L_Hg36        808   3 0.256 | 0.393 0.157 -0.870 0.2149 
+L_SGPv9       836   4 0.590 | 0.514 0.135  0.568 0.3348 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   5.30
+6 loci with heterozygosity deficiency and 3 loci with heterozygosity excess.
+Probability: 0.11291
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 9 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:  -2.118  Probability:  0.01710
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.12500
+Probability (one tail for H excess): 0.89844
+Probability (two tails for H excess or deficiency): 0.25000
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.615 | 0.169 | 0.108 | 0.015 | 0.000 | 0.046 | 0.000 | 0.015 | 0.031 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 05.07.2016  Time: 10:51:44.

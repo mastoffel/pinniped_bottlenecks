@@ -1,0 +1,63 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: G:\Antarctic_fur_seal_genepop.txt
+Data type: Genepop format
+Title: title																						
+Estimation based on 1000 replications.
+
+
+Date: 22/02/2012  Time: 17:27:36.
+Population : 246	
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+pv9									  486  10 0.753 | 0.747 0.078  0.087 0.4550 
+hg63								  482  13 0.869 | 0.805 0.056  1.140 0.0780 
+Lw10								  488  17 0.909 | 0.855 0.036  1.478 0.0160 
+Hg810							  488   5 0.499 | 0.521 0.153 -0.141 0.3720 
+Aa4									  492   6 0.745 | 0.585 0.132  1.209 0.0560 
+PvcA								  488   7 0.782 | 0.650 0.104  1.264 0.0420 
+PvcE								  490  14 0.875 | 0.821 0.050  1.079 0.0870 
+Hg13								  482  13 0.871 | 0.807 0.054  1.183 0.0660 
+M11a								  490  18 0.918 | 0.863 0.036  1.531 0.0020 
+Orr16							  478   4 0.578 | 0.435 0.168  0.849 0.2160 
+Orr8								  478   8 0.786 | 0.685 0.098  1.034 0.1130 
+Lw8									  474  13 0.903 | 0.807 0.053  1.810 0.0000 
+Hg610							  482  14 0.850 | 0.817 0.052  0.626 0.2950 
+Orr7								  490  12 0.851 | 0.790 0.062  0.985 0.1170 
+Lw15								  468  14 0.883 | 0.824 0.047  1.256 0.0440 
+Orr1								  476  10 0.789 | 0.749 0.075  0.538 0.3420 
+Agaz1							  484  13 0.872 | 0.808 0.051  1.261 0.0540 
+Agaz2							  476  10 0.793 | 0.745 0.075  0.635 0.2940 
+Ag10								  488   7 0.771 | 0.647 0.105  1.184 0.0770 
+Zcwb07						  424  12 0.853 | 0.795 0.058  0.999 0.1090 
+Zcwg04						  478  17 0.901 | 0.855 0.038  1.197 0.0670 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  12.39
+1 loci with heterozygosity deficiency and 20 loci with heterozygosity excess.
+Probability: 0.00024
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   4.627  Probability:  0.00000
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00000
+Probability (two tails for H excess or deficiency): 0.00000
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.709 | 0.190 | 0.051 | 0.038 | 0.004 | 0.004 | 0.004 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 22/02/2012  Time: 17:50:36.

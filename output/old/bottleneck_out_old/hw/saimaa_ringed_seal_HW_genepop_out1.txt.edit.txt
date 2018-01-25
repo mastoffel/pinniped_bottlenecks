@@ -1,0 +1,53 @@
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   6.45
+6 loci with heterozygosity deficiency and 9 loci with heterozygosity excess.
+Probability: 0.13970
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   7.10
+7 loci with heterozygosity deficiency and 8 loci with heterozygosity excess.
+Probability: 0.41528
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   7.52
+8 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
+Probability: 0.49641
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 15 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   1.645  Probability:  0.04996
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   0.089  Probability:  0.46465
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -2.592  Probability:  0.00477
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.96814
+Probability (one tail for H excess): 0.03650
+Probability (two tails for H excess and deficiency): 0.07300
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.61923
+Probability (one tail for H excess): 0.40198
+Probability (two tails for H excess or deficiency): 0.80396
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.33939
+Probability (one tail for H excess): 0.68066
+Probability (two tails for H excess or deficiency): 0.67877
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.500 | 0.115 | 0.019 | 0.077 | 0.019 | 0.058 | 0.038 | 0.000 | 0.077 | 0.096 |
+normal L-shaped distribution
+
+End of computation. Date: 19.04.2016  Time: 15:57:39.

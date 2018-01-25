@@ -1,0 +1,77 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\south_american_fur_seal_cl_1_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes       
+Estimation based on 10000 replications.
+
+
+Date: 08/08/2017  Time: 1:15:53 PM.
+Population : 1
+                 observed   |     under the I.A.M.      |     under the T.P.M.      |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob 
+L_M11a        278   8 0.823 | 0.600 0.149  1.494 0.0054 | 0.699 0.094  1.326 0.0250 | 0.785 0.049  0.789 0.2132 
+L_Hg63        226   8 0.782 | 0.610 0.145  1.192 0.0630 | 0.709 0.089  0.823 0.1995 | 0.787 0.049 -0.091 0.3833 
+L_PvcA        260   9 0.795 | 0.641 0.134  1.152 0.0654 | 0.737 0.080  0.734 0.2370 | 0.810 0.042 -0.351 0.2872 
+L_PvcE        150   9 0.770 | 0.674 0.122  0.788 0.2227 | 0.755 0.073  0.204 0.4988 | 0.818 0.039 -1.229 0.1111 
+L_Pv11        210   7 0.763 | 0.574 0.153  1.238 0.0538 | 0.671 0.101  0.912 0.1576 | 0.755 0.059  0.134 0.4738 
+L_Hg810       260   8 0.740 | 0.601 0.147  0.942 0.1631 | 0.705 0.090  0.385 0.4242 | 0.786 0.048 -0.977 0.1430 
+L_Pv9         242   7 0.698 | 0.566 0.157  0.840 0.2157 | 0.667 0.102  0.300 0.4660 | 0.754 0.058 -0.961 0.1481 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.15
+0 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
+Probability: 0.02580
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.17
+0 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
+Probability: 0.02644
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.13
+5 loci with heterozygosity deficiency and 2 loci with heterozygosity excess.
+Probability: 0.10559
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 7 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   2.890  Probability:  0.00192
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   1.770  Probability:  0.03835
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -1.015  Probability:  0.15512
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00391
+Probability (two tails for H excess and deficiency): 0.00781
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00391
+Probability (two tails for H excess or deficiency): 0.00781
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.05469
+Probability (one tail for H excess): 0.96094
+Probability (two tails for H excess or deficiency): 0.10938
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.464 | 0.357 | 0.071 | 0.054 | 0.054 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 08/08/2017  Time: 2:02:30 PM.

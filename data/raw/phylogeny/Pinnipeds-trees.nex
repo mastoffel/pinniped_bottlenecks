@@ -1,0 +1,204 @@
+#NEXUS
+[written Tue Nov 12 23:55:59 CST 2013 by Mesquite  version 2.75 (build 564) at compaq-8cddd4e9/192.168.100.101]
+
+BEGIN TAXA;
+	TITLE Taxa_from_PDIfile;
+	DIMENSIONS NTAX=34;
+	TAXLABELS
+		O._rosmarus C._ursinus N._cinerea O._bryonia A._pusillus P._hookeri A._forsteri A._australis A._galapagoensis A._gazella A._tropicalis A._phillippii A._townsendi E._jubatus Z._californianus E._barbatus C._cristata P._hispida P._sibirica H._grypus P._caspica P._largha P._vitulina H._fasciata P._groenlandica L._carcinophagus O._rossi H._leptonyx L._weddellii M._angustirostris M._leonina M._monachus M._schauinslandi M._tropicalis 
+	;
+
+END;
+
+
+BEGIN TREES;
+	Title Untitled_Trees_Block;
+	LINK Taxa = Taxa_from_PDIfile;
+	TRANSLATE
+		1 O._rosmarus,
+		2 C._ursinus,
+		3 N._cinerea,
+		4 O._bryonia,
+		5 A._pusillus,
+		6 P._hookeri,
+		7 A._forsteri,
+		8 A._australis,
+		9 A._galapagoensis,
+		10 A._gazella,
+		11 A._tropicalis,
+		12 A._phillippii,
+		13 A._townsendi,
+		14 E._jubatus,
+		15 Z._californianus,
+		16 E._barbatus,
+		17 C._cristata,
+		18 P._hispida,
+		19 P._sibirica,
+		20 H._grypus,
+		21 P._caspica,
+		22 P._largha,
+		23 P._vitulina,
+		24 H._fasciata,
+		25 P._groenlandica,
+		26 L._carcinophagus,
+		27 O._rossi,
+		28 H._leptonyx,
+		29 L._weddellii,
+		30 M._angustirostris,
+		31 M._leonina,
+		32 M._monachus,
+		33 M._schauinslandi,
+		34 M._tropicalis;
+	TREE constant = ((1:1.0,(2:1.0,(3:1.0,((4:1.0,(5:1.0,(6:1.0,(((7:1.0,(8:1.0,9:1.0):1.0):1.0,(10:1.0,11:1.0):1.0):1.0,(12:1.0,13:1.0):1.0):1.0):1.0):1.0):1.0,(14:1.0,15:1.0):1.0):1.0):1.0):1.0):1.0,((16:1.0,(17:1.0,((18:1.0,((19:1.0,(20:1.0,21:1.0):1.0):1.0,(22:1.0,23:1.0):1.0):1.0):1.0,(24:1.0,25:1.0):1.0):1.0):1.0):1.0,(((26:1.0,(27:1.0,(28:1.0,29:1.0):1.0):1.0):1.0,(30:1.0,31:1.0):1.0):1.0,(32:1.0,(33:1.0,34:1.0):1.0):1.0):1.0):1.0):1.0;
+	TREE 'Grafen''s' = ((1:14.0,(2:13.0,(3:12.0,((4:9.0,(5:8.0,(6:7.0,(((7:2.0,(8:1.0,9:1.0):1.0):2.0,(10:1.0,11:1.0):3.0):2.0,(12:1.0,13:1.0):5.0):1.0):1.0):1.0):2.0,(14:1.0,15:1.0):10.0):1.0):1.0):1.0):19.0,((16:9.0,(17:8.0,((18:5.0,((19:2.0,(20:1.0,21:1.0):1.0):2.0,(22:1.0,23:1.0):3.0):1.0):2.0,(24:1.0,25:1.0):6.0):1.0):1.0):9.0,(((26:3.0,(27:2.0,(28:1.0,29:1.0):1.0):1.0):2.0,(30:1.0,31:1.0):4.0):3.0,(32:2.0,(33:1.0,34:1.0):1.0):6.0):10.0):15.0):1.0;
+	TREE 'Nee''s' = ((1:1.1760912590556811,(2:1.1461280356782377,(3:1.1139433523068367,((4:1.0,(5:0.9542425094393249,(6:0.9030899869919434,(((7:0.4771212547196623,(8:0.30102999566398114,9:0.30102999566398114):0.17609125905568118):0.22184874961635642,(10:0.30102999566398114,11:0.30102999566398114):0.3979400086720376):0.14612803567823796,(12:0.30102999566398114,13:0.30102999566398114):0.5440680443502756):0.057991946977686726):0.05115252244738144):0.04575749056067513):0.07918124604762466,(14:0.30102999566398114,15:0.30102999566398114):0.7781512503836435):0.034762106259212056):0.03218468337140101):0.029963223377443393):0.355387657986574,((16:1.0,(17:0.9542425094393249,((18:0.7781512503836435,((19:0.4771212547196623,(20:0.30102999566398114,21:0.30102999566398114):0.17609125905568118):0.22184874961635642,(22:0.30102999566398114,23:0.30102999566398114):0.3979400086720376):0.07918124604762478):0.1249387366082999,(24:0.30102999566398114,25:0.30102999566398114):0.6020599913279623):0.05115252244738144):0.04575749056067513):0.27875360095282886,(((26:0.6020599913279623,(27:0.4771212547196623,(28:0.30102999566398114,29:0.30102999566398114):0.17609125905568118):0.12493873660829996):0.17609125905568124,(30:0.30102999566398114,31:0.30102999566398114):0.4771212547196624):0.17609125905568135,(32:0.4771212547196623,(33:0.30102999566398114,34:0.30102999566398114):0.17609125905568118):0.47712125471966255):0.324511091513504):0.2527253160894263):1.0;
+	TREE 'Pagel''s' = ((1:11.0,(2:10.0,(3:9.0,((4:7.0,(5:6.0,(6:5.0,(((7:2.0,(8:1.0,9:1.0):1.0):1.0,(10:1.0,11:1.0):2.0):1.0,(12:1.0,13:1.0):3.0):1.0):1.0):1.0):1.0,(14:1.0,15:1.0):7.0):1.0):1.0):1.0):1.0,((16:7.0,(17:6.0,((18:4.0,((19:2.0,(20:1.0,21:1.0):1.0):1.0,(22:1.0,23:1.0):2.0):1.0):1.0,(24:1.0,25:1.0):4.0):1.0):1.0):1.0,(((26:3.0,(27:2.0,(28:1.0,29:1.0):1.0):1.0):1.0,(30:1.0,31:1.0):3.0):1.0,(32:2.0,(33:1.0,34:1.0):1.0):3.0):3.0):4.0):1.0;
+	TREE 'mdt_original' = ((1:21.67,(2:11.91,(3:9.98,((4:7.35,(5:7.07,(6:5.98,(((7:2.02,(8:0.95,9:0.95):1.07):2.61,(10:0.5,11:0.5):4.13):0.24,(12:0.79,13:0.79):4.08):1.11):1.09):0.28):1.81,(14:6.57,15:6.57):2.59):0.82):1.93):9.76):5.0,((16:19.89,(17:14.45,((18:6.86,((19:6.06,(20:5.46,21:5.46):0.6):0.41,(22:2.11,23:2.11):4.36):0.39):5.82,(24:8.34,25:8.34):4.34):1.77):5.44):2.33,(((26:13.43,(27:12.92,(28:8.93,29:8.93):3.99):0.51):3.11,(30:4.64,31:4.64):11.9):1.62,(32:16.25,(33:8.13,34:8.13):8.12):1.91):4.06):4.45):8.6;
+	TREE 'mdt_ln' = ((1:7.681099001536359,(2:7.0825485693553,(3:6.905753276311464,((4:6.5998704992128365,(5:6.561030665896573,(6:6.393590753950631,(((7:5.308267697401205,(8:4.553876891600541,9:4.553876891600541):4.672828834461906):5.564520407322694,(10:3.912023005428146,11:3.912023005428146):6.023447592961033):3.1780538303479458,(12:4.3694478524670215,13:4.3694478524670215):6.0112671744041615):4.709530201312334):4.6913478822291435):3.3322045101752042):5.198497031265826,(14:6.487684018484611,15:6.487684018484611):5.556828061699537):4.406719247264253):5.262690188904886):6.883462586413092):6.214608098422191,((16:7.5953872788539725,(17:7.275864600546533,((18:6.530877627725885,((19:6.406879986069314,(20:6.302618975744905,21:6.302618975744905):4.0943445622221):3.713572066704308,(22:5.351858133476067,23:5.351858133476067):6.077642243349034):3.6635616461296463):6.366470447731438,(24:6.726233402358747,25:6.726233402358747):6.073044534100405):5.176149732573829):6.298949246855942):5.4510384535657,(((26:7.202661196523238,(27:7.163946684342547,(28:6.794586580876499,29:6.794586580876499):5.988961416889864):3.9318256327243257):5.739792912179234,(30:6.139884552226255,31:6.139884552226255):7.0817085861055755):5.087596335232384,(32:7.393263094763838,(33:6.700731109547811,34:6.700731109547811):6.699500340161678):5.25227342804663):6.0063531596017325):6.09807428216624):6.756932389247553;
+	TREE 'relDate_original' = ((1:18.0,(2:8.2,(3:6.1,((4:4.5,(5:4.3,(6:3.4,(((7:1.1,(8:0.7,9:0.7):0.4):2.0,(10:0.1,11:0.1):3.0):0.1,(12:0.3,13:0.3):2.9):0.2):0.9):0.2):0.9,(14:4.5,15:4.5):0.7):0.9):2.1):9.8):5.0,((16:13.0,(17:8.0,((18:2.4,((19:2.1,(20:2.0,21:2.0):0.1):0.1,(22:1.1,23:1.1):1.1):0.2):4.0,(24:4.3,25:4.3):2.1):1.6):5.0):3.0,(((26:7.1,(27:6.8,(28:4.3,29:4.3):2.5):0.3):2.9,(30:2.3,31:2.3):7.7):1.3,(32:9.9,(33:4.9,34:4.9):5.0):1.4):4.7):7.0):8.7;
+	TREE 'relDate_ln' = ((1:7.495541943884256,(2:6.709304340258298,(3:6.413458957167357,((4:6.1092475827643655,(5:6.063785208687608,(6:5.8289456176102075,(((7:4.700480365792417,(8:4.248495242049359,9:4.248495242049359):3.6888794541139363):5.298317366548036,(10:2.302585092994046,11:2.302585092994046):5.703782474656201):2.302585092994046,(12:3.4011973816621555,13:3.4011973816621555):5.66988092298052):2.995732273553991):4.499809670330265):2.995732273553991):4.499809670330265,(14:6.1092475827643655,15:6.1092475827643655):4.248495242049359):4.499809670330265):5.3471075307174685):6.887552571664617):6.214608098422191,((16:7.170119543449628,(17:6.684611727667927,((18:5.480638923341991,((19:5.3471075307174685,(20:5.298317366548036,21:5.298317366548036):2.302585092994046):2.302585092994046,(22:4.700480365792417,23:4.700480365792417):4.700480365792417):2.995732273553991):5.991464547107982,(24:6.063785208687608,25:6.063785208687608):5.3471075307174685):5.075173815233827):6.214608098422191):5.703782474656201,(((26:6.565264970035361,(27:6.522092798170153,(28:6.063785208687608,29:6.063785208687608):5.521460917862246):3.4011973816621555):5.66988092298052,(30:5.438079308923196,31:5.438079308923196):6.646390514847729):4.867534450455582,(32:6.897704943128636,(33:6.194405391104673,34:6.194405391104673):6.214608098422191):4.941642422609304):6.152732694704104):6.551080335043404):6.76849321164863;
+
+END;
+
+
+Begin MESQUITE;
+		MESQUITESCRIPTVERSION 2;
+		TITLE AUTO;
+		tell ProjectCoordinator;
+		timeSaved 1384322159546;
+		getEmployee #mesquite.minimal.ManageTaxa.ManageTaxa;
+		tell It;
+			setID 0 1017158846932762150;
+		endTell;
+		getWindow;
+		tell It;
+			suppress;
+			setResourcesState false false 100;
+			setPopoutState 400;
+			setExplanationSize 0;
+			setAnnotationSize 0;
+			setFontIncAnnot 0;
+			setFontIncExp 0;
+			setSize 1284 678;
+			setLocation -4 0;
+			setFont SanSerif;
+			setFontSize 10;
+			getToolPalette;
+			tell It;
+			endTell;
+			desuppress;
+		endTell;
+		getEmployee  #mesquite.trees.BasicTreeWindowCoord.BasicTreeWindowCoord;
+		tell It;
+			makeTreeWindow #1017158846932762150  #mesquite.trees.BasicTreeWindowMaker.BasicTreeWindowMaker;
+			tell It;
+				suppressEPCResponse;
+				setTreeSource  #mesquite.trees.StoredTrees.StoredTrees;
+				tell It;
+					setTreeBlock 1;
+					toggleUseWeights off;
+				endTell;
+				setAssignedID 1104.1384321141652.5083085014750061263;
+				getTreeWindow;
+				tell It;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 1184 611;
+					setLocation -4 0;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+					endTell;
+					setActive;
+					getTreeDrawCoordinator #mesquite.trees.BasicTreeDrawCoordinator.BasicTreeDrawCoordinator;
+				tell It;
+					suppress;
+					setTreeDrawer  #mesquite.trees.SquareTree.SquareTree;
+					tell It;
+						setNodeLocs #mesquite.trees.NodeLocsStandard.NodeLocsStandard;
+						tell It;
+							branchLengthsToggle on;
+							toggleScale on;
+							toggleBroadScale off;
+							toggleCenter on;
+							toggleEven on;
+						endTell;
+						setEdgeWidth 6;
+						orientUp;
+						setCornerMode Right_Angle  50;
+					endTell;
+					setBackground White;
+					setBranchColor Black;
+					showNodeNumbers off;
+					showBranchColors on;
+					labelBranchLengths off;
+					centerBrLenLabels on;
+					showBrLensUnspecified on;
+					showBrLenLabelsOnTerminals on;
+					setBrLenLabelColor 0 0 255;
+					setNumBrLenDecimals 6;
+					desuppress;
+					getEmployee #mesquite.trees.BasicDrawTaxonNames.BasicDrawTaxonNames;
+					tell It;
+						setColor Black;
+						toggleColorPartition on;
+						toggleShadePartition off;
+						toggleShowFootnotes on;
+						toggleNodeLabels on;
+						toggleCenterNodeNames off;
+						toggleShowNames on;
+						namesAngle ?;
+					endTell;
+				endTell;
+					setTreeNumber 7;
+					setDrawingSizeMode 1;
+					toggleLegendFloat on;
+					toggleTextOnTree off;
+					showWindow;
+				endTell;
+				desuppressEPCResponse;
+				getEmployee #mesquite.trees.ColorBranches.ColorBranches;
+				tell It;
+					setColor Red;
+					removeColor off;
+				endTell;
+				getEmployee #mesquite.ornamental.BranchNotes.BranchNotes;
+				tell It;
+					setAlwaysOn off;
+				endTell;
+				getEmployee #mesquite.ornamental.ColorTreeByPartition.ColorTreeByPartition;
+				tell It;
+					colorByPartition off;
+				endTell;
+				getEmployee #mesquite.ornamental.DrawTreeAssocDoubles.DrawTreeAssocDoubles;
+				tell It;
+					setOn on;
+					setDigits 4;
+					writeAsPercentage off;
+					toggleCentred on;
+					toggleHorizontal on;
+					toggleWhiteEdges on;
+					setFontSize 10;
+					setOffset 0  0;
+				endTell;
+				getEmployee #mesquite.ornamental.DrawTreeAssocStrings.DrawTreeAssocStrings;
+				tell It;
+					setOn on;
+					toggleCentred on;
+					toggleHorizontal on;
+					setFontSize 10;
+					setOffset 0  0;
+				endTell;
+				getEmployee #mesquite.trees.TreeInfoValues.TreeInfoValues;
+				tell It;
+					panelOpen false;
+				endTell;
+			endTell;
+		endTell;
+		endTell;
+end;
+
+

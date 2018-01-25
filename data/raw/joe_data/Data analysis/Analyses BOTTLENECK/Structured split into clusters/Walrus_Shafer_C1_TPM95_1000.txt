@@ -1,0 +1,54 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=95.00%
+
+
+======================================================================================
+File: G:\Walrus_Shafer_C1_genepop.txt
+Data type: Genepop format
+Title: "title Atlantic Walrus Shafer cluster 1 = BB"													
+Estimation based on 1000 replications.
+
+
+Date: 29/02/2012  Time: 22:54:46.
+Population : 15	
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+Orr16							   28   5 0.738 | 0.708 0.077  0.391 0.4130 
+Orr7								   30   8 0.876 | 0.830 0.041  1.125 0.0760 
+Orr9								   30   4 0.715 | 0.621 0.104  0.912 0.1660 
+Orr11							   30   5 0.533 | 0.704 0.077 -2.218 0.0360 
+Orr23							   30   4 0.687 | 0.619 0.104  0.652 0.2950 
+Orr3								   30   4 0.572 | 0.618 0.103 -0.447 0.2490 
+Hg6.1							   30   4 0.586 | 0.623 0.103 -0.357 0.2950 
+Hgdii							   30   4 0.402 | 0.615 0.103 -2.063 0.0470 
+Hg3.6							   30   2 0.067 | 0.275 0.159 -1.310 0.2030 
+SGPv9							   30   4 0.651 | 0.619 0.105  0.299 0.4930 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   5.82
+5 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
+Probability: 0.41249
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 10 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:  -0.954  Probability:  0.17013
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.31250
+Probability (one tail for H excess): 0.72168
+Probability (two tails for H excess or deficiency): 0.62500
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.273 | 0.364 | 0.091 | 0.068 | 0.091 | 0.000 | 0.068 | 0.023 | 0.000 | 0.023 |
+shifted mode
+
+End of computation. Date: 29/02/2012  Time: 22:55:22.

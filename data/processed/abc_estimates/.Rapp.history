@@ -1,0 +1,3 @@
+load("/Users/martin/Dropbox/projects/current/bottleneck/data/processed/abc_estimates/abc_5k.RData")
+load("/Users/martin/Dropbox/projects/current/bottleneck/data/processed/abc_estimates/abc_50k.RData")
+load("/Users/martin/Dropbox/projects/current/bottleneck/data/processed/abc_estimates/abc_500k.RData")

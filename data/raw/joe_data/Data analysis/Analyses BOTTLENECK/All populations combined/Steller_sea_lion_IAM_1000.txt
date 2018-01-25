@@ -1,0 +1,56 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Steller_sea_lion_genepop.txt
+Data type: Genepop format
+Title: title Steller's sea lion														
+Estimation based on 1000 replications.
+
+
+Date: 22/02/2012  Time: 18:22:03.
+Population : 668	
+                 observed   |     under the I.A.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+Locus Hg6.3	 1332   7 0.237 | 0.483 0.187 -1.317 0.1390 
+Locus Hg8.10 1332   4 0.577 | 0.300 0.202  1.370 0.0890 
+Locus Pv11		 1332   4 0.593 | 0.310 0.198  1.428 0.0680 
+Locus PvcE		 1334   8 0.731 | 0.527 0.170  1.197 0.0790 
+Locus M11A		 1334   9 0.833 | 0.565 0.167  1.602 0.0030 
+Locus M2B			 1326  11 0.843 | 0.625 0.141  1.547 0.0020 
+Locus Hg1.3	 1326   6 0.546 | 0.433 0.192  0.588 0.3470 
+Locus Lw10		 1318  10 0.655 | 0.588 0.159  0.417 0.4130 
+Locus SSL15	 1332   5 0.481 | 0.371 0.194  0.573 0.3470 
+Locus Orr1		 1322  10 0.814 | 0.591 0.157  1.419 0.0150 
+Locus Lc28		 1328   9 0.708 | 0.564 0.166  0.870 0.2120 
+Locus Orr8		 1308  11 0.819 | 0.621 0.146  1.359 0.0170 
+Locus Hl4			 1320   9 0.726 | 0.552 0.172  1.016 0.1370 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   7.38
+1 loci with heterozygosity deficiency and 12 loci with heterozygosity excess.
+Probability: 0.00679
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 13 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   3.347  Probability:  0.00041
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.99915
+Probability (one tail for H excess): 0.00116
+Probability (two tails for H excess and deficiency): 0.00232
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.592 | 0.184 | 0.136 | 0.010 | 0.019 | 0.029 | 0.019 | 0.000 | 0.010 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 22/02/2012  Time: 18:24:52.

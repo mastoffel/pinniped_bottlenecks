@@ -1,0 +1,64 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: G:\Galapagos_sea_lion_genepop.txt
+Data type: Genepop format
+Title: title galapagos sea lion																							
+Estimation based on 1000 replications.
+
+
+Date: 17/02/2012  Time: 22:54:50.
+Population : 781	
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+A05									 1562  15 0.781 | 0.812 0.059 -0.536 0.2260 
+A12									 1560  20 0.899 | 0.861 0.038  1.002 0.1070 
+D01									 1560   6 0.746 | 0.556 0.139  1.364 0.0310 
+E05									 1562   5 0.538 | 0.488 0.163  0.311 0.4490 
+Hg42								 1562   5 0.287 | 0.492 0.156 -1.315 0.1240 
+PV9									 1562   8 0.626 | 0.660 0.106 -0.327 0.2970 
+A07									 1562   8 0.744 | 0.657 0.108  0.813 0.2290 
+B09									 1562   7 0.615 | 0.608 0.127  0.054 0.4270 
+C03									 1560  13 0.685 | 0.781 0.067 -1.439 0.0870 
+C11									 1562  14 0.660 | 0.797 0.059 -2.310 0.0280 
+D02									 1560  12 0.789 | 0.765 0.069  0.341 0.4420 
+H09									 1562   5 0.239 | 0.496 0.156 -1.652 0.0860 
+Zcc58							 1552  11 0.732 | 0.743 0.078 -0.148 0.3500 
+E03									 1560   6 0.310 | 0.565 0.137 -1.862 0.0660 
+F07									 1562   8 0.709 | 0.657 0.109  0.479 0.3710 
+Hg61								 1562  10 0.784 | 0.722 0.086  0.726 0.2420 
+Hg81								 1562   7 0.612 | 0.616 0.125 -0.034 0.4080 
+Zcc7t							 1558   7 0.572 | 0.607 0.123 -0.281 0.3350 
+B07									 1558   4 0.528 | 0.414 0.174  0.658 0.2820 
+E04									 1560   8 0.679 | 0.660 0.105  0.182 0.4990 
+E12									 1552  12 0.778 | 0.763 0.070  0.212 0.5080 
+Pv11								 1562   3 0.435 | 0.294 0.188  0.750 0.3220 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  12.93
+10 loci with heterozygosity deficiency and 12 loci with heterozygosity excess.
+Probability: 0.42216
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:  -0.642  Probability:  0.26033
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.48731
+Probability (one tail for H excess): 0.52537
+Probability (two tails for H excess or deficiency): 0.97462
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.686 | 0.139 | 0.052 | 0.036 | 0.026 | 0.031 | 0.010 | 0.005 | 0.015 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 18/02/2012  Time: 02:15:34.

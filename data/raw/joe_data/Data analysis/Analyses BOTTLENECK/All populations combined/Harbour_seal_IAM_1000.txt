@@ -1,0 +1,68 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Harbour_seal_genepop.txt
+Data type: Genepop format
+Title: title harbour seal																												
+Estimation based on 1000 replications.
+
+
+Date: 18/02/2012  Time: 18:25:16.
+Population : 204	
+                 observed   |     under the I.A.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+Aa4									  380   2 0.031 | 0.152 0.165 -0.733 0.3880 
+Hg6.1							  380   3 0.275 | 0.265 0.193  0.053 0.4580 
+Hg6.3							  362   3 0.428 | 0.273 0.191  0.811 0.3030 
+Hg8.9							  360   2 0.347 | 0.153 0.162  1.199 0.1790 
+Hg8.10						  398   2 0.501 | 0.145 0.164  2.164 0.0150 
+Hgdii							  348   3 0.029 | 0.271 0.189 -1.285 0.0970 
+Hl2									  390   2 0.433 | 0.149 0.165  1.723 0.1100 
+Hl15								  376   4 0.218 | 0.364 0.192 -0.758 0.2850 
+Hl20								  350   3 0.219 | 0.257 0.186 -0.202 0.4700 
+Lw7									  376   5 0.688 | 0.425 0.189  1.395 0.0510 
+Lw20								  374   3 0.332 | 0.272 0.193  0.313 0.4170 
+Lc28								  356   4 0.092 | 0.352 0.190 -1.372 0.1150 
+M11a								  394   2 0.020 | 0.148 0.165 -0.772 0.3310 
+OrrFCB2					  396   5 0.461 | 0.422 0.190  0.204 0.4850 
+OrrFCB7					  390   3 0.510 | 0.267 0.191  1.277 0.1110 
+OrrFCB8					  374   5 0.545 | 0.432 0.185  0.608 0.3290 
+Pv2									  290   3 0.341 | 0.270 0.187  0.380 0.3950 
+Pv3									  334  23 0.929 | 0.849 0.054  1.482 0.0020 
+Pv9									  386   2 0.060 | 0.153 0.168 -0.549 0.4790 
+Pv10								  404   2 0.062 | 0.151 0.167 -0.531 0.4990 
+Pv11								  302   3 0.520 | 0.265 0.182  1.394 0.1040 
+Pvc30							  392   4 0.472 | 0.357 0.195  0.590 0.3660 
+Ssl301						  338   6 0.628 | 0.504 0.169  0.732 0.2700 
+Zcwa12						  384   5 0.514 | 0.427 0.184  0.471 0.3940 
+Zcwd02						  320   2 0.160 | 0.155 0.168  0.031 0.3430 
+Zcwf07						  356   3 0.244 | 0.263 0.191 -0.102 0.4980 
+ZcCgDh1.8			  366   3 0.183 | 0.270 0.187 -0.466 0.4150 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  12.64
+10 loci with heterozygosity deficiency and 17 loci with heterozygosity excess.
+Probability: 0.06550
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   1.551  Probability:  0.06051
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.93256
+Probability (one tail for H excess): 0.07070
+Probability (two tails for H excess and deficiency): 0.14141
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.542 | 0.075 | 0.075 | 0.047 | 0.028 | 0.047 | 0.047 | 0.019 | 0.056 | 0.065 |
+normal L-shaped distribution
+
+End of computation. Date: 18/02/2012  Time: 18:25:41.

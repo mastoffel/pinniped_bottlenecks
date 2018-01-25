@@ -1,0 +1,61 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Hawaiian_monk_seal_FSS_genepop.txt
+Data type: Genepop format
+Title: title Hawaiian monk seal (FFS)																				
+Estimation based on 1000 replications.
+
+
+Date: 02/03/2012  Time: 15:53:37.
+Population : 2279	
+                 observed   |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+Msc17							 1460   3 0.528 | 0.412 0.144  0.802 0.1890 
+Msc10							 1502   4 0.504 | 0.542 0.118 -0.324 0.2950 
+Msc19							 1500   4 0.195 | 0.545 0.119 -2.936 0.0140 
+Msc01							 1486   3 0.504 | 0.404 0.146  0.689 0.2670 
+Msc09							 1474   4 0.334 | 0.550 0.114 -1.883 0.0550 
+Msc04							 1370   5 0.491 | 0.631 0.092 -1.535 0.0850 
+Msc05							 1482   2 0.282 | 0.151 0.168  0.780 0.2350 
+Msc03							 1454   5 0.690 | 0.630 0.099  0.609 0.3100 
+Msc23							 1484   3 0.500 | 0.406 0.145  0.647 0.3220 
+Msc13							 1424   4 0.393 | 0.546 0.118 -1.288 0.1120 
+Hg63								 1384   2 0.387 | 0.159 0.166  1.370 0.1560 
+Ms504							 1168   2 0.340 | 0.161 0.167  1.068 0.2040 
+Ms23								 1210   9 0.762 | 0.800 0.044 -0.863 0.1660 
+Ms265							 1188   2 0.490 | 0.161 0.165  1.998 0.0480 
+Ms9									 1286   6 0.695 | 0.693 0.078  0.023 0.4320 
+Ms15								 1370   3 0.546 | 0.405 0.143  0.994 0.1260 
+Ms647							 1454   2 0.426 | 0.165 0.170  1.531 0.1340 
+Ms663							 1304   2 0.325 | 0.162 0.166  0.983 0.2080 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   9.37
+6 loci with heterozygosity deficiency and 12 loci with heterozygosity excess.
+Probability: 0.15262
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 18 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:   0.628  Probability:  0.26504
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.73869
+Probability (one tail for H excess): 0.27544
+Probability (two tails for H excess or deficiency): 0.55087
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.369 | 0.154 | 0.077 | 0.123 | 0.046 | 0.062 | 0.062 | 0.062 | 0.046 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 02/03/2012  Time: 17:55:02.

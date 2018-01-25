@@ -1,0 +1,51 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Crabeater_seal_P1_excl_WS4_genepop.txt
+Data type: Genepop format
+Title: title crabeater seal															
+Estimation based on 1000 replications.
+
+
+Date: 05/03/2012  Time: 20:00:02.
+Population : 254	
+                 observed   |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+WS10								  506  12 0.688 | 0.856 0.029 -5.820 0.0010 
+WS11								  504  19 0.912 | 0.910 0.028  0.059 0.4700 
+LS8									  504  23 0.913 | 0.928 0.020 -0.729 0.1370 
+LS16								  504  16 0.892 | 0.894 0.019 -0.087 0.4040 
+CS6									  508  19 0.895 | 0.912 0.014 -1.225 0.1180 
+CS26								  502  14 0.806 | 0.877 0.024 -2.964 0.0110 
+CS28								  506  10 0.675 | 0.826 0.039 -3.824 0.0090 
+G1A									  498  21 0.923 | 0.921 0.014  0.100 0.5480 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.69
+6 loci with heterozygosity deficiency and 2 loci with heterozygosity excess.
+Probability: 0.05903
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 8 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -5.123  Probability:  0.00000
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.01367
+Probability (one tail for H excess): 0.99023
+Probability (two tails for H excess or deficiency): 0.02734
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.791 | 0.157 | 0.015 | 0.022 | 0.015 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 05/03/2012  Time: 20:12:42.

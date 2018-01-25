@@ -1,0 +1,2 @@
+pred modeSC medianSC lower upper
+TPM80_ratio_stand 1.0006710139052624 1 1 1

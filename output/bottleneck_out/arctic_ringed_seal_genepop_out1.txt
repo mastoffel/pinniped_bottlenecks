@@ -1,0 +1,80 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\arctic_ringed_seal_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes          
+Estimation based on 10000 replications.
+
+
+Date: 07/31/2017  Time: 11:02:09 AM.
+Population : 1
+                 observed   |     under the I.A.M.      |     under the T.P.M.      |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob 
+L_LS8         604  22 0.906 | 0.818 0.069  1.279 0.0156 | 0.889 0.027  0.627 0.3095 | 0.924 0.018 -1.028 0.0981 
+L_LS15        606  35 0.942 | 0.890 0.038  1.401 0.0052 | 0.935 0.020  0.342 0.3811 | 0.951 0.024 -0.365 0.1074 
+L_LS16        606  26 0.912 | 0.847 0.057  1.159 0.0363 | 0.909 0.021  0.173 0.5320 | 0.935 0.021 -1.075 0.0420 
+L_CS6         606  21 0.878 | 0.809 0.073  0.948 0.1242 | 0.883 0.029 -0.180 0.3579 | 0.920 0.018 -2.361 0.0152 
+L_CS18        606  27 0.848 | 0.853 0.053 -0.094 0.3609 | 0.913 0.019 -3.464 0.0092 | 0.937 0.027 -3.305 0.0056 
+L_42          606  32 0.925 | 0.879 0.041  1.116 0.0530 | 0.929 0.014 -0.252 0.3443 | 0.947 0.024 -0.878 0.0317 
+L_61          606  31 0.919 | 0.873 0.044  1.025 0.0809 | 0.926 0.018 -0.391 0.2729 | 0.944 0.028 -0.916 0.0217 
+L_63          606  16 0.882 | 0.751 0.096  1.363 0.0093 | 0.841 0.042  0.971 0.1387 | 0.893 0.020 -0.538 0.2540 
+L_81          606  23 0.726 | 0.825 0.066 -1.497 0.0792 | 0.895 0.024 -6.996 0.0001 | 0.926 0.022 -8.981 0.0024 
+L_PV11        606  31 0.876 | 0.874 0.044  0.055 0.4253 | 0.926 0.015 -3.262 0.0109 | 0.945 0.023 -2.955 0.0072 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   6.09
+2 loci with heterozygosity deficiency and 8 loci with heterozygosity excess.
+Probability: 0.18244
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   5.87
+6 loci with heterozygosity deficiency and 4 loci with heterozygosity excess.
+Probability: 0.18817
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   6.24
+10 loci with heterozygosity deficiency and 0 loci with heterozygosity excess.
+Probability: 0.00005
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 10 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   2.136  Probability:  0.01635
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:  -3.931  Probability:  0.00004
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -7.084  Probability:  0.00000
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.94727
+Probability (one tail for H excess): 0.06543
+Probability (two tails for H excess and deficiency): 0.13086
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.18750
+Probability (one tail for H excess): 0.83887
+Probability (two tails for H excess or deficiency): 0.37500
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.00049
+Probability (one tail for H excess): 1.00000
+Probability (two tails for H excess or deficiency): 0.00098
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.909 | 0.068 | 0.019 | 0.000 | 0.004 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 07/31/2017  Time: 3:30:38 PM.

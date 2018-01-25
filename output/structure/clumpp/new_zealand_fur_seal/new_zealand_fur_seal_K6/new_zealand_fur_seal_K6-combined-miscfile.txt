@@ -1,0 +1,56 @@
+
+Using the parameter settings in the file: 
+''paramfile''
+
+Parameter settings
+----------------------- Main parameters -------------------------
+DATATYPE = 1
+INDFILE = 
+POPFILE = new_zealand_fur_seal_K6-combined.txt
+OUTFILE = new_zealand_fur_seal_K6-combined-merged.txt
+MISCFILE = new_zealand_fur_seal_K6-combined-miscfile.txt
+K = 6
+C = 54
+R = 5
+M = 2
+W = 0
+S = 2
+- Additional options for the Greedy and LargeKGreedy algorithms -
+GREEDY_OPTION = 2
+REPEATS = 20
+PERMUTATIONFILE = 
+----------------------- Optional outputs ------------------------
+PRINT_PERMUTED_DATA = 1
+PERMUTED_DATAFILE = new_zealand_fur_seal_K6-combined-aligned.txt
+PRINT_EVERY_PERM = 0
+EVERY_PERMFILE = 
+PRINT_RANDOM_INPUTORDER = 0
+RANDOM_INPUTORDERFILE = 
+----------------------- Advanced options ------------------------
+OVERRIDE_WARNINGS = 0
+ORDER_BY_RUN = 0
+
+
+In total, 20 configurations of runs and clusters will be tested.
+
+Results
+------------------------------
+The highest value of H' is: 0.97511217914087
+
+The list of permutations of the clusters that produces that
+H' value is (runs are listed sequentially on separate rows)
+
+4 2 5 6 3 1 
+4 2 5 1 6 3 
+4 1 6 3 5 2 
+3 5 4 1 2 6 
+1 2 3 4 5 6 
+
+The pairwise G' values for each pair of runs where the clusters
+of each run are permuted according to the list of permutations above
+
+1.0000 0.9741 0.9762 0.9760 0.9760 
+0.9741 1.0000 0.9728 0.9703 0.9726 
+0.9762 0.9728 1.0000 0.9752 0.9836 
+0.9760 0.9703 0.9752 1.0000 0.9743 
+0.9760 0.9726 0.9836 0.9743 1.0000 

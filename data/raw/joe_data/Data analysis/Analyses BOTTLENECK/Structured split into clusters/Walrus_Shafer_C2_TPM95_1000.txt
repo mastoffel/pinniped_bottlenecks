@@ -1,0 +1,49 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=95.00%
+
+
+======================================================================================
+File: G:\Walrus_Shafer_C2_genepop.txt
+Data type: Genepop format
+Title: "title Atlantic Walrus Shafer cluster 2 = all other populations"								
+Estimation based on 1000 replications.
+
+
+Date: 29/02/2012  Time: 21:55:39.
+Population : 623	
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+Orr16							 1182  12 0.830 | 0.826 0.042  0.086 0.4430 
+Orr7								 1198  14 0.871 | 0.849 0.035  0.619 0.3050 
+Orr11							 1136   7 0.614 | 0.703 0.080 -1.121 0.1320 
+Hgdii							 1196   7 0.316 | 0.701 0.082 -4.666 0.0030 
+Hg3.6							 1150   3 0.269 | 0.387 0.164 -0.719 0.2540 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   2.94
+3 loci with heterozygosity deficiency and 2 loci with heterozygosity excess.
+Probability: 0.33695
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 5 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:  -2.595  Probability:  0.00473
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.07813
+Probability (one tail for H excess): 0.95313
+Probability (two tails for H excess or deficiency): 0.15625
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.721 | 0.116 | 0.093 | 0.000 | 0.000 | 0.023 | 0.000 | 0.000 | 0.047 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 29/02/2012  Time: 22:22:44.

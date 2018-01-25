@@ -1,0 +1,55 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Galapagos_fur_seal_genepop.txt
+Data type: Genepop format
+Title: title galapagos fur seal													
+Estimation based on 1000 replications.
+
+
+Date: 17/02/2012  Time: 13:16:17.
+Population : 90	
+                 observed   |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+e05									  174   4 0.438 | 0.571 0.113 -1.173 0.1290 
+d02									  178   5 0.370 | 0.655 0.086 -3.319 0.0100 
+b09									  178   6 0.768 | 0.717 0.071  0.707 0.2570 
+Zcc58							  178   9 0.739 | 0.815 0.041 -1.867 0.0610 
+hg8.10						  180   5 0.538 | 0.658 0.089 -1.348 0.0910 
+Zcc7t							  180   5 0.437 | 0.656 0.087 -2.536 0.0260 
+hg6.1							  178   5 0.370 | 0.651 0.097 -2.892 0.0240 
+f07									  178   6 0.541 | 0.715 0.069 -2.525 0.0250 
+e03									  176   8 0.840 | 0.791 0.046  1.062 0.0930 
+e12									  180   7 0.783 | 0.758 0.056  0.448 0.3950 
+e04									  174  11 0.864 | 0.852 0.030  0.429 0.4030 
+b07									  180   7 0.794 | 0.758 0.056  0.648 0.2890 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   7.17
+7 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
+Probability: 0.16233
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 12 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -3.570  Probability:  0.00018
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.03198
+Probability (one tail for H excess): 0.97388
+Probability (two tails for H excess or deficiency): 0.06396
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.577 | 0.218 | 0.077 | 0.038 | 0.013 | 0.000 | 0.026 | 0.051 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 17/02/2012  Time: 13:19:13.

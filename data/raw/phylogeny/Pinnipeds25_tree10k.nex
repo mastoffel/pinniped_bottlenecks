@@ -1,0 +1,31 @@
+#NEXUS
+[created by the 10kTree Website - http://10kTrees.fas.harvard.edu]
+BEGIN TREES;
+translate
+1 Arctocephalus_australis,
+2 Arctocephalus_forsteri,
+3 Arctocephalus_galapagoensis,
+4 Arctocephalus_gazella,
+5 Arctocephalus_pusillus,
+6 Callorhinus_ursinus,
+7 Eumetopias_jubatus,
+8 Otaria_byronia,
+9 Phocarctos_hookeri,
+10 Zalophus_californianus,
+11 Zalophus_wollebaeki,
+12 Cystophora_cristata,
+13 Erignathus_barbatus,
+14 Halichoerus_grypus,
+15 Hydrurga_leptonyx,
+16 Leptonychotes_weddellii,
+17 Lobodon_carcinophaga,
+18 Mirounga_angustirostris,
+19 Mirounga_leonina,
+20 Monachus_monachus,
+21 Monachus_schauinslandi,
+22 Ommatophoca_rossii,
+23 Phoca_vitulina,
+24 Pusa_hispida,
+25 Odobenus_rosmarus;
+tree consensus_25species = (((((((((1:1.264352,3:1.264352):0.736438,2:2.000790):2.859459,4:4.860249):1.532133,9:6.392382):0.485466,5:6.877847,8:6.877847):1.403642,(7:6.171653,(10:0.401314,11:0.401314):5.770339):2.109837):4.858547,6:13.140036):11.582778,25:24.722814):9.177186,(((12:15.409786,((14:3.344347,24:3.344347):8.702836,23:12.047183):3.362603):4.665535,13:20.075321):3.226375,(((((15:5.060617,16:5.060617):3.321839,17:8.382456):0.833901,22:9.216357):3.782200,(18:2.958430,19:2.958430):10.040127):2.600707,(20:13.445698,21:13.445698):2.153565):7.702433):10.598304);
+END;

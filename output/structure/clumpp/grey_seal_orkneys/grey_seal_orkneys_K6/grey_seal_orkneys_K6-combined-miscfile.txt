@@ -1,0 +1,56 @@
+
+Using the parameter settings in the file: 
+''paramfile''
+
+Parameter settings
+----------------------- Main parameters -------------------------
+DATATYPE = 1
+INDFILE = 
+POPFILE = grey_seal_orkneys_K6-combined.txt
+OUTFILE = grey_seal_orkneys_K6-combined-merged.txt
+MISCFILE = grey_seal_orkneys_K6-combined-miscfile.txt
+K = 6
+C = 1254
+R = 5
+M = 2
+W = 0
+S = 2
+- Additional options for the Greedy and LargeKGreedy algorithms -
+GREEDY_OPTION = 2
+REPEATS = 20
+PERMUTATIONFILE = 
+----------------------- Optional outputs ------------------------
+PRINT_PERMUTED_DATA = 1
+PERMUTED_DATAFILE = grey_seal_orkneys_K6-combined-aligned.txt
+PRINT_EVERY_PERM = 0
+EVERY_PERMFILE = 
+PRINT_RANDOM_INPUTORDER = 0
+RANDOM_INPUTORDERFILE = 
+----------------------- Advanced options ------------------------
+OVERRIDE_WARNINGS = 0
+ORDER_BY_RUN = 0
+
+
+In total, 20 configurations of runs and clusters will be tested.
+
+Results
+------------------------------
+The highest value of H' is: 0.99079972743550
+
+The list of permutations of the clusters that produces that
+H' value is (runs are listed sequentially on separate rows)
+
+1 2 3 4 5 6 
+2 6 3 5 4 1 
+2 1 6 3 4 5 
+1 2 3 4 5 6 
+2 4 1 5 3 6 
+
+The pairwise G' values for each pair of runs where the clusters
+of each run are permuted according to the list of permutations above
+
+1.0000 0.9893 0.9896 1.0000 0.9895 
+0.9893 1.0000 0.9897 0.9893 0.9901 
+0.9896 0.9897 1.0000 0.9896 0.9914 
+1.0000 0.9893 0.9896 1.0000 0.9895 
+0.9895 0.9901 0.9914 0.9895 1.0000 

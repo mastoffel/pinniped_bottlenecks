@@ -1,0 +1,51 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Grey_seal_HH_genepop.txt
+Data type: Genepop format
+Title: title grey seals Orkneys Holm of Huip									
+Estimation based on 1000 replications.
+
+
+Date: 02/03/2012  Time: 12:53:01.
+Population : 146	
+                 observed   |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+Hg4_2							  270   8 0.606 | 0.784 0.049 -3.667 0.0040 
+Hg6_1							  268   6 0.618 | 0.707 0.072 -1.249 0.1020 
+Hg6_3							  280   6 0.754 | 0.709 0.071  0.641 0.2950 
+Hg8_9							  276  10 0.835 | 0.829 0.037  0.150 0.4930 
+Hg8_1							  250  10 0.795 | 0.833 0.035 -1.075 0.1340 
+Hgd_2							  274   8 0.698 | 0.784 0.051 -1.687 0.0690 
+Pv9									  286   7 0.797 | 0.752 0.058  0.774 0.2080 
+Pv11								  290   7 0.717 | 0.754 0.056 -0.653 0.2020 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.74
+5 loci with heterozygosity deficiency and 3 loci with heterozygosity excess.
+Probability: 0.18529
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 8 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -2.392  Probability:  0.00837
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.03711
+Probability (one tail for H excess): 0.97266
+Probability (two tails for H excess or deficiency): 0.07422
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.581 | 0.177 | 0.097 | 0.097 | 0.016 | 0.032 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 02/03/2012  Time: 12:56:24.

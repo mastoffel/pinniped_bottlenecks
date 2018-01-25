@@ -1,0 +1,302 @@
+
+
+----------------------------------------------------
+STRUCTURE by Pritchard, Stephens and Donnelly (2000)
+     and Falush, Stephens and Pritchard (2003)
+       Code by Pritchard, Falush and Hubisz
+             Version 2.3.4 (Jul 2012)
+----------------------------------------------------
+
+
+
+Command line arguments:   /usr/local/bin/structure -m parameter_job_T1_3 
+Input File:    /home/martin/bottleneck/structure_analysis/structure_4/data_job_T1_3
+
+Run parameters:
+   21 individuals
+   17 loci
+   1 populations assumed
+   10000 Burn-in period
+   100000 Reps
+
+
+--------------------------------------------
+Proportion of membership of each pre-defined
+ population in each of the 1 clusters
+
+Given    Inferred Clusters       Number of
+ Pop       1                    Individuals
+
+  1:     1.000                     21
+--------------------------------------------
+
+Allele-freq. divergence among pops (Net nucleotide distance),
+computed using point estimates of P.
+
+      1      
+ 1      -    
+
+Average distances (expected heterozygosity) between individuals in same cluster:
+cluster  1  : 0.8053 
+
+--------------------------------------------
+Estimated Ln Prob of Data   = -1343.8
+Mean value of ln likelihood = -1317.6
+Variance of ln likelihood   = 52.5
+
+Mean value of Fst_1         = 0.0002
+
+
+Inferred ancestry of individuals:
+        Label (%Miss) Pop:  Inferred clusters
+  1        1    (0)    1 :  1.000 
+  2        2    (5)    1 :  1.000 
+  3        3    (0)    1 :  1.000 
+  4        4    (0)    1 :  1.000 
+  5        5    (5)    1 :  1.000 
+  6        6    (0)    1 :  1.000 
+  7        7    (5)    1 :  1.000 
+  8        8    (0)    1 :  1.000 
+  9        9    (5)    1 :  1.000 
+ 10       10    (0)    1 :  1.000 
+ 11       11    (0)    1 :  1.000 
+ 12       12    (0)    1 :  1.000 
+ 13       13    (0)    1 :  1.000 
+ 14       14    (0)    1 :  1.000 
+ 15       15    (0)    1 :  1.000 
+ 16       16    (0)    1 :  1.000 
+ 17       17    (5)    1 :  1.000 
+ 18       18    (0)    1 :  1.000 
+ 19       19    (0)    1 :  1.000 
+ 20       20    (0)    1 :  1.000 
+ 21       21    (5)    1 :  1.000 
+
+
+Estimated Allele Frequencies in each cluster
+First column gives estimated ancestral frequencies
+
+
+Locus 1 : 
+6 alleles
+4.8% missing data
+ 185   (0.168) 0.168 
+ 191   (0.087) 0.087 
+ 187   (0.547) 0.547 
+ 197   (0.044) 0.044 
+ 193   (0.043) 0.043 
+ 189   (0.110) 0.110 
+
+Locus 2 : 
+12 alleles
+0.0% missing data
+ 116   (0.074) 0.074 
+ 130   (0.054) 0.054 
+ 110   (0.132) 0.132 
+ 118   (0.163) 0.164 
+ 124   (0.131) 0.131 
+ 136   (0.039) 0.038 
+ 128   (0.115) 0.115 
+ 114   (0.070) 0.070 
+ 132   (0.037) 0.037 
+ 120   (0.057) 0.057 
+ 134   (0.035) 0.035 
+ 122   (0.092) 0.092 
+
+Locus 3 : 
+8 alleles
+14.3% missing data
+  94   (0.116) 0.116 
+  98   (0.072) 0.072 
+ 104   (0.046) 0.046 
+ 102   (0.134) 0.134 
+  96   (0.381) 0.382 
+ 100   (0.136) 0.136 
+ 108   (0.047) 0.047 
+ 110   (0.069) 0.069 
+
+Locus 4 : 
+12 alleles
+0.0% missing data
+ 140   (0.075) 0.075 
+ 154   (0.185) 0.185 
+ 134   (0.235) 0.235 
+ 148   (0.058) 0.058 
+ 144   (0.053) 0.053 
+ 150   (0.058) 0.058 
+ 156   (0.073) 0.073 
+ 142   (0.039) 0.039 
+ 160   (0.094) 0.094 
+ 165   (0.039) 0.039 
+ 169   (0.036) 0.036 
+ 152   (0.055) 0.055 
+
+Locus 5 : 
+14 alleles
+0.0% missing data
+ 148   (0.034) 0.033 
+ 174   (0.051) 0.051 
+ 158   (0.112) 0.112 
+ 162   (0.104) 0.104 
+ 166   (0.057) 0.057 
+ 167   (0.104) 0.104 
+ 152   (0.251) 0.252 
+ 154   (0.034) 0.034 
+ 160   (0.054) 0.053 
+ 173   (0.035) 0.035 
+ 171   (0.035) 0.035 
+ 178   (0.057) 0.057 
+ 146   (0.036) 0.036 
+ 176   (0.036) 0.036 
+
+Locus 6 : 
+9 alleles
+0.0% missing data
+ 192   (0.095) 0.095 
+ 194   (0.335) 0.336 
+ 190   (0.082) 0.082 
+ 204   (0.134) 0.134 
+ 196   (0.120) 0.120 
+ 202   (0.057) 0.057 
+ 208   (0.040) 0.040 
+ 200   (0.040) 0.039 
+ 206   (0.098) 0.098 
+
+Locus 7 : 
+6 alleles
+4.8% missing data
+ 186   (0.427) 0.427 
+ 188   (0.318) 0.319 
+ 194   (0.064) 0.063 
+ 184   (0.086) 0.086 
+ 192   (0.065) 0.065 
+ 180   (0.040) 0.040 
+
+Locus 8 : 
+8 alleles
+0.0% missing data
+ 200   (0.161) 0.161 
+ 220   (0.097) 0.097 
+ 216   (0.119) 0.119 
+ 218   (0.321) 0.322 
+ 208   (0.100) 0.100 
+ 206   (0.039) 0.039 
+ 214   (0.123) 0.123 
+ 222   (0.039) 0.039 
+
+Locus 9 : 
+15 alleles
+0.0% missing data
+ 149   (0.104) 0.104 
+ 161   (0.107) 0.107 
+ 155   (0.138) 0.138 
+ 157   (0.105) 0.105 
+ 145   (0.067) 0.067 
+ 167   (0.035) 0.035 
+ 159   (0.067) 0.067 
+ 129   (0.035) 0.035 
+ 135   (0.036) 0.036 
+ 133   (0.035) 0.035 
+ 153   (0.109) 0.109 
+ 131   (0.035) 0.034 
+ 163   (0.036) 0.036 
+ 151   (0.054) 0.054 
+ 137   (0.038) 0.037 
+
+Locus 10 : 
+10 alleles
+0.0% missing data
+ 110   (0.210) 0.211 
+ 118   (0.347) 0.348 
+ 120   (0.079) 0.079 
+ 106   (0.038) 0.037 
+ 104   (0.039) 0.039 
+ 122   (0.059) 0.058 
+ 108   (0.073) 0.073 
+ 116   (0.058) 0.058 
+ 112   (0.060) 0.060 
+ 114   (0.037) 0.037 
+
+Locus 11 : 
+4 alleles
+0.0% missing data
+ 107   (0.371) 0.371 
+ 103   (0.213) 0.213 
+ 105   (0.306) 0.306 
+ 109   (0.110) 0.110 
+
+Locus 12 : 
+7 alleles
+0.0% missing data
+ 185   (0.222) 0.222 
+ 189   (0.038) 0.038 
+ 171   (0.228) 0.228 
+ 187   (0.101) 0.101 
+ 179   (0.231) 0.231 
+ 183   (0.041) 0.041 
+ 181   (0.139) 0.139 
+
+Locus 13 : 
+6 alleles
+4.8% missing data
+ 137   (0.361) 0.361 
+ 143   (0.088) 0.088 
+ 145   (0.089) 0.089 
+ 141   (0.045) 0.045 
+ 139   (0.350) 0.350 
+ 147   (0.066) 0.066 
+
+Locus 14 : 
+6 alleles
+0.0% missing data
+ 165   (0.041) 0.040 
+ 171   (0.224) 0.224 
+ 167   (0.086) 0.086 
+ 161   (0.395) 0.396 
+ 163   (0.042) 0.042 
+ 173   (0.212) 0.212 
+
+Locus 15 : 
+11 alleles
+0.0% missing data
+ 141   (0.271) 0.271 
+ 143   (0.118) 0.118 
+ 137   (0.075) 0.075 
+ 153   (0.113) 0.113 
+ 155   (0.060) 0.060 
+ 147   (0.181) 0.181 
+ 131   (0.035) 0.035 
+ 135   (0.033) 0.033 
+ 151   (0.037) 0.037 
+ 139   (0.039) 0.039 
+ 145   (0.038) 0.038 
+
+Locus 16 : 
+12 alleles
+0.0% missing data
+ 158   (0.111) 0.111 
+ 169   (0.054) 0.054 
+ 154   (0.152) 0.152 
+ 177   (0.037) 0.037 
+ 156   (0.256) 0.257 
+ 159   (0.073) 0.073 
+ 152   (0.072) 0.072 
+ 162   (0.079) 0.079 
+ 160   (0.036) 0.036 
+ 174   (0.056) 0.056 
+ 183   (0.038) 0.038 
+ 179   (0.037) 0.036 
+
+Locus 17 : 
+7 alleles
+0.0% missing data
+ 117   (0.224) 0.224 
+ 125   (0.183) 0.183 
+ 123   (0.223) 0.223 
+ 119   (0.117) 0.117 
+ 133   (0.145) 0.145 
+ 121   (0.062) 0.062 
+ 127   (0.045) 0.045 
+
+Values of parameters used in structure:
+DATAFILE=/home/martin/bottleneck/structure_analysis/structure_4/data_job_T1_3,	OUTFILE=/home/martin/bottleneck/structure_analysis/structure_4/structure_results/baltic_ringed_seal/results_job_T1_3,	NUMINDS=21,	NUMLOCI=17,	MISSING=-9,	LABEL=1,	POPDATA=1,	POPFLAG=0,	PHENOTYPE=0,	EXTRACOLS=0,	MAXPOPS=1,	BURNIN=10000,	NUMREPS=100000,	USEPOPINFO=0,	INFERALPHA=1,	INFERLAMBDA=0,	POPSPECIFICLAMBDA=0,	POPALPHAS=0,	COMPUTEPROB=1,	NOADMIX=0,	ADMBURNIN=2500,	UPDATEFREQ=1,	PRINTLIKES=0,	INTERMEDSAVE=0,	PRINTKLD=0,	PRINTNET=0,	PRINTLAMBDA=0,	ANCESTDIST=0,	NUMBOXES=1000,	ANCESTPINT=0.90000,	GENSBACK=2,	MIGRPRIOR=0.05000,	PRINTQHAT=1,	PRINTQSUM=0,	ALPHA=1.0000,	FREQSCORR=1,	FPRIORMEAN=0.0100,	FPRIORSD=0.0500,	ONEFST=0,	LAMBDA=1.0000,	UNIFPRIORALPHA=1,	ALPHAMAX=10.0000,	ALPHAPRIORA=1.0000,	ALPHAPRIORB=2.0000,	ALPHAPROPSD=0.0250,	STARTATPOPINFO=0,	RANDOMIZE=1,	LINKAGE=0,	METROFREQ=10,	REPORTHITRATE=0,	MARKOVPHASE=-1,	PHASED=0,	PLOIDY=2,	PHASEINFO=0	LOCPRIOR=0, 	LOCPRIORINIT=1.000000, 	LOCDATA=0, 	LOCISPOP=0, 	LOCPRIORSTEP=0.100000, 	MAXLOCPRIOR=20.000000, 	SEED=1470669271,	
+[STRAT parameters]:    NUMSIMSTATS=1000,	PHENOTYPECOL=-9,	POOLFREQ=10,	LOCUSxONLY=0,	EMERROR=0.00100,	MISSINGPHENO=-9,	

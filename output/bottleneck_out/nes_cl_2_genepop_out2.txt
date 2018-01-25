@@ -1,0 +1,77 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=80.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\nes_cl_2_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes                                   
+Estimation based on 10000 replications.
+
+
+Date: 08/01/2017  Time: 2:34:19 PM.
+Population : 1
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+L_A12         272   2 0.456 | 0.185 0.170  1.595 0.1162 
+L_Ag-9        272   2 0.461 | 0.183 0.170  1.637 0.1091 
+L_BG          268   2 0.217 | 0.184 0.169  0.191 0.3756 
+L_C01         272   2 0.328 | 0.187 0.171  0.829 0.2619 
+L_C03         272   2 0.328 | 0.186 0.171  0.833 0.2579 
+L_CORT        272   2 0.124 | 0.184 0.170 -0.351 0.5015 
+L_Dh18        272   3 0.523 | 0.367 0.173  0.897 0.1881 
+L_Dh36        272   2 0.345 | 0.186 0.170  0.940 0.2392 
+L_Dh47        272   3 0.549 | 0.364 0.174  1.066 0.1292 
+L_Dh7tg       268   3 0.519 | 0.366 0.174  0.882 0.1985 
+L_DZ301       272   2 0.225 | 0.184 0.168  0.242 0.3644 
+L_DZ441       272   3 0.480 | 0.363 0.174  0.669 0.3348 
+L_E03         260   2 0.444 | 0.186 0.170  1.518 0.1350 
+L_E04         272   2 0.137 | 0.184 0.169 -0.280 0.4851 
+L_F07         272   2 0.463 | 0.181 0.169  1.669 0.1049 
+L_G04         272   3 0.493 | 0.362 0.174  0.754 0.2929 
+L_Hg14        262   2 0.485 | 0.183 0.169  1.787 0.0700 
+L_Hg23        270   3 0.609 | 0.368 0.172  1.399 0.0502 
+L_Hg36        272   2 0.185 | 0.184 0.169  0.006 0.4108 
+L_Hg42        260   3 0.506 | 0.365 0.174  0.810 0.2527 
+L_Hg810       266   2 0.212 | 0.183 0.168  0.174 0.3782 
+L_Hg89        264   3 0.578 | 0.365 0.174  1.222 0.0882 
+L_Hl-10       272   3 0.479 | 0.363 0.175  0.669 0.3440 
+L_Hl8         270   3 0.642 | 0.370 0.172  1.581 0.0216 
+L_Lw-8        270   2 0.022 | 0.185 0.170 -0.956 0.2284 
+L_Lw10        268   2 0.498 | 0.184 0.169  1.855 0.0357 
+L_Lw16        258   2 0.465 | 0.185 0.169  1.657 0.1018 
+L_Lw18        264   3 0.454 | 0.364 0.176  0.509 0.4044 
+L_Lw20        268   4 0.560 | 0.487 0.152  0.485 0.3738 
+L_M11a        270   2 0.259 | 0.183 0.169  0.446 0.3246 
+L_PV9         266   2 0.434 | 0.186 0.170  1.460 0.1439 
+L_PVC1        270   3 0.584 | 0.365 0.174  1.263 0.0803 
+L_Pvc26       270   2 0.339 | 0.183 0.169  0.920 0.2406 
+L_PVC43       272   4 0.443 | 0.483 0.151 -0.268 0.3251 
+L_PVC74       248   4 0.654 | 0.488 0.151  1.106 0.1075 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  16.70
+4 loci with heterozygosity deficiency and 31 loci with heterozygosity excess.
+Probability: 0.00000
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   4.938  Probability:  0.00000
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00000
+Probability (two tails for H excess or deficiency): 0.00000
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.170 | 0.114 | 0.114 | 0.148 | 0.102 | 0.068 | 0.136 | 0.057 | 0.057 | 0.034 |
+normal L-shaped distribution
+
+End of computation. Date: 08/01/2017  Time: 3:21:01 PM.

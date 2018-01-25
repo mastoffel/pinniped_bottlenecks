@@ -1,0 +1,56 @@
+
+Using the parameter settings in the file: 
+''paramfile''
+
+Parameter settings
+----------------------- Main parameters -------------------------
+DATATYPE = 1
+INDFILE = 
+POPFILE = new_zealand_sea_lion_K6-combined.txt
+OUTFILE = new_zealand_sea_lion_K6-combined-merged.txt
+MISCFILE = new_zealand_sea_lion_K6-combined-miscfile.txt
+K = 6
+C = 205
+R = 5
+M = 2
+W = 0
+S = 2
+- Additional options for the Greedy and LargeKGreedy algorithms -
+GREEDY_OPTION = 2
+REPEATS = 20
+PERMUTATIONFILE = 
+----------------------- Optional outputs ------------------------
+PRINT_PERMUTED_DATA = 1
+PERMUTED_DATAFILE = new_zealand_sea_lion_K6-combined-aligned.txt
+PRINT_EVERY_PERM = 0
+EVERY_PERMFILE = 
+PRINT_RANDOM_INPUTORDER = 0
+RANDOM_INPUTORDERFILE = 
+----------------------- Advanced options ------------------------
+OVERRIDE_WARNINGS = 0
+ORDER_BY_RUN = 0
+
+
+In total, 20 configurations of runs and clusters will be tested.
+
+Results
+------------------------------
+The highest value of H' is: 0.90772294363851
+
+The list of permutations of the clusters that produces that
+H' value is (runs are listed sequentially on separate rows)
+
+1 5 2 3 6 4 
+1 2 3 4 5 6 
+2 1 3 5 4 6 
+1 2 6 4 5 3 
+3 6 1 5 2 4 
+
+The pairwise G' values for each pair of runs where the clusters
+of each run are permuted according to the list of permutations above
+
+1.0000 0.9232 0.9434 0.8716 0.9586 
+0.9232 1.0000 0.9028 0.8822 0.9246 
+0.9434 0.9028 1.0000 0.8508 0.9447 
+0.8716 0.8822 0.8508 1.0000 0.8752 
+0.9586 0.9246 0.9447 0.8752 1.0000 

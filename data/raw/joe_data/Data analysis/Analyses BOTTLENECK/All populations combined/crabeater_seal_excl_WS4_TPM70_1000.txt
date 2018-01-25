@@ -1,0 +1,52 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: G:\crabeater4.txt
+Data type: Genepop format
+Title: title crabeater seal																		
+Estimation based on 1000 replications.
+
+
+Date: 01/03/2012  Time: 14:28:45.
+Population : 303	
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+WS10								  604  12 0.686 | 0.783 0.064 -1.530 0.0780 
+WS11								  598  20 0.913 | 0.875 0.030  1.273 0.0560 
+LS8									  602  24 0.911 | 0.899 0.024  0.524 0.3450 
+LS16								  602  16 0.891 | 0.839 0.045  1.155 0.0600 
+CS6									  606  19 0.899 | 0.870 0.033  0.884 0.1800 
+CS26								  600  14 0.810 | 0.816 0.049 -0.118 0.3660 
+CS28								  604  10 0.679 | 0.743 0.077 -0.824 0.1720 
+G1A									  596  21 0.924 | 0.883 0.030  1.376 0.0170 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.77
+3 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
+Probability: 0.58654
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 8 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   0.968  Probability:  0.16645
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.80859
+Probability (one tail for H excess): 0.23047
+Probability (two tails for H excess or deficiency): 0.46094
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.801 | 0.154 | 0.007 | 0.022 | 0.015 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 01/03/2012  Time: 14:42:44.

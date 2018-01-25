@@ -1,0 +1,73 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\NES_genepop.txt
+Data type: Genepop format
+Title: title NES																																	
+Estimation based on 1000 replications.
+
+
+Date: 19/02/2012  Time: 16:20:59.
+Population : 260	
+                 observed   |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+Locus A12			  518   3 0.473 | 0.417 0.146  0.383 0.4490 
+Locus Ag-9		  520   2 0.456 | 0.167 0.161  1.792 0.0810 
+Locus BG				  514   3 0.239 | 0.417 0.145 -1.226 0.1570 
+Locus C01			  520   2 0.336 | 0.177 0.169  0.942 0.2340 
+Locus C03			  520   2 0.336 | 0.183 0.171  0.898 0.2480 
+Locus CORT		  518   2 0.092 | 0.176 0.165 -0.508 0.4480 
+Locus Dh1.8	  520   3 0.516 | 0.429 0.142  0.617 0.2920 
+Locus Dh3.6	  520   2 0.332 | 0.178 0.165  0.934 0.2270 
+Locus Dh4.7	  520   3 0.557 | 0.415 0.144  0.985 0.1410 
+Locus Dh7tg	  512   4 0.513 | 0.558 0.111 -0.411 0.2680 
+Locus DZ301	  518   2 0.205 | 0.168 0.163  0.226 0.3480 
+Locus DZ441	  518   3 0.500 | 0.428 0.137  0.524 0.3510 
+Locus E03			  492   2 0.470 | 0.180 0.167  1.735 0.0790 
+Locus E04			  520   2 0.202 | 0.178 0.170  0.139 0.3870 
+Locus F07			  518   3 0.475 | 0.428 0.133  0.353 0.4570 
+Locus G04			  520   3 0.499 | 0.430 0.140  0.495 0.3740 
+Locus Hg2.3	  518   4 0.608 | 0.552 0.114  0.494 0.3690 
+Locus Hg3.6	  520   2 0.162 | 0.181 0.169 -0.114 0.4380 
+Locus Hg4.2	  506   3 0.505 | 0.417 0.142  0.615 0.3100 
+Locus Hg8.10  514   2 0.282 | 0.181 0.169  0.592 0.3030 
+Locus Hg8.9	  510   3 0.562 | 0.424 0.138  0.991 0.1350 
+Locus Hl-10	  520   3 0.478 | 0.430 0.141  0.346 0.4600 
+Locus Hl8			  518   3 0.643 | 0.422 0.146  1.516 0.0230 
+Locus Lw-8		  516   2 0.042 | 0.172 0.165 -0.789 0.3400 
+Locus Lw10		  516   3 0.503 | 0.426 0.140  0.548 0.3370 
+Locus Lw16		  500   2 0.479 | 0.174 0.167  1.827 0.0730 
+Locus Lw20		  512   5 0.654 | 0.640 0.091  0.159 0.4850 
+Locus M11a		  510   2 0.289 | 0.176 0.169  0.666 0.2860 
+Locus PV9			  512   2 0.431 | 0.177 0.168  1.513 0.1290 
+Locus PVC1		  518   3 0.651 | 0.420 0.141  1.634 0.0100 
+Locus Pvc26	  516   2 0.320 | 0.186 0.168  0.803 0.2590 
+Locus PVC43	  518   4 0.427 | 0.558 0.107 -1.230 0.1270 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  16.19
+6 loci with heterozygosity deficiency and 26 loci with heterozygosity excess.
+Probability: 0.00028
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:   3.085  Probability:  0.00102
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.99970
+Probability (one tail for H excess): 0.00033
+Probability (two tails for H excess or deficiency): 0.00066
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.233 | 0.105 | 0.105 | 0.128 | 0.105 | 0.058 | 0.116 | 0.047 | 0.070 | 0.035 |
+normal L-shaped distribution
+
+End of computation. Date: 19/02/2012  Time: 16:53:18.

@@ -1,0 +1,56 @@
+
+Using the parameter settings in the file: 
+''paramfile''
+
+Parameter settings
+----------------------- Main parameters -------------------------
+DATATYPE = 1
+INDFILE = 
+POPFILE = weddell_seal_K5-combined.txt
+OUTFILE = weddell_seal_K5-combined-merged.txt
+MISCFILE = weddell_seal_K5-combined-miscfile.txt
+K = 5
+C = 893
+R = 5
+M = 2
+W = 0
+S = 2
+- Additional options for the Greedy and LargeKGreedy algorithms -
+GREEDY_OPTION = 2
+REPEATS = 20
+PERMUTATIONFILE = 
+----------------------- Optional outputs ------------------------
+PRINT_PERMUTED_DATA = 1
+PERMUTED_DATAFILE = weddell_seal_K5-combined-aligned.txt
+PRINT_EVERY_PERM = 0
+EVERY_PERMFILE = 
+PRINT_RANDOM_INPUTORDER = 0
+RANDOM_INPUTORDERFILE = 
+----------------------- Advanced options ------------------------
+OVERRIDE_WARNINGS = 0
+ORDER_BY_RUN = 0
+
+
+In total, 20 configurations of runs and clusters will be tested.
+
+Results
+------------------------------
+The highest value of H' is: 0.93082784040169
+
+The list of permutations of the clusters that produces that
+H' value is (runs are listed sequentially on separate rows)
+
+1 2 3 4 5 
+3 4 2 1 5 
+1 2 3 4 5 
+3 2 1 5 4 
+4 1 2 5 3 
+
+The pairwise G' values for each pair of runs where the clusters
+of each run are permuted according to the list of permutations above
+
+1.0000 0.8823 0.9681 0.9761 0.9669 
+0.8823 1.0000 0.8766 0.8738 0.8689 
+0.9681 0.8766 1.0000 0.9679 0.9545 
+0.9761 0.8738 0.9679 1.0000 0.9733 
+0.9669 0.8689 0.9545 0.9733 1.0000 

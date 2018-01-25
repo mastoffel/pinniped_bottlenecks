@@ -1,0 +1,284 @@
+
+
+----------------------------------------------------
+STRUCTURE by Pritchard, Stephens and Donnelly (2000)
+     and Falush, Stephens and Pritchard (2003)
+       Code by Pritchard, Falush and Hubisz
+             Version 2.3.4 (Jul 2012)
+----------------------------------------------------
+
+
+
+Command line arguments:   /usr/local/bin/structure -m parameter_job_T2_4 
+Input File:    /home/martin/bottleneck/structure_analysis/structure_4/data_job_T2_4
+
+Run parameters:
+   109 individuals
+   16 loci
+   2 populations assumed
+   10000 Burn-in period
+   100000 Reps
+
+
+--------------------------------------------
+Proportion of membership of each pre-defined
+ population in each of the 2 clusters
+
+Given    Inferred Clusters       Number of
+ Pop       1      2             Individuals
+
+  1:     0.498  0.502             109
+--------------------------------------------
+
+Allele-freq. divergence among pops (Net nucleotide distance),
+computed using point estimates of P.
+
+      1       2      
+ 1      -    0.0005  
+ 2   0.0005     -    
+
+Average distances (expected heterozygosity) between individuals in same cluster:
+cluster  1  : 0.3962 
+cluster  2  : 0.3944 
+
+--------------------------------------------
+Estimated Ln Prob of Data   = -1593.2
+Mean value of ln likelihood = -1500.2
+Variance of ln likelihood   = 186.0
+Mean value of alpha         = 4.4633
+
+Mean value of Fst_1         = 0.1287
+Mean value of Fst_2         = 0.1335
+
+
+Inferred ancestry of individuals:
+        Label (%Miss) Pop:  Inferred clusters
+  1        1   (21)    1 :  0.457 0.543 
+  2        2   (93)    1 :  0.491 0.509 
+  3        3   (15)    1 :  0.508 0.492 
+  4        4   (18)    1 :  0.460 0.540 
+  5        5    (9)    1 :  0.492 0.508 
+  6        6    (0)    1 :  0.511 0.489 
+  7        7   (25)    1 :  0.466 0.534 
+  8        8    (6)    1 :  0.473 0.527 
+  9        9    (9)    1 :  0.518 0.482 
+ 10       10   (18)    1 :  0.479 0.521 
+ 11       11    (0)    1 :  0.493 0.507 
+ 12       12    (6)    1 :  0.476 0.524 
+ 13       13    (9)    1 :  0.546 0.454 
+ 14       14    (0)    1 :  0.496 0.504 
+ 15       15    (9)    1 :  0.518 0.482 
+ 16       16    (0)    1 :  0.472 0.528 
+ 17       17    (9)    1 :  0.478 0.522 
+ 18       18   (15)    1 :  0.446 0.554 
+ 19       19    (9)    1 :  0.461 0.539 
+ 20       20    (9)    1 :  0.486 0.514 
+ 21       21    (6)    1 :  0.496 0.504 
+ 22       22   (15)    1 :  0.455 0.545 
+ 23       23    (6)    1 :  0.491 0.509 
+ 24       24    (0)    1 :  0.511 0.489 
+ 25       25   (15)    1 :  0.486 0.514 
+ 26       26   (25)    1 :  0.516 0.484 
+ 27       27    (6)    1 :  0.504 0.496 
+ 28       28    (9)    1 :  0.467 0.533 
+ 29       29    (0)    1 :  0.523 0.477 
+ 30       30    (9)    1 :  0.459 0.541 
+ 31       31   (21)    1 :  0.458 0.542 
+ 32       32    (0)    1 :  0.474 0.526 
+ 33       33    (0)    1 :  0.460 0.540 
+ 34       34   (15)    1 :  0.495 0.505 
+ 35       35   (12)    1 :  0.481 0.519 
+ 36       36   (15)    1 :  0.507 0.493 
+ 37       37    (6)    1 :  0.490 0.510 
+ 38       38   (37)    1 :  0.538 0.462 
+ 39       39   (81)    1 :  0.515 0.485 
+ 40       40   (18)    1 :  0.505 0.495 
+ 41       41    (0)    1 :  0.489 0.511 
+ 42       42   (15)    1 :  0.508 0.492 
+ 43       43   (25)    1 :  0.498 0.502 
+ 44       44   (18)    1 :  0.491 0.509 
+ 45       45   (31)    1 :  0.479 0.521 
+ 46       46   (37)    1 :  0.470 0.530 
+ 47       47   (25)    1 :  0.463 0.537 
+ 48       48   (25)    1 :  0.468 0.532 
+ 49       49   (75)    1 :  0.501 0.499 
+ 50       50   (37)    1 :  0.486 0.514 
+ 51       51   (93)    1 :  0.492 0.508 
+ 52       52   (93)    1 :  0.493 0.507 
+ 53       53    (9)    1 :  0.464 0.536 
+ 54       54   (75)    1 :  0.496 0.504 
+ 55       55   (56)    1 :  0.489 0.511 
+ 56       56    (0)    1 :  0.492 0.508 
+ 57       57   (15)    1 :  0.458 0.542 
+ 58       58   (18)    1 :  0.481 0.519 
+ 59       59   (56)    1 :  0.505 0.495 
+ 60       60   (31)    1 :  0.509 0.491 
+ 61       61   (81)    1 :  0.547 0.453 
+ 62       62   (43)    1 :  0.540 0.460 
+ 63       63   (93)    1 :  0.492 0.508 
+ 64       64   (75)    1 :  0.540 0.460 
+ 65       65   (81)    1 :  0.539 0.461 
+ 66       66   (75)    1 :  0.488 0.512 
+ 67       67   (75)    1 :  0.491 0.509 
+ 68       68   (68)    1 :  0.481 0.519 
+ 69       69   (37)    1 :  0.486 0.514 
+ 70       70   (93)    1 :  0.492 0.508 
+ 71       71   (93)    1 :  0.552 0.448 
+ 72       72   (75)    1 :  0.506 0.494 
+ 73       73   (93)    1 :  0.500 0.500 
+ 74       74    (0)    1 :  0.495 0.505 
+ 75       75    (9)    1 :  0.464 0.536 
+ 76       76    (6)    1 :  0.447 0.553 
+ 77       77    (0)    1 :  0.466 0.534 
+ 78       78   (87)    1 :  0.493 0.507 
+ 79       79    (6)    1 :  0.542 0.458 
+ 80       80    (0)    1 :  0.519 0.481 
+ 81       81   (31)    1 :  0.500 0.500 
+ 82       82    (0)    1 :  0.473 0.527 
+ 83       83   (18)    1 :  0.514 0.486 
+ 84       84    (9)    1 :  0.448 0.552 
+ 85       85   (37)    1 :  0.499 0.501 
+ 86       86   (18)    1 :  0.477 0.523 
+ 87       87   (21)    1 :  0.555 0.445 
+ 88       88   (87)    1 :  0.555 0.445 
+ 89       89   (25)    1 :  0.528 0.472 
+ 90       90   (25)    1 :  0.568 0.432 
+ 91       91   (25)    1 :  0.539 0.461 
+ 92       92   (37)    1 :  0.554 0.446 
+ 93       93   (25)    1 :  0.507 0.493 
+ 94       94   (34)    1 :  0.486 0.514 
+ 95       95   (18)    1 :  0.493 0.507 
+ 96       96   (31)    1 :  0.514 0.486 
+ 97       97   (37)    1 :  0.503 0.497 
+ 98       98   (18)    1 :  0.526 0.474 
+ 99       99   (25)    1 :  0.523 0.477 
+100      100   (31)    1 :  0.555 0.445 
+101      101   (75)    1 :  0.506 0.494 
+102      102   (37)    1 :  0.500 0.500 
+103      103   (25)    1 :  0.488 0.512 
+104      104   (28)    1 :  0.527 0.473 
+105      105   (31)    1 :  0.538 0.462 
+106      106   (68)    1 :  0.508 0.492 
+107      107   (81)    1 :  0.551 0.449 
+108      108   (93)    1 :  0.504 0.496 
+109      109   (81)    1 :  0.487 0.513 
+
+
+Estimated Allele Frequencies in each cluster
+First column gives estimated ancestral frequencies
+
+
+Locus 1 : 
+5 alleles
+22.9% missing data
+ 144   (0.751) 0.835 0.846 
+ 158   (0.135) 0.096 0.099 
+ 154   (0.068) 0.044 0.035 
+ 160   (0.023) 0.012 0.010 
+ 164   (0.023) 0.012 0.010 
+
+Locus 2 : 
+2 alleles
+36.7% missing data
+ 119   (0.571) 0.619 0.579 
+ 117   (0.429) 0.381 0.421 
+
+Locus 3 : 
+3 alleles
+26.1% missing data
+ 140   (0.878) 0.921 0.925 
+ 148   (0.097) 0.066 0.064 
+ 142   (0.024) 0.013 0.010 
+
+Locus 4 : 
+2 alleles
+21.1% missing data
+ 166   (0.401) 0.328 0.349 
+ 160   (0.599) 0.672 0.651 
+
+Locus 5 : 
+2 alleles
+17.4% missing data
+ 154   (0.789) 0.849 0.843 
+ 156   (0.211) 0.151 0.157 
+
+Locus 6 : 
+3 alleles
+26.6% missing data
+ 197   (0.894) 0.935 0.947 
+ 199   (0.044) 0.027 0.021 
+ 212   (0.062) 0.039 0.033 
+
+Locus 7 : 
+3 alleles
+19.3% missing data
+ 227   (0.773) 0.834 0.846 
+ 231   (0.163) 0.124 0.120 
+ 210   (0.064) 0.042 0.033 
+
+Locus 8 : 
+4 alleles
+12.8% missing data
+  87   (0.459) 0.536 0.487 
+  99   (0.186) 0.151 0.188 
+  95   (0.326) 0.295 0.312 
+  91   (0.029) 0.017 0.013 
+
+Locus 9 : 
+3 alleles
+37.6% missing data
+ 118   (0.436) 0.416 0.462 
+ 124   (0.440) 0.496 0.456 
+ 120   (0.124) 0.087 0.082 
+
+Locus 10 : 
+3 alleles
+26.1% missing data
+ 222   (0.777) 0.846 0.865 
+ 220   (0.171) 0.121 0.110 
+ 232   (0.052) 0.033 0.025 
+
+Locus 11 : 
+2 alleles
+25.7% missing data
+ 122   (0.641) 0.660 0.656 
+ 124   (0.359) 0.340 0.344 
+
+Locus 12 : 
+2 alleles
+56.0% missing data
+ 106   (0.858) 0.899 0.896 
+ 100   (0.142) 0.101 0.104 
+
+Locus 13 : 
+2 alleles
+60.6% missing data
+ 104   (0.525) 0.598 0.611 
+ 100   (0.475) 0.402 0.389 
+
+Locus 14 : 
+4 alleles
+43.6% missing data
+ 100   (0.390) 0.354 0.334 
+ 104   (0.304) 0.397 0.396 
+ 106   (0.252) 0.216 0.241 
+ 102   (0.053) 0.033 0.028 
+
+Locus 15 : 
+4 alleles
+23.9% missing data
+ 144   (0.603) 0.698 0.693 
+ 146   (0.023) 0.012 0.010 
+ 148   (0.234) 0.191 0.206 
+ 150   (0.141) 0.098 0.090 
+
+Locus 16 : 
+3 alleles
+58.7% missing data
+ 167   (0.414) 0.427 0.411 
+ 183   (0.356) 0.397 0.423 
+ 165   (0.230) 0.176 0.166 
+
+Values of parameters used in structure:
+DATAFILE=/home/martin/bottleneck/structure_analysis/structure_4/data_job_T2_4,	OUTFILE=/home/martin/bottleneck/structure_analysis/structure_4/structure_results/mediterranean_monk_seal/results_job_T2_4,	NUMINDS=109,	NUMLOCI=16,	MISSING=-9,	LABEL=1,	POPDATA=1,	POPFLAG=0,	PHENOTYPE=0,	EXTRACOLS=0,	MAXPOPS=2,	BURNIN=10000,	NUMREPS=100000,	USEPOPINFO=0,	INFERALPHA=1,	INFERLAMBDA=0,	POPSPECIFICLAMBDA=0,	POPALPHAS=0,	COMPUTEPROB=1,	NOADMIX=0,	ADMBURNIN=2500,	UPDATEFREQ=1,	PRINTLIKES=0,	INTERMEDSAVE=0,	PRINTKLD=0,	PRINTNET=0,	PRINTLAMBDA=0,	ANCESTDIST=0,	NUMBOXES=1000,	ANCESTPINT=0.90000,	GENSBACK=2,	MIGRPRIOR=0.05000,	PRINTQHAT=1,	PRINTQSUM=0,	ALPHA=1.0000,	FREQSCORR=1,	FPRIORMEAN=0.0100,	FPRIORSD=0.0500,	ONEFST=0,	LAMBDA=1.0000,	UNIFPRIORALPHA=1,	ALPHAMAX=10.0000,	ALPHAPRIORA=1.0000,	ALPHAPRIORB=2.0000,	ALPHAPROPSD=0.0250,	STARTATPOPINFO=0,	RANDOMIZE=1,	LINKAGE=0,	METROFREQ=10,	REPORTHITRATE=0,	MARKOVPHASE=-1,	PHASED=0,	PLOIDY=2,	PHASEINFO=0	LOCPRIOR=0, 	LOCPRIORINIT=1.000000, 	LOCDATA=0, 	LOCISPOP=0, 	LOCPRIORSTEP=0.100000, 	MAXLOCPRIOR=20.000000, 	SEED=1470454612,	
+[STRAT parameters]:    NUMSIMSTATS=1000,	PHENOTYPECOL=-9,	POOLFREQ=10,	LOCUSxONLY=0,	EMERROR=0.00100,	MISSINGPHENO=-9,	

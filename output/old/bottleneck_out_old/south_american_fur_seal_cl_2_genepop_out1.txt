@@ -1,0 +1,77 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=70.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\emily_bottleneck\genepop_files\south_american_fur_seal_cl_2_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes       
+Estimation based on 10000 replications.
+
+
+Date: 04.07.2016  Time: 18:17:42.
+Population : 1
+                 observed   |     under the I.A.M.      |     under the T.P.M.      |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob 
+L_M11a        280   8 0.822 | 0.601 0.146  1.511 0.0055 | 0.701 0.091  1.326 0.0290 | 0.784 0.049  0.774 0.2250 
+L_Hg63        228   8 0.785 | 0.611 0.144  1.205 0.0522 | 0.709 0.088  0.862 0.1818 | 0.786 0.049 -0.029 0.3997 
+L_PvcA        262   9 0.792 | 0.638 0.136  1.136 0.0711 | 0.736 0.079  0.713 0.2543 | 0.810 0.042 -0.418 0.2743 
+L_PvcE        152   9 0.769 | 0.673 0.121  0.795 0.2213 | 0.755 0.072  0.195 0.4986 | 0.817 0.040 -1.198 0.1139 
+L_Pv11        212   7 0.765 | 0.574 0.154  1.238 0.0511 | 0.672 0.101  0.919 0.1547 | 0.755 0.059  0.175 0.4868 
+L_Hg810       262   8 0.743 | 0.603 0.145  0.969 0.1447 | 0.704 0.090  0.436 0.3992 | 0.786 0.049 -0.863 0.1642 
+L_Pv9         244   7 0.698 | 0.564 0.158  0.844 0.2145 | 0.668 0.102  0.289 0.4671 | 0.753 0.058 -0.942 0.1470 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.16
+0 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
+Probability: 0.02605
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.16
+0 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
+Probability: 0.02600
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   4.15
+5 loci with heterozygosity deficiency and 2 loci with heterozygosity excess.
+Probability: 0.10382
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 7 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+T2:   2.910  Probability:  0.00181
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   1.792  Probability:  0.03661
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -0.946  Probability:  0.17217
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00391
+Probability (two tails for H excess and deficiency): 0.00781
+
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 1.00000
+Probability (one tail for H excess): 0.00391
+Probability (two tails for H excess or deficiency): 0.00781
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.05469
+Probability (one tail for H excess): 0.96094
+Probability (two tails for H excess or deficiency): 0.10938
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.464 | 0.357 | 0.054 | 0.071 | 0.054 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 04.07.2016  Time: 18:28:47.

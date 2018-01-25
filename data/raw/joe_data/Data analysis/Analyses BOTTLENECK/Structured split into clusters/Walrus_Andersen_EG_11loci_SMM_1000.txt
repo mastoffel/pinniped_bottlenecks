@@ -1,0 +1,54 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+
+
+======================================================================================
+File: G:\Walrus_Andersen_EG_11loci_genepop.txt
+Data type: Genepop format
+Title: "title Atlantic Walrus Andersen C2 = Eastern Greenland"												
+Estimation based on 1000 replications.
+
+
+Date: 29/02/2012  Time: 20:11:07.
+Population : 555	
+                 observed   |     under the S.M.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+or16								  406  10 0.788 | 0.825 0.036 -1.037 0.1380 
+or24								  416   7 0.769 | 0.745 0.062  0.377 0.4420 
+or9									  412   6 0.721 | 0.706 0.070  0.211 0.5030 
+Hgdii							  420   4 0.321 | 0.552 0.118 -1.953 0.0540 
+igf									    0   0 0.000  MONOMORPHIC LOCUS.
+or11								  400   7 0.730 | 0.750 0.057 -0.343 0.2980 
+orr7								  420  14 0.826 | 0.879 0.024 -2.238 0.0330 
+sgpv								  418   7 0.714 | 0.745 0.063 -0.486 0.2440 
+m11									  418   7 0.729 | 0.751 0.053 -0.405 0.2770 
+hg81								  418   7 0.683 | 0.747 0.057 -1.117 0.1270 
+Pv9									  420   6 0.713 | 0.704 0.076  0.123 0.4640 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:   5.93
+7 loci with heterozygosity deficiency and 3 loci with heterozygosity excess.
+Probability: 0.06027
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Caution: only 10 polymorphic loci (minimum 20).
+
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+T2:  -2.172  Probability:  0.01494
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.00928
+Probability (one tail for H excess): 0.99316
+Probability (two tails for H excess or deficiency): 0.01855
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.547 | 0.187 | 0.107 | 0.107 | 0.040 | 0.000 | 0.000 | 0.000 | 0.013 | 0.000 |
+normal L-shaped distribution
+
+End of computation. Date: 29/02/2012  Time: 20:19:31.

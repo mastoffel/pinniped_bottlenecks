@@ -1,0 +1,56 @@
+
+Using the parameter settings in the file: 
+''paramfile''
+
+Parameter settings
+----------------------- Main parameters -------------------------
+DATATYPE = 1
+INDFILE = 
+POPFILE = ses_K5-combined.txt
+OUTFILE = ses_K5-combined-merged.txt
+MISCFILE = ses_K5-combined-miscfile.txt
+K = 5
+C = 260
+R = 5
+M = 2
+W = 0
+S = 2
+- Additional options for the Greedy and LargeKGreedy algorithms -
+GREEDY_OPTION = 2
+REPEATS = 20
+PERMUTATIONFILE = 
+----------------------- Optional outputs ------------------------
+PRINT_PERMUTED_DATA = 1
+PERMUTED_DATAFILE = ses_K5-combined-aligned.txt
+PRINT_EVERY_PERM = 0
+EVERY_PERMFILE = 
+PRINT_RANDOM_INPUTORDER = 0
+RANDOM_INPUTORDERFILE = 
+----------------------- Advanced options ------------------------
+OVERRIDE_WARNINGS = 0
+ORDER_BY_RUN = 0
+
+
+In total, 20 configurations of runs and clusters will be tested.
+
+Results
+------------------------------
+The highest value of H' is: 0.96178233627082
+
+The list of permutations of the clusters that produces that
+H' value is (runs are listed sequentially on separate rows)
+
+5 4 3 1 2 
+5 3 2 4 1 
+2 1 5 3 4 
+1 2 3 4 5 
+2 5 4 3 1 
+
+The pairwise G' values for each pair of runs where the clusters
+of each run are permuted according to the list of permutations above
+
+1.0000 0.9868 0.9264 0.9809 0.9843 
+0.9868 1.0000 0.9287 0.9801 0.9844 
+0.9264 0.9287 1.0000 0.9352 0.9255 
+0.9809 0.9801 0.9352 1.0000 0.9855 
+0.9843 0.9844 0.9255 0.9855 1.0000 

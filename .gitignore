@@ -2,10 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-/data
 /server
 /other_stuff
-/output
 *.RData
 *.xls
 *.xlsx

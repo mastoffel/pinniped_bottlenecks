@@ -1,0 +1,79 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=90.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\subantarctic_fur_seal_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes                                     
+Estimation based on 10000 replications.
+
+
+Date: 10/04/2017  Time: 10:06:43 AM.
+Population : 1
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+L_Pv9         176   8 0.769 | 0.752 0.067  0.250 0.4858 
+L_Hg63        174  10 0.794 | 0.803 0.050 -0.178 0.3488 
+L_Hg810       174  23 0.927 | 0.923 0.015  0.205 0.5167 
+L_Hg13        170  12 0.859 | 0.839 0.038  0.508 0.3566 
+L_M11a        172  14 0.870 | 0.864 0.031  0.204 0.5158 
+L_PvcA        174  12 0.768 | 0.837 0.039 -1.797 0.0548 
+L_Zcwb07      172  11 0.845 | 0.822 0.044  0.529 0.3440 
+L_Agaz2       176  14 0.884 | 0.863 0.032  0.666 0.2738 
+L_Ag3         176   2 0.011 | 0.199 0.169 -1.107 0.1192 
+L_Agaz6       174   6 0.730 | 0.676 0.091  0.593 0.3149 
+L_Ag2         172   6 0.644 | 0.673 0.092 -0.313 0.2995 
+L_OrrFCB2     174  15 0.829 | 0.874 0.028 -1.592 0.0747 
+L_Lw10        138  11 0.867 | 0.828 0.042  0.921 0.1574 
+L_Zcwc01      176  10 0.779 | 0.803 0.050 -0.479 0.2514 
+L_Agaz5       176   4 0.661 | 0.531 0.133  0.971 0.1500 
+L_ZcwCgDhB14  176  17 0.829 | 0.891 0.023 -2.632 0.0215 
+L_Ag7         172  15 0.856 | 0.874 0.028 -0.652 0.2165 
+L_Agt10       176   8 0.662 | 0.754 0.065 -1.421 0.0893 
+L_ZcwCgDh47   166  18 0.892 | 0.899 0.021 -0.287 0.3275 
+L_Zcwe05      172   8 0.799 | 0.755 0.066  0.676 0.2692 
+L_Ag1         176   7 0.752 | 0.719 0.077  0.430 0.4022 
+L_OrrFCB8     170   7 0.844 | 0.717 0.079  1.611 0.0012 
+L_Agt47       176   5 0.677 | 0.614 0.109  0.581 0.3273 
+L_Zcwf07      174  13 0.824 | 0.851 0.036 -0.769 0.1789 
+L_ZcwD02      176  27 0.918 | 0.937 0.012 -1.643 0.0675 
+L_ZcwCgDh18   176   8 0.759 | 0.753 0.065  0.083 0.4527 
+L_Aa4         176   3 0.168 | 0.410 0.158 -1.533 0.1066 
+L_ZcCgDh58    176  12 0.828 | 0.839 0.039 -0.297 0.3078 
+L_Agaz3       176   6 0.517 | 0.672 0.092 -1.670 0.0677 
+L_9621        170   4 0.470 | 0.529 0.133 -0.448 0.2695 
+L_5546        174   6 0.472 | 0.673 0.091 -2.203 0.0375 
+L_Zcwa12      174  21 0.902 | 0.914 0.018 -0.703 0.2050 
+L_PvcE        170  14 0.890 | 0.865 0.031  0.829 0.2061 
+L_Zcwb09      174  15 0.869 | 0.874 0.028 -0.159 0.3687 
+Lgaz10        174  14 0.876 | 0.864 0.031  0.384 0.4225 
+L_Zcwc03      172   9 0.773 | 0.781 0.058 -0.144 0.3625 
+L_Mang36      162   3 0.203 | 0.409 0.159 -1.295 0.1411 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  21.57
+21 loci with heterozygosity deficiency and 16 loci with heterozygosity excess.
+Probability: 0.04618
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:  -1.953  Probability:  0.02542
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.07671
+Probability (one tail for H excess): 0.92547
+Probability (two tails for H excess or deficiency): 0.15342
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.721 | 0.136 | 0.080 | 0.038 | 0.010 | 0.000 | 0.008 | 0.000 | 0.003 | 0.005 |
+normal L-shaped distribution
+
+End of computation. Date: 10/04/2017  Time: 11:14:45 AM.

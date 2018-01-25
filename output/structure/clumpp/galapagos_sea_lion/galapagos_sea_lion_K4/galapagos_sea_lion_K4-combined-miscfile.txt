@@ -1,0 +1,56 @@
+
+Using the parameter settings in the file: 
+''paramfile''
+
+Parameter settings
+----------------------- Main parameters -------------------------
+DATATYPE = 1
+INDFILE = 
+POPFILE = galapagos_sea_lion_K4-combined.txt
+OUTFILE = galapagos_sea_lion_K4-combined-merged.txt
+MISCFILE = galapagos_sea_lion_K4-combined-miscfile.txt
+K = 4
+C = 781
+R = 5
+M = 2
+W = 0
+S = 2
+- Additional options for the Greedy and LargeKGreedy algorithms -
+GREEDY_OPTION = 2
+REPEATS = 20
+PERMUTATIONFILE = 
+----------------------- Optional outputs ------------------------
+PRINT_PERMUTED_DATA = 1
+PERMUTED_DATAFILE = galapagos_sea_lion_K4-combined-aligned.txt
+PRINT_EVERY_PERM = 0
+EVERY_PERMFILE = 
+PRINT_RANDOM_INPUTORDER = 0
+RANDOM_INPUTORDERFILE = 
+----------------------- Advanced options ------------------------
+OVERRIDE_WARNINGS = 0
+ORDER_BY_RUN = 0
+
+
+In total, 20 configurations of runs and clusters will be tested.
+
+Results
+------------------------------
+The highest value of H' is: 0.94715842320401
+
+The list of permutations of the clusters that produces that
+H' value is (runs are listed sequentially on separate rows)
+
+4 1 3 2 
+3 2 1 4 
+3 4 2 1 
+2 4 3 1 
+1 2 3 4 
+
+The pairwise G' values for each pair of runs where the clusters
+of each run are permuted according to the list of permutations above
+
+1.0000 0.9435 0.9407 0.9779 0.9466 
+0.9435 1.0000 0.9393 0.9352 0.9430 
+0.9407 0.9393 1.0000 0.9250 0.9903 
+0.9779 0.9352 0.9250 1.0000 0.9301 
+0.9466 0.9430 0.9903 0.9301 1.0000 

@@ -1,0 +1,77 @@
+Bottleneck  ---  Version 1.2.02  (16.II.99)
+Copyright © 1997-1999, INRA, Laboratoire de Modélisation et Biologie Evolutive, All rights reserved.
+Parameters for T.P.M.: Variance=30.00  Probability=90.00%
+
+
+======================================================================================
+File: C:\Users\localadmin\Desktop\emily_bottleneck\genepop_files\nes_cl_2_genepop.txt
+Data type: Genepop format
+Title: Title Line: genotypes                                   
+Estimation based on 10000 replications.
+
+
+Date: 04.07.2016  Time: 17:34:32.
+Population : 1
+                 observed   |     under the T.P.M.      
+locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
+L_A12         242   3 0.487 | 0.396 0.163  0.558 0.3790 
+L_Ag-9        244   2 0.451 | 0.190 0.169  1.547 0.1260 
+L_BG          242   3 0.267 | 0.396 0.164 -0.787 0.2356 
+L_C01         244   2 0.351 | 0.193 0.170  0.932 0.2440 
+L_C03         244   2 0.351 | 0.192 0.169  0.938 0.2415 
+L_CORT        242   2 0.056 | 0.197 0.169 -0.831 0.3224 
+L_Dh18        244   3 0.506 | 0.399 0.162  0.667 0.3042 
+L_Dh36        244   2 0.322 | 0.195 0.169  0.754 0.2798 
+L_Dh47        244   3 0.563 | 0.397 0.162  1.030 0.1279 
+L_Dh7tg       240   4 0.510 | 0.525 0.134 -0.112 0.3655 
+L_DZ301       242   2 0.186 | 0.193 0.169 -0.043 0.4354 
+L_DZ441       242   2 0.502 | 0.196 0.170  1.793 0.0218 
+L_E03         228   2 0.492 | 0.197 0.171  1.726 0.0607 
+L_E04         244   2 0.270 | 0.191 0.171  0.459 0.3306 
+L_F07         242   3 0.489 | 0.399 0.162  0.557 0.3774 
+L_G04         244   3 0.501 | 0.398 0.163  0.633 0.3322 
+L_Hg14        242   2 0.444 | 0.196 0.169  1.466 0.1389 
+L_Hg23        244   4 0.612 | 0.520 0.137  0.673 0.2867 
+L_Hg36        244   2 0.130 | 0.190 0.168 -0.355 0.4985 
+L_Hg42        242   3 0.506 | 0.399 0.160  0.666 0.3020 
+L_Hg810       244   2 0.351 | 0.195 0.170  0.915 0.2490 
+L_Hg89        242   3 0.537 | 0.398 0.161  0.862 0.1926 
+L_Hl-10       244   3 0.484 | 0.398 0.161  0.535 0.3902 
+L_Hl8         244   3 0.646 | 0.394 0.164  1.540 0.0215 
+L_Lw-8        242   2 0.056 | 0.194 0.169 -0.815 0.3312 
+L_Lw10        244   3 0.509 | 0.395 0.162  0.704 0.2793 
+L_Lw16        238   2 0.492 | 0.193 0.170  1.762 0.0539 
+L_Lw18        244   3 0.509 | 0.396 0.162  0.691 0.2828 
+L_Lw20        242   5 0.487 | 0.602 0.115 -1.004 0.1431 
+L_M11a        236   2 0.325 | 0.194 0.170  0.777 0.2723 
+L_PV9         242   2 0.433 | 0.193 0.170  1.413 0.1519 
+L_PVC1        244   3 0.464 | 0.396 0.162  0.415 0.4441 
+L_Pvc26       242   2 0.299 | 0.193 0.170  0.621 0.3021 
+L_PVC43       242   4 0.398 | 0.520 0.136 -0.897 0.1762 
+L_PVC74       230   4 0.622 | 0.520 0.138  0.736 0.2570 
+______________________________________________________________________________________
+                                SIGN TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Expected number of loci with heterozygosity excess:  17.68
+8 loci with heterozygosity deficiency and 27 loci with heterozygosity excess.
+Probability: 0.00100
+
+______________________________________________________________________________________
+                               STANDARDIZED DIFFERENCES TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+T2:   3.470  Probability:  0.00026
+
+______________________________________________________________________________________
+                               WILCOXON TEST
+Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
+Probability (one tail for H deficiency): 0.99966
+Probability (one tail for H excess): 0.00037
+Probability (two tails for H excess or deficiency): 0.00073
+
+______________________________________________________________________________________
+                               MODE-SHIFT
+ 0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
+  | 0.245 | 0.085 | 0.085 | 0.117 | 0.117 | 0.117 | 0.096 | 0.064 | 0.043 | 0.032 |
+normal L-shaped distribution
+
+End of computation. Date: 04.07.2016  Time: 17:44:26.
