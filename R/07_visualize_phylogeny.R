@@ -29,7 +29,7 @@ library(extrafont)
 # ggthemr('dust')
 source("R/martin.R")
 
-calc_on_cluster <- TRUE
+calc_on_cluster <- FALSE
 if (calc_on_cluster) {
     save_files <- "_cl"    
 } else {
@@ -222,40 +222,40 @@ p <- p +  #layout="circular" , "fan"open.angle=180  #,color = "#737373"
     # scale_color_manual(values=c("black", "#9e9ac8","#6a51a3", "#bcbddc" )) + #color = "#737373" , color = "#737373"
     geom_tippoint(aes(size = Abundance, fill=IUCN_rating, color = color),stroke=0.5, shape=21) + #shape=21,stroke=0.5 #color = "#737373" color = "#737373"
     scale_color_manual(name = "Breeding habitat", values = c("#bdbdbd", "#d8b365", "cornflowerblue"),
-                        breaks = c("cornflowerblue","#d8b365" ), labels = c("ice", "land")) +
+        breaks = c("cornflowerblue","#d8b365" ), labels = c("ice", "land")) +
     # geom_point(aes(color = abc, size = Abundance), shape=21) +
-     # geom_treescale() + 
+    # geom_treescale() + 
     # ggtitle("Pinniped Phylogeny") +
     #geom_tiplab(size=5, color="black") + # tiplap 2 for circular
     #ggplot2::xlim(0, 15) +
     # scale_color_manual(values = c("#66c2a5", "#fdae61", "#f46d43", "#d53e4f", "#000000")) +
     # scale_color_manual(values = c("lightblue", "goldenrod", "red", "darkred", "grey")) +
     # scale_fill_manual(values = c("#fee8c8", "#fc8d59", "#d7301f", "#7f0000", "white")) +
-  # scale_fill_manual(values = c("#FDE4A6FF", "#FB8861FF", "#B63679FF", "#000004FF", "white")) +
+    # scale_fill_manual(values = c("#FDE4A6FF", "#FB8861FF", "#B63679FF", "#000004FF", "white")) +
     # scale_fill_manual(values = c("#ffffd4", "#fed98e", "#fe9929", "#cc4c02", "white")) +
     #scale_fill_manual(values = c("#f7f7f7", "#cccccc", "#525252", "#000000", "white")) +
-    #scale_fill_manual(values = c("#e0ecf4", "#9ebcda", "#8c6bb1", "#4d004b", "white")) +
-   # scale_color_manual(values = c( "blue", "black")) +
-    scale_fill_manual(values = c("#f7f7f7", "#d9d9d9", "#969696", "#252525", "white")) +
+#scale_fill_manual(values = c("#e0ecf4", "#9ebcda", "#8c6bb1", "#4d004b", "white")) +
+# scale_color_manual(values = c( "blue", "black")) +
+scale_fill_manual(values = c("#f7f7f7", "#d9d9d9", "#969696", "#252525", "white")) +
     # for coloring branches
     # scale_color_manual(na.value = "#969696", values = c("#cb181d", "#969696")) +
     #scale_color_manual(values = c("#c7e9b4", "#41b6c4", "#225ea8", "#081d58", "lightgrey")) +
     scale_size_continuous(range = c(1.5, 6), trans = "sqrt", breaks=c(1000, 10000, 100000, 1000000),
-                      labels = c(expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6}))
-                       ) + #range = c(0.1,5), , breaks=c(500, 1000, 10000, 100000, 1000000)
+        labels = c(expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6}))
+    ) + #range = c(0.1,5), , breaks=c(500, 1000, 10000, 100000, 1000000)
     guides(fill = guide_legend(title = "IUCN rating", title.position = "top", direction = "vertical", order = 2),
-           size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1),
-           color = guide_legend(title.position = "top", direction = "horizontal", order = 3)) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
-    theme(plot.margin=unit(c(52, -5,30,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
-          legend.position= c(0.26,0.90), #legend.direction = "horizontal",
-          legend.spacing = unit(5, "points"),
+        size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1),
+        color = guide_legend(title.position = "top", direction = "horizontal", order = 3)) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
+    theme(plot.margin=unit(c(68, -5,30,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
+        legend.position= c(0.24,0.92), #legend.direction = "horizontal",
+        legend.spacing = unit(5, "points"),
         legend.key.height=unit(1,"line"),
         legend.key.width = unit(1, "line"), 
-        legend.title = element_text(size = 9),
-        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
         legend.title.align = 0.5,
-        text=element_text(family='Lato')) 
-    # geom_image(data = d_img, aes(image = image), size = 0.2)
+        text=element_text(family='Hind Guntur Light')) 
+# geom_image(data = d_img, aes(image = image), size = 0.2)
 p
 
 
@@ -299,24 +299,24 @@ p_div <- ggplot(stand_div_lf, aes(x = variable, y = common_abbr, fill = value)) 
     #scale_fill_distiller(pal(5)) +
    # scale_fill_gradientn(colours=plot_col_div, 
     #   name = "prop. \nhet-exc") +
-    theme_tufte(base_family="Helvetica") +
+    theme_tufte(base_family="Hind Guntur Light") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
-        axis.text.x = element_text(angle = 70, hjust = 1, size = 11),
+        axis.text.x = element_text(angle = 70, hjust = 1, size = 12),
         # axis.text.x = element_blank(),
         legend.position="top",
         plot.margin=unit(c(0,10,22.5,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
-        axis.text.y = element_text(hjust=0, size = 9, colour = "#525252"), #abc_cols[stand_div$abc][plot_inds]
-        legend.title = element_text(size = 9),
-        legend.text = element_text(size = 8),
+        axis.text.y = element_text(hjust=0, size = 10, colour = "#525252"), #abc_cols[stand_div$abc][plot_inds]
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
         legend.title.align = 0.5, 
-        text=element_text(family='Lato')) +
+        text=element_text(family='Hind Guntur Light')) +
     # coord_fixed(ratio = 0.7) +
     scale_x_discrete(labels=c(expression(H[o]),expression(A[r])), # c("Ho", "Ar"),  ##"ARA",
         position = "bottom") +
-    guides(fill = guide_colorbar(barwidth = 4, barheight = 0.5, 
+    guides(fill = guide_colorbar(barwidth = 5, barheight = 0.5, 
             title.position = "top", label.position = "bottom")) 
 
 # grid.arrange(p, p_div, nrow = 1)
@@ -345,25 +345,25 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         direction = -1) +
    # scale_fill_gradientn(colours=rev(pal2(5)),
     #    name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95)) +
-    theme_tufte(base_family="Helvetica") +
+    theme_tufte(base_family="Hind Guntur Light") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
-        axis.text.x = element_text(angle = 70, hjust = 1, size = 9),
+        axis.text.x = element_text(angle = 70, hjust = 1, size = 10),
         # axis.text.x = element_blank(),
         legend.position="top",
         plot.margin=unit(c(0,10,6,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(), 
-        legend.title = element_text(size = 9),
-        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
         legend.title.align = 0.5, 
-        text=element_text(family='Lato')) +
+        text=element_text(family='Hind Guntur Light')) +
     # scale_x_discrete(labels=c("PHE","M")) +
     scale_x_discrete(labels=c("TPM 70", "TPM 80","TPM 90", "SMM ")) + # "IAM",
     #labs(x=NULL, y=NULL) +
     # coord_fixed(ratio = 0.7) +
-    guides(fill = guide_colorbar(barwidth = 5.6, barheight = 0.5, 
+    guides(fill = guide_colorbar(barwidth = 6.2, barheight = 0.5, 
         title.position = "top")) 
 
 plot_grid(p, p_div, p_bot, nrow = 1)
@@ -384,40 +384,43 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
     scale_fill_distiller(palette = "RdBu",
         name = "ABC model \nprobability %", labels=c(0, 50, 100), breaks = c(0,0.5,1),
         direction = -1) +
-    theme_tufte(base_family="Helvetica") +
+    theme_tufte(base_family="Hind Guntur Light") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
-        axis.text.x = element_text(angle = 70, hjust = 1, size = 11),
+        axis.text.x = element_text(angle = 70, hjust = 1, size = 12),
         # axis.text.x = element_blank(),
         legend.position="top",
         plot.margin=unit(c(0,10,14,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(),
-        legend.title = element_text(size = 9),
-        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
         legend.title.align = 0.5,
-        text=element_text(family='Lato')) +
+        text=element_text(family='Hind Guntur Light')) +
     scale_x_discrete(labels=c(expression(P[bot]),expression(P[neut]))) +
     #labs(x=NULL, y=NULL) +
     # coord_fixed(ratio = 0.7) +
-    guides(fill = guide_colorbar(barwidth = 3.3, barheight = 0.5, 
+    guides(fill = guide_colorbar(barwidth = 3.6, barheight = 0.5, 
         title.position = "top")) 
 
 p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.32, 0.27, 0.15, 0.09))
 p_final
 
-#p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, rel_widths = c(0.2, 0.16, 0.09, 0.05, 0.02))
-#p_final
 
-save_plot(paste0("other_stuff/figures/figures_final/phylo_plot_color", save_files, ".jpg"), p_final,
-    ncol = 2, # we're saving a grid plot of 2 columns
-    nrow = 1, # and 2 rows
-    # each individual subplot should have an aspect ratio of 1.3
-   # base_aspect_ratio = 0.9,
-    base_height = 6,
-    base_width = 4.5
-)
+ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color", save_files, ".pdf"), p_final,
+    height = 6, width = 9.2, device = "pdf")
+
+Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
+extrafont::embed_fonts(paste0("other_stuff/figures/figures_final/phylo_plot_color", save_files, ".pdf"))
+
+
+
+
+# favorites Nunito Average2San Hind2Guntur Hind2Guntur Light
+# 
+
+
 
 
 

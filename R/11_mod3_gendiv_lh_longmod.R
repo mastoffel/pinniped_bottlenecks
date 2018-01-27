@@ -194,7 +194,7 @@ p1 <- ggplot(aes(x = bot, y = num_alleles_mean), data = all_stats) +
     #    parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     #annotate("text", x = 0.24, y = 1.3, label = "beta == '-1.3 [-1.8, -0.78]'", 
     #    parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         plot.margin = unit(c(0.9,0.5,0.25,0.1), "cm"),
@@ -252,7 +252,7 @@ p2 <- ggplot(aes(logAbundance, num_alleles_mean), data = all_stats) +
     #aes(fill = BreedingType)) +
     scale_color_manual(values = c("cornflowerblue", "#d8b365"), name = "Breeding Habitat") +
     # scale_fill_manual(values = c("cornflowerblue", "#d8b365"), name = "Breeding Habitat") +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_x_continuous(trans = "log", breaks = c(log(100), log(1000), log(10000), log(100000), log(1000000), log(10000000)), 
         labels = c(expression(10^{2}), expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6}),  expression(10^{7})),
         limits = c(4.5, 16.2)) + 
@@ -291,7 +291,7 @@ p3 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) +
     geom_errorbarh(alpha=0.4, color="black",height = 0) +
     geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
     # geom_errorbarh(alpha=0.4, color="black",height = 0) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
@@ -316,7 +316,7 @@ p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
     geom_errorbarh(alpha=0.4, color="black",height = 0) +
     geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
     # geom_errorbarh(alpha=0.4, color="black",height = 0) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_x_continuous(breaks = c(-1,-0.5,0,0.5,1), limits = c(-1, 1)) +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -348,7 +348,7 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
     geom_errorbarh(alpha=0.4, color="black",height = 0) +
     geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
     # geom_errorbarh(alpha=0.4, color="black",height = 0) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
@@ -364,7 +364,7 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
     annotate("segment", x = 1, xend = 1, y = 0.7, yend = 5.1, color = col_legend) +
     annotate("text", x = 1.1, xend = 1.1, y = 3.2, yend = 3.5, color = col_legend, label = c("unique"), angle = 270, size = 3) +
     annotate("segment", x = 1, xend = 1, y = 5.5, yend = 6.6, color = col_legend) +
-    annotate("text", x = 1.1, xend = 1.1, y = 5.8, yend = 6.3, color = col_legend, label = c("marginal"), angle = 270, size = 3)
+    annotate("text", x = 1.1, xend = 1.1, y = 5.7, yend = 6.2, color = col_legend, label = c("marginal"), angle = 270, size = 3)
 p5
 
 
@@ -379,10 +379,13 @@ p_bot
 p_final <- plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(1.5,1))
 p_final
 
+# jpg
 ggsave('other_stuff/figures/figures_final/gendiv_lh_long.jpg',p_final,  width=8, height=6)
 
-
-
+# pdf
+ggsave('other_stuff/figures/figures_final/gendiv_lh_long.pdf',p_final,  width=8, height=6)
+Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
+extrafont::embed_fonts("other_stuff/figures/figures_final/gendiv_lh_long.pdf")
 
 
 

@@ -322,7 +322,7 @@ gendiv_R2 <- read_delim("output/mcmcmodels/IUCN_gendiv_R2.txt", delim = " ")
 p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
     xlab(" ") +
@@ -350,7 +350,7 @@ hetexc_R2 <- read_delim("output/mcmcmodels/IUCN_hetexc_R2.txt", delim = " ")
 p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
     xlab("IUCN status") +
@@ -381,7 +381,7 @@ bot_R2 <- read_delim("output/mcmcmodels/IUCN_bot_R2.txt", delim = " ")
 p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
     xlab(" ") +
@@ -410,8 +410,10 @@ p_final <- plot_grid(p1,p2,p3, nrow = 1, labels = c("A", "B", "C"))
 ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN.jpg", width = 9, height = 3.5)
 
 
+ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN.pdf", width = 9, height = 3.5)
 
-
+Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
+extrafont::embed_fonts("other_stuff/figures/figures_final/IUCN.pdf")
 
 
 

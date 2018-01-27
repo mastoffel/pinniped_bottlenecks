@@ -517,7 +517,7 @@ p1 <- ggplot(aes(BreedingType, bot), data = all_stats) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.7, width = 0.7, aes(fill = BreedingType), outlier.shape = NA) + #
    # geom_point(size = point_size, alpha = point_alpha, aes(color = BreedingType)) + # abc_out
     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
     scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
     xlab("Breeding Habitat") +
@@ -540,7 +540,7 @@ p2 <- ggplot(aes(BreedingType, TPM80_ratio), data = all_stats) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.7, width = 0.7, aes(fill = BreedingType), outlier.shape = NA) + #
     # geom_point(size = point_size, alpha = point_alpha, aes(color = BreedingType)) + # abc_out
     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
     scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
     xlab("Breeding Habitat") +
@@ -580,7 +580,7 @@ p3 <- ggplot(aes(x = SSD, y = TPM80_ratio), data = all_stats) +
     geom_line(data = mod_preds_hetexc, aes(y = fit), size = 0.2, alpha = 0.5) +
     geom_point(size = point_size, alpha = 0.7,  aes(col = bot)) + # abc_out
     geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     xlab("Sexual Size Dimorphism (SSD)") +
     ylab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) +
     #ylab("Heterozygosity-excess") +
@@ -644,7 +644,7 @@ p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) +
     geom_errorbarh(data = mod_out2, alpha=0.4, color="black",height = 0, position=position_nudge(y = -0.1)) +
     geom_point(data = mod_out2, size = 3.5, shape = 21, col = "black",fill = "white", position=position_nudge(y = -0.1)) +
     # geom_errorbarh(alpha=0.4, color="black",height = 0) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
@@ -672,7 +672,7 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
     geom_point(data = mod_out_SC2, size = 3.5, shape = 21, col = "black",fill = "white", position=position_nudge(y = -0.1)) +
     # geom_errorbarh(alpha=0.4, color="black",height = 0) +
     # geom_errorbarh(alpha=0.4, color="black",height = 0) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
@@ -708,7 +708,7 @@ p6 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
     geom_point(data = mod_out_R22, size = 3.5, shape = 21, col = "black",fill = "white", position=position_nudge(y = -0.1)) +
     
     # geom_errorbarh(alpha=0.4, color="black",height = 0) +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
@@ -737,9 +737,13 @@ p_bot
 p_final <- plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(2,1.5))
 p_final
 
+# jpg
 ggsave('other_stuff/figures/figures_final/fig3_bot_vs_lh.jpg',p_final,  width=9, height=5.5)
 
-
+# pdf
+ggsave('other_stuff/figures/figures_final/fig3_bot_vs_lh.pdf',p_final,  width=9, height=5.5)
+Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
+extrafont::embed_fonts("other_stuff/figures/figures_final/fig3_bot_vs_lh.pdf")
 
 
 

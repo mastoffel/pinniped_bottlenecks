@@ -520,13 +520,13 @@ p3 <- ggplot(aes(x = TPM80_ratio, y = bot), data = all_stats) +
     geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
    # scale_y_continuous(breaks = seq(from = 2, to = 10, by = 2), limits = c(1,10)) +
     #scale_x_continuous(breaks = seq(from = 0.2, to = 1, by = 0.2)) +
-    xlab("Heterozygosity-excess") + #Allelic richness
-    ylab("Bottleneck model probability (ABC)") +
+    xlab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) + #Allelic richness
+    ylab(expression(ABC~bottleneck~probability~(p[bot]))) +
     annotate("text", x = 0.25, y = 1, label = "R^2 == '0.3 [0.02, 0.59]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     annotate("text", x = 0.25, y = 0.9, label = "beta == '0.15 [0.04, 0.25]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    theme_martin() +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         plot.margin = unit(c(0.9,0.1,0.25,0.9), "cm"),
@@ -537,6 +537,7 @@ p3 <- ggplot(aes(x = TPM80_ratio, y = bot), data = all_stats) +
     )
 p3
 
-cowplot::save_plot(filename = "other_stuff/figures/figures_final/sup_fig1_bot_vs_bot.jpg", 
-    plot = p3, base_height = 3, base_width = 4.4)
+ggsave(filename = "other_stuff/figures/figures_final/sup_fig2_bot_vs_bot.jpg", height = 3,
+       width = 4.4)
+
 

@@ -139,3 +139,141 @@ kable(all_stats_table_sub4, format = "latex", escape = F,
     kable_styling(latex_options =  "scale_down") %>% 
     row_spec(0, bold = TRUE) %>% 
     kable_as_image("Sup_tab_4", keep_pdf = TRUE)
+
+
+
+################## Supplementary table for ABC estimates ##############
+
+## bottleneck model
+library(tidyr)
+library(dplyr)
+library(MCMCglmm)
+# load abc posterior data
+load("data/processed/abc_estimates/abc_10000k_bot_complete.RData")
+# unnest the abc posterior values for plotting
+abc_bot <- unnest(abc_complete)
+
+# load abc posterior data
+load("data/processed/abc_estimates/abc_10000k_neut_complete.RData")
+# unnest the abc posterior values for plotting
+abc_neut <- unnest(abc_complete)
+
+estimate_mode <- function(s) {
+    d <- density(s, adjust = 2.5)
+    d$x[which.max(d$y)]
+}
+
+names(abc_bot)
+options(scipen=0)
+abc_table_nbot <- abc_bot %>% 
+    filter(pars %in% c("nbot")) %>% #"mut_rate"
+    group_by(species, pars) %>% 
+    summarise(mean = mean(adj_vals),
+              median = median(adj_vals),
+              mode = estimate_mode(adj_vals),
+              `HPD lower`= HPDinterval(mcmc(adj_vals), 0.95)[1],
+              `HPD higher` = HPDinterval(mcmc(adj_vals), 0.95)[2]) %>% 
+             # HPD_low_50 = HPDinterval(mcmc(adj_vals), 0.50)[1],
+             # HPD_high_50 = HPDinterval(mcmc(adj_vals), 0.50)[2]) %>% 
+    left_join(all_stats_origin[c(2,4)]) %>% 
+    #mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2)))
+    mutate_if(is.numeric, funs(round(., 0))) %>% 
+    select(common, everything()) %>% 
+    select(-species, -pars) %>% 
+    mutate_if(is.numeric, funs(as.character(.)))
+
+
+abc_table_mut <- abc_bot %>% 
+    filter(pars %in% c("mut_rate")) %>% #"mut_rate"
+    group_by(species, pars) %>% 
+    summarise(mean = mean(adj_vals),
+        median = median(adj_vals),
+        mode = estimate_mode(adj_vals),
+        `HPD lower`= HPDinterval(mcmc(adj_vals), 0.95)[1],
+        `HPD higher` = HPDinterval(mcmc(adj_vals), 0.95)[2]) %>% 
+    # HPD_low_50 = HPDinterval(mcmc(adj_vals), 0.50)[1],
+    # HPD_high_50 = HPDinterval(mcmc(adj_vals), 0.50)[2]) %>% 
+    left_join(all_stats_origin[c(2,4)]) %>% 
+    mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2))) %>% 
+    #mutate_if(is.numeric, funs(round(., 0))) %>% 
+    select(common, everything()) %>% 
+    select(-species, -pars)
+abc_table_mut <- abc_table_mut[-c(1,2)]
+
+abc_bot_full <- bind_cols(abc_table_nbot, abc_table_mut)
+abc_bot_full <- abc_bot_full[-1]
+names(abc_bot_full)[1] <- "Common name"
+align_tab5 <- c("l", "l", rep(x = "c", ncol(abc_bot_full ) - 2))
+
+kable(abc_bot_full,  format = "latex", escape = F, 
+    booktabs = TRUE, align = align_tab5, digits = 3, linesep = "",
+    col.names = c("Common name", rep(names(abc_table_mut), 2))) %>% 
+    kable_styling(latex_options =  "scale_down") %>% 
+    add_header_above(c(" " = 1, "N_ebot" = 5, "Mutation rate" = 5), escape = F, bold = TRUE) %>% 
+    add_header_above(c(" " = 1, "Summary of ABC posterior estimates under the bottleneck model" = 10), bold = TRUE) %>% 
+    row_spec(0, bold = TRUE) %>% 
+    # group_rows("N_{bot}", 1,10, escape = F) %>% 
+    # group_rows("Mutation rate mu", 11,20, escape = F) %>% 
+    kable_as_image("Sup_tab_5", keep_pdf = TRUE)
+
+
+
+
+
+
+
+## Neutral model
+
+abc_table_GSM_neut <- abc_neut %>% 
+    filter(pars %in% c("gsm_param")) %>% #"mut_rate"
+    group_by(species, pars) %>% 
+    summarise(mean = mean(adj_vals),
+        median = median(adj_vals),
+        mode = estimate_mode(adj_vals),
+        `HPD lower`= HPDinterval(mcmc(adj_vals), 0.95)[1],
+        `HPD higher` = HPDinterval(mcmc(adj_vals), 0.95)[2]) %>% 
+    # HPD_low_50 = HPDinterval(mcmc(adj_vals), 0.50)[1],
+    # HPD_high_50 = HPDinterval(mcmc(adj_vals), 0.50)[2]) %>% 
+    left_join(all_stats_origin[c(2,4)]) %>% 
+    #mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2)))
+    mutate_if(is.numeric, funs(round(., 3))) %>% 
+    #mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2))) %>% 
+    select(common, everything()) %>% 
+    select(-species, -pars) %>% 
+    mutate_if(is.numeric, funs(as.character(.)))
+
+
+abc_table_mut_neut <- abc_neut %>% 
+    filter(pars %in% c("mut_rate")) %>% #"mut_rate"
+    group_by(species, pars) %>% 
+    summarise(mean = mean(adj_vals),
+        median = median(adj_vals),
+        mode = estimate_mode(adj_vals),
+        `HPD lower`= HPDinterval(mcmc(adj_vals), 0.95)[1],
+        `HPD higher` = HPDinterval(mcmc(adj_vals), 0.95)[2]) %>% 
+    # HPD_low_50 = HPDinterval(mcmc(adj_vals), 0.50)[1],
+    # HPD_high_50 = HPDinterval(mcmc(adj_vals), 0.50)[2]) %>% 
+    left_join(all_stats_origin[c(2,4)]) %>% 
+    mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2))) %>% 
+    #mutate_if(is.numeric, funs(round(., 0))) %>% 
+    select(common, everything()) %>% 
+    select(-species, -pars)
+abc_table_mut_neut <- abc_table_mut_neut[-c(1,2)]
+
+abc_neut_full <- bind_cols(abc_table_GSM_neut, abc_table_mut_neut)
+abc_neut_full <- abc_neut_full[-1]
+align_tab7 <- c("l", "l", rep(x = "c", ncol(abc_neut_full) - 2))
+
+kable(abc_neut_full,  format = "latex", escape = F, 
+    booktabs = TRUE, align = align_tab5, digits = 3, linesep = "",
+    col.names = c("Common name", rep(names(abc_table_mut_neut), 2))) %>% 
+    kable_styling(latex_options =  "scale_down") %>% 
+    add_header_above(c(" " = 1, "Proportion of multistep mutations (GSM_{par})" = 5, "Mutation rate" = 5), escape = F, bold = TRUE) %>% 
+    add_header_above(c(" " = 1, "Summary of ABC posterior estimates under the neutral model" = 10), bold = TRUE) %>% 
+    row_spec(0, bold = TRUE) %>% 
+    # group_rows("N_{bot}", 1,10, escape = F) %>% 
+    # group_rows("Mutation rate mu", 11,20, escape = F) %>% 
+    kable_as_image("Sup_tab_6", keep_pdf = TRUE)
+
+
+
