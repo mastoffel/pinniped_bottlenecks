@@ -41,7 +41,6 @@ save_models <- FALSE
 plotting <- TRUE
 save_plots <- FALSE
 
-
 # load data and prepare mixed models
 
 # load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
@@ -49,6 +48,11 @@ tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
 
 # all_stats for modeling
 all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
+
+# how many percent higher is Ar in ice than land-breeding seals?
+Ars <- all_stats %>% 
+            group_by(BreedingType) %>% 
+            summarize(Ar = mean(num_alleles_mean))
 
 # phylogenetic mixed model preparation
 
@@ -161,8 +165,6 @@ beta_genlh<- readr::read_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,"
 point_size = 3.5
 #
 
-
-######## plot (2) ABCprob(bot) vs genetic diversity #########
 stats_mod_gen <- all_stats
 # re-run model, as we don't want standardized predictions for plotting
 set.seed(101)
@@ -342,7 +344,7 @@ mod_out_R2 <- mod_out_R2[1:6, ]
 mod_out_R2$comps <- factor(mod_out_R2$comps, levels = rev(c("full model","logAbundance","BreedingType","SSD",
                                             "TPM80_ratio","bot")))
 
-# structure coefficients
+
 p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) + 
     # geom_point(size = 3, color = "grey69") + # abc_out
     geom_errorbarh(alpha=0.4, color="black",height = 0) +
@@ -388,6 +390,37 @@ Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
 extrafont::embed_fonts("other_stuff/figures/figures_final/gendiv_lh_long.pdf")
 
 
+
+
+
+
+# supplementary plot commonality analysis
+mod_R2_CA <- mod_R2[, c("combinations", "medianR2", "lower", "upper")]
+names(mod_R2_CA) <- c("comps", "pe", "cilow", "cihigh")
+mod_R2_CA$comps <- fct_inorder(mod_R2_CA$comps, ordered = TRUE)
+p_com <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_R2_CA) + 
+    # geom_point(size = 3, color = "grey69") + # abc_out
+    geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    geom_point(size = 3.5, shape = 21, col = "black", fill = "grey69") +
+    # geom_errorbarh(alpha=0.4, color="black",height = 0) +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line.x = element_line(color = '#333333'),
+        axis.title.y = element_blank(),
+        axis.text.y = element_text(hjust = c(0.5)),
+        plot.margin = unit(c(0.35, 0.5, 0.3, 0.2), "cm")) +
+   # scale_y_discrete(labels = rev(c("Full model","Abundance","Breeding Habitat",
+    #    "SSD", expression(prop[het-exc]), expression(p[bot])))) +
+    xlab(expression(paste(R^{2}))) +
+    geom_vline(xintercept = 0, color = "black", alpha = 0.1) +
+    #annotate("segment", x = 0.9, xend = 0.9, y = 0.8, yend = 3.5, color = col_legend) +
+    #annotate("text", x = 0.98, xend = 0.95, y = 2, yend = 3, color = col_legend, label = c("common"), angle = 270) +
+    annotate("segment", x = 1, xend = 1, y = 0.7, yend = 5.1, color = col_legend) +
+    annotate("text", x = 1.1, xend = 1.1, y = 3.2, yend = 3.5, color = col_legend, label = c("unique"), angle = 270, size = 3) +
+    annotate("segment", x = 1, xend = 1, y = 5.5, yend = 6.6, color = col_legend) +
+    annotate("text", x = 1.1, xend = 1.1, y = 5.7, yend = 6.2, color = col_legend, label = c("marginal"), angle = 270, size = 3)
+p_com
 
 
 

@@ -49,14 +49,14 @@ species_names_bot_twolines <- c(
     "mediterranean_monk_seal" = "Mediterranean\nMonk Seal",
     "nes" = "Northern\nElephant Seal",
     "saimaa_ringed_seal" = "Saimaa\nRinged Seal",
-    "south_american_fur_seal" = "South\nAmerican\nFur Seal"
+    "south_american_fur_seal" = "South American\nFur Seal"
 )
 
 # abc$species <- factor(abc$species, levels = rev(c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
 #    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal")))
 
-abc_bot$species <- factor(abc_bot$species, levels = rev(c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
-    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal")))
+abc_bot$species <- factor(abc_bot$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
+    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal"))
 
 
 
@@ -82,6 +82,11 @@ estimate_mode <- function(s) {
     d$x[which.max(d$y)]
 }
 
+#library(png)
+#library(grid)
+#img <- readPNG("other_stuff/AFS.png")
+#g <- rasterGrob(img, interpolate=TRUE)
+
 p <- abc_bot %>% filter(pars == "nbot") %>% 
     group_by(species) %>% 
     #sample_n(4000) %>% 
@@ -102,7 +107,7 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
     #scale_y_discrete(expand = c(0.01, 0))+
     xlab("") +
     ylab(expression(Bottleneck~N[e])) +
-   # coord_flip() +
+    coord_flip() +
     theme(plot.margin = unit(c(0.5,1.5,0.5,0), "cm"),
         axis.text.x = element_text(angle = 0, hjust = 0.5, vjust = 0.5, size = 11),
         axis.title.y = element_text(size = 13),
@@ -111,15 +116,15 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
 p
 
 # plot as pdf
-ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors.pdf", p,
-    width = 10, height = 3.25, device = "pdf")
+ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert.pdf", p,
+    width = 3.25, height = 10, device = "pdf")
 
 Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
 extrafont::embed_fonts("other_stuff/figures/abc_posteriors.pdf")
 
 # plot as jpg
-ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors.jpg", p,
-    width = 10, height = 3.25)
+ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert.jpg", p,
+    width = 4, height = 6)
 
 
 
@@ -208,9 +213,26 @@ extrafont::embed_fonts("other_stuff/figures/figures_final/Sup_abc_posteriors_mut
 
 
 
+### for GSM
 
+p_gsm_neut <- abc_neut %>% filter(pars == "gsm_param") %>%
+    ggplot(aes(adj_vals, y = species, fill = species)) +
+    geom_density_ridges(rel_min_height = 0.01, scale = 3, alpha = 0.8) +
+    scale_fill_cyclical(values = c("#4040B0", "#9090F0"), guide = "legend") +
+    theme_martin(legend.position='none', base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    xlab(expression(Multistep~mutations~"("~GSM[par]~")")) +
+    scale_y_discrete(labels = species_names_neut) +
+    scale_x_continuous(limits = c(-0.05, 0.4), breaks = c(0, 0.1, 0.2, 0.3,0.4)) +
+    ylab("") 
 
+ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_gsm.jpg", 
+    plot = p_gsm_neut, width = 4, height = 6)
 
+ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_gsm.pdf", 
+    plot = p_gsm_neut, width = 4, height = 6)
+
+Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
+extrafont::embed_fonts("other_stuff/figures/figures_final/Sup_abc_posteriors_gsm.pdf")
 
 
 
