@@ -29,7 +29,7 @@ library(extrafont)
 # ggthemr('dust')
 source("R/martin.R")
 
-calc_on_cluster <- TRUE
+calc_on_cluster <- FALSE
 if (calc_on_cluster) {
     save_files <- "_cl"    
 } else {
@@ -321,9 +321,11 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         direction = -1, limits = c(0,1.01)) +
     # scale_fill_gradientn(colours=rev(pal2(5)),
     #    name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95)) +
-    guides(fill = guide_colorbar(barwidth = 3.7, barheight = 0.5, 
+    guides(fill = guide_colorbar(barwidth = 4.7, barheight = 0.5, 
         title.position = "top", direction = "horizontal",
-        title = "Prop. loci with\n    het.-excess", size = 4, title.hjust = -1
+        title = "Prop. of loci with\nheterozyg.-excess", 
+        #title = expression(atop("Prop. loci with", paste("heterozygosity-excess"))),
+        size = 4, title.hjust = c(0.5)
         #title.theme = element_text(vjust = 2, angle = 0)
         )) +
         #title = "Prop.\nHet.-excess")) +
@@ -333,7 +335,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         axis.text.x = element_text(angle = 0, hjust = 0.4, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
         legend.position=c(0.57, 1.22),
-        plot.margin=unit(c(78,10,20.1,10),"points"),
+        plot.margin=unit(c(74.73,10,20.1,10),"points"),
         #plot.margin=unit(c(8.3,10,19.5,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
         #plot.margin=unit(c(20,10,23,10),"points"),
         axis.title.x=element_blank(),
