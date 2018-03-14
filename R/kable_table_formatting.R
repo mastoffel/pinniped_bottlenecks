@@ -160,7 +160,7 @@ kable(all_stats_table_sub4, format = "latex", escape = F,
 
 
 
-################## Supplementary table for ABC estimates ##############
+################## Supplementary table 4 for ABC estimates ##############
 
 ## bottleneck model
 library(tidyr)
@@ -224,20 +224,23 @@ abc_bot_full <- bind_cols(abc_table_nbot, abc_table_mut) %>%
 abc_bot_full <- abc_bot_full[-1]
 names(abc_bot_full)[1] <- "Common name"
 align_tab5 <- c("l", "l", rep(x = "c", ncol(abc_bot_full ) - 2))
-
+#$N_{\\mathrm{e}}Bot$
 
 kable(abc_bot_full,  format = "latex", escape = FALSE, 
     booktabs = TRUE, align = align_tab5, digits = 3, linesep = "",
     col.names = c("Common name", rep(names(abc_table_mut), 2))) %>% #c("Common name", rep(names(abc_table_mut), 2)))
     #kable_styling(latex_options =  "scale_down") %>% 
-    add_header_above(c(" " = 1, "N_{e}bot" = 5, "Mu" = 5), escape = F, bold = TRUE) %>%  #bold = T
+    add_header_above(c(" " = 1, "N_{e}bot" = 5, "Mu" = 5), escape = FALSE, bold = TRUE) %>%  #bold = T
+    #add_header_above(c(" " = 1, "N_{e}Bot" = 5, "Mu" = 5), escape = FALSE, bold = TRUE) %>% 
     add_header_above(c(" " = 1, "Bottleneck model" = 10), bold = TRUE) %>% 
     row_spec(0, bold = TRUE) %>% 
     # group_rows("N_{bot}", 1,10, escape = F) %>% 
     # group_rows("Mutation rate mu", 11,20, escape = F) %>% 
     kable_as_image("Sup_tab_4a", file_format = "jpeg", keep_pdf = TRUE, density = 600)
 
-
+# prediction errors:
+# bottleneck: Nebot = 0.56, mu = 0.74
+# neutral: mu = 0.68, GSM = 0.84
 
 ## Neutral model
 

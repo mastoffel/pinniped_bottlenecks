@@ -29,7 +29,7 @@ library(extrafont)
 # ggthemr('dust')
 source("R/martin.R")
 
-calc_on_cluster <- FALSE
+calc_on_cluster <- TRUE
 if (calc_on_cluster) {
     save_files <- "_cl"    
 } else {
@@ -243,10 +243,10 @@ scale_fill_manual(values = c("#f7f7f7", "#d9d9d9", "#969696", "#252525", "white"
     scale_size_continuous(range = c(1.5, 6), trans = "sqrt", breaks=c(1000, 10000, 100000, 1000000),
         labels = c(expression(10^{3}), expression(10^{4}), expression(10^{5}), expression(10^{6}))
     ) + #range = c(0.1,5), , breaks=c(500, 1000, 10000, 100000, 1000000)
-    guides(fill = guide_legend(title = "IUCN rating", title.position = "top", direction = "vertical", order = 2),
+    guides(fill = guide_legend(title = "IUCN rating", title.position = "top", direction = "vertical", order = 2, override.aes = list(size=2.5)),
         size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1),
         color = guide_legend(title.position = "top", direction = "horizontal", order = 3)) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
-    theme(plot.margin=unit(c(74, -5,30,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
+    theme(plot.margin=unit(c(84, -5,30,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
         legend.position= c(0.24,0.92), #legend.direction = "horizontal",
         legend.spacing = unit(5, "points"),
         legend.key.height=unit(1,"line"),
@@ -286,7 +286,7 @@ p_div <- ggplot(stand_div_lf, aes(x = variable, y = common_abbr, fill = value)) 
         axis.text.x = element_text(angle = 0, hjust = 0, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(5,10,22,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260)
+        plot.margin=unit(c(15,10,22,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260)
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_text(hjust=0, size = 10, colour = "#525252"), #abc_cols[stand_div$abc][plot_inds]
@@ -334,8 +334,8 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         axis.ticks=element_blank(),
         axis.text.x = element_text(angle = 0, hjust = 0.4, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
-        legend.position=c(0.57, 1.22),
-        plot.margin=unit(c(74.73,10,20.1,10),"points"),
+        legend.position=c(0.57, 1.2314),
+        plot.margin=unit(c(87.3,10,20.1,10),"points"), #    plot.margin=unit(c(77.8,10,20.1,10),"points"),
         #plot.margin=unit(c(8.3,10,19.5,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
         #plot.margin=unit(c(20,10,23,10),"points"),
         axis.title.x=element_blank(),
@@ -379,7 +379,7 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
         axis.text.x = element_text(angle = 0, hjust = 0.4, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(5,10,22,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660)
+        plot.margin=unit(c(15,10,22,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660) +20
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(),
@@ -394,13 +394,15 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
 
 p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1, 
        rel_widths = c(0.3, 0.28, 0.07, 0.12))
-p_final
-
+#p_final <- p_final +
+#    draw_plot_label(c("A", "B", "C"), c(0.62, 0.74, 0.87), c(0.995, 0.995, 0.995), size = 11)
+p_final <- p_final +
+    draw_plot_label(c("A", "B", "C"), c(0.67, 0.79, 0.91), c(0.995, 0.995, 0.995), size = 11)
 ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_new", save_files, ".jpg"), p_final,
-    height = 6, width = 9, device = "jpg")
+    height = 6.1, width = 9, device = "jpg")
 
 ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_new", save_files, ".pdf"), p_final,
-    height = 6, width = 9.2, device = "pdf")
+    height = 6.1, width = 9.2, device = "pdf")
 
 Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
 extrafont::embed_fonts(paste0("other_stuff/figures/figures_final/phylo_plot_color_new", save_files, ".pdf"))

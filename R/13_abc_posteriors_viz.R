@@ -82,10 +82,10 @@ estimate_mode <- function(s) {
     d$x[which.max(d$y)]
 }
 
-#library(png)
-#library(grid)
-#img <- readPNG("other_stuff/AFS.png")
-#g <- rasterGrob(img, interpolate=TRUE)
+library(png)
+library(grid)
+img <- readPNG("other_stuff/AFS.png")
+g <- rasterGrob(img, interpolate=TRUE)
 
 p <- abc_bot %>% filter(pars == "nbot") %>% 
     group_by(species) %>% 
@@ -93,7 +93,7 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
     #filter(!(species == "hawaiian_monk_seal" | species == "saimaa_ringed_seal" | species == "mediterranean_monk_seal")) %>% 
     ggplot(aes(y = adj_vals, x = species)) + 
     # geom_quasirandom(alpha = 0.01, size = 2, color = "#053061", width = 0.45, bandwidth = 1.5) +
-    geom_quasirandom(alpha = 0.07, size = 1, color = "#053061", width = 0.47, bandwidth = 2.5) +
+    geom_quasirandom(alpha = 0.05, size = 1, color = "#053061", width = 0.47, bandwidth = 2.5) +
    # geom_beeswarm(priority='density', alpha = 0.5, cex = 0.2, color = "grey") +
     # geom_jitter(size = 0.5, alpha = 0.1, width = 0.2, color = "grey") +
     geom_boxplot(width = 0.4, outlier.shape = NA, color = "white", alpha = 0.5, size = 0.2) +
@@ -114,17 +114,20 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
         axis.text.y = element_text(size = 11))
 
 p
-
-# plot as pdf
-ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert.pdf", p,
-    width = 3.25, height = 10, device = "pdf")
-
-Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
-extrafont::embed_fonts("other_stuff/figures/abc_posteriors.pdf")
-
 # plot as jpg
 ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert.jpg", p,
-    width = 4, height = 6)
+    width = 3.7, height = 6)
+
+# plot as pdf
+
+
+ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert.pdf", p,
+    width = 3.7, height = 6, device = "pdf")
+
+Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
+extrafont::embed_fonts("other_stuff/figures/abc_posteriors_vert.pdf")
+
+
 
 
 
