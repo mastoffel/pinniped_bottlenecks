@@ -317,7 +317,7 @@ sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and
 # save(all_seals_clusts_pops, file = "data/processed/seals_full_29.RData")
 
 # which proportion of species were clustered?
-library(stringr)
+
 seal_data <- "data/processed/seal_data_largest_clust_and_pop_29.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
 

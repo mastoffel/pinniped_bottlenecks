@@ -1,4 +1,4 @@
-# Analysis workflow for the paper
+# Analysis workflow for "Recent demographic histories and genetic diversity across pinnipeds are shaped by anthropogenic interactions and mediated by ecology and life-history"
 
 ## Overview
 
@@ -14,4 +14,4 @@ All scripts to reproduce analyses in the paper can be accessed via two repositor
 In addition, we packaged some specific functions into the sealABC package, also accessible
 on GitHub: https://github.com/mastoffel/sealABC
 
-More details are soon to come ...
+

@@ -1,4 +1,4 @@
-# Create Fig.1 from paper
+# Old Fig.1 including more variables
 
 # files needed:
 # (1) seal_data_complete_rarefac10_29.csv (all pinniped data)
