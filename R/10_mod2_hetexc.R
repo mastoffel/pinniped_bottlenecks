@@ -575,7 +575,7 @@ pred_df_hetexc <- data.frame(TPM80_ratio = 0,
 mod_preds_hetexc <- data.frame(predict(mod_hetexc_plot, pred_df_hetexc, interval = "confidence")) %>% 
     mutate(SSD = seq(from = 0.5, to = 8, by = 0.1))
 
-
+set.seed(57)
 p3 <- ggplot(aes(x = SSD, y = TPM80_ratio), data = all_stats) +
     geom_line(data = mod_preds_hetexc, aes(y = fit), size = 0.2, alpha = 0.5) +
     geom_point(size = point_size, alpha = 0.7,  aes(col = bot)) + # abc_out
@@ -649,8 +649,8 @@ p4 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) +
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
-        axis.text.y = element_text(hjust = c(0.5)),
-        plot.margin = unit(c(1,0.2,0.33,0.1), "cm"),
+        axis.text.y =  element_blank(),
+        plot.margin = unit(c(1,0,0.33,0.1), "cm"),
         axis.title.x=element_text(margin=margin(t=12))) +
     scale_x_continuous(breaks = c(-0.6, -0.4, -0.2, 0, 0.2)) +
     scale_y_discrete(labels = c("Breeding\nhabitat",
@@ -677,8 +677,8 @@ p5 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_SC) +
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        plot.margin = unit(c(1,0.2,0.36,0.3), "cm"),
+        axis.text.y = element_text(hjust = c(0.5)),
+        plot.margin = unit(c(1,0.2,0.36,0), "cm"),
         axis.text.x=element_text(margin=margin(t=6))
         ) +
     scale_y_discrete(labels = c("Breeding\nhabitat",
@@ -713,8 +713,9 @@ p6 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out_R2 ) +
         panel.grid.minor = element_blank(),
         axis.line.x = element_line(color = '#333333'),
         axis.title.y = element_blank(),
+        axis.title.x = element_text(margin = margin(t = 10)),
         axis.text.y = element_text(hjust = c(0.5)),
-        plot.margin = unit(c(0.3, 1, 0.5, 0.3), "cm")) +
+        plot.margin = unit(c(0.3, 0.2, 0.492, 0.3), "cm")) +
     scale_y_discrete(labels = c( "Breeding\nhabitat", "SSD", "Full model")) +
     xlab(expression(paste(R^{2}))) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1) +
@@ -730,7 +731,7 @@ p6
 p_top <- plot_grid(p2, p1, p3, nrow = 1, rel_widths = c(1,1,2), labels = c("A", "B", "C"), label_x = 0.1)
 p_top
 
-p_bot <- plot_grid(p6, p4, p5, nrow = 1, rel_widths = c(1.6,1.4,1.2),
+p_bot <- plot_grid(p6, p4, p5, nrow = 1, rel_widths = c(1.6,1.35,1.6),
     labels = c("D","E","F"))
 p_bot
 

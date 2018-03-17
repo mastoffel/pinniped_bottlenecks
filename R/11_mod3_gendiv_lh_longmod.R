@@ -303,7 +303,7 @@ p3 <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_out) +
         axis.title.x=element_text(margin=margin(t=0.35, unit = "cm"))) +
     #scale_y_discrete(labels = c("Breeding\nhabitat\nice vs. land", "log(Abundance)", 
     #    "Sexual Size\nDimorphism")) +
-    xlab(expression(paste("Effect size ", beta))) +
+    xlab(expression(paste("Standardized ", beta))) +
     geom_vline(xintercept = 0, color = "black", alpha = 0.1)
 p3
 
@@ -375,7 +375,7 @@ p_top <- plot_grid(p1, p2, rel_widths = c(1.1,1), labels = c("A", "B"),label_fon
     label_x = 0.1, label_y = 0.98)
 p_top 
 p_bot <- plot_grid(p5, p3, p4, labels = c("C", "D", "E"),label_fontfamily = "Lato", rel_widths = c(1.5, 1, 1.4),
-        nrow = 1)
+        nrow = 1, label_x = c(0.01, 0.2, 0.4))
 p_bot
 
 p_final <- plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(1.5,1))
