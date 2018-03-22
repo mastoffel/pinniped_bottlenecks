@@ -40,11 +40,11 @@ The highest value of H' is: 0.95909673349733
 The list of permutations of the clusters that produces that
 H' value is (runs are listed sequentially on separate rows)
 
-2 3 1 4 
-1 2 3 4 
-3 1 2 4 
+4 3 1 2 
 4 2 3 1 
-1 2 4 3 
+4 1 2 3 
+1 2 3 4 
+3 2 4 1 
 
 The pairwise G' values for each pair of runs where the clusters
 of each run are permuted according to the list of permutations above

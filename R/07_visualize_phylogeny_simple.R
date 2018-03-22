@@ -29,7 +29,7 @@ library(extrafont)
 # ggthemr('dust')
 source("R/martin.R")
 
-calc_on_cluster <- TRUE
+calc_on_cluster <- FALSE
 if (calc_on_cluster) {
     save_files <- "_cl"    
 } else {
@@ -37,10 +37,10 @@ if (calc_on_cluster) {
 }
 
 # load all datasets
-seals <- read_csv(paste0("data/processed/seal_data_complete_rarefac10_29", save_files, ".csv"))
+seals <- read_csv(paste0("data/processed/seal_data_complete_rarefac10_30", save_files, ".csv"))
 
 # load model probablities from ABC
-model_probs <- read_delim(paste0("data/processed/sims_10000k", save_files, "_model_selection.txt"), 
+model_probs <- read_delim(paste0("data/processed/sims_10000k", save_files, "_model_selection_30.txt"), 
     delim = " ", col_names = c("species", "bot", "neut"), skip = 1)
 # modify species names in model_probs as they still contain _cl_
 if (calc_on_cluster) {
@@ -54,7 +54,7 @@ seals <- left_join(seals, model_probs, by = "species")
 
 #### stopped here
 # load higdon phylogeny
-tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
+tree_final <- read.tree("data/raw/phylogeny/30_species_10ktrees_final.tre")
 plot(tree_final)
 tree_final$tip.label
 
@@ -93,7 +93,8 @@ plotting_sequence <- c("weddell_seal", "leopard_seal" , "crabeater_seal","ross_s
     "hawaiian_monk_seal", "mediterranean_monk_seal", "lagoda_ringed_seal", "saimaa_ringed_seal",
     "baltic_ringed_seal", "arctic_ringed_seal",   "grey_seal_orkneys", "harbour_seal_waddensee",
     "hooded_seal", "bearded_seal", "galapagos_fur_seal", "south_american_fur_seal",
-    "new_zealand_fur_seal","subantarctic_fur_seal", "antarctic_fur_seal", "new_zealand_sea_lion", "south_american_sea_lion",
+    "new_zealand_fur_seal","subantarctic_fur_seal", "antarctic_fur_seal", "guadalupe_fur_seal",
+    "new_zealand_sea_lion", "south_american_sea_lion",
     "australian_fur_seal", "galapagos_sea_lion", "california_sea_lion",
     "stellers_sea_lion", "northern_fur_seal", "atlantic_walrus")
 
@@ -116,8 +117,8 @@ all_stats_tree <- all_stats_tree %>%
         common_abbr = fct_inorder(factor(common_abbr)))
 
 # write to file
-if(!file.exists(paste0("data/processed/all_stats_tree_29", save_files, ".csv"))){
-    write_excel_csv(all_stats_tree, paste0("data/processed/all_stats_tree_29", save_files, ".csv"))
+if(!file.exists(paste0("data/processed/all_stats_tree_30", save_files, ".csv"))){
+    write_excel_csv(all_stats_tree, paste0("data/processed/all_stats_tree_30", save_files, ".csv"))
 }
 
 all_stats_tree[all_stats_tree$BreedingType == "both", "BreedingType"] <- "land" 
@@ -247,7 +248,7 @@ scale_fill_manual(values = c("#f7f7f7", "#d9d9d9", "#969696", "#252525", "white"
         size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1),
         color = guide_legend(title.position = "top", direction = "horizontal", order = 3)) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
     theme(plot.margin=unit(c(84, -5,30,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
-        legend.position= c(0.24,0.92), #legend.direction = "horizontal",
+        legend.position= c(0.24,0.93), #legend.direction = "horizontal",
         legend.spacing = unit(5, "points"),
         legend.key.height=unit(1,"line"),
         legend.key.width = unit(1, "line"), 
@@ -334,8 +335,8 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         axis.ticks=element_blank(),
         axis.text.x = element_text(angle = 0, hjust = 0.4, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
-        legend.position=c(0.57, 1.2314),
-        plot.margin=unit(c(87.3,10,20.1,10),"points"), #    plot.margin=unit(c(77.8,10,20.1,10),"points"),
+        legend.position=c(0.57, 1.2337),
+        plot.margin=unit(c(87.8,10,20.1,10),"points"), #    plot.margin=unit(c(77.8,10,20.1,10),"points"),
         #plot.margin=unit(c(8.3,10,19.5,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
         #plot.margin=unit(c(20,10,23,10),"points"),
         axis.title.x=element_blank(),
@@ -379,7 +380,7 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
         axis.text.x = element_text(angle = 0, hjust = 0.4, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(15,10,22,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660) +20
+        plot.margin=unit(c(14.71,10,21.7,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660) +20
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(),
@@ -398,14 +399,14 @@ p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1,
 #    draw_plot_label(c("A", "B", "C"), c(0.62, 0.74, 0.87), c(0.995, 0.995, 0.995), size = 11)
 p_final <- p_final +
     draw_plot_label(c("A", "B", "C"), c(0.67, 0.79, 0.91), c(0.995, 0.995, 0.995), size = 11)
-ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_new", save_files, ".jpg"), p_final,
+ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_30", save_files, ".jpg"), p_final,
     height = 6.1, width = 9, device = "jpg")
 
-ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_new", save_files, ".pdf"), p_final,
+ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_30", save_files, ".pdf"), p_final,
     height = 6.1, width = 9.2, device = "pdf")
 
 Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
-extrafont::embed_fonts(paste0("other_stuff/figures/figures_final/phylo_plot_color_new", save_files, ".pdf"))
+extrafont::embed_fonts(paste0("other_stuff/figures/figures_final/phylo_plot_color_30", save_files, ".pdf"))
 
 
 

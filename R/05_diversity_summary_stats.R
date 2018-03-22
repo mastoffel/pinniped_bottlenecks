@@ -20,11 +20,11 @@ library(hierfstat)
 library(strataG)
 library(readr)
 library(stringr)
-all_seals <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop_29.xlsx")
+all_seals <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop_30.xlsx")
 
 #### load bottleneck data
-bottleneck <- read_delim("data/processed/bottleneck_results_29.txt", col_names = TRUE, delim = " ")
-bottleneck_cl <- read_delim("data/processed/bottleneck_results_29_cl.txt", col_names = TRUE, delim = " ")
+bottleneck <- read_delim("data/processed/bottleneck_results_30.txt", col_names = TRUE, delim = " ")
+bottleneck_cl <- read_delim("data/processed/bottleneck_results_30_cl.txt", col_names = TRUE, delim = " ")
 
 # set to TRUE is largest clusters instead of full datasets
 calc_on_cluster <- TRUE
@@ -41,7 +41,7 @@ if (calc_on_cluster){
 
 #### load additional data
 # sheet numbers to load // just load second sheet
-harem_data <- read_excel("data/processed/overview_29.xlsx", sheet = 2)
+harem_data <- read_excel("data/processed/overview_30.xlsx", sheet = 2)
 harem_data <- harem_data[!(is.na(harem_data$species)), ]
 
 
@@ -52,7 +52,7 @@ g2_file <- paste0("data/processed/g2_summary_", shortcut_save, "_data.txt")
 if(!file.exists(g2_file)){
     library(inbreedR)
     calc_g2s <- function(genotypes){
-        g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 1000, nperm = 1000)
+        g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 1000, nperm = 1000) # increase at some point
     }
     g2s <- lapply(all_seals, calc_g2s)
     # save(g2s, file = "data/processed/full_data_all_g2s_29.RData")
@@ -76,7 +76,7 @@ bottleneck$id
 
 # calculate other summary statistics based on resampling 10 individuals
 ?mssumstats
-sumstats_file <- paste0("data/processed/sumstats_29_", shortcut_save, ".txt")
+sumstats_file <- paste0("data/processed/sumstats_30_", shortcut_save, ".txt")
 if(!file.exists(sumstats_file)){
     set.seed(1122)
     sumstats <- do.call(rbind, lapply(all_seals, function(x) mssumstats(x, start_geno = 4, mratio = "loose", 
@@ -124,14 +124,12 @@ desc_seals <- do.call(rbind, lapply(all_seals, function(x) out <- data.frame(nlo
 seals <- cbind(seals, desc_seals)
 
 # write all stats to file
-sumstats_data <- "data/processed/all_data_seals_rarefac10_29.csv"
-if (calc_on_cluster) sumstats_data <- "data/processed/all_data_seals_rarefac10_29_cl.csv"
+sumstats_data <- "data/processed/all_data_seals_rarefac10_30.csv"
+if (calc_on_cluster) sumstats_data <- "data/processed/all_data_seals_rarefac10_30_cl.csv"
     
 if(!file.exists(sumstats_data)){
      write_excel_csv(seals, sumstats_data)
 }
-
-
 
 
 

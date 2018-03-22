@@ -30,7 +30,7 @@ library(readr)
 library(readxl)
 
 # this is the output of the bottleneck tests, merged into one data.frame
-bottleneck_out <- read_excel("data/processed/out_bottleneck_stats_29.xls")
+bottleneck_out <- read_excel("data/processed/out_bottleneck_stats_30.xls")
 names(bottleneck_out)[1] <- "id"
 
 # extract pure names
@@ -119,6 +119,6 @@ unlist(sapply(bottleneck_final_cl$id, function(x) which(bottleneck_final_full$id
 data.frame(bottleneck_final_cl$id, bottleneck_final_full$id)
 
 # save
-write_delim(bottleneck_final_full, path = "data/processed/bottleneck_results_29.txt")
-write_delim(bottleneck_final_cl, path = "data/processed/bottleneck_results_29_cl.txt")
+write_delim(bottleneck_final_full, path = "data/processed/bottleneck_results_30.txt")
+write_delim(bottleneck_final_cl, path = "data/processed/bottleneck_results_30_cl.txt")
 

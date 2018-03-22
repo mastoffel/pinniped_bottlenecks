@@ -3,7 +3,7 @@
 
 library(ape)
 library(ggtree)
-tree <- read.nexus(file = "data/raw/phylogeny/Pinnipeds25_tree10k.nex")
+tree <- read.nexus(file = "data/raw/phylogeny/30_species_10k.nex")
 plot(tree)
 
 # create ringed seal phylogeny
@@ -24,11 +24,12 @@ tree_full$tip.label[17] <- "Lobodon_carcinophagus"
 tree_full$tip.label[8] <- "Otaria_flavescens" 
 # flavescens carcinophagus
 
-write.tree(tree_full, file = "data/raw/phylogeny/28_species_10ktrees.tre")
+write.tree(tree, file = "data/raw/phylogeny/30_species_10ktrees.tre")
 
 ggtree(tree, tiplabels())
 ggtree(tree_full) + geom_text2(aes(subset=!isTip, label=node), hjust=-.3) + geom_tiplab()
 
 tree_test <- add.species.to.genus(tree, "Pusa hispida saimanensis", where = "Pusa hispida")
 
-
+tree_new <- read.tree(file = "data/raw/phylogeny/30_species_10ktrees_final.tre")
+plot(tree)

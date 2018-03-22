@@ -29,7 +29,7 @@ library(sealABC)
 # parallel structure changed, so using the old function here
 source("R/old_parallel_structure_functions.R")
 
-seal_data <- "data/processed/seal_genotypes_basic_29.xlsx"
+seal_data <- "data/processed/seal_genotypes_basic_30.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
 # naming
 dataset_names <- names(all_seals)
@@ -245,7 +245,7 @@ seal_data <- all_seals_clusters_final
 lapply(seal_data, names)
 
 # write excel file with each dataset plus clusters
-write_dflist_to_xls(seal_data, "all_seals_clusters_29.xls")
+write_dflist_to_xls(seal_data, "all_seals_clusters_30.xls")
 
 # make new dataframes
 cluster_df <- function(species, all_seals_clusters_final){
@@ -298,8 +298,10 @@ all_seals_clusts_pops <- append(all_seals_extended, largest_pops_geno)
 names(all_seals_clusts_pops)
 
 # write excel file with each dataset plus clusters
-sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and_pop_29.xls")
+sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and_pop_30.xls")
 
+# Save the output xls file as xlsx into data/processed/
+# Don't really know why anymore, something was wrong with xls
 
 #### used to exctract an additional elephant seal cluster
 # extract nes k = 2 and add data.frame to file --> decision for k = 2 due to assignment plot
@@ -318,7 +320,7 @@ sealABC::write_dflist_to_xls(all_seals_clusts_pops, "seal_data_largest_clust_and
 
 # which proportion of species were clustered?
 
-seal_data <- "data/processed/seal_data_largest_clust_and_pop_29.xlsx"
+seal_data <- "data/processed/seal_data_largest_clust_and_pop_30.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
 
-sum(str_detect(names(all_seals), "cl")) / 29
+sum(str_detect(names(all_seals), "cl")) / 30

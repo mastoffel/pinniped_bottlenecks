@@ -16,7 +16,7 @@ library(hierfstat)
 ?hierfstat
 
 # on cluster or full data?
-calc_on_cluster <- TRUE
+calc_on_cluster <- FALSE
 
 if (calc_on_cluster) {
     save_files <- "_cl"    
@@ -25,11 +25,11 @@ if (calc_on_cluster) {
 }
 
 # load all datasets
-phylo <- read_excel("data/raw/phylogeny_overview_29.xlsx", sheet = 2, col_names = F)[1:29, ]
+phylo <- read_excel("data/raw/phylogeny_overview_30.xlsx", sheet = 2, col_names = F)[1:30, ]
 names(phylo) <- c("latin", "common", "species")
 
 # All genetic and some life history variables
-seals <- read_csv(paste0("data/processed/all_data_seals_rarefac10_29", save_files, ".csv"))
+seals <- read_csv(paste0("data/processed/all_data_seals_rarefac10_30", save_files, ".csv"))
 
 # join datasets
 seals2 <- left_join(phylo, seals, by = "species")
@@ -48,14 +48,14 @@ seals_rearranged <- seals3[c(1:11, 76:86, 12:75)]
 seals_rearranged$common
 
 # produce short names for plotting
-short <- c("W", "NFS", "GFS", "SAFS", "AntFS", "SAntFS", "NZFS", "AFS", "GSL", "CSL", "NZSL", "SASL", "SSL", "HMS", "MMS", "NES", "SES",
+short <- c("W", "NFS", "GFS", "SAFS", "AntFS", "SAntFS", "GuaFS", "NZFS", "AFS", "GSL", "CSL", "NZSL", "SASL", "SSL", "HMS", "MMS", "NES", "SES",
             "CS", "WS", "LS", "RoS", "BS", "HoodS", "HS", "RS", "SRS", "LRS", "BRS", "GS")
 
 # add abreviations
 seals_rearranged$short <- short
 
 # write to excel
-write_excel_csv(seals_rearranged, paste0("data/processed/seal_data_complete_rarefac10_29", save_files, ".csv"))
+write_excel_csv(seals_rearranged, paste0("data/processed/seal_data_complete_rarefac10_30", save_files, ".csv"))
 # 
 
 

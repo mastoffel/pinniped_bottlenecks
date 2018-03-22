@@ -5,16 +5,16 @@ library(devtools)
 library(readxl)
 
 # sheet numbers to load
-dataset_names <- excel_sheets("../data/processed/seal_data_largest_clust_and_pop_29.xlsx") # seal_data_largest_clust_and_pop_29.xlsx
+dataset_names <- excel_sheets("data/processed/seal_data_largest_clust_and_pop_30.xlsx") # seal_data_largest_clust_and_pop_29.xlsx
 
-dataset_names_hw <- excel_sheets("../data/processed/seal_data_largest_clust_and_pop_29.xlsx")
+dataset_names_hw <- excel_sheets("data/processed/seal_data_largest_clust_and_pop_30.xlsx")
 
 load_dataset <- function(dataset_names) {
-        read_excel("../data/processed/seal_data_largest_clust_and_pop_29.xlsx", sheet = dataset_names)
+        read_excel("data/processed/seal_data_largest_clust_and_pop_30.xlsx", sheet = dataset_names)
 }
 
 load_dataset_hw <- function(dataset_names) {
-        read_excel("../data/processed/seal_data_largest_clust_and_pop_29.xlsx", sheet = dataset_names)
+        read_excel("data/processed/seal_data_largest_clust_and_pop_30.xlsx", sheet = dataset_names)
 }
 
 # load all datasets
@@ -26,11 +26,11 @@ names(all_seals_hw) <- dataset_names_hw
 
 # subset for biggest clusters
 
-all_seals <- all_seals[1:41] 
-dataset_names <- dataset_names[1:41] 
+all_seals <- all_seals[1:42] 
+dataset_names <- dataset_names[1:42] 
 
-all_seals_hw <- all_seals_hw[1:41] 
-dataset_names_hw <- dataset_names_hw[1:41] 
+all_seals_hw <- all_seals_hw[1:42] 
+dataset_names_hw <- dataset_names_hw[1:42] 
 
 # MAKE GENEPOP FILE
 
@@ -88,9 +88,9 @@ names(out_hw) <- dataset_names_hw
 # write files
 
 lapply(1:length(out), function(i) write.table(out[[i]], 
-                                               file = paste("../data/processed/genepop_files/", names(out)[i], "_genepop.txt", sep = ""),
+                                               file = paste("data/processed/genepop_files/", names(out)[i], "_genepop.txt", sep = ""),
                                                na = "", row.names = F, col.names = F, quote = F))
 
 lapply(1:length(out_hw), function(i) write.table(out_hw[[i]], 
-                                             file = paste("../data/processed/genepop_files/HW/", names(out_hw)[i], "_HW_genepop.txt", sep = ""),
+                                             file = paste("data/processed/genepop_files/HW/", names(out_hw)[i], "_HW_genepop.txt", sep = ""),
                                              na = "", row.names = F, col.names = F, quote = F))
