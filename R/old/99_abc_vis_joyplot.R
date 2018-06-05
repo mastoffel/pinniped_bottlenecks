@@ -12,7 +12,7 @@ library(viridis)
 library(ggjoy)
 source("martin.R")
 # load abc posterior data
-load("data/processed/abc_estimates/abc_10000k_complete.RData")
+load("data/processed/abc_estimates/abc_10000k_complete_30.RData")
 # load parameter distributions
 # abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
 
@@ -22,6 +22,7 @@ abc <- unnest(abc_complete)
 
 species_names <- c(
     "antarctic_fur_seal" = "Antarctic Fur Seal",
+    "guadalupe_fur_seal" = "Guadalupe Fur Seal",
     "california_sea_lion" = "California Sea Lion",
     "galapagos_fur_seal" = "Galapagos Fur Seal", 
     "grey_seal_orkneys" = "Grey Seal",
@@ -33,7 +34,8 @@ species_names <- c(
     "south_american_fur_seal" = "South American Fur Seal"
 )
 
-abc$species <- factor(abc$species, levels = rev(c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
+abc$species <- factor(abc$species, levels = rev(c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes",
+    "guadalupe_fur_seal", "galapagos_fur_seal",
     "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal")))
 
 abc$species <- factor(abc$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",

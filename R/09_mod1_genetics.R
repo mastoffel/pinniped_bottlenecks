@@ -2,7 +2,7 @@
 # Genetic diversity and bottleneck signatures (het-excess) are correlated.
 
 # files needed
-# (1) all_stats_29_modeling.csv
+# (1) all_stats_30_modeling.csv
 
 # packages
 library(tibble)
@@ -37,20 +37,20 @@ library(readr)
 ## what should this script do:
 
 # modeling
-modeling <- FALSE
-save_models <- FALSE
+modeling <- TRUE
+save_models <- TRUE
 
 # plotting
 plotting <- TRUE
-save_plots <- FALSE
+save_plots <- TRUE
 
 # load data and prepare mixed models
 
 # load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
-tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
+tree_final <- read.tree("data/raw/phylogeny/30_species_10ktrees_final.tre")
 
 # all_stats for modeling
-all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
+all_stats <- as.data.frame(read_csv("data/processed/all_stats_30_modeling.csv"))
 
 # phylogenetic mixed model preparation
 # construct inverse phylo matrix and priors
@@ -78,8 +78,6 @@ run_mod <- function(iter){
         data=stats_mod_gen,nitt=1100000,burnin=100000,thin=1000)
 }
 
-library(purrr)
-library(readr)
 
 # model name
 mod_name <- "gen1_bot"
@@ -370,8 +368,6 @@ if(modeling){
         mutate(bot_stand = as.numeric(scale(bot))) %>% 
         mutate(TPM80_ratio_stand = as.numeric(scale(TPM80_ratio)))
     
-    
-    ## Genetic model (2): Allelic richness ~ het-exc (standardised)
     # model specification
     run_mod <- function(iter){
         MCMCglmm(bot ~ TPM80_ratio_stand, #
@@ -455,6 +451,58 @@ if(modeling){
 }
 
 
+# plot
+
+# some controls
+point_size <- 3.5
+point_alpha <- 0.3
+
+# re-run model, as we don't want standardized predictions for plotting
+mod_plot_bot_sup <- MCMCglmm(bot ~ TPM80_ratio, #
+    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
+    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
+    data=stats_mod_gen,nitt=110000,burnin=10000,thin=100)
+
+pred_df_bot_sup <- data.frame(bot=0,
+    TPM80_ratio= seq(from = 0.1, to = 1, by = 0.05), 
+    tip_label = all_stats$tip_label[1])
+
+mod_preds_bot_sup <- data.frame(predict(mod_plot_bot_sup, pred_df_bot_sup, interval = "confidence")) %>% 
+    mutate(TPM80_ratio= seq(from = 0.1, to = 1, by = 0.05))
+
+bot_sup_beta <- read_delim("output/mcmcmodels/gen3_bot_vs_hetexc_beta.txt", delim = " ")
+bot_sup_R2 <- read_delim("output/mcmcmodels/gen3_bot_vs_hetexc_R2.txt", delim = " ")
+
+p3 <- ggplot(aes(x = TPM80_ratio, y = bot), data = all_stats) +
+    geom_line(data = mod_preds_bot_sup, aes(y = fit), size = 1, alpha = 0.5) +
+    geom_point(size = point_size, alpha = point_alpha) + # abc_out
+    geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
+   # scale_y_continuous(breaks = seq(from = 2, to = 10, by = 2), limits = c(1,10)) +
+    #scale_x_continuous(breaks = seq(from = 0.2, to = 1, by = 0.2)) +
+    xlab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) + #Allelic richness
+    ylab(expression(ABC~bottleneck~probability~(p[bot]))) +
+    annotate("text", x = 0.25, y = 1, label = "R^2 == '0.38 [0.07, 0.64]'", 
+        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+    annotate("text", x = 0.25, y = 0.9, label = "beta == '0.17 [0.06, 0.27]'", 
+        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0.9,0.1,0.25,0.9), "cm"),
+        axis.line = element_line(colour = "#cccccc"),
+        axis.ticks = element_line(colour = "#cccccc")
+        #axis.title.x = element_text(margin = margin(t = 10)),
+        #axis.title.y = element_text(margin = margin(r = 10))
+    )
+p3
+
+ggsave(filename = "other_stuff/figures/figures_final/sup_fig2_bot_vs_bot_30.jpg", height = 3,
+       width = 4.4)
+
+
+
+
+
 
 
 
@@ -487,57 +535,3 @@ p1_smm <- ggplot(aes(TPM80_ratio, num_alleles_mean), data = all_stats) +
 p1_smm
 
 ggplot2::ggsave(filename = "figures/SMM/p1_smm.jpg", width = 4, height = 3)
-
-
-
-
-
-# plot
-
-# some controls
-point_size <- 3.5
-point_alpha <- 0.3
-
-# re-run model, as we don't want standardized predictions for plotting
-mod_plot_bot_sup <- MCMCglmm(bot ~ TPM80_ratio, #
-    random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
-    family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-    data=stats_mod_gen,nitt=110000,burnin=10000,thin=100)
-
-pred_df_bot_sup <- data.frame(bot=0,
-    TPM80_ratio= seq(from = 0.1, to = 1, by = 0.05), 
-    tip_label = all_stats$tip_label[1])
-
-mod_preds_bot_sup <- data.frame(predict(mod_plot_bot_sup, pred_df_bot_sup, interval = "confidence")) %>% 
-    mutate(TPM80_ratio= seq(from = 0.1, to = 1, by = 0.05))
-
-bot_sup_beta <- read_delim("output/mcmcmodels/gen3_bot_vs_hetexc_beta.txt", delim = " ")
-bot_sup_R2 <- read_delim("output/mcmcmodels/gen3_bot_vs_hetexc_R2.txt", delim = " ")
-
-p3 <- ggplot(aes(x = TPM80_ratio, y = bot), data = all_stats) +
-    geom_line(data = mod_preds_bot_sup, aes(y = fit), size = 1, alpha = 0.5) +
-    geom_point(size = point_size, alpha = point_alpha) + # abc_out
-    geom_point(size = point_size, alpha = 0.8, shape = 21, col = "black") +
-   # scale_y_continuous(breaks = seq(from = 2, to = 10, by = 2), limits = c(1,10)) +
-    #scale_x_continuous(breaks = seq(from = 0.2, to = 1, by = 0.2)) +
-    xlab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) + #Allelic richness
-    ylab(expression(ABC~bottleneck~probability~(p[bot]))) +
-    annotate("text", x = 0.25, y = 1, label = "R^2 == '0.3 [0.02, 0.59]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 0.25, y = 0.9, label = "beta == '0.15 [0.04, 0.25]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
-    theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        plot.margin = unit(c(0.9,0.1,0.25,0.9), "cm"),
-        axis.line = element_line(colour = "#cccccc"),
-        axis.ticks = element_line(colour = "#cccccc")
-        #axis.title.x = element_text(margin = margin(t = 10)),
-        #axis.title.y = element_text(margin = margin(r = 10))
-    )
-p3
-
-ggsave(filename = "other_stuff/figures/figures_final/sup_fig2_bot_vs_bot.jpg", height = 3,
-       width = 4.4)
-
-

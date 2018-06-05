@@ -31,21 +31,21 @@ library(readr)
 ## what should this script do:
 
 # modeling
-modeling <- FALSE
-save_models <- FALSE
+modeling <- TRUE
+save_models <- TRUE
 
 # plotting
 plotting <- TRUE
-save_plots <- FALSE
+save_plots <- TRUE 
 
 
 # load data and prepare mixed models
 
 # load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
-tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
+tree_final <- read.tree("data/raw/phylogeny/30_species_10ktrees_final.tre")
 
 # all_stats for modeling
-all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
+all_stats <- as.data.frame(read_csv("data/processed/all_stats_30_modeling.csv"))
 
 # phylogenetic mixed model preparation
 
@@ -148,24 +148,24 @@ mod_IUCN %>%
 
 
 
-p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
-    geom_boxplot(alpha = 0.3, col = "black",  size = 0.2, width = 0.4) + #
-    geom_point(size = 3.5, alpha = 0.6, aes(color = BreedingType)) + # abc_out
-    geom_point(size = 3.5, alpha = 0.8, shape = 21, col = "black") +
-    theme_martin() +
-    scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
-    xlab(" ") +
-    ylab("Allelic richness") +
-    # guides(fill=FALSE, color = FALSE) +
-    theme(#panel.grid.major = element_blank(),
-        plot.margin = unit(c(2,0.3,0.3,0.2), "cm") ,
-        axis.title.x=element_text(margin=margin(t=0.5, unit = "cm")),
-        legend.position = "none"
-        
-        #axis.title.x = element_text(margin = margin(t = 10)),
-        #axis.title.y = element_text(margin = margin(r = 10))
-    ) 
-p1
+# p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
+#     geom_boxplot(alpha = 0.3, col = "black",  size = 0.2, width = 0.4) + #
+#     geom_point(size = 3.5, alpha = 0.6, aes(color = BreedingType)) + # abc_out
+#     geom_point(size = 3.5, alpha = 0.8, shape = 21, col = "black") +
+#     theme_martin() +
+#     scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
+#     xlab(" ") +
+#     ylab("Allelic richness") +
+#     # guides(fill=FALSE, color = FALSE) +
+#     theme(#panel.grid.major = element_blank(),
+#         plot.margin = unit(c(2,0.3,0.3,0.2), "cm") ,
+#         axis.title.x=element_text(margin=margin(t=0.5, unit = "cm")),
+#         legend.position = "none"
+#         
+#         #axis.title.x = element_text(margin = margin(t = 10)),
+#         #axis.title.y = element_text(margin = margin(r = 10))
+#     ) 
+# p1
 
 # mod2 hetexc vs. IUCN -----------------------------------------------------------------------------
 run_mod <- function(iter){
@@ -329,9 +329,9 @@ p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
     ylab(expression(paste(Allelic~richness~"("~A[r]~")"))) +
    # ylab(expression(Allelic~richness~(A[r]))) +
     scale_y_continuous(limits=c(2, 12), breaks = c(2,4,6,8,10)) +
-    annotate("text", x = 1.5, y = 12, label = "R^2 == '0.19 [0, 0.33]'", 
+    annotate("text", x = 1.5, y = 12, label = "R^2 == '0.13 [0, 0.36]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 1.5, y = 11.1, label = "beta == '1.29 [-0.08, 2.62]'", 
+    annotate("text", x = 1.5, y = 11.1, label = "beta == '1.34 [-0.07, 2.52]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -356,9 +356,9 @@ p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
     xlab("IUCN status") +
     ylab(expression(atop("Heterozygosity-excess", paste("("~prop[het-exc]~")")))) +
     #ylab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) +
-    annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.02 [0, 0.2]'", 
+    annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.03 [0, 0.19]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 1.5, y = 1.11, label = "beta == '0.0 [-0.16, 0.14]'", 
+    annotate("text", x = 1.5, y = 1.11, label = "beta == '0.02 [-0.15, 0.18]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     scale_y_continuous(breaks = c(0.2,0.4,0.6,0.8,1), limits = c(0.15, 1.2)) +
     theme(panel.grid.major = element_blank(),
@@ -387,9 +387,9 @@ p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
     xlab(" ") +
     #ylab(expression("ABC bottleneck\nprobability"~(p[bot]))) +
     ylab(expression(atop("ABC bottleneck", paste("probability (p"[bot]~")")))) +
-    annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.1 [0, 0.38]'", 
+    annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.1 [0, 0.33]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 1.5, y = 1.11, label = "beta == '-0.18 [-0.4, 0.02]'", 
+    annotate("text", x = 1.5, y = 1.11, label = "beta == '-0.14 [-0.36, 0.08]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     scale_y_continuous(breaks = c(0,0.2,0.4,0.6,0.8,1), limits = c(0, 1.2)) +
     theme(panel.grid.major = element_blank(),
@@ -419,29 +419,29 @@ extrafont::embed_fonts("other_stuff/figures/figures_final/IUCN.pdf")
 
 
 
-p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
-    geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
-    geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin() +
-    scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
-    scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
-    xlab(" ") +
-    ylab("Heterozygosity-excess") +
-    annotate("text", x = 0.9, y = 0.95, label = "R^2 == '0.19 [0, 0.33]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 0.9, y = 0.88, label = "beta == '1.29 [-0.08, 2.62]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    scale_y_continuous(breaks = c(0.2,0.4,0.6,0.8,1), limits = c(0.15, 1)) +
-    theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.grid.major.y = element_line(colour = "lightgrey", size = 0.2),
-        plot.margin = unit(c(0.9,0.5,0.25,0.1), "cm"),
-        axis.line.x = element_line(colour = "#cccccc"),
-        #axis.line.y = element_line(colour = "#cccccc"),
-        axis.ticks.y = element_blank(),
-        axis.ticks = element_line(colour = "#cccccc"),
-        legend.position = "none") 
-p2
+# p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
+#     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
+#     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
+#     theme_martin() +
+#     scale_color_manual(values = c("cornflowerblue", "#d8b365")) +
+#     scale_fill_manual(values = c("cornflowerblue", "#d8b365")) +
+#     xlab(" ") +
+#     ylab("Heterozygosity-excess") +
+#     annotate("text", x = 0.9, y = 0.95, label = "R^2 == '0.19 [0, 0.33]'", 
+#         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+#     annotate("text", x = 0.9, y = 0.88, label = "beta == '1.29 [-0.08, 2.62]'", 
+#         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+#     scale_y_continuous(breaks = c(0.2,0.4,0.6,0.8,1), limits = c(0.15, 1)) +
+#     theme(panel.grid.major = element_blank(),
+#         panel.grid.minor = element_blank(),
+#         panel.grid.major.y = element_line(colour = "lightgrey", size = 0.2),
+#         plot.margin = unit(c(0.9,0.5,0.25,0.1), "cm"),
+#         axis.line.x = element_line(colour = "#cccccc"),
+#         #axis.line.y = element_line(colour = "#cccccc"),
+#         axis.ticks.y = element_blank(),
+#         axis.ticks = element_line(colour = "#cccccc"),
+#         legend.position = "none") 
+# p2
 
 
 

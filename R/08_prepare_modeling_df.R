@@ -7,10 +7,10 @@ library(ape)
 library(dplyr)
 library(forcats)
 # load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
-tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
+tree_final <- read.tree("data/raw/phylogeny/30_species_10ktrees_final.tre")
 
 # all_stats_tree is from 10_visualise_phylogeny.R
-all_stats <- read_csv("data/processed/all_stats_tree_29.csv") %>% 
+all_stats <- read_csv("data/processed/all_stats_tree_30.csv") %>% 
     mutate(SSD = male_weight/female_weight) %>% 
     mutate(abc_out = ifelse(bot > 0.5, "bot", "neut")) %>% 
     mutate(BreedingType = factor(BreedingType, levels = c("ice", "land", "both"))) %>% 
@@ -30,6 +30,6 @@ all_stats <- read_csv("data/processed/all_stats_tree_29.csv") %>%
 all_stats[all_stats$BreedingType == "both", "BreedingType"] <- "land" 
 all_stats <- all_stats %>% mutate(BreedingType = as.factor(as.character(BreedingType))) %>% data.frame()
 
-write_csv(all_stats, "data/processed/all_stats_29_modeling.csv")
+write_csv(all_stats, "data/processed/all_stats_30_modeling.csv")
 
 

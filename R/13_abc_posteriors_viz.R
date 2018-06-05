@@ -15,10 +15,11 @@ library(patchwork)
 library(ggforce)
 library(extrafont)
 library(extrafontdb)
+library(readr)
 ## bottleneck posteriors -----
 
 # load abc posterior data
-load("data/processed/abc_estimates/abc_10000k_bot_complete.RData")
+load("data/processed/abc_estimates/abc_10000k_bot_complete_30.RData")
 # load parameter distributions
 # abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
 
@@ -31,6 +32,7 @@ species_names_bot <- c(
     "california_sea_lion" = "California Sea Lion",
     "galapagos_fur_seal" = "Galapagos Fur Seal", 
     "grey_seal_orkneys" = "Grey Seal",
+    "guadalupe_fur_seal" = "Guadalupe Fur Seal",
     "hawaiian_monk_seal" = "Hawaiian Monk Seal",
     "lagoda_ringed_seal" = "Ladoga Ringed Seal",
     "mediterranean_monk_seal" = "Mediterranean Monk Seal",
@@ -44,6 +46,7 @@ species_names_bot_twolines <- c(
     "california_sea_lion" = "California\nSea Lion",
     "galapagos_fur_seal" = "Galapagos\nFur Seal", 
     "grey_seal_orkneys" = "Grey Seal",
+    "guadalupe_fur_seal" = "Guadalupe\nFur Seal",
     "hawaiian_monk_seal" = "Hawaiian\nMonk Seal",
     "lagoda_ringed_seal" = "Ladoga\nRinged Seal",
     "mediterranean_monk_seal" = "Mediterranean\nMonk Seal",
@@ -55,8 +58,8 @@ species_names_bot_twolines <- c(
 # abc$species <- factor(abc$species, levels = rev(c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
 #    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal")))
 
-abc_bot$species <- factor(abc_bot$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",
-    "lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal"))
+abc_bot$species <- factor(abc_bot$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "guadalupe_fur_seal",
+    "galapagos_fur_seal","lagoda_ringed_seal", "antarctic_fur_seal", "grey_seal_orkneys", "california_sea_lion",  "south_american_fur_seal"))
 
 
 
@@ -65,6 +68,7 @@ empty_names <- c(
     "california_sea_lion" = " ",
     "galapagos_fur_seal" = " ", 
     "grey_seal_orkneys" = " ",
+    "guadalupe_fur_seal" = " ",
     "hawaiian_monk_seal" = " ",
     "lagoda_ringed_seal" = " ",
     "mediterranean_monk_seal" = " ",
@@ -84,8 +88,8 @@ estimate_mode <- function(s) {
 
 library(png)
 library(grid)
-img <- readPNG("other_stuff/AFS.png")
-g <- rasterGrob(img, interpolate=TRUE)
+#img <- readPNG("other_stuff/AFS.png")
+#g <- rasterGrob(img, interpolate=TRUE)
 
 p <- abc_bot %>% filter(pars == "nbot") %>% 
     group_by(species) %>% 
@@ -115,13 +119,13 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
 
 p
 # plot as jpg
-ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert.jpg", p,
+ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert_30.jpg", p,
     width = 3.7, height = 6)
 
 # plot as pdf
 
 
-ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert.pdf", p,
+ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert_30.pdf", p,
     width = 3.7, height = 6, device = "pdf")
 
 Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
@@ -201,15 +205,15 @@ p_mut_neut <- abc_neut %>% filter(pars == "mut_rate") %>%
 ## final figure
 p_final <- p_mut_bot + p_mut_neut
 p_final
-ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate.jpg", 
+ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate_30.jpg", 
     plot = p_final, width = 7.5, height = 5.5)
 
 
-ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate.pdf", 
+ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate_30.pdf", 
     plot = p_final, width = 7.5, height = 5.5)
 
 Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
-extrafont::embed_fonts("other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate.pdf")
+extrafont::embed_fonts("other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate_30.pdf")
 
 
 

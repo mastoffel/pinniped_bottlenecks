@@ -34,21 +34,21 @@ library(extrafont)
 ## what should this script do:
 
 # modeling
-modeling <- FALSE
-save_models <- FALSE
+modeling <- TRUE
+save_models <- TRUE
 
 # plotting
 plotting <- TRUE
-save_plots <- FALSE
+save_plots <- TRUE
 
 
 # load data and prepare mixed models
 
 # load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
-tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
+tree_final <- read.tree("data/raw/phylogeny/30_species_10ktrees_final.tre")
 
 # all_stats for modeling
-all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
+all_stats <- as.data.frame(read_csv("data/processed/all_stats_30_modeling.csv"))
 
 # phylogenetic mixed model preparation
 
@@ -372,7 +372,7 @@ R2_bot$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
 R2_bot$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
 
 # save summary to file
-mod_mod %>% 
+mod_bot %>% 
     summary() %$%
     solutions %>% 
     as.data.frame() %>% 
@@ -745,6 +745,8 @@ ggsave('other_stuff/figures/figures_final/fig3_bot_vs_lh.jpg',p_final,  width=9,
 ggsave('other_stuff/figures/figures_final/fig3_bot_vs_lh.pdf',p_final,  width=9, height=5.5)
 Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
 extrafont::embed_fonts("other_stuff/figures/figures_final/fig3_bot_vs_lh.pdf")
+
+
 
 
 

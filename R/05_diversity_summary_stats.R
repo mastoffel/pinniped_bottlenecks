@@ -121,7 +121,8 @@ lapply(all_seals, function(x) rowSums(is.na(x)))
 
 # get loci and individuals
 desc_seals <- do.call(rbind, lapply(all_seals, function(x) out <- data.frame(nloc = (ncol(x)-3)/2, nind = nrow(x))))
-seals <- cbind(seals, desc_seals)
+desc_seals$species <- rownames(desc_seals)
+seals <- left_join(seals, desc_seals, by = "species")
 
 # write all stats to file
 sumstats_data <- "data/processed/all_data_seals_rarefac10_30.csv"

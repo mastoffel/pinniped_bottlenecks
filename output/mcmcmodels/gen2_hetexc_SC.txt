@@ -1,2 +1,2 @@
 pred modeSC medianSC lower upper
-TPM80_ratio_stand -1.0007310888744099 -1 -1 1
+TPM80_ratio_stand -1.0002127055984447 -1 -1 1

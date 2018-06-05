@@ -225,7 +225,7 @@ write_dflist_to_xls(all_seals_in_hw, "seal_data_largest_clust_and_pop_all_hw_30.
 
 
 # which proportion of loci out of HW in both tests?
-all_hw_data <- read.xls("data/processed/seal_data_descriptives_30.xls")[1:30, ]
+all_hw_data <- read_xls("data/processed/seal_data_descriptives_30.xls")[1:30, ]
 
 sum(all_hw_data$non_hw_both_tests) / sum(all_hw_data$loci_full) 
 

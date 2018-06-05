@@ -6,7 +6,7 @@ library(knitr)
 library(kableExtra)
 options(knitr.table.format = "latex")
 # all_stats for modeling
-all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
+all_stats <- as.data.frame(read_csv("data/processed/all_stats_30_modeling.csv"))
 all_stats$latin[7] <- "Otaria byronia / flavescens"
 # number of genotypes
 sum(all_stats$nind * all_stats$nloc)
@@ -43,7 +43,7 @@ kable(all_stats_table , format = "latex",  escape = F,
     row_spec(0, bold = TRUE) %>% 
     add_header_above(c(" " = 2, "Conservation, demography, ecology and life-history data" = 6,
                      "Genetic data" = 5), italic = TRUE) %>% 
-    kable_as_image("SupTab1_test", keep_pdf = TRUE)
+    kable_as_image("other_stuff/tables/SupTab1_updated12052018", keep_pdf = TRUE)
 
 
 # Supplementary Table 2: genetic, bottleneck data
@@ -86,7 +86,7 @@ align_tab2 <- c("l", "l", rep(x = "c", ncol(all_stats_table2_short ) - 2))
 
 kable(all_stats_table2_short, format = "latex",  escape = F, 
     booktabs = TRUE, align = align_tab2, digits = 3, linesep = "", #) %>% 
-    col.names = c("Common name", "Scientific name", "A_{r}", "H_{o}", "H_{e}",
+    col.names = c("Common name", "Scientific name", "Ar", "Ho", "He",
                    "Proportion of low frequency alleles",
                    "Allelic range", "M-ratio")) %>% 
     kable_styling(latex_options = c( "scale_down")) %>% 
@@ -125,11 +125,11 @@ kable(all_stats_table_sub3, format = "latex", escape = F,
     kable_styling(latex_options =  "scale_down") %>% 
    # row_spec(0, bold = TRUE) %>% 
     add_header_above(c(" "," ", "Heterozygosity-excess (prop_{het-exc})" = 4, "ABC" = 2), italic = F, escape = F) %>%
-    kable_as_image("Sup_tab_3", keep_pdf = TRUE)
+    kable_as_image("SupTab3", keep_pdf = TRUE)
 
 
 # Supplementary table 3: Model fit ABC
-model_fit <- read_delim("output/model_evaluation/check3_modeval/sims_10000k_p_vals_fit.txt", 
+model_fit <- read_delim("output/model_evaluation/check3_modeval/sims_10000k_p_vals_fit_30.txt", 
                         delim = " ") 
 
 all_stats_table_sub4_temp <- all_stats %>% 
@@ -156,7 +156,7 @@ kable(all_stats_table_sub4, format = "latex", escape = F,
     booktabs = TRUE, align = align_tab4 , digits = 3, linesep = "") %>% 
     kable_styling(latex_options =  "scale_down") %>% 
     row_spec(0, bold = TRUE) %>% 
-    kable_as_image("Sup_tab_5", keep_pdf = TRUE)
+    kable_as_image("SupTab5", keep_pdf = TRUE)
 
 
 
@@ -167,7 +167,7 @@ library(tidyr)
 library(dplyr)
 library(MCMCglmm)
 # load abc posterior data
-load("data/processed/abc_estimates/abc_10000k_bot_complete.RData")
+load("data/processed/abc_estimates/abc_10000k_bot_complete_30.RData")
 # unnest the abc posterior values for plotting
 abc_bot <- unnest(abc_complete)
 
@@ -196,8 +196,8 @@ abc_table_nbot <- abc_bot %>%
     left_join(all_stats_origin[c(2,4)]) %>% 
     #mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2)))
     mutate_if(is.numeric, funs(round(., 0))) %>% 
-    select(common, everything()) %>% 
-    select(-species, -pars) %>% 
+    dplyr::select(common, everything()) %>% 
+    dplyr::select(-species, -pars) %>% 
     mutate_if(is.numeric, funs(as.character(.)))
 
 
@@ -214,13 +214,13 @@ abc_table_mut <- abc_bot %>%
     left_join(all_stats_origin[c(2,4)]) %>% 
     mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2))) %>% 
     #mutate_if(is.numeric, funs(round(., 0))) %>% 
-    select(common, everything()) %>% 
-    select(-species, -pars)
+    dplyr::select(common, everything()) %>% 
+    dplyr::select(-species, -pars)
 abc_table_mut <- abc_table_mut[-c(1,2)]
 
 abc_bot_full <- bind_cols(abc_table_nbot, abc_table_mut) %>% 
     left_join(all_stats[c("species", "common_abbr")]) %>% 
-    select(species, common_abbr, mean:`HPD upper1`)
+    dplyr::select(species, common_abbr, mean:`HPD upper1`)
 abc_bot_full <- abc_bot_full[-1]
 names(abc_bot_full)[1] <- "Common name"
 align_tab5 <- c("l", "l", rep(x = "c", ncol(abc_bot_full ) - 2))
@@ -299,10 +299,10 @@ kable(abc_neut_full,  format = "latex", escape = F,
     kable_as_image("Sup_tab_4b", file_format = "jpeg", keep_pdf = TRUE, density = 600)
 
 
-#### correlation matrix of the five predictor variables (far too complicated code here!!)
+#### correlation matrix of the five predictor variables 
 library(purrr)
 pred_vars <- all_stats %>% 
-    select(logAbundance, SSD, TPM80_ratio, bot,  BreedingType)
+    dplyr::select(logAbundance, SSD, TPM80_ratio, bot,  BreedingType)
 all_combs <- expand.grid(names(pred_vars), names(pred_vars)) %>% 
                 filter(Var1 != "BreedingType") %>% 
                 filter(Var1 != Var2)
@@ -357,7 +357,7 @@ kable(cor_mat,  format = "latex", escape = F,
     #row_spec(0, bold = TRUE) %>% 
     # group_rows("N_{bot}", 1,10, escape = F) %>% 
     # group_rows("Mutation rate mu", 11,20, escape = F) %>% 
-    kable_as_image("Sup_tab_6", file_format = "jpeg", keep_pdf = TRUE, density = 600)
+    kable_as_image("SupTab6", file_format = "jpeg", keep_pdf = TRUE, density = 600)
 
 
 #### model output table
@@ -384,7 +384,7 @@ kable(mod1_df, format = "latex", booktabs = T, align = "c",
     col.names = c("Model", "$\\beta$", expression(R^2), "$r(\\hat{Y},x)$"), escape = F) %>%
     group_rows("prop_{het-exc}", 1, 2, latex_gap_space = "1em", escape = F) %>% 
     group_rows("p$_{bot}$", 3, 4, latex_gap_space = "1em",escape = F) %>% 
-    kable_as_image("Sup_tab_7", file_format = "jpeg", keep_pdf = TRUE, density = 600)
+    kable_as_image("SupTab8", file_format = "jpeg", keep_pdf = TRUE, density = 600)
 
 
 # Ar
@@ -405,7 +405,7 @@ mod2_df$variables <- c("SSD", "Breeding Habitat", "Abundance", "p$_{bot}$", "pro
 kable(mod2_df, format = "latex", booktabs = T, align = "c",
     col.names = c("Model", "$\\beta$", expression(R^2), "$r(\\hat{Y},x)$"), escape = F) %>%
     group_rows("A_{r}", 1, 2, latex_gap_space = "1em", escape = F) %>% 
-    kable_as_image("Sup_tab_9", file_format = "jpeg", keep_pdf = TRUE, density = 600)
+    kable_as_image("SupTab9", file_format = "jpeg", keep_pdf = TRUE, density = 600)
 names(mod2_df) <- names(mod1_df)
 
 # conservation
@@ -450,4 +450,4 @@ kable(mod_full, format = "latex", booktabs = T, align = "c",
     group_rows("A_{r}", 10,10, latex_gap_space = "1em", escape = F) %>% 
     group_rows("prop_{het-exc}", 11,11, latex_gap_space = "1em", escape = F) %>% 
     group_rows("p$_{bot}$", 12,12, latex_gap_space = "1em", escape = F) %>% 
-    kable_as_image("Sup_tab_7", file_format = "jpeg", keep_pdf = TRUE, density = 600)
+    kable_as_image("SupTab8_full", file_format = "jpeg", keep_pdf = TRUE, density = 600)

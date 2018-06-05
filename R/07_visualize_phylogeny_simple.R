@@ -29,7 +29,7 @@ library(extrafont)
 # ggthemr('dust')
 source("R/martin.R")
 
-calc_on_cluster <- FALSE
+calc_on_cluster <- TRUE
 if (calc_on_cluster) {
     save_files <- "_cl"    
 } else {
@@ -52,7 +52,7 @@ sum(seals$species %in% model_probs$species)
 # join
 seals <- left_join(seals, model_probs, by = "species")
 
-#### stopped here
+
 # load higdon phylogeny
 tree_final <- read.tree("data/raw/phylogeny/30_species_10ktrees_final.tre")
 plot(tree_final)

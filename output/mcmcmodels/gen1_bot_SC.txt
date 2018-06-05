@@ -1,2 +1,2 @@
 pred modeSC medianSC lower upper
-bot_stand -1 -1 -1 -0.9999999999999999
+bot_stand -1.0001327219836609 -1 -1 -1

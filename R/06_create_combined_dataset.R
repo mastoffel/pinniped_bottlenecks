@@ -16,7 +16,7 @@ library(hierfstat)
 ?hierfstat
 
 # on cluster or full data?
-calc_on_cluster <- FALSE
+calc_on_cluster <- TRUE
 
 if (calc_on_cluster) {
     save_files <- "_cl"    

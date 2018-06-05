@@ -1,6 +1,7 @@
 ## This script produces the figure for the models of bottleneck signatures
 # explained by life-history traits.
 
+
 # phylogenetic comparative analysis
 library(patchwork)
 library(ggtree)
@@ -34,26 +35,26 @@ library(readr)
 ## what should this script do:
 
 # modeling
-modeling <- FALSE
-save_models <- FALSE
+modeling <- TRUE
+save_models <- TRUE
 
 # plotting
 plotting <- TRUE
-save_plots <- FALSE
+save_plots <- TRUE
 
 # load data and prepare mixed models
 
 # load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
-tree_final <- read.tree("data/raw/phylogeny/29_species_10ktrees.tre")
+tree_final <- read.tree("data/raw/phylogeny/30_species_10ktrees_final.tre")
 
 # all_stats for modeling
-all_stats <- as.data.frame(read_csv("data/processed/all_stats_29_modeling.csv"))
+all_stats <- as.data.frame(read_csv("data/processed/all_stats_30_modeling.csv"))
 
 # how many percent higher is Ar in ice than land-breeding seals?
 Ars <- all_stats %>% 
             group_by(BreedingType) %>% 
             summarize(Ar = mean(num_alleles_mean))
-
+Ars 
 # phylogenetic mixed model preparation
 
 # construct inverse phylo matrix and priors
@@ -184,6 +185,7 @@ AR2_beta <- read_delim("output/mcmcmodels/gen1_bot_beta.txt", delim = " ")
 AR2_R2 <- read_delim("output/mcmcmodels/gen1_bot_R2.txt", delim = " ")
 point_alpha <- 0.4
 
+set.seed(140)
 p1 <- ggplot(aes(x = bot, y = num_alleles_mean), data = all_stats) +
     geom_line(data = mod_preds_AR2, aes(y = fit), size = 1, alpha = 0.5) +
     geom_point(size = point_size, alpha = point_alpha) + # abc_out
@@ -203,9 +205,9 @@ p1 <- ggplot(aes(x = bot, y = num_alleles_mean), data = all_stats) +
         axis.line = element_line(colour = "#cccccc"),
         axis.ticks = element_line(colour = "#cccccc"),
         axis.title.y.right = element_text(angle = 90, margin = margin(t = 0, r = 0, b = 0, l = 15))) +
-    geom_text_repel(label = all_stats$short,size = 2.5, alpha = 1, color = "grey50",#  aes(label = common) , 
-        segment.alpha= 1,  box.padding = unit(0.4, "lines"), point.padding = unit(0.7, "lines"),
-        segment.size = 0.1,  force = 1, min.segment.length = unit(0.01, "lines"))
+    geom_text_repel(label = all_stats$short,size = 2, alpha = 1, color = "grey50",#  aes(label = common) , 
+        segment.alpha= 1,  box.padding = unit(0.4, "lines"), point.padding = unit(0.6, "lines"),
+        segment.size = 0.1,  force = 3, min.segment.length = unit(0.2, "lines"))
 
 
 p1
@@ -244,6 +246,7 @@ mod_preds <- data.frame(predict(mod_div, pred_df, interval = "confidence"))
 mod_preds$logAbundance <- rep(seq(from = 5, to = 15.5, by = 0.5), each = 2)
 mod_preds$BreedingType <- c("land", "ice")
 
+set.seed(110)
 
 p2 <- ggplot(aes(logAbundance, num_alleles_mean), data = all_stats) +
     geom_point(size = 3.5, alpha = 0.7, aes(color = BreedingType)) + # abc_out
@@ -268,8 +271,8 @@ p2 <- ggplot(aes(logAbundance, num_alleles_mean), data = all_stats) +
         legend.title=element_text(size=10),
         axis.title.y = element_blank()) +
     xlab("Global abundance") +
-    geom_text_repel(label = all_stats$short,size = 2.5, alpha = 1, color = "grey50",#  aes(label = common) , 
-        segment.alpha= 1,  box.padding = unit(0.4, "lines"), point.padding = unit(0.7, "lines"),
+    geom_text_repel(label = all_stats$short,size = 2, alpha = 1, color = "grey50",#  aes(label = common) , 
+        segment.alpha= 1,  box.padding = unit(0.4, "lines"), point.padding = unit(0.3, "lines"),
         segment.size = 0.1,  force = 1, min.segment.length = unit(0.01, "lines"))
 
 p2
@@ -421,6 +424,8 @@ p_com <- ggplot(aes(pe, comps, xmax = cihigh, xmin = cilow), data = mod_R2_CA) +
     annotate("segment", x = 1, xend = 1, y = 5.5, yend = 6.6, color = col_legend) +
     annotate("text", x = 1.1, xend = 1.1, y = 5.7, yend = 6.2, color = col_legend, label = c("marginal"), angle = 270, size = 3)
 p_com
+
+
 
 
 

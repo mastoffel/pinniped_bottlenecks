@@ -2,13 +2,15 @@
 
 library(tidyr)
 library(rptR)
+library(dplyr)
+library(readr)
 
-seals <- read_csv("data/processed/all_stats_tree_29.csv")
-seals_cl <- read_csv("data/processed/all_stats_tree_29_cl.csv")
+seals <- read_csv("data/processed/all_stats_tree_30.csv")
+seals_cl <- read_csv("data/processed/all_stats_tree_30_cl.csv")
 all_seals <- rbind(seals, seals_cl)
 
 all_stats_long <- all_seals %>% 
-    select(species, num_alleles_mean, obs_het_mean, TPM70_ratio, TPM80_ratio, TPM90_ratio, SMM_ratio, bot) 
+    dplyr::select(species, num_alleles_mean, obs_het_mean, TPM70_ratio, TPM80_ratio, TPM90_ratio, SMM_ratio, bot) 
 
 calc_rpts <- function(var_in_all_stats){
     formula_temp <- as.formula(paste0(var_in_all_stats, "~ (1|species)"))
@@ -20,7 +22,7 @@ calc_rpts <- function(var_in_all_stats){
             mutate_if(is.numeric, funs(round(., 3))) %>% 
             rename(R = species, CI25 = CI.2.5., CI975 = CI.97.5.) %>% 
             mutate(CI = paste0("[",CI25," ", CI975, "]")) %>% 
-            select(variable, R, CI)
+            dplyr::select(variable, R, CI)
     out
 }
 
@@ -37,6 +39,6 @@ kable(all_rpts_df, format = "latex",  escape = F,
     booktabs = TRUE, align = "c", digits = 3, linesep = "") %>% 
     kable_styling(latex_options = c( "scale_down")) %>% 
     row_spec(0, bold = TRUE) %>% 
-    kable_as_image("Sup_tab_5", keep_pdf = TRUE)
+    kable_as_image("SupTab5", keep_pdf = TRUE)
 
 
