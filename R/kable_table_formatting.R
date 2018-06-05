@@ -2,6 +2,8 @@ library(readr)
 library(readxl)
 library(dplyr)
 library(knitr)
+library(sealABC)
+library(purrr)
 # create tables for supplementary material
 library(kableExtra)
 options(knitr.table.format = "latex")
@@ -11,13 +13,20 @@ all_stats$latin[7] <- "Otaria byronia / flavescens"
 # number of genotypes
 sum(all_stats$nind * all_stats$nloc)
 
+# add number of populations to every species
+nes_data_msats <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop_30.xlsx")
+num_pop <- map_dbl(nes_data_msats, function(x) length(table(x$pop)))
+num_pop_df <- tibble(species = names(num_pop), populations = num_pop)[1:30, ]
+
 # Supplementary Table 1: IUCN, life history data and sample size/locus information
 all_stats_origin <- read_xlsx("data/raw/table_data.xlsx")
 all_stats_table <- all_stats %>% 
     left_join(all_stats_origin, by = c("species", "common", "tip_label", "latin")) %>% 
+    left_join(num_pop_df, by = "species") %>% 
     dplyr::mutate(Genotypes = nloc * nind) %>% 
+    dplyr::mutate(origin_n = paste0(origin, " (" ,populations, ")")) %>% 
     dplyr::select(common_abbr, latin, IUCN_rating, Abundance, BreedingType, Generation_time,
-        SSD, harem_size, nind, nloc, Genotypes,  origin, published_short) %>% 
+        SSD, harem_size, nind, nloc, Genotypes, origin_n, published_short) %>% 
     dplyr::mutate(Abundance = prettyNum(Abundance, big.mark = ",", scientific = FALSE),
                   Genotypes = prettyNum(Genotypes, big.mark = ",", scientific = FALSE)) %>% 
     dplyr::rename(`Common name` = common_abbr,
@@ -28,7 +37,7 @@ all_stats_table <- all_stats %>%
         `Harem size` = harem_size,
         `Loci` = nloc,
         `Individuals` = nind,
-        `Sampling location(s)` = origin,
+        `Sampling locations (n)` = origin_n,
         `Publication` = published_short) %>% 
     dplyr::arrange(-row_number()) %>% 
     mutate(`Scientific name` = cell_spec(`Scientific name`, format = "latex", italic = TRUE))
@@ -43,7 +52,7 @@ kable(all_stats_table , format = "latex",  escape = F,
     row_spec(0, bold = TRUE) %>% 
     add_header_above(c(" " = 2, "Conservation, demography, ecology and life-history data" = 6,
                      "Genetic data" = 5), italic = TRUE) %>% 
-    kable_as_image("other_stuff/tables/SupTab1_updated12052018", keep_pdf = TRUE)
+    kable_as_image("other_stuff/tables/SupTab1_updated05062018", keep_pdf = TRUE)
 
 
 # Supplementary Table 2: genetic, bottleneck data
