@@ -4,53 +4,54 @@ Parameters for T.P.M.: Variance=30.00  Probability=80.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\stellers_sea_lion_cl_1_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\stellers_sea_lion_cl_1_HW_genepop.txt
 Data type: Genepop format
-Title: Title Line: genotypes            
+Title: Title Line: genotypes             
 Estimation based on 10000 replications.
 
 
-Date: 08/15/2017  Time: 3:46:33 PM.
+Date: 6/7/2018  Time: 4:02:25 PM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_Hg63        746   6 0.284 | 0.601 0.123 -2.577 0.0268 
-L_Hg810       746   3 0.565 | 0.337 0.180  1.267 0.0749 
-L_Pv11        744   4 0.605 | 0.455 0.161  0.933 0.1788 
-L_PvcE        746   7 0.713 | 0.655 0.105  0.557 0.3297 
-L_M11A        746   9 0.815 | 0.726 0.080  1.112 0.0828 
-L_M2B         742  11 0.841 | 0.774 0.064  1.045 0.1022 
-L_Hg13        746   6 0.592 | 0.606 0.120 -0.124 0.3704 
-L_Lw10        736   8 0.653 | 0.691 0.092 -0.420 0.2695 
-L_SSL15       748   5 0.447 | 0.540 0.140 -0.660 0.2207 
-L_Lc28        746   9 0.723 | 0.725 0.081 -0.032 0.3990 
-L_Orr8        740  11 0.825 | 0.774 0.064  0.796 0.2121 
-L_Hl4         742   9 0.759 | 0.726 0.079  0.419 0.4040 
+L_Hg63        746   6 0.284 | 0.606 0.119 -2.705 0.0205 
+L_Hg810       746   3 0.565 | 0.334 0.180  1.280 0.0757 
+L_Pv11        744   4 0.605 | 0.457 0.159  0.931 0.1809 
+L_PvcE        746   7 0.713 | 0.652 0.106  0.571 0.3241 
+L_M11A        746   9 0.815 | 0.727 0.078  1.136 0.0804 
+L_M2B         742  11 0.841 | 0.776 0.063  1.023 0.1121 
+L_Hg13        746   6 0.592 | 0.605 0.121 -0.111 0.3769 
+L_Lw10        736   8 0.653 | 0.692 0.093 -0.422 0.2681 
+L_SSL15       748   5 0.447 | 0.541 0.140 -0.671 0.2173 
+L_Orr1        740  10 0.779 | 0.753 0.071  0.362 0.4310 
+L_Lc28        746   9 0.723 | 0.727 0.080 -0.058 0.3932 
+L_Orr8        740  11 0.825 | 0.773 0.064  0.807 0.2090 
+L_Hl4         742   9 0.759 | 0.727 0.079  0.404 0.4131 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.04
-5 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
-Probability: 0.59829
+Expected number of loci with heterozygosity excess:   7.62
+5 loci with heterozygosity deficiency and 8 loci with heterozygosity excess.
+Probability: 0.53307
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
-Caution: only 12 polymorphic loci (minimum 20).
+Caution: only 13 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:   0.669  Probability:  0.25182
+T2:   0.707  Probability:  0.23992
 
 ______________________________________________________________________________________
                                WILCOXON TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.86694
-Probability (one tail for H excess): 0.15063
-Probability (two tails for H excess or deficiency): 0.30127
+Probability (one tail for H deficiency): 0.89185
+Probability (one tail for H excess): 0.12195
+Probability (two tails for H excess or deficiency): 0.24390
 
 ______________________________________________________________________________________
                                MODE-SHIFT
  0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
-  | 0.545 | 0.205 | 0.148 | 0.023 | 0.011 | 0.034 | 0.011 | 0.011 | 0.011 | 0.000 |
+  | 0.561 | 0.194 | 0.143 | 0.031 | 0.010 | 0.031 | 0.010 | 0.010 | 0.010 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/15/2017  Time: 5:05:39 PM.
+End of computation. Date: 6/7/2018  Time: 4:35:46 PM.

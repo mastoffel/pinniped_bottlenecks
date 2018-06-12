@@ -4,57 +4,57 @@ Parameters for T.P.M.: Variance=30.00  Probability=70.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\weddell_seal_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\weddell_seal_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes            
 Estimation based on 10000 replications.
 
 
-Date: 08/17/2017  Time: 1:55:22 PM.
+Date: 6/8/2018  Time: 12:34:10 PM.
 Population : 1
                  observed   |     under the I.A.M.      |     under the T.P.M.      |     under the S.M.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob 
-L_WS4        1786  25 0.832 | 0.805 0.077  0.360 0.4481 | 0.892 0.026 -2.302 0.0313 | 0.930 0.013 -7.296 0.0006 
-L_WS7        1786  10 0.646 | 0.576 0.164  0.426 0.4149 | 0.717 0.087 -0.821 0.1739 | 0.819 0.039 -4.425 0.0032 
-L_WS10       1786  16 0.878 | 0.707 0.118  1.454 0.0044 | 0.824 0.049  1.105 0.0818 | 0.889 0.021 -0.532 0.2549 
-L_WS16       1786  12 0.790 | 0.629 0.147  1.095 0.0860 | 0.764 0.070  0.370 0.4274 | 0.851 0.031 -1.983 0.0476 
-L_WS20       1786  14 0.774 | 0.672 0.133  0.770 0.2262 | 0.797 0.059 -0.393 0.2707 | 0.873 0.025 -4.000 0.0043 
-L_LS8        1786  16 0.871 | 0.705 0.120  1.384 0.0069 | 0.823 0.049  0.971 0.1272 | 0.889 0.021 -0.824 0.1887 
-L_LS15       1784  23 0.599 | 0.790 0.083 -2.299 0.0371 | 0.883 0.029 -9.783 0.0000 | 0.924 0.022 -14.839 0.0012 
-L_LS16       1786   8 0.649 | 0.508 0.181  0.776 0.2528 | 0.653 0.109 -0.036 0.3997 | 0.770 0.053 -2.287 0.0307 
-L_CS6        1786  16 0.892 | 0.706 0.118  1.576 0.0004 | 0.823 0.049  1.397 0.0183 | 0.889 0.021  0.118 0.4911 
-L_CS26       1784  14 0.841 | 0.674 0.129  1.300 0.0213 | 0.798 0.059  0.735 0.2430 | 0.873 0.025 -1.273 0.1095 
-L_CS28       1786   6 0.327 | 0.422 0.196 -0.484 0.3205 | 0.555 0.142 -1.609 0.0839 | 0.693 0.076 -4.783 0.0019 
-L_G1A        1786  17 0.752 | 0.721 0.113  0.272 0.4945 | 0.834 0.045 -1.819 0.0576 | 0.896 0.020 -7.254 0.0001 
+L_WS4        1786  25 0.832 | 0.803 0.077  0.376 0.4419 | 0.893 0.026 -2.320 0.0308 | 0.930 0.021 -4.660 0.0019 
+L_WS7        1786  10 0.646 | 0.581 0.162  0.401 0.4279 | 0.716 0.089 -0.787 0.1799 | 0.819 0.039 -4.408 0.0029 
+L_WS10       1786  16 0.878 | 0.707 0.116  1.463 0.0027 | 0.824 0.049  1.092 0.0848 | 0.890 0.021 -0.567 0.2440 
+L_WS16       1786  12 0.790 | 0.631 0.145  1.098 0.0837 | 0.762 0.071  0.382 0.4204 | 0.851 0.031 -1.987 0.0471 
+L_WS20       1786  14 0.774 | 0.672 0.132  0.774 0.2262 | 0.797 0.060 -0.379 0.2788 | 0.872 0.026 -3.851 0.0050 
+L_LS8        1786  16 0.871 | 0.705 0.117  1.422 0.0074 | 0.824 0.049  0.966 0.1343 | 0.889 0.021 -0.842 0.1761 
+L_LS15       1784  23 0.599 | 0.788 0.083 -2.276 0.0379 | 0.881 0.030 -9.542 0.0000 | 0.924 0.019 -17.022 0.0005 
+L_LS16       1786   8 0.649 | 0.509 0.181  0.771 0.2587 | 0.652 0.110 -0.031 0.3983 | 0.771 0.052 -2.360 0.0300 
+L_CS6        1786  16 0.892 | 0.706 0.120  1.551 0.0007 | 0.823 0.050  1.369 0.0212 | 0.890 0.021  0.088 0.4763 
+L_CS26       1784  14 0.841 | 0.672 0.130  1.302 0.0227 | 0.798 0.058  0.747 0.2300 | 0.873 0.025 -1.244 0.1091 
+L_CS28       1786   6 0.327 | 0.420 0.194 -0.478 0.3210 | 0.554 0.143 -1.581 0.0860 | 0.690 0.079 -4.595 0.0038 
+L_G1A        1786  17 0.752 | 0.722 0.112  0.270 0.4910 | 0.834 0.046 -1.768 0.0605 | 0.896 0.020 -7.216 0.0000 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.19
+Expected number of loci with heterozygosity excess:   7.17
 2 loci with heterozygosity deficiency and 10 loci with heterozygosity excess.
-Probability: 0.08221
+Probability: 0.08046
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.09
+Expected number of loci with heterozygosity excess:   7.08
 7 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
-Probability: 0.17565
+Probability: 0.17607
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.03
+Expected number of loci with heterozygosity excess:   7.04
 11 loci with heterozygosity deficiency and 1 loci with heterozygosity excess.
-Probability: 0.00046
+Probability: 0.00045
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 12 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-T2:   1.914  Probability:  0.02780
+T2:   1.927  Probability:  0.02699
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -3.517  Probability:  0.00022
+T2:  -3.421  Probability:  0.00031
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-T2: -14.254  Probability:  0.00000
+T2: -14.048  Probability:  0.00000
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -64,9 +64,9 @@ Probability (one tail for H excess): 0.03857
 Probability (two tails for H excess and deficiency): 0.07715
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.19019
-Probability (one tail for H excess): 0.83032
-Probability (two tails for H excess or deficiency): 0.38037
+Probability (one tail for H deficiency): 0.21191
+Probability (one tail for H excess): 0.80981
+Probability (two tails for H excess or deficiency): 0.42383
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
 Probability (one tail for H deficiency): 0.00024
@@ -79,4 +79,4 @@ ________________________________________________________________________________
   | 0.757 | 0.164 | 0.034 | 0.023 | 0.006 | 0.006 | 0.006 | 0.000 | 0.006 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/18/2017  Time: 1:59:28 AM.
+End of computation. Date: 6/8/2018  Time: 5:54:14 PM.

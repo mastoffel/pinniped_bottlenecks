@@ -1,22 +1,22 @@
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   3.51
+Expected number of loci with heterozygosity excess:   3.53
 3 loci with heterozygosity deficiency and 3 loci with heterozygosity excess.
-Probability: 0.48676
+Probability: 0.47990
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 6 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -1.177  Probability:  0.11967
+T2:  -1.144  Probability:  0.12623
 
 ______________________________________________________________________________________
                                WILCOXON TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.42188
-Probability (one tail for H excess): 0.65625
-Probability (two tails for H excess or deficiency): 0.84375
+Probability (one tail for H deficiency): 0.50000
+Probability (one tail for H excess): 0.57813
+Probability (two tails for H excess or deficiency): 1.00000
 
 ______________________________________________________________________________________
                                MODE-SHIFT
@@ -24,4 +24,4 @@ ________________________________________________________________________________
   | 0.614 | 0.159 | 0.091 | 0.045 | 0.045 | 0.000 | 0.000 | 0.000 | 0.045 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/10/2017  Time: 12:57:49 PM.
+End of computation. Date: 6/6/2018  Time: 12:00:52 PM.

@@ -1,31 +1,31 @@
                                 SIGN TEST
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   6.62
+Expected number of loci with heterozygosity excess:   6.63
 2 loci with heterozygosity deficiency and 10 loci with heterozygosity excess.
-Probability: 0.04264
+Probability: 0.04321
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   6.99
+Expected number of loci with heterozygosity excess:   6.98
 5 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
-Probability: 0.61852
+Probability: 0.61586
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.10
+Expected number of loci with heterozygosity excess:   7.12
 11 loci with heterozygosity deficiency and 1 loci with heterozygosity excess.
-Probability: 0.00039
+Probability: 0.00038
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 12 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-T2:   1.830  Probability:  0.03365
+T2:   1.831  Probability:  0.03357
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -0.339  Probability:  0.36749
+T2:  -0.360  Probability:  0.35929
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-T2:  -5.278  Probability:  0.00000
+T2:  -5.279  Probability:  0.00000
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -50,4 +50,4 @@ ________________________________________________________________________________
   | 0.600 | 0.046 | 0.092 | 0.077 | 0.062 | 0.031 | 0.062 | 0.015 | 0.015 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/16/2017  Time: 11:38:43 AM.
+End of computation. Date: 6/7/2018  Time: 10:45:49 AM.

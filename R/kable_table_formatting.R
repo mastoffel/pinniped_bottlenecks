@@ -4,6 +4,7 @@ library(dplyr)
 library(knitr)
 library(sealABC)
 library(purrr)
+library(knitr)
 # create tables for supplementary material
 library(kableExtra)
 options(knitr.table.format = "latex")
@@ -137,8 +138,8 @@ kable(all_stats_table_sub3, format = "latex", escape = F,
     kable_as_image("SupTab3", keep_pdf = TRUE)
 
 
-# Supplementary table 3: Model fit ABC
-model_fit <- read_delim("output/model_evaluation/check3_modeval/sims_10000k_p_vals_fit_30.txt", 
+# Supplementary table 5: Model fit ABC
+model_fit <- read_delim("output/model_evaluation/check3_modeval/sims_10000kbot500_p_vals_fit_30.txt", 
                         delim = " ") 
 
 all_stats_table_sub4_temp <- all_stats %>% 
@@ -176,12 +177,12 @@ library(tidyr)
 library(dplyr)
 library(MCMCglmm)
 # load abc posterior data
-load("data/processed/abc_estimates/abc_10000k_bot_complete_30.RData")
+load("data/processed/abc_estimates/abc_10000kbot500_bot_complete_30.RData")
 # unnest the abc posterior values for plotting
 abc_bot <- unnest(abc_complete)
 
 # load abc posterior data
-load("data/processed/abc_estimates/abc_10000k_neut_complete.RData")
+load("data/processed/abc_estimates/abc_10000kbot500_neut_complete_30.RData")
 # unnest the abc posterior values for plotting
 abc_neut <- unnest(abc_complete)
 
@@ -248,8 +249,8 @@ kable(abc_bot_full,  format = "latex", escape = FALSE,
     kable_as_image("Sup_tab_4a", file_format = "jpeg", keep_pdf = TRUE, density = 600)
 
 # prediction errors:
-# bottleneck: Nebot = 0.56, mu = 0.74
-# neutral: mu = 0.68, GSM = 0.84
+# bottleneck: Nebot = 0.54, mu = 0.75
+# neutral: mu = 0.70, GSM = 0.84
 
 ## Neutral model
 
@@ -267,8 +268,8 @@ abc_table_GSM_neut <- abc_neut %>%
     #mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2)))
     mutate_if(is.numeric, funs(round(., 3))) %>% 
     #mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2))) %>% 
-    select(common, everything()) %>% 
-    select(-species, -pars) %>% 
+    dplyr::select(common, everything()) %>% 
+    dplyr::select(-species, -pars) %>% 
     mutate_if(is.numeric, funs(as.character(.)))
 
 
@@ -285,14 +286,14 @@ abc_table_mut_neut <- abc_neut %>%
     left_join(all_stats_origin[c(2,4)]) %>% 
     mutate_if(is.numeric, funs(formatC(., format = "e", digits = 2))) %>% 
     #mutate_if(is.numeric, funs(round(., 0))) %>% 
-    select(common, everything()) %>% 
-    select(-species, -pars)
+    dplyr::select(common, everything()) %>% 
+    dplyr::select(-species, -pars)
 abc_table_mut_neut <- abc_table_mut_neut[-c(1,2)]
 
 
 abc_neut_full <- bind_cols(abc_table_GSM_neut, abc_table_mut_neut) %>% 
     left_join(all_stats[c("species", "common_abbr")]) %>% 
-    select(species, common_abbr, mean:`HPD upper1`)
+    dplyr::select(species, common_abbr, mean:`HPD upper1`)
 abc_neut_full <- abc_neut_full[-1]
 align_tab7 <- c("l", "l", rep(x = "c", ncol(abc_neut_full) - 2))
 
@@ -311,7 +312,7 @@ kable(abc_neut_full,  format = "latex", escape = F,
 #### correlation matrix of the five predictor variables 
 library(purrr)
 pred_vars <- all_stats %>% 
-    dplyr::select(logAbundance, SSD, TPM80_ratio, bot,  BreedingType)
+    dplyr::select(logAbundance, SSD, TPM80_ratio, bot, BreedingType, Generation_time, breeding_season_length)
 all_combs <- expand.grid(names(pred_vars), names(pred_vars)) %>% 
                 filter(Var1 != "BreedingType") %>% 
                 filter(Var1 != Var2)
@@ -329,7 +330,7 @@ r2s <- unlist(map2(all_combs[[1]], all_combs[[2]], calc_r2))
 all_combs$r2s <- r2s
 all_combs[1:2] <- lapply(all_combs[1:2], as.character)
 # create matrix:
-cor_mat <- data.frame(matrix(nrow = 5, ncol = 5), row.names = names(pred_vars))
+cor_mat <- data.frame(matrix(nrow = 7, ncol = 7), row.names = names(pred_vars))
 names(cor_mat) <- names(pred_vars)
 # fill in
 for (x in names(cor_mat)){
@@ -340,20 +341,26 @@ for (x in names(cor_mat)){
         }
     }
 }
+
+cor_mat <- cor_mat[c(1:4,6:7,5), ]
+cor_mat <-  cor_mat[, c(1:4,6:7,5)]
+
 #fill
-cor_mat["BreedingType", 1:4] <- cor_mat[1:4, "BreedingType"]
+# cor_mat["BreedingType", 1:4] <- cor_mat[1:4, "BreedingType"]
 #cor_mat[is.na(cor_mat)] <- 1
 cor_mat[lower.tri(cor_mat)] <- NA
 options(knitr.kable.NA = '')
 
 cor_mat <- cor_mat %>% 
-    rename("prop_{het-exc}" = "TPM80_ratio",
+    dplyr::rename("prop_{het-exc}" = "TPM80_ratio",
         "p_{bot}" = "bot",
         "Abundance" = "logAbundance",
-        "Breeding Habitat" = "BreedingType")
+        "Breeding Habitat" = "BreedingType",
+        "Generation time" = "Generation_time",
+        "Breeding season length" = "breeding_season_length")
 
 rownames(cor_mat) <- c("Abundance", "SSD", "prop_{het-exc}",  "p_{bot}",
-                       "Breeding Habitat")
+                       "Generation time", "Breeding season length", "Breeding Habitat")
 str(cor_mat)
 
 options(digits=2)
@@ -369,24 +376,35 @@ kable(cor_mat,  format = "latex", escape = F,
     kable_as_image("SupTab6", file_format = "jpeg", keep_pdf = TRUE, density = 600)
 
 
+
+
 #### model output table
 
 # bot ~ lh
-mod_beta <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_beta.txt", delim = " ")
-mod_R2 <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_R2.txt", delim = " ")
-mod_SC <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_SC.txt", delim = " ")
-mod_beta2 <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_beta.txt", delim = " ")
-mod_R22 <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_R2.txt", delim = " ")
-mod_SC2 <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_SC.txt", delim = " ")
+mod_beta <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_plus_beta.txt", delim = " ")
+mod_R2 <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_plus_R2_marginal.txt", delim = " ")
+mod_R2c <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_plus_R2_conditional.txt", delim = " ")
+mod_SC <- read_delim("output/mcmcmodels/hetexc_vs_lh_SSD_plus_SC.txt", delim = " ")
+
+mod_beta2 <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_plus_beta.txt", delim = " ")
+mod_R22 <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_plus_R2_marginal.txt", delim = " ")
+mod_R22c <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_plus_R2_conditional.txt", delim = " ")
+mod_SC2 <- read_delim("output/mcmcmodels/bot_vs_lh_SSD_plus_SC.txt", delim = " ")
 
 options(digits=2)
 betas <- rbind(mod_beta[2:3, ], mod_beta2[2:3, ])[c("post_median", "lower", "upper")]
 betas <- paste0(round(betas[[1]], 2), " (", round(betas[[2]], 2),", ", round(betas[[3]], 2), ")")
 r2s <- rbind(mod_R2[2:3, 2:4], mod_R22[2:3, 2:4])
 r2s <- paste0(round(r2s[[1]], 2), " (", round(r2s[[2]], 2),", ", round(r2s[[3]], 2), ")")
-scs <- rbind(mod_SC[3:5], mod_SC2[3:5])
+#r2sc <- rbind(mod_R2c[2:3, 2:4], mod_R22c[2:3, 2:4])
+#r2sc <- paste0(round(r2sc[[1]], 2), " (", round(r2sc[[2]], 2),", ", round(r2sc[[3]], 2), ")")
+
+scs <- rbind(mod_SC[2:4], mod_SC2[2:4])
 scs  <- paste0(round(scs[[1]], 2), " (", round(scs[[2]], 2),", ", round(scs[[3]], 2), ")")
 mod1_df <- data.frame(variables = rep(mod_SC$pred, 2), betas, r2s, scs)
+
+mod1_df$variables <- c("SSD", "Breeding Habitat", "Generation time", "Breeding season length", "SSD",
+                       "Breeding Habitat", "Generation time", "Breeding season length")
 
 # paste("Plot of ", alpha^beta, " versus ", hat(mu)[0]))
 kable(mod1_df, format = "latex", booktabs = T, align = "c",
@@ -399,14 +417,15 @@ kable(mod1_df, format = "latex", booktabs = T, align = "c",
 # Ar
 # $prop_{\\mathrm{het-exc}}$
 mod_beta_ar <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_beta.txt", delim = " ")
-mod_R2_ar <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_R2.txt", delim = " ")
+mod_R2_ar <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_R2_marginal.txt", delim = " ")
+mod_R2c_ar <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_R2_conditional.txt", delim = " ")
 mod_SC_ar <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_SC.txt", delim = " ")
 
 betas_ar <- mod_beta_ar[2:6, c("post_median", "lower", "upper")]
 betas_ar <- paste0(round(betas_ar[[1]], 2), " (", round(betas_ar[[2]], 2),", ", round(betas_ar[[3]], 2), ")")
 r2s_ar <- mod_R2_ar[2:6, 2:4]
 r2s_ar <- paste0(round(r2s_ar[[1]], 2), " (", round(r2s_ar[[2]], 2),", ", round(r2s_ar[[3]], 2), ")")
-scs_ar <- mod_SC_ar[3:5]
+scs_ar <- mod_SC_ar[2:4]
 scs_ar   <- paste0(round(scs_ar[[1]], 2), " (", round(scs_ar[[2]], 2),", ", round(scs_ar[[3]], 2), ")")
 mod2_df <- data.frame(variables = mod_SC_ar$pred, betas_ar, r2s_ar, scs_ar)
 mod2_df$variables <- c("SSD", "Breeding Habitat", "Abundance", "p$_{bot}$", "prop$_{het-exc}$")
@@ -419,12 +438,14 @@ names(mod2_df) <- names(mod1_df)
 
 # conservation
 gendiv_beta <- read_delim("output/mcmcmodels/IUCN_gendiv_beta.txt", delim = " ")
-gendiv_R2 <- read_delim("output/mcmcmodels/IUCN_gendiv_R2.txt", delim = " ")
+gendiv_R2 <- read_delim("output/mcmcmodels/IUCN_gendiv_R2_marginal.txt", delim = " ")
+gendiv_R2c <- read_delim("output/mcmcmodels/IUCN_gendiv_R2_conditional.txt", delim = " ")
 hetexc_beta <- read_delim("output/mcmcmodels/IUCN_hetexc_beta.txt", delim = " ")
-hetexc_R2 <- read_delim("output/mcmcmodels/IUCN_hetexc_R2.txt", delim = " ")
+hetexc_R2 <- read_delim("output/mcmcmodels/IUCN_hetexc_R2_marginal.txt", delim = " ")
+hetexc_R2c <- read_delim("output/mcmcmodels/IUCN_hetexc_R2_conditional.txt", delim = " ")
 bot_beta <- read_delim("output/mcmcmodels/IUCN_bot_beta.txt", delim = " ")
-bot_R2 <- read_delim("output/mcmcmodels/IUCN_bot_R2.txt", delim = " ")
-
+bot_R2 <- read_delim("output/mcmcmodels/IUCN_bot_R2_marginal.txt", delim = " ")
+bot_R2c <- read_delim("output/mcmcmodels/IUCN_bot_R2_conditional.txt", delim = " ")
 
 iucn_mod <- data.frame(variables = rep("IUCN status", 3),
                         betas = c(
@@ -440,9 +461,9 @@ options(knitr.kable.NA = "")
 
 mod_full$r2marginal <- c(
                         paste0(round(mod_R2[1,2], 2), " (", round(mod_R2[1,3], 2), ", ", round(mod_R2[1,4], 2), ")"),
-                        NA,
+                        rep(NA,3),
                         paste0(round(mod_R22[1,2], 2), " (", round(mod_R22[1,3], 2), ", ", round(mod_R22[1,4], 2), ")"),
-                        NA,
+                        rep(NA,3),
                         paste0(round(mod_R2_ar[1,2], 2), " (", round(mod_R2_ar[1,3], 2), ", ", round(mod_R2_ar[1,4], 2), ")"),
                         rep(NA,4),
                         paste0(round(gendiv_R2[1,2], 2), " (", round(gendiv_R2[1,3], 2), ", ", round(gendiv_R2[1,4], 2), ")"),
@@ -450,13 +471,25 @@ mod_full$r2marginal <- c(
                         paste0(round(bot_R2[1,2], 2), " (", round(bot_R2[1,3], 2), ", ", round(bot_R2[1,4], 2), ")")
     )
 
+mod_full$r2conditional <- c(
+    paste0(round(mod_R2c[1,2], 2), " (", round(mod_R2c[1,3], 2), ", ", round(mod_R2c[1,4], 2), ")"),
+    rep(NA,3),
+    paste0(round(mod_R22c[1,2], 2), " (", round(mod_R22c[1,3], 2), ", ", round(mod_R22c[1,4], 2), ")"),
+    rep(NA,3),
+    paste0(round(mod_R2c_ar[1,2], 2), " (", round(mod_R2c_ar[1,3], 2), ", ", round(mod_R2c_ar[1,4], 2), ")"),
+    rep(NA,4),
+    paste0(round(gendiv_R2c[1,2], 2), " (", round(gendiv_R2c[1,3], 2), ", ", round(gendiv_R2c[1,4], 2), ")"),
+    paste0(round(hetexc_R2c[1,2], 2), " (", round(hetexc_R2c[1,3], 2), ", ", round(hetexc_R2c[1,4], 2), ")"),
+    paste0(round(bot_R2c[1,2], 2), " (", round(bot_R2c[1,3], 2), ", ", round(bot_R2c[1,4], 2), ")")
+)
+
 # expression(R^2~unique)
 kable(mod_full, format = "latex", booktabs = T, align = "c",
-    col.names = c("Model", "stand. $\\beta$", "$R^2_{unique}$", "$r(\\hat{Y},x)$", "$R^2_{marginal}$"), escape = F) %>%
-    group_rows("prop_{het-exc}", 1, 2, latex_gap_space = "1em", escape = F) %>% 
-    group_rows("p$_{bot}$", 3, 4, latex_gap_space = "1em",escape = F) %>% 
-    group_rows("A_{r}", 5, 9, latex_gap_space = "1em", escape = F) %>% 
-    group_rows("A_{r}", 10,10, latex_gap_space = "1em", escape = F) %>% 
-    group_rows("prop_{het-exc}", 11,11, latex_gap_space = "1em", escape = F) %>% 
-    group_rows("p$_{bot}$", 12,12, latex_gap_space = "1em", escape = F) %>% 
+    col.names = c("Model", "stand. $\\beta$", "$R^2_{unique}$", "$r(\\hat{Y},x)$", "$R^2_{marginal}$", "$R^2_{conditional}$"), escape = F) %>%
+    group_rows("prop_{het-exc}", 1, 4, latex_gap_space = "1em", escape = F) %>% 
+    group_rows("p$_{bot}$", 5, 8, latex_gap_space = "1em",escape = F) %>% 
+    group_rows("A_{r}", 9, 13, latex_gap_space = "1em", escape = F) %>% 
+    group_rows("A_{r}", 14,14, latex_gap_space = "1em", escape = F) %>% 
+    group_rows("prop_{het-exc}", 15,15, latex_gap_space = "1em", escape = F) %>% 
+    group_rows("p$_{bot}$", 16,16, latex_gap_space = "1em", escape = F) %>% 
     kable_as_image("SupTab8_full", file_format = "jpeg", keep_pdf = TRUE, density = 600)

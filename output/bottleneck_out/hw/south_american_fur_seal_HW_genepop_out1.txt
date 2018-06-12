@@ -4,50 +4,50 @@ Parameters for T.P.M.: Variance=30.00  Probability=70.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\south_american_fur_seal_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\south_american_fur_seal_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes     
 Estimation based on 10000 replications.
 
 
-Date: 08/17/2017  Time: 12:25:06 PM.
+Date: 6/8/2018  Time: 11:28:49 AM.
 Population : 1
                  observed   |     under the I.A.M.      |     under the T.P.M.      |     under the S.M.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob |   Heq  S.D.  DH/sd   Prob 
-L_M11a        422  12 0.823 | 0.696 0.118  1.074 0.0812 | 0.793 0.059  0.506 0.3632 | 0.857 0.028 -1.209 0.1164 
-L_Hg63        338  11 0.823 | 0.681 0.123  1.154 0.0567 | 0.779 0.064  0.694 0.2600 | 0.845 0.031 -0.704 0.2032 
-L_PvcA        390   9 0.825 | 0.619 0.144  1.436 0.0105 | 0.726 0.082  1.206 0.0536 | 0.806 0.044  0.443 0.3971 
-L_Hg810       382  11 0.764 | 0.676 0.126  0.700 0.2687 | 0.774 0.066 -0.148 0.3505 | 0.844 0.032 -2.469 0.0260 
-L_Pv9         352   9 0.744 | 0.622 0.142  0.860 0.1975 | 0.727 0.081  0.201 0.5105 | 0.808 0.042 -1.550 0.0774 
+L_M11a        422  12 0.823 | 0.695 0.119  1.073 0.0795 | 0.792 0.060  0.505 0.3540 | 0.857 0.029 -1.184 0.1192 
+L_Hg63        338  11 0.823 | 0.682 0.122  1.157 0.0543 | 0.779 0.063  0.705 0.2549 | 0.845 0.032 -0.673 0.2098 
+L_PvcA        390   9 0.825 | 0.615 0.145  1.452 0.0096 | 0.725 0.083  1.206 0.0491 | 0.806 0.043  0.438 0.3954 
+L_Hg810       382  11 0.764 | 0.673 0.127  0.717 0.2623 | 0.776 0.066 -0.177 0.3451 | 0.844 0.032 -2.469 0.0261 
+L_Pv9         352   9 0.744 | 0.622 0.143  0.851 0.1968 | 0.729 0.082  0.177 0.4927 | 0.807 0.042 -1.508 0.0799 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
 Expected number of loci with heterozygosity excess:   3.00
 0 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
-Probability: 0.07712
+Probability: 0.07711
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
 Expected number of loci with heterozygosity excess:   2.96
 1 loci with heterozygosity deficiency and 4 loci with heterozygosity excess.
-Probability: 0.32483
+Probability: 0.32385
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
 Expected number of loci with heterozygosity excess:   2.92
 4 loci with heterozygosity deficiency and 1 loci with heterozygosity excess.
-Probability: 0.10003
+Probability: 0.09920
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 5 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-T2:   2.336  Probability:  0.00974
+T2:   2.348  Probability:  0.00945
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:   1.099  Probability:  0.13578
+T2:   1.080  Probability:  0.14005
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-T2:  -2.454  Probability:  0.00706
+T2:  -2.413  Probability:  0.00791
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -57,9 +57,9 @@ Probability (one tail for H excess): 0.01563
 Probability (two tails for H excess and deficiency): 0.03125
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.98438
-Probability (one tail for H excess): 0.03125
-Probability (two tails for H excess or deficiency): 0.06250
+Probability (one tail for H deficiency): 0.96875
+Probability (one tail for H excess): 0.04688
+Probability (two tails for H excess or deficiency): 0.09375
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
 Probability (one tail for H deficiency): 0.03125
@@ -72,4 +72,4 @@ ________________________________________________________________________________
   | 0.596 | 0.288 | 0.058 | 0.038 | 0.019 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/17/2017  Time: 1:19:11 PM.
+End of computation. Date: 6/8/2018  Time: 11:45:11 AM.

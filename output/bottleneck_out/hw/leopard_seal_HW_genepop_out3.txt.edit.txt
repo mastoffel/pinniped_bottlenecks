@@ -9,14 +9,14 @@ ________________________________________________________________________________
 Caution: only 12 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -4.035  Probability:  0.00003
+T2:  -4.000  Probability:  0.00003
 
 ______________________________________________________________________________________
                                WILCOXON TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.00671
-Probability (one tail for H excess): 0.99475
-Probability (two tails for H excess or deficiency): 0.01343
+Probability (one tail for H deficiency): 0.01709
+Probability (one tail for H excess): 0.99329
+Probability (two tails for H excess or deficiency): 0.03418
 
 ______________________________________________________________________________________
                                MODE-SHIFT
@@ -24,4 +24,4 @@ ________________________________________________________________________________
   | 0.767 | 0.147 | 0.027 | 0.033 | 0.007 | 0.000 | 0.007 | 0.000 | 0.013 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/14/2017  Time: 9:30:56 AM.
+End of computation. Date: 6/7/2018  Time: 11:10:18 AM.

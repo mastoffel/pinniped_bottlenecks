@@ -4,51 +4,51 @@ Parameters for T.P.M.: Variance=30.00  Probability=90.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\saimaa_ringed_seal_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\saimaa_ringed_seal_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes               
 Estimation based on 10000 replications.
 
 
-Date: 08/14/2017  Time: 4:17:35 PM.
+Date: 6/7/2018  Time: 4:04:30 PM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_Hg14        344   2 0.023 | 0.184 0.168 -0.958 0.2294 
-L_Hg23        344   2 0.285 | 0.184 0.170  0.596 0.2955 
-L_Hg42        344   3 0.548 | 0.389 0.162  0.979 0.1407 
-L_Hg610       344   2 0.046 | 0.185 0.170 -0.816 0.3339 
-L_Hg89        344   3 0.550 | 0.391 0.163  0.973 0.1460 
-L_Hg810       344   2 0.285 | 0.185 0.168  0.595 0.2956 
-L_Hgdii       344   3 0.141 | 0.390 0.165 -1.509 0.1107 
-L_Hgl15       342  16 0.734 | 0.872 0.029 -4.753 0.0023 
-L_Pvc19       344   4 0.495 | 0.511 0.138 -0.121 0.3662 
-L_Pvc26       342   4 0.236 | 0.511 0.138 -1.981 0.0555 
-L_Pvc78       344   2 0.285 | 0.182 0.168  0.609 0.2915 
-L_SGPv9       344   2 0.174 | 0.184 0.170 -0.056 0.4248 
-L_SGPv10      344   2 0.434 | 0.187 0.169  1.467 0.1408 
-L_SGPv11      344   3 0.612 | 0.386 0.166  1.358 0.0532 
-L_SGPv16      344   2 0.115 | 0.184 0.169 -0.410 0.4885 
+L_Hg14        344   2 0.023 | 0.185 0.171 -0.949 0.2384 
+L_Hg23        344   2 0.285 | 0.183 0.169  0.606 0.2942 
+L_Hg42        344   3 0.548 | 0.387 0.164  0.985 0.1424 
+L_Hg610       344   2 0.046 | 0.182 0.169 -0.806 0.3311 
+L_Hg89        344   3 0.550 | 0.389 0.164  0.977 0.1460 
+L_Hg810       344   2 0.285 | 0.184 0.169  0.599 0.2990 
+L_Hgdii       344   3 0.141 | 0.385 0.166 -1.470 0.1169 
+L_Hgl15       342  16 0.734 | 0.871 0.030 -4.598 0.0020 
+L_Pvc19       344   4 0.495 | 0.510 0.139 -0.109 0.3682 
+L_Pvc26       342   4 0.236 | 0.511 0.138 -1.980 0.0539 
+L_Pvc78       344   2 0.285 | 0.182 0.169  0.608 0.2955 
+L_SGPv9       344   2 0.174 | 0.184 0.168 -0.057 0.4288 
+L_SGPv10      344   2 0.434 | 0.184 0.169  1.484 0.1407 
+L_SGPv11      344   3 0.612 | 0.388 0.164  1.362 0.0520 
+L_SGPv16      344   2 0.115 | 0.184 0.169 -0.409 0.4837 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
 Expected number of loci with heterozygosity excess:   7.37
 8 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
-Probability: 0.52758
+Probability: 0.52800
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 15 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -1.039  Probability:  0.14929
+T2:  -0.971  Probability:  0.16590
 
 ______________________________________________________________________________________
                                WILCOXON TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.44519
-Probability (one tail for H excess): 0.57654
-Probability (two tails for H excess or deficiency): 0.89038
+Probability (one tail for H deficiency): 0.46704
+Probability (one tail for H excess): 0.55481
+Probability (two tails for H excess or deficiency): 0.93408
 
 ______________________________________________________________________________________
                                MODE-SHIFT
@@ -56,4 +56,4 @@ ________________________________________________________________________________
   | 0.500 | 0.115 | 0.019 | 0.077 | 0.019 | 0.058 | 0.038 | 0.000 | 0.077 | 0.096 |
 normal L-shaped distribution
 
-End of computation. Date: 08/14/2017  Time: 4:42:40 PM.
+End of computation. Date: 6/7/2018  Time: 4:14:39 PM.

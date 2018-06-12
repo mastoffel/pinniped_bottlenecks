@@ -1,16 +1,16 @@
                                 SIGN TEST
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.81
+Expected number of loci with heterozygosity excess:   7.82
 2 loci with heterozygosity deficiency and 11 loci with heterozygosity excess.
-Probability: 0.05882
+Probability: 0.05886
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.69
+Expected number of loci with heterozygosity excess:   7.70
 8 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
-Probability: 0.10928
+Probability: 0.10765
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.59
+Expected number of loci with heterozygosity excess:   7.57
 12 loci with heterozygosity deficiency and 1 loci with heterozygosity excess.
 Probability: 0.00022
 
@@ -19,20 +19,20 @@ ________________________________________________________________________________
 Caution: only 13 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-T2:   1.943  Probability:  0.02601
+T2:   1.941  Probability:  0.02612
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -1.955  Probability:  0.02531
+T2:  -1.900  Probability:  0.02869
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-T2: -12.489  Probability:  0.00000
+T2: -12.482  Probability:  0.00000
 
 ______________________________________________________________________________________
                                WILCOXON TEST
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.97607
-Probability (one tail for H excess): 0.02869
-Probability (two tails for H excess and deficiency): 0.05737
+Probability (one tail for H deficiency): 0.97131
+Probability (one tail for H excess): 0.03406
+Probability (two tails for H excess and deficiency): 0.06812
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
 Probability (one tail for H deficiency): 0.20715
@@ -50,4 +50,4 @@ ________________________________________________________________________________
   | 0.776 | 0.115 | 0.061 | 0.006 | 0.018 | 0.012 | 0.000 | 0.012 | 0.000 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/16/2017  Time: 2:49:32 PM.
+End of computation. Date: 6/7/2018  Time: 12:20:07 PM.

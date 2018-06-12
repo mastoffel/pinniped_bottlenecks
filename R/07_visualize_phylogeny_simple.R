@@ -29,9 +29,12 @@ library(extrafont)
 # ggthemr('dust')
 source("R/martin.R")
 
-calc_on_cluster <- TRUE
+calc_on_cluster <- FALSE
+calc_on_HW <- TRUE
 if (calc_on_cluster) {
     save_files <- "_cl"    
+} else if (calc_on_HW) {
+    save_files <- "_HW"
 } else {
     save_files <- ""
 }
@@ -40,7 +43,7 @@ if (calc_on_cluster) {
 seals <- read_csv(paste0("data/processed/seal_data_complete_rarefac10_30", save_files, ".csv"))
 
 # load model probablities from ABC
-model_probs <- read_delim(paste0("data/processed/sims_10000k", save_files, "_model_selection_30.txt"), 
+model_probs <- read_delim(paste0("data/processed/sims_10000kbot500", save_files, "_model_selection_30.txt"), 
     delim = " ", col_names = c("species", "bot", "neut"), skip = 1)
 # modify species names in model_probs as they still contain _cl_
 if (calc_on_cluster) {
@@ -199,7 +202,7 @@ stats_df <- left_join(stats_for_tree_resorted, all_stats_for_tree, by = "taxa")
 new_df <- data.frame(matrix(ncol = ncol(stats_df), nrow = 27))
 names(new_df) <- names(stats_df)
 tree_df <- rbind(stats_df, new_df)
-tree_df <- data.frame(node = 1:56, tree_df)
+tree_df <- data.frame(node = 1:57, tree_df)
 
 test_df <- mutate(tree_df, 
     color = case_when(is.na(BreedingType) ~ "#bdbdbd",
@@ -247,7 +250,7 @@ scale_fill_manual(values = c("#f7f7f7", "#d9d9d9", "#969696", "#252525", "white"
     guides(fill = guide_legend(title = "IUCN rating", title.position = "top", direction = "vertical", order = 2, override.aes = list(size=2.5)),
         size = guide_legend(title.position = "top", title = "Global abundance", direction = "horizontal", order = 1),
         color = guide_legend(title.position = "top", direction = "horizontal", order = 3)) + #color = guide_legend(title = "supported model by ABC", direction = "horizontal",label = c("bot", "const"))
-    theme(plot.margin=unit(c(84, -5,30,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
+    theme(plot.margin=unit(c(72, -5,32,10),"points"), #c(30,-100,20,0) unit(c(50,-50,20,0) #c(52, -5,10,10)
         legend.position= c(0.24,0.93), #legend.direction = "horizontal",
         legend.spacing = unit(5, "points"),
         legend.key.height=unit(1,"line"),
@@ -335,8 +338,12 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         axis.ticks=element_blank(),
         axis.text.x = element_text(angle = 0, hjust = 0.4, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
-        legend.position=c(0.57, 1.2337),
-        plot.margin=unit(c(87.8,10,20.1,10),"points"), #    plot.margin=unit(c(77.8,10,20.1,10),"points"),
+        legend.position=c(0.57, 1.208),
+        # legend.position=c(0.57, 1.2337),
+       # legend.margin=margin(0,0,0,0),
+        plot.margin=unit(c(80.8,10,22.8,10),"points"), 
+        #   plot.margin=unit(c(87.8,10,22.8,10),"points"),
+        #    plot.margin=unit(c(77.8,10,20.1,10),"points"),
         #plot.margin=unit(c(8.3,10,19.5,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
         #plot.margin=unit(c(20,10,23,10),"points"),
         axis.title.x=element_blank(),
@@ -401,6 +408,9 @@ p_final <- p_final +
     draw_plot_label(c("A", "B", "C"), c(0.67, 0.79, 0.91), c(0.995, 0.995, 0.995), size = 11)
 ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_30", save_files, ".jpg"), p_final,
     height = 6.1, width = 9, device = "jpg")
+
+
+
 
 ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_30", save_files, ".pdf"), p_final,
     height = 6.1, width = 9.2, device = "pdf")

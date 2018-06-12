@@ -1,0 +1,5 @@
+tol5e.04.Var1 tol5e.04.Var2 tol5e.04.Freq
+bot bot 85
+neut bot 11
+bot neut 15
+neut neut 89

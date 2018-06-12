@@ -1,13 +1,13 @@
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:  12.89
+Expected number of loci with heterozygosity excess:  12.90
 12 loci with heterozygosity deficiency and 10 loci with heterozygosity excess.
-Probability: 0.15039
+Probability: 0.14963
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -1.898  Probability:  0.02882
+T2:  -1.926  Probability:  0.02703
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -22,4 +22,4 @@ ________________________________________________________________________________
   | 0.686 | 0.139 | 0.052 | 0.036 | 0.026 | 0.031 | 0.010 | 0.005 | 0.015 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/11/2017  Time: 5:41:55 PM.
+End of computation. Date: 6/6/2018  Time: 6:30:42 PM.

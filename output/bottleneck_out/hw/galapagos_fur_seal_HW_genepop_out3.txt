@@ -4,41 +4,41 @@ Parameters for T.P.M.: Variance=30.00  Probability=90.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\galapagos_fur_seal_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\galapagos_fur_seal_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes            
 Estimation based on 10000 replications.
 
 
-Date: 08/10/2017  Time: 3:39:39 PM.
+Date: 6/6/2018  Time: 2:29:45 PM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_E05         174   4 0.438 | 0.530 0.133 -0.685 0.2120 
-L_D02         178  17 0.902 | 0.890 0.024  0.494 0.3782 
-L_B09         178   6 0.768 | 0.673 0.092  1.025 0.1089 
-L_Zcc58       178   9 0.739 | 0.781 0.057 -0.737 0.1876 
-L_Hg81        180   5 0.538 | 0.610 0.112 -0.646 0.2121 
-L_Zcc7t       180   5 0.437 | 0.615 0.111 -1.603 0.0782 
-L_Hg61        178   5 0.370 | 0.612 0.109 -2.219 0.0395 
-L_F07         178   6 0.541 | 0.675 0.090 -1.495 0.0849 
-L_E03         176   8 0.840 | 0.752 0.067  1.325 0.0272 
-L_E12         180   7 0.783 | 0.717 0.079  0.837 0.1889 
-L_E04         174  11 0.864 | 0.821 0.044  0.968 0.1375 
-L_B07         180   7 0.794 | 0.717 0.078  0.980 0.1276 
+L_E05         174   4 0.438 | 0.531 0.133 -0.697 0.2069 
+L_D02         178  17 0.902 | 0.890 0.023  0.484 0.3769 
+L_B09         178   6 0.768 | 0.671 0.094  1.023 0.1101 
+L_Zcc58       178   9 0.739 | 0.780 0.057 -0.722 0.1902 
+L_Hg81        180   5 0.538 | 0.611 0.111 -0.657 0.2073 
+L_Zcc7t       180   5 0.437 | 0.613 0.111 -1.581 0.0814 
+L_Hg61        178   5 0.370 | 0.610 0.111 -2.162 0.0417 
+L_F07         178   6 0.541 | 0.672 0.093 -1.410 0.0899 
+L_E03         176   8 0.840 | 0.752 0.067  1.325 0.0285 
+L_E12         180   7 0.783 | 0.717 0.078  0.845 0.1949 
+L_E04         174  11 0.864 | 0.823 0.044  0.945 0.1456 
+L_B07         180   7 0.794 | 0.716 0.078  0.993 0.1216 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
 Expected number of loci with heterozygosity excess:   7.08
 6 loci with heterozygosity deficiency and 6 loci with heterozygosity excess.
-Probability: 0.36222
+Probability: 0.36242
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 12 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -0.507  Probability:  0.30599
+T2:  -0.466  Probability:  0.32075
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -53,4 +53,4 @@ ________________________________________________________________________________
   | 0.589 | 0.244 | 0.067 | 0.033 | 0.011 | 0.000 | 0.022 | 0.033 | 0.000 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/10/2017  Time: 3:52:29 PM.
+End of computation. Date: 6/6/2018  Time: 2:36:45 PM.

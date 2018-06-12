@@ -4,45 +4,45 @@ Parameters for T.P.M.: Variance=30.00  Probability=90.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\lagoda_ringed_seal_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\lagoda_ringed_seal_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes                
 Estimation based on 10000 replications.
 
 
-Date: 08/14/2017  Time: 9:02:22 AM.
+Date: 6/7/2018  Time: 10:13:26 AM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_Hg14         32   7 0.831 | 0.788 0.055  0.777 0.2230 
-L_Hg36         32   7 0.698 | 0.789 0.054 -1.690 0.0690 
-L_Hg42         32   9 0.804 | 0.847 0.037 -1.171 0.1194 
-L_Hg610        32  11 0.839 | 0.885 0.027 -1.717 0.0614 
-L_Hg89         32  10 0.877 | 0.868 0.032  0.297 0.4743 
-L_Hg810        32   4 0.542 | 0.607 0.110 -0.586 0.2309 
-L_Hgdii        32   6 0.810 | 0.745 0.069  0.946 0.1385 
-L_Hgl15        32  15 0.940 | 0.931 0.018  0.492 0.3362 
-L_Pvc19        32   7 0.675 | 0.789 0.056 -2.026 0.0451 
-L_Pvc26        32   4 0.599 | 0.604 0.110 -0.050 0.4010 
-L_Pvc30        32   8 0.823 | 0.821 0.045  0.028 0.4255 
-L_Pvc78        32   6 0.698 | 0.745 0.069 -0.683 0.2021 
-L_SGPv9        32   5 0.238 | 0.688 0.085 -5.276 0.0004 
-L_SGPv10       32  10 0.865 | 0.868 0.031 -0.088 0.3852 
-L_SGPv11       32   7 0.728 | 0.789 0.056 -1.087 0.1239 
-L_SGPv16       32   6 0.752 | 0.745 0.069  0.095 0.4557 
+L_Hg14         32   7 0.831 | 0.789 0.056  0.754 0.2280 
+L_Hg36         32   7 0.698 | 0.788 0.055 -1.641 0.0722 
+L_Hg42         32   9 0.804 | 0.847 0.038 -1.120 0.1188 
+L_Hg610        32  11 0.839 | 0.885 0.026 -1.796 0.0614 
+L_Hg89         32  10 0.877 | 0.868 0.031  0.278 0.4837 
+L_Hg810        32   4 0.542 | 0.606 0.110 -0.582 0.2355 
+L_Hgdii        32   6 0.810 | 0.745 0.069  0.941 0.1383 
+L_Hgl15        32  15 0.940 | 0.930 0.019  0.482 0.3426 
+L_Pvc19        32   7 0.675 | 0.789 0.055 -2.057 0.0465 
+L_Pvc26        32   4 0.599 | 0.607 0.109 -0.079 0.3902 
+L_Pvc30        32   8 0.823 | 0.821 0.045  0.024 0.4250 
+L_Pvc78        32   6 0.698 | 0.745 0.069 -0.687 0.1997 
+L_SGPv9        32   5 0.238 | 0.687 0.086 -5.222 0.0006 
+L_SGPv10       32  10 0.865 | 0.867 0.032 -0.064 0.3967 
+L_SGPv11       32   7 0.728 | 0.788 0.056 -1.079 0.1306 
+L_SGPv16       32   6 0.752 | 0.747 0.068  0.080 0.4415 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   9.55
+Expected number of loci with heterozygosity excess:   9.53
 10 loci with heterozygosity deficiency and 6 loci with heterozygosity excess.
-Probability: 0.06153
+Probability: 0.06277
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 16 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -2.935  Probability:  0.00167
+T2:  -2.942  Probability:  0.00163
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -57,4 +57,4 @@ ________________________________________________________________________________
   | 0.656 | 0.139 | 0.082 | 0.057 | 0.016 | 0.033 | 0.008 | 0.000 | 0.008 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/14/2017  Time: 9:16:59 AM.
+End of computation. Date: 6/7/2018  Time: 10:22:58 AM.

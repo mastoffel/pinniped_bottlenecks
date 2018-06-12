@@ -4,51 +4,51 @@ Parameters for T.P.M.: Variance=30.00  Probability=90.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\new_zealand_sea_lion_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\new_zealand_sea_lion_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes               
 Estimation based on 10000 replications.
 
 
-Date: 08/14/2017  Time: 11:22:10 AM.
+Date: 6/7/2018  Time: 12:05:56 PM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_Lc28        408   4 0.661 | 0.507 0.139  1.106 0.1000 
-L_Pv9         410   4 0.502 | 0.508 0.139 -0.043 0.3954 
-L_PvcA        408   9 0.720 | 0.763 0.064 -0.668 0.2107 
-L_GIA         406   4 0.600 | 0.508 0.140  0.651 0.2962 
-L_Hg4_2       408  13 0.825 | 0.838 0.038 -0.329 0.3105 
-L_Pv11        410   7 0.727 | 0.700 0.082  0.331 0.4394 
-L_Hg6_3       408   7 0.753 | 0.700 0.084  0.626 0.2982 
-L_HI16        410   9 0.710 | 0.761 0.065 -0.783 0.1770 
-L_Hg6_1       408   8 0.655 | 0.734 0.074 -1.066 0.1267 
-L_M11A        408   4 0.620 | 0.508 0.140  0.801 0.2319 
-L_Lc5         410   4 0.488 | 0.504 0.140 -0.113 0.3636 
-L_ZcCgDh5_16  408  17 0.902 | 0.878 0.028  0.878 0.1840 
-L_OrrFCB1     408   9 0.760 | 0.761 0.065 -0.009 0.4106 
-L_OrrFCB7     408   7 0.788 | 0.697 0.085  1.065 0.0979 
-L_ZcwE03      404   4 0.526 | 0.508 0.141  0.131 0.4718 
+L_Lc28        408   4 0.661 | 0.506 0.141  1.096 0.1081 
+L_Pv9         410   4 0.502 | 0.506 0.142 -0.032 0.3924 
+L_PvcA        408   9 0.720 | 0.763 0.063 -0.681 0.2002 
+L_GIA         406   4 0.600 | 0.510 0.139  0.648 0.2970 
+L_Hg4_2       408  13 0.825 | 0.836 0.040 -0.275 0.3188 
+L_Pv11        410   7 0.727 | 0.696 0.086  0.367 0.4306 
+L_Hg6_3       408   7 0.753 | 0.697 0.085  0.653 0.2788 
+L_HI16        410   9 0.710 | 0.763 0.063 -0.835 0.1717 
+L_Hg6_1       408   8 0.655 | 0.732 0.074 -1.051 0.1319 
+L_M11A        408   4 0.620 | 0.503 0.141  0.826 0.2239 
+L_Lc5         410   4 0.488 | 0.507 0.140 -0.138 0.3564 
+L_ZcCgDh5_16  408  17 0.902 | 0.877 0.028  0.882 0.1813 
+L_OrrFCB1     408   9 0.760 | 0.762 0.064 -0.029 0.4079 
+L_OrrFCB7     408   7 0.788 | 0.697 0.084  1.082 0.0922 
+L_ZcwE03      404   4 0.526 | 0.508 0.139  0.130 0.4740 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   8.87
+Expected number of loci with heterozygosity excess:   8.84
 7 loci with heterozygosity deficiency and 8 loci with heterozygosity excess.
-Probability: 0.41774
+Probability: 0.42442
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 15 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:   0.666  Probability:  0.25263
+T2:   0.682  Probability:  0.24747
 
 ______________________________________________________________________________________
                                WILCOXON TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.82043
-Probability (one tail for H excess): 0.19470
-Probability (two tails for H excess or deficiency): 0.38940
+Probability (one tail for H deficiency): 0.80530
+Probability (one tail for H excess): 0.21060
+Probability (two tails for H excess or deficiency): 0.42120
 
 ______________________________________________________________________________________
                                MODE-SHIFT
@@ -56,4 +56,4 @@ ________________________________________________________________________________
   | 0.564 | 0.200 | 0.073 | 0.064 | 0.064 | 0.009 | 0.027 | 0.000 | 0.000 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/14/2017  Time: 11:44:47 AM.
+End of computation. Date: 6/7/2018  Time: 12:28:57 PM.

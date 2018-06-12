@@ -1,20 +1,20 @@
 # reads in an excel file with multiple sheets of microsatellite data and makes genepop files for each
 
-library(devtools)
+# library(devtools)
 # devtools::install_github("hadley/readxl")
 library(readxl)
 
 # sheet numbers to load
-dataset_names <- excel_sheets("data/processed/seal_data_largest_clust_and_pop_30.xlsx") # seal_data_largest_clust_and_pop_29.xlsx
+dataset_names <- excel_sheets("../data/processed/seal_data_largest_clust_and_pop_30.xlsx") # seal_data_largest_clust_and_pop_29.xlsx
 
-dataset_names_hw <- excel_sheets("data/processed/seal_data_largest_clust_and_pop_30.xlsx")
+dataset_names_hw <- excel_sheets("../data/processed/seal_data_largest_clust_and_pop_all_hw_30.xlsx")
 
 load_dataset <- function(dataset_names) {
-        read_excel("data/processed/seal_data_largest_clust_and_pop_30.xlsx", sheet = dataset_names)
+        read_excel("../data/processed/seal_data_largest_clust_and_pop_30.xlsx", sheet = dataset_names)
 }
 
 load_dataset_hw <- function(dataset_names) {
-        read_excel("data/processed/seal_data_largest_clust_and_pop_30.xlsx", sheet = dataset_names)
+        read_excel("../data/processed/seal_data_largest_clust_and_pop_all_hw_30.xlsx", sheet = dataset_names)
 }
 
 # load all datasets
@@ -92,5 +92,5 @@ lapply(1:length(out), function(i) write.table(out[[i]],
                                                na = "", row.names = F, col.names = F, quote = F))
 
 lapply(1:length(out_hw), function(i) write.table(out_hw[[i]], 
-                                             file = paste("data/processed/genepop_files/HW/", names(out_hw)[i], "_HW_genepop.txt", sep = ""),
+                                             file = paste("../data/processed/genepop_files/HW/", names(out_hw)[i], "_HW_genepop.txt", sep = ""),
                                              na = "", row.names = F, col.names = F, quote = F))

@@ -5,44 +5,19 @@
 # (1) all_stats_30_modeling.csv
 
 # packages
-library(tibble)
-library(dplyr)
-library(ggtree)
-library(ape)
-library(phytools)
-library(readxl)
-library(stringr)
-library(viridis)
-library(ggtree)
-library(ggthemr)
-library(cowplot)
-library(ggthemes)
-library(ggimage)
-library(RColorBrewer)
-library(scales)
-library(forcats)
-library(readr)
-# for comparative analysis
-library(caper)
-library(yhat)
-library(dplyr)
-library(ggrepel)
-library(GGally)
+library(pacman)
+p_load(tibble, dplyr, ggtree, ape, phytools, readxl, stringr, viridis, ggtree, ggthemr, cowplot,
+       ggthemes, ggimage, RColorBrewer, scales, forcats, readr, caper, yhat, dplyr, ggrepel,
+       GGally, tidyr, kinship2, MCMCglmm, purrr, readr)
 source("R/martin.R")
-library(tidyr)
-library("kinship2")
-library(MCMCglmm)
-library(purrr)
-library(readr)
 ## what should this script do:
 
 # modeling
 modeling <- TRUE
-save_models <- TRUE
 
 # plotting
 plotting <- TRUE
-save_plots <- TRUE
+
 
 # load data and prepare mixed models
 
@@ -57,6 +32,9 @@ all_stats <- as.data.frame(read_csv("data/processed/all_stats_30_modeling.csv"))
 inv_phylo <- inverseA(tree_final, nodes="TIPS",scale=FALSE)$Ainv #,scale=TRUE
 prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
 
+nitt <- 110000
+burnin <- 10000
+thin <- 100
 # Models for for figure "do bottleneck signatures predict genetic diversity?"
 ## model 1: ABCprob(bot) ~ genetic diversity -------------------------------------------------------
 
@@ -75,7 +53,7 @@ run_mod <- function(iter){
     MCMCglmm(num_alleles_mean ~ bot_stand, #
         random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
         family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-        data=stats_mod_gen,nitt=1100000,burnin=100000,thin=1000)
+        data=stats_mod_gen,nitt=nitt,burnin=burnin,thin=thin)
 }
 
 
@@ -118,51 +96,41 @@ median(var_phy)
 HPDinterval(var_phy)
 
 # R2s
+library(mcmcR2)
+set.seed(312)
+for (r2type in c("marginal", "conditional")) {
+#for (r2type in c("conditional")) {    
+    model_file_name_R2 <- paste0(mod_name, "_R2_", r2type)
+    
+    if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
 
-# check if model R2s are saved
-model_file_name_R2 <- paste0(mod_name,"_R2", ".RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
-    set.seed(324)
-    R2_gen <- mcmcR2::partR2(mod_gen, partvars = c("bot_stand"),
-        data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, 
-        nitt = 1100000, burnin = 100000, thin = 1000)
-    saveRDS(R2_gen, file = paste0("output/mcmcmodels/", model_file_name_R2))
-}
-
-R2_gen <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-
-if (save_models){
-    R2_gen$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
-    R2_gen$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
-    # summary
-    mod_sum <- summary(mod_gen)
-    # save summary to file
-    sum_mod_gen <- mod_gen %>% 
-        summary() %$%
-        solutions %>% 
-        as.data.frame() %>% 
-        rownames_to_column("components") %>% 
-        mutate(post_median = apply(mod_gen$Sol, 2, median)) %>% 
-        mutate(post_mode = posterior.mode(mod_gen$Sol)) %>% 
-        .[c(1,2,7,8,3:6)] %>% 
-        rename(post_mean= post.mean,
-            lower =  "l-95% CI",
-            upper = "u-95% CI") %>% 
-        write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
-}
+        R2_gen <- mcmcR2::partR2(mod_gen, partvars = c("bot_stand"), type = r2type,
+            data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, 
+            nitt = nitt, burnin = burnin, thin = thin)
+        saveRDS(R2_gen, file = paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+    }
+    
+    R2_gen$R2 %>% write_delim(paste0("output/mcmcmodels/", model_file_name_R2 ,".txt"))
 
 }
+R2_gen$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
+# summary
+mod_sum <- summary(mod_gen)
+# save summary to file
+sum_mod_gen <- mod_gen %>% 
+    summary() %$%
+    solutions %>% 
+    as.data.frame() %>% 
+    rownames_to_column("components") %>% 
+    mutate(post_median = apply(mod_gen$Sol, 2, median)) %>% 
+    mutate(post_mode = posterior.mode(mod_gen$Sol)) %>% 
+    .[c(1,2,7,8,3:6)] %>% 
+    rename(post_mean= post.mean,
+        lower =  "l-95% CI",
+        upper = "u-95% CI") %>% 
+    write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
 
-
-
-
-# simple models
-
-
-
-
-
+}
 
 ## model 2: het-exc(TPM80_ratio) ~ genetic diversity ----------------------------------------------
 
@@ -181,7 +149,7 @@ if(modeling){
         MCMCglmm(num_alleles_mean ~ TPM80_ratio_stand, #
             random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
             family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_gen,nitt=1100000,burnin=100000,thin=1000)
+            data=stats_mod_gen,nitt=nitt,burnin=burnin,thin=thin)
     }
     
     # model name
@@ -223,38 +191,41 @@ if(modeling){
     HPDinterval(var_phy)
     
     # R2s
-    # check if model R2s are saved
-    model_file_name_R2 <- paste0(mod_name,"_R2", ".RData")
-    
-    if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
-        set.seed(324)
-        R2_gen <- mcmcR2::partR2(mod_gen, partvars = c("TPM80_ratio_stand"),
-            data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, 
-            nitt = 1100000, burnin = 100000, thin = 1000)
-        saveRDS(R2_gen, file = paste0("output/mcmcmodels/", model_file_name_R2))
+    library(mcmcR2)
+    set.seed(312)
+    for (r2type in c("marginal", "conditional")) {
+       
+        model_file_name_R2 <- paste0(mod_name, "_R2_", r2type)
+        
+        if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
+            
+            R2_gen <- mcmcR2::partR2(mod_gen, c("TPM80_ratio_stand"), type = r2type,
+                data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, 
+                nitt = nitt, burnin = burnin, thin = thin)
+            saveRDS(R2_gen, file = paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+        }
+        
+        R2_gen$R2 %>% write_delim(paste0("output/mcmcmodels/", model_file_name_R2 ,".txt"))
+        
     }
     
-    R2_gen <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-    
-    if (save_models){
-        R2_gen$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
-        R2_gen$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
-        # summary
-        mod_sum <- summary(mod_gen)
-        # save summary to file
-        sum_mod_gen <- mod_gen %>% 
-            summary() %$%
-            solutions %>% 
-            as.data.frame() %>% 
-            rownames_to_column("components") %>% 
-            mutate(post_median = apply(mod_gen$Sol, 2, median)) %>% 
-            mutate(post_mode = posterior.mode(mod_gen$Sol)) %>% 
-            .[c(1,2,7,8,3:6)] %>% 
-            rename(post_mean= post.mean,
-                lower =  "l-95% CI",
-                upper = "u-95% CI") %>% 
-            write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
-    }
+    # SC
+    R2_gen$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
+    # summary
+    mod_sum <- summary(mod_gen)
+    # beta coefficients
+    sum_mod_gen <- mod_gen %>% 
+        summary() %$%
+        solutions %>% 
+        as.data.frame() %>% 
+        rownames_to_column("components") %>% 
+        mutate(post_median = apply(mod_gen$Sol, 2, median)) %>% 
+        mutate(post_mode = posterior.mode(mod_gen$Sol)) %>% 
+        .[c(1,2,7,8,3:6)] %>% 
+        rename(post_mean= post.mean,
+            lower =  "l-95% CI",
+            upper = "u-95% CI") %>% 
+        write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
     
 }
 
@@ -281,7 +252,7 @@ mod_preds_AR1 <- data.frame(predict(mod_plot_AR1, pred_df_AR1, interval = "confi
              mutate(TPM80_ratio= seq(from = 0.1, to = 1, by = 0.05))
 
 AR1_beta <- read_delim("output/mcmcmodels/gen2_hetexc_beta.txt", delim = " ")
-AR1_R2 <- read_delim("output/mcmcmodels/gen2_hetexc_R2.txt", delim = " ")
+AR1_R2 <- read_delim("output/mcmcmodels/gen2_hetexc_R2_marginal.txt", delim = " ")
 
 p1 <- ggplot(aes(x = TPM80_ratio, y = num_alleles_mean), data = all_stats) +
     geom_line(data = mod_preds_AR1, aes(y = fit), size = 1, alpha = 0.5) +
@@ -306,6 +277,9 @@ p1 <- ggplot(aes(x = TPM80_ratio, y = num_alleles_mean), data = all_stats) +
         )
 p1
 
+
+if (plotting) {
+
 ######## plot (2) ABCprob(bot) vs genetic diversity #########
 
 # re-run model, as we don't want standardized predictions for plotting
@@ -322,7 +296,7 @@ mod_preds_AR2 <- data.frame(predict(mod_plot_AR2, pred_df_AR2, interval = "confi
     mutate(bot= seq(from = 0, to = 1, by = 0.05))
 
 AR2_beta <- read_delim("output/mcmcmodels/gen1_bot_beta.txt", delim = " ")
-AR2_R2 <- read_delim("output/mcmcmodels/gen1_bot_R2.txt", delim = " ")
+AR2_R2 <- read_delim("output/mcmcmodels/gen1_bot_R2_marginal.txt", delim = " ")
 
 p2 <- ggplot(aes(x = bot, y = num_alleles_mean), data = all_stats) +
     geom_line(data = mod_preds_AR2, aes(y = fit), size = 1, alpha = 0.5) +
@@ -351,8 +325,8 @@ p_bot_vs_div <- plot_grid(p1, p2, ncol = 2, labels = c("A", "B"))
 p_bot_vs_div
 
 # save it!
-cowplot::save_plot(filename = "other_stuff/figures/figures_final/fig2_bot_vs_div.jpg", 
-                                plot = p_bot_vs_div, base_height = 3, base_width = 7)
+#cowplot::save_plot(filename = "other_stuff/figures/figures_final/fig2_bot_vs_div.jpg", 
+#                                plot = p_bot_vs_div, base_height = 3, base_width = 7)
 
 
 
@@ -373,7 +347,7 @@ if(modeling){
         MCMCglmm(bot ~ TPM80_ratio_stand, #
             random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
             family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-            data=stats_mod_gen,nitt=1100000,burnin=100000,thin=1000)
+            data=stats_mod_gen,nitt=nitt,burnin=burnin,thin=thin)
     }
     
     # model name
@@ -415,44 +389,48 @@ if(modeling){
     HPDinterval(var_phy)
     
     # R2s
-    # check if model R2s are saved
-    model_file_name_R2 <- paste0(mod_name,"_R2", ".RData")
-    
-    if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
-        set.seed(324)
-        R2_gen <- mcmcR2::partR2(mod_gen, partvars = c("TPM80_ratio_stand"),
-            data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, 
-            nitt = 1100000, burnin = 100000, thin = 1000)
-        saveRDS(R2_gen, file = paste0("output/mcmcmodels/", model_file_name_R2))
+    library(mcmcR2)
+    set.seed(3224)
+    for (r2type in c("marginal", "conditional")) {
+        
+        model_file_name_R2 <- paste0(mod_name, "_R2_", r2type)
+        
+        if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
+        
+            R2_gen <- mcmcR2::partR2(mod_gen, c("TPM80_ratio_stand"), type = r2type,
+                data = stats_mod_gen, inv_phylo = inv_phylo, prior = prior, 
+                nitt = 110000, burnin = 10000, thin = 100)
+            saveRDS(R2_gen, file = paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+        }
+        
+        R2_gen$R2 %>% write_delim(paste0("output/mcmcmodels/", model_file_name_R2 ,".txt"))
+        
     }
     
-    R2_gen <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-    
-    if (save_models){
-        R2_gen$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
-        R2_gen$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
-        # summary
-        mod_sum <- summary(mod_gen)
-        # save summary to file
-        sum_mod_gen <- mod_gen %>% 
-            summary() %$%
-            solutions %>% 
-            as.data.frame() %>% 
-            rownames_to_column("components") %>% 
-            mutate(post_median = apply(mod_gen$Sol, 2, median)) %>% 
-            mutate(post_mode = posterior.mode(mod_gen$Sol)) %>% 
-            .[c(1,2,7,8,3:6)] %>% 
-            rename(post_mean= post.mean,
-                lower =  "l-95% CI",
-                upper = "u-95% CI") %>% 
-            write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
-    }
+    # SC
+    R2_gen$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
+
+    # summary
+    mod_sum <- summary(mod_gen)
+    # save summary to file
+    sum_mod_gen <- mod_gen %>% 
+        summary() %$%
+        solutions %>% 
+        as.data.frame() %>% 
+        rownames_to_column("components") %>% 
+        mutate(post_median = apply(mod_gen$Sol, 2, median)) %>% 
+        mutate(post_mode = posterior.mode(mod_gen$Sol)) %>% 
+        .[c(1,2,7,8,3:6)] %>% 
+        rename(post_mean= post.mean,
+            lower =  "l-95% CI",
+            upper = "u-95% CI") %>% 
+        write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
+
     
 }
 
 
 # plot
-
 # some controls
 point_size <- 3.5
 point_alpha <- 0.3
@@ -471,7 +449,7 @@ mod_preds_bot_sup <- data.frame(predict(mod_plot_bot_sup, pred_df_bot_sup, inter
     mutate(TPM80_ratio= seq(from = 0.1, to = 1, by = 0.05))
 
 bot_sup_beta <- read_delim("output/mcmcmodels/gen3_bot_vs_hetexc_beta.txt", delim = " ")
-bot_sup_R2 <- read_delim("output/mcmcmodels/gen3_bot_vs_hetexc_R2.txt", delim = " ")
+bot_sup_R2 <- read_delim("output/mcmcmodels/gen3_bot_vs_hetexc_R2_marginal.txt", delim = " ")
 
 p3 <- ggplot(aes(x = TPM80_ratio, y = bot), data = all_stats) +
     geom_line(data = mod_preds_bot_sup, aes(y = fit), size = 1, alpha = 0.5) +
@@ -481,9 +459,9 @@ p3 <- ggplot(aes(x = TPM80_ratio, y = bot), data = all_stats) +
     #scale_x_continuous(breaks = seq(from = 0.2, to = 1, by = 0.2)) +
     xlab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) + #Allelic richness
     ylab(expression(ABC~bottleneck~probability~(p[bot]))) +
-    annotate("text", x = 0.25, y = 1, label = "R^2 == '0.38 [0.07, 0.64]'", 
+    annotate("text", x = 0.25, y = 1, label = "R^2 == '0.32 [0.03, 0.59]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 0.25, y = 0.9, label = "beta == '0.17 [0.06, 0.27]'", 
+    annotate("text", x = 0.25, y = 0.9, label = "beta == '0.17 [0.04, 0.28]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     theme(panel.grid.major = element_blank(),
@@ -535,3 +513,5 @@ p1_smm <- ggplot(aes(TPM80_ratio, num_alleles_mean), data = all_stats) +
 p1_smm
 
 ggplot2::ggsave(filename = "figures/SMM/p1_smm.jpg", width = 4, height = 3)
+
+}

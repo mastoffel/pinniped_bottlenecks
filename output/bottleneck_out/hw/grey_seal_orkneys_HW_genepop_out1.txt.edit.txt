@@ -1,31 +1,31 @@
                                 SIGN TEST
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   4.62
+Expected number of loci with heterozygosity excess:   4.63
 0 loci with heterozygosity deficiency and 8 loci with heterozygosity excess.
-Probability: 0.01239
+Probability: 0.01250
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   4.70
+Expected number of loci with heterozygosity excess:   4.73
 1 loci with heterozygosity deficiency and 7 loci with heterozygosity excess.
-Probability: 0.09372
+Probability: 0.09709
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   4.74
+Expected number of loci with heterozygosity excess:   4.75
 4 loci with heterozygosity deficiency and 4 loci with heterozygosity excess.
-Probability: 0.42218
+Probability: 0.42084
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 8 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-T2:   3.685  Probability:  0.00011
+T2:   3.690  Probability:  0.00011
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:   2.328  Probability:  0.00995
+T2:   2.291  Probability:  0.01099
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-T2:  -1.608  Probability:  0.05388
+T2:  -1.690  Probability:  0.04553
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -50,4 +50,4 @@ ________________________________________________________________________________
   | 0.547 | 0.219 | 0.094 | 0.078 | 0.031 | 0.031 | 0.000 | 0.000 | 0.000 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/16/2017  Time: 9:50:53 PM.
+End of computation. Date: 6/7/2018  Time: 4:30:01 PM.

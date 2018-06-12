@@ -4,49 +4,49 @@ Parameters for T.P.M.: Variance=30.00  Probability=80.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\hooded_seal_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\hooded_seal_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes             
 Estimation based on 10000 replications.
 
 
-Date: 08/14/2017  Time: 9:00:45 AM.
+Date: 6/6/2018  Time: 4:37:37 PM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_Hg42        598  15 0.765 | 0.842 0.041 -1.916 0.0511 
-L_Hg61        600  10 0.400 | 0.757 0.069 -5.167 0.0012 
-L_Hg63        600  15 0.864 | 0.842 0.040  0.548 0.3408 
-L_Hg81        598  18 0.899 | 0.869 0.032  0.912 0.1602 
-L_Hg89        586  15 0.899 | 0.842 0.040  1.440 0.0200 
-L_Hgdii       600  15 0.828 | 0.841 0.041 -0.312 0.3044 
-L_Hl16        598   8 0.651 | 0.701 0.087 -0.580 0.2297 
-L_Hl20        584  13 0.811 | 0.814 0.050 -0.057 0.3940 
-L_Hl8         600  13 0.832 | 0.815 0.049  0.340 0.4437 
-L_Lw7         596  14 0.743 | 0.828 0.046 -1.863 0.0506 
-L_Pv9         600   8 0.640 | 0.699 0.090 -0.663 0.2041 
-L_Pvc26       600   8 0.439 | 0.699 0.089 -2.924 0.0172 
-L_Pvc78       598  13 0.763 | 0.814 0.050 -1.008 0.1405 
+L_Hg42        598  15 0.765 | 0.841 0.040 -1.884 0.0518 
+L_Hg61        600  10 0.400 | 0.757 0.069 -5.197 0.0009 
+L_Hg63        600  15 0.864 | 0.840 0.041  0.573 0.3237 
+L_Hg81        598  18 0.899 | 0.868 0.032  0.931 0.1539 
+L_Hg89        586  15 0.899 | 0.841 0.040  1.427 0.0181 
+L_Hgdii       600  15 0.828 | 0.841 0.041 -0.312 0.3006 
+L_Hl16        598   8 0.651 | 0.701 0.089 -0.560 0.2348 
+L_Hl20        584  13 0.811 | 0.814 0.050 -0.064 0.3951 
+L_Hl8         600  13 0.832 | 0.814 0.050  0.368 0.4298 
+L_Lw7         596  14 0.743 | 0.828 0.046 -1.847 0.0548 
+L_Pv9         600   8 0.640 | 0.699 0.088 -0.678 0.2084 
+L_Pvc26       600   8 0.439 | 0.700 0.089 -2.947 0.0159 
+L_Pvc78       598  13 0.763 | 0.814 0.050 -1.004 0.1365 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.67
+Expected number of loci with heterozygosity excess:   7.65
 9 loci with heterozygosity deficiency and 4 loci with heterozygosity excess.
-Probability: 0.03797
+Probability: 0.03874
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 13 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -3.120  Probability:  0.00090
+T2:  -3.105  Probability:  0.00095
 
 ______________________________________________________________________________________
                                WILCOXON TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.06360
-Probability (one tail for H excess): 0.94507
-Probability (two tails for H excess or deficiency): 0.12720
+Probability (one tail for H deficiency): 0.07324
+Probability (one tail for H excess): 0.93640
+Probability (two tails for H excess or deficiency): 0.14648
 
 ______________________________________________________________________________________
                                MODE-SHIFT
@@ -54,4 +54,4 @@ ________________________________________________________________________________
   | 0.776 | 0.115 | 0.061 | 0.006 | 0.018 | 0.012 | 0.000 | 0.012 | 0.000 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/14/2017  Time: 9:54:43 AM.
+End of computation. Date: 6/6/2018  Time: 5:13:28 PM.

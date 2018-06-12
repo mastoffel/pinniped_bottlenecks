@@ -1,28 +1,28 @@
                                 SIGN TEST
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.04
+Expected number of loci with heterozygosity excess:   7.01
 2 loci with heterozygosity deficiency and 10 loci with heterozygosity excess.
-Probability: 0.07025
+Probability: 0.06751
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.09
+Expected number of loci with heterozygosity excess:   7.08
 6 loci with heterozygosity deficiency and 6 loci with heterozygosity excess.
-Probability: 0.35847
+Probability: 0.36188
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.10
+Expected number of loci with heterozygosity excess:   7.09
 7 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
-Probability: 0.17405
+Probability: 0.17566
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 12 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-T2:   2.555  Probability:  0.00531
+T2:   2.589  Probability:  0.00481
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:   0.900  Probability:  0.18402
+T2:   0.916  Probability:  0.17993
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
 T2:  -2.824  Probability:  0.00237
@@ -50,4 +50,4 @@ ________________________________________________________________________________
   | 0.589 | 0.244 | 0.067 | 0.033 | 0.011 | 0.000 | 0.022 | 0.033 | 0.000 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/16/2017  Time: 9:44:46 AM.
+End of computation. Date: 6/6/2018  Time: 2:55:53 PM.

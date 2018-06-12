@@ -1,37 +1,13 @@
 ## This script produces the figure for the models of bottleneck signatures
 # explained by life-history traits.
 
-
+library(pacman)
+p_load(patchwork, ggtree, ape, phytools, dplyr, readxl, stringr, viridis, ggtree, ggthemr,
+       reshape2, cowplot, ggthemes, ggimage, RColorBrewer, scales, forcats, readr, caper,
+       yhat, dplyr, ggrepel, GGally, MCMCglmm, purrr, readr)
 # phylogenetic comparative analysis
-library(patchwork)
-library(ggtree)
-library(ape)
-library(phytools)
-library(dplyr)
-library(readxl)
-library(stringr)
-library(viridis)
-library(ggtree)
-library(ggthemr)
-library(reshape2)
-library(cowplot)
-library(ggthemes)
-library(ggimage)
-library(RColorBrewer)
-library(scales)
-library(forcats)
-library(readr)
-# for comparative analysis
-library(caper)
-library(yhat)
-library(dplyr)
-library(ggrepel)
-library(GGally)
-library(ggthemr)
 source("R/martin.R")
-library(MCMCglmm)
-library(purrr)
-library(readr)
+
 ## what should this script do:
 
 # modeling
@@ -61,7 +37,7 @@ Ars
 inv_phylo <- inverseA(tree_final, nodes="TIPS",scale=FALSE)$Ainv #,scale=TRUE
 prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
 
-
+# 
 stats_mod_genlh <- all_stats %>% 
     mutate(Abundance = ((Abundance - mean(Abundance)) / (2*sd(Abundance))), 
         logAbundance = ((logAbundance - mean(logAbundance)) / (2*sd(logAbundance))),
@@ -76,6 +52,10 @@ stats_mod_genlh <- all_stats %>%
 stats_mod_genlh <- stats_mod_genlh %>% mutate(BreedingType = as.factor(BreedingType)) %>% 
     mutate(BreedingType = relevel(BreedingType, ref = "land"))
 
+
+nitt <- 110000
+burnin <- 10000
+thin <- 100
 ## model 1: gen div vs. LH with SSD -------------------------------------------------------
 
 # standardize by 2 sd to make estimates comparable with BreedingHabitat variable(
@@ -85,7 +65,7 @@ run_mod <- function(iter){
     MCMCglmm(num_alleles_mean ~ logAbundance + SSD + BreedingType + bot + TPM80_ratio, # , #+ Abundance BreedingType  + BreedingType + Generation_time
         random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
         family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-        data=stats_mod_genlh,nitt=1100000,burnin=100000,thin=1000)
+        data=stats_mod_genlh,nitt=110000,burnin=10000,thin=100)
 }
 
 # check if model is saved
@@ -127,22 +107,25 @@ posterior.mode(var_phy)
 median(var_phy)
 HPDinterval(var_phy)
 
-# commonality analyses and R2
-model_file_name_R2 <- paste0(mod_name, "_R2.RData")
 
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
+# R2s
+library(mcmcR2)
+set.seed(312)
+for (r2type in c("marginal", "conditional")) {
+    
+    # create file name
+    model_file_name_R2 <- paste0(mod_name,  "_R2_", r2type)
+    
+    # partition R2, calculate SC
     set.seed(324)
-    R2_genlh <- mcmcR2::partR2(mod_genlh, partvars = c("SSD", "BreedingType", "logAbundance", "bot", "TPM80_ratio"),
+    R2_genlh <- mcmcR2::partR2(mod_genlh, partvars = c("SSD", "BreedingType", "logAbundance", "bot", "TPM80_ratio"), type = r2type,
         data = stats_mod_genlh, inv_phylo = inv_phylo, prior = prior, 
-        nitt = 1100000, burnin = 100000, thin = 1000)
-    saveRDS( R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2))
+        nitt = nitt, burnin = burnin, thin = thin)
+    
+    saveRDS(R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+    R2_genlh$R2 %>% write_delim(paste0("output/mcmcmodels/", model_file_name_R2 ,".txt"))
 }
 
-R2_genlh<- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-R2_genlh
-# out <- mcmcR2::R2mcmc(mod_hetexc)
-# out$partR2
-R2_genlh$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
 R2_genlh$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
 
 # save summary to file
@@ -159,7 +142,7 @@ mod_genlh %>%
         upper = "u-95% CI") %>% 
     write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
 
-beta_genlh<- readr::read_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"), delim = " ")
+# beta_genlh<- readr::read_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"), delim = " ")
 
 
 # plots ------------------------------------------------------------------------------------
@@ -182,10 +165,10 @@ mod_preds_AR2 <- data.frame(predict(mod_plot_AR2, pred_df_AR2, interval = "confi
     mutate(bot= seq(from = 0, to = 1, by = 0.05))
 
 AR2_beta <- read_delim("output/mcmcmodels/gen1_bot_beta.txt", delim = " ")
-AR2_R2 <- read_delim("output/mcmcmodels/gen1_bot_R2.txt", delim = " ")
+AR2_R2 <- read_delim("output/mcmcmodels/gen1_bot_R2_marginal.txt", delim = " ")
 point_alpha <- 0.4
 
-set.seed(140)
+set.seed(141)
 p1 <- ggplot(aes(x = bot, y = num_alleles_mean), data = all_stats) +
     geom_line(data = mod_preds_AR2, aes(y = fit), size = 1, alpha = 0.5) +
     geom_point(size = point_size, alpha = point_alpha) + # abc_out
@@ -281,7 +264,7 @@ p2
 
 # load model output
 mod_beta <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_beta.txt", delim = " ")
-mod_R2 <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_R2.txt", delim = " ")
+mod_R2 <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_R2_marginal.txt", delim = " ")
 mod_SC <- read_delim("output/mcmcmodels/gendiv_vs_lh_plus_bot_SC.txt", delim = " ")
 
 

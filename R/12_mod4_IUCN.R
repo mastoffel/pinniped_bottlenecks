@@ -62,7 +62,7 @@ stats_mod <- stats_mod %>% mutate(BreedingType = as.factor(BreedingType)) %>%
 # plot
 stats_mod_IUCN <- stats_mod %>% 
     mutate(IUCN_binary = case_when(IUCN_rating == "vulnerable" ~ "concern",
-        IUCN_rating == "near threatened" ~ "concern",
+        IUCN_rating == "near threatened" ~ "least concern",
         IUCN_rating == "endangered" ~ "concern",
         IUCN_rating == "least concern" ~ "least concern"))
 
@@ -74,7 +74,7 @@ run_mod <- function(iter){
     MCMCglmm(num_alleles_mean ~ IUCN_binary, # , #+ Abundance BreedingType  + BreedingType + Generation_time
         random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
         family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-        data=stats_mod_IUCN,nitt=1100000,burnin=100000,thin=1000)
+        data=stats_mod_IUCN,nitt=110000,burnin=10000,thin=100)
 }
 
 # check if model is saved
@@ -109,25 +109,33 @@ plot(mod_IUCN$VCV)
 autocorr(mod_IUCN$Sol)
 autocorr(mod_IUCN$VCV)
 
-# commonality analyses and R2
-model_file_name_R2 <- paste0(mod_name, "_R2.RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
-    set.seed(324)
-    R2_genlh <- mcmcR2::partR2(mod_IUCN, partvars = c("IUCN_binary"),
-        data = stats_mod, inv_phylo = inv_phylo, prior = prior, 
-        nitt = 1100000, burnin = 100000, thin = 1000)
-    saveRDS(R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2))
+# R2 (commonality)
+library(mcmcR2)
+set.seed(324)
+for (r2type in c("marginal", "conditional")) {
+    
+    model_file_name_R2 <- paste0(mod_name, "_R2_", r2type)
+    
+    if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2, ".txt"))){
+     
+        R2_genlh <- mcmcR2::partR2(mod_IUCN, partvars = c("IUCN_binary"), type = r2type,
+            data = stats_mod, inv_phylo = inv_phylo, prior = prior, 
+            nitt = 1100000, burnin = 100000, thin = 1000)
+        
+        saveRDS(R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+    }
+    
+    R2_genlh <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+    #R2_genlh
+    # out <- mcmcR2::R2mcmc(mod_hetexc)
+    # out$partR2
+    R2_genlh$R2 %>% write_delim(paste0("output/mcmcmodels/", model_file_name_R2 ,".txt"))
 }
 
-R2_genlh<- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-R2_genlh
-# out <- mcmcR2::R2mcmc(mod_hetexc)
-# out$partR2
-R2_genlh$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
+# structure coefficients
 R2_genlh$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
 
-# save summary to file
+# beta
 mod_IUCN %>% 
     summary() %$%
     solutions %>% 
@@ -136,7 +144,7 @@ mod_IUCN %>%
     mutate(post_median = apply(mod_IUCN$Sol, 2, median)) %>% 
     mutate(post_mode = posterior.mode(mod_IUCN$Sol)) %>% 
     .[c(1,2,7,8,3:6)] %>% 
-    rename(post_mean= post.mean,
+    dplyr::rename(post_mean= post.mean,
         lower =  "l-95% CI",
         upper = "u-95% CI") %>% 
     write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
@@ -172,7 +180,7 @@ run_mod <- function(iter){
     MCMCglmm(TPM80_ratio ~ IUCN_binary, # , #+ Abundance BreedingType  + BreedingType + Generation_time
         random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
         family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-        data=stats_mod_IUCN,nitt=1100000,burnin=100000,thin=1000)
+        data=stats_mod_IUCN,nitt=110000,burnin=10000,thin=100)
 }
 
 # check if model is saved
@@ -207,22 +215,29 @@ plot(mod_IUCN$VCV)
 autocorr(mod_IUCN$Sol)
 autocorr(mod_IUCN$VCV)
 
-# commonality analyses and R2
-model_file_name_R2 <- paste0(mod_name, "_R2.RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
-    set.seed(324)
-    R2_genlh <- mcmcR2::partR2(mod_IUCN, partvars = c("IUCN_binary"),
-        data = stats_mod, inv_phylo = inv_phylo, prior = prior, 
-        nitt = 1100000, burnin = 100000, thin = 1000)
-    saveRDS(R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2))
+# R2 (commonality)
+library(mcmcR2)
+set.seed(324)
+for (r2type in c("marginal", "conditional")) {
+    
+    model_file_name_R2 <- paste0(mod_name, "_R2_", r2type)
+    
+    if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2,".txt"))){
+        
+        R2_genlh <- mcmcR2::partR2(mod_IUCN, partvars = c("IUCN_binary"), type = r2type,
+            data = stats_mod, inv_phylo = inv_phylo, prior = prior, 
+            nitt = 1100000, burnin = 100000, thin = 1000)
+        
+        saveRDS(R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+    }
+    
+    R2_genlh <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+    #R2_genlh
+    # out <- mcmcR2::R2mcmc(mod_hetexc)
+    # out$partR2
+    R2_genlh$R2 %>% write_delim(paste0("output/mcmcmodels/", model_file_name_R2 ,".txt"))
 }
 
-R2_genlh<- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-R2_genlh
-# out <- mcmcR2::R2mcmc(mod_hetexc)
-# out$partR2
-R2_genlh$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
 R2_genlh$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
 
 # save summary to file
@@ -234,7 +249,7 @@ mod_IUCN %>%
     mutate(post_median = apply(mod_IUCN$Sol, 2, median)) %>% 
     mutate(post_mode = posterior.mode(mod_IUCN$Sol)) %>% 
     .[c(1,2,7,8,3:6)] %>% 
-    rename(post_mean= post.mean,
+    dplyr::rename(post_mean= post.mean,
         lower =  "l-95% CI",
         upper = "u-95% CI") %>% 
     write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
@@ -245,7 +260,7 @@ run_mod <- function(iter){
     MCMCglmm(bot ~ IUCN_binary, # , #+ Abundance BreedingType  + BreedingType + Generation_time
         random=~tip_label, nodes = "TIPS", #   rcov =~us(trait):units
         family=c("gaussian"),ginverse=list(tip_label=inv_phylo),prior=prior,
-        data=stats_mod_IUCN,nitt=1100000,burnin=100000,thin=1000)
+        data=stats_mod_IUCN,nitt=110000,burnin=10000,thin=100)
 }
 
 # check if model is saved
@@ -280,22 +295,29 @@ plot(mod_IUCN$VCV)
 autocorr(mod_IUCN$Sol)
 autocorr(mod_IUCN$VCV)
 
-# commonality analyses and R2
-model_file_name_R2 <- paste0(mod_name, "_R2.RData")
-
-if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2))){
-    set.seed(324)
-    R2_genlh <- mcmcR2::partR2(mod_IUCN, partvars = c("IUCN_binary"),
-        data = stats_mod, inv_phylo = inv_phylo, prior = prior, 
-        nitt = 1100000, burnin = 100000, thin = 1000)
-    saveRDS(R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2))
+# R2 (commonality)
+library(mcmcR2)
+set.seed(324)
+for (r2type in c("marginal", "conditional")) {
+    
+    model_file_name_R2 <- paste0(mod_name, "_R2_", r2type)
+    
+    if (!file.exists(paste0("output/mcmcmodels/", model_file_name_R2, ".txt"))){
+        
+        R2_genlh <- mcmcR2::partR2(mod_IUCN, partvars = c("IUCN_binary"), type = r2type,
+            data = stats_mod, inv_phylo = inv_phylo, prior = prior, 
+            nitt = 1100000, burnin = 100000, thin = 1000)
+        
+        saveRDS(R2_genlh, file = paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+    }
+    
+    R2_genlh <- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2, ".RData"))
+    #R2_genlh
+    # out <- mcmcR2::R2mcmc(mod_hetexc)
+    # out$partR2
+    R2_genlh$R2 %>% write_delim(paste0("output/mcmcmodels/", model_file_name_R2 ,".txt"))
 }
 
-R2_genlh<- readr::read_rds(paste0("output/mcmcmodels/", model_file_name_R2))
-R2_genlh
-# out <- mcmcR2::R2mcmc(mod_hetexc)
-# out$partR2
-R2_genlh$R2 %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_R2" ,".txt"))
 R2_genlh$SC %>% write_delim(paste0("output/mcmcmodels/", mod_name, "_SC" ,".txt"))
 
 # save summary to file
@@ -307,7 +329,7 @@ mod_IUCN %>%
     mutate(post_median = apply(mod_IUCN$Sol, 2, median)) %>% 
     mutate(post_mode = posterior.mode(mod_IUCN$Sol)) %>% 
     .[c(1,2,7,8,3:6)] %>% 
-    rename(post_mean= post.mean,
+    dplyr::rename(post_mean= post.mean,
         lower =  "l-95% CI",
         upper = "u-95% CI") %>% 
     write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
@@ -317,7 +339,7 @@ mod_IUCN %>%
 point_size <- 3.5
 
 gendiv_beta <- read_delim("output/mcmcmodels/IUCN_gendiv_beta.txt", delim = " ")
-gendiv_R2 <- read_delim("output/mcmcmodels/IUCN_gendiv_R2.txt", delim = " ")
+gendiv_R2 <- read_delim("output/mcmcmodels/IUCN_gendiv_R2_marginal.txt", delim = " ")
 
 p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
@@ -325,13 +347,14 @@ p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
     theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
+    scale_x_discrete(labels = c("high concern", "low concern")) +
     xlab(" ") +
     ylab(expression(paste(Allelic~richness~"("~A[r]~")"))) +
    # ylab(expression(Allelic~richness~(A[r]))) +
     scale_y_continuous(limits=c(2, 12), breaks = c(2,4,6,8,10)) +
-    annotate("text", x = 1.5, y = 12, label = "R^2 == '0.13 [0, 0.36]'", 
+    annotate("text", x = 1.5, y = 12, label = "R^2 == '0.11 [0, 0.34]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 1.5, y = 11.1, label = "beta == '1.34 [-0.07, 2.52]'", 
+    annotate("text", x = 1.5, y = 11.1, label = "beta == '1.24 [-0.08, 2.56]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -345,7 +368,7 @@ p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
 p1    
 
 hetexc_beta <- read_delim("output/mcmcmodels/IUCN_hetexc_beta.txt", delim = " ")
-hetexc_R2 <- read_delim("output/mcmcmodels/IUCN_hetexc_R2.txt", delim = " ")
+hetexc_R2 <- read_delim("output/mcmcmodels/IUCN_hetexc_R2_marginal.txt", delim = " ")
 
 p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
@@ -354,11 +377,12 @@ p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
     xlab("IUCN status") +
+    scale_x_discrete(labels = c("high concern", "low concern")) +
     ylab(expression(atop("Heterozygosity-excess", paste("("~prop[het-exc]~")")))) +
     #ylab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) +
     annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.03 [0, 0.19]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 1.5, y = 1.11, label = "beta == '0.02 [-0.15, 0.18]'", 
+    annotate("text", x = 1.5, y = 1.11, label = "beta == '0.02 [-0.14, 0.19]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     scale_y_continuous(breaks = c(0.2,0.4,0.6,0.8,1), limits = c(0.15, 1.2)) +
     theme(panel.grid.major = element_blank(),
@@ -376,7 +400,7 @@ p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
 p2
 
 bot_beta <- read_delim("output/mcmcmodels/IUCN_bot_beta.txt", delim = " ")
-bot_R2 <- read_delim("output/mcmcmodels/IUCN_bot_R2.txt", delim = " ")
+bot_R2 <- read_delim("output/mcmcmodels/IUCN_bot_R2_marginal.txt", delim = " ")
 
 p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
@@ -385,9 +409,10 @@ p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
     xlab(" ") +
+    scale_x_discrete(labels = c("high concern", "low concern")) +
     #ylab(expression("ABC bottleneck\nprobability"~(p[bot]))) +
     ylab(expression(atop("ABC bottleneck", paste("probability (p"[bot]~")")))) +
-    annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.1 [0, 0.33]'", 
+    annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.07 [0, 0.29]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
     annotate("text", x = 1.5, y = 1.11, label = "beta == '-0.14 [-0.36, 0.08]'", 
         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
@@ -407,13 +432,13 @@ p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
 p3
 
 p_final <- plot_grid(p1,p2,p3, nrow = 1, labels = c("A", "B", "C"))
-ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN.jpg", width = 9, height = 3.5)
+ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN_rev.jpg", width = 9, height = 3.5)
 
 
-ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN.pdf", width = 9, height = 3.5)
+#ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN_rev.pdf", width = 9, height = 3.5)
 
-Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
-extrafont::embed_fonts("other_stuff/figures/figures_final/IUCN.pdf")
+#Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
+#extrafont::embed_fonts("other_stuff/figures/figures_final/IUCN.pdf")
 
 
 

@@ -4,49 +4,50 @@ Parameters for T.P.M.: Variance=30.00  Probability=80.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\ross_seal_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\ross_seal_HW_genepop.txt
 Data type: Genepop format
-Title: Title Line: genotypes        
+Title: Title Line: genotypes         
 Estimation based on 10000 replications.
 
 
-Date: 08/15/2017  Time: 9:23:23 AM.
+Date: 6/7/2018  Time: 11:28:15 AM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_WS7         180   5 0.320 | 0.582 0.126 -2.073 0.0482 
-L_WS10        180  20 0.913 | 0.903 0.025  0.389 0.3979 
-L_LS8         180  14 0.823 | 0.852 0.036 -0.799 0.1784 
-L_LS15        180   6 0.623 | 0.648 0.105 -0.239 0.3273 
-L_LS16        178  11 0.653 | 0.809 0.051 -3.050 0.0159 
-L_CS18        178  32 0.958 | 0.946 0.014  0.803 0.1001 
-L_CS28        180   5 0.562 | 0.585 0.123 -0.192 0.3520 
-L_G1A         178  16 0.865 | 0.873 0.030 -0.293 0.3145 
+L_WS7         180   5 0.320 | 0.584 0.123 -2.143 0.0439 
+L_WS10        180  20 0.913 | 0.903 0.022  0.458 0.3959 
+L_LS8         180  14 0.823 | 0.853 0.037 -0.795 0.1752 
+L_LS15        180   6 0.623 | 0.646 0.105 -0.225 0.3299 
+L_LS16        178  11 0.653 | 0.808 0.052 -3.002 0.0157 
+L_LS20        178  13 0.850 | 0.840 0.041  0.255 0.4882 
+L_CS18        178  32 0.958 | 0.946 0.011  0.999 0.0986 
+L_CS28        180   5 0.562 | 0.583 0.125 -0.170 0.3547 
+L_G1A         178  16 0.865 | 0.874 0.030 -0.302 0.3118 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   4.72
-6 loci with heterozygosity deficiency and 2 loci with heterozygosity excess.
-Probability: 0.05631
+Expected number of loci with heterozygosity excess:   5.31
+6 loci with heterozygosity deficiency and 3 loci with heterozygosity excess.
+Probability: 0.11145
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
-Caution: only 8 polymorphic loci (minimum 20).
+Caution: only 9 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -1.929  Probability:  0.02689
+T2:  -1.642  Probability:  0.05030
 
 ______________________________________________________________________________________
                                WILCOXON TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.15625
-Probability (one tail for H excess): 0.87500
-Probability (two tails for H excess or deficiency): 0.31250
+Probability (one tail for H deficiency): 0.21289
+Probability (one tail for H excess): 0.82031
+Probability (two tails for H excess or deficiency): 0.42578
 
 ______________________________________________________________________________________
                                MODE-SHIFT
  0.0     0.1     0.2     0.3     0.4     0.5     0.6     0.7     0.8     0.9     1.0
-  | 0.826 | 0.092 | 0.028 | 0.018 | 0.000 | 0.018 | 0.009 | 0.000 | 0.009 | 0.000 |
+  | 0.828 | 0.082 | 0.041 | 0.016 | 0.000 | 0.016 | 0.008 | 0.000 | 0.008 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/15/2017  Time: 9:51:27 AM.
+End of computation. Date: 6/7/2018  Time: 11:36:01 AM.

@@ -4,37 +4,37 @@ Parameters for T.P.M.: Variance=30.00  Probability=90.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\northern_fur_seal_cl_1_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\northern_fur_seal_cl_1_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes        
 Estimation based on 10000 replications.
 
 
-Date: 08/14/2017  Time: 2:17:26 PM.
+Date: 6/7/2018  Time: 12:06:31 PM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_Hg14        472  13 0.816 | 0.835 0.040 -0.456 0.2644 
-L_Hg37        446  14 0.831 | 0.848 0.037 -0.460 0.2619 
-L_M11a        456  16 0.893 | 0.868 0.031  0.840 0.2000 
-L_M2b         474  21 0.903 | 0.902 0.020  0.082 0.4784 
-L_Hg42        480  19 0.881 | 0.890 0.024 -0.389 0.2911 
-L_Hg810       452  17 0.899 | 0.876 0.027  0.815 0.2192 
-L_Hg63        448  12 0.849 | 0.821 0.045  0.627 0.2993 
-L_Pv11        476  10 0.301 | 0.784 0.057 -8.471 0.0000 
+L_Hg14        472  13 0.816 | 0.834 0.040 -0.452 0.2667 
+L_Hg37        446  14 0.831 | 0.847 0.038 -0.427 0.2731 
+L_M11a        456  16 0.893 | 0.869 0.029  0.834 0.2089 
+L_M2b         474  21 0.903 | 0.901 0.021  0.107 0.4864 
+L_Hg42        480  19 0.881 | 0.890 0.024 -0.405 0.2821 
+L_Hg810       452  17 0.899 | 0.876 0.028  0.810 0.2172 
+L_Hg63        448  12 0.849 | 0.821 0.045  0.626 0.3005 
+L_Pv11        476  10 0.301 | 0.784 0.057 -8.520 0.0000 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   4.67
+Expected number of loci with heterozygosity excess:   4.68
 4 loci with heterozygosity deficiency and 4 loci with heterozygosity excess.
-Probability: 0.44260
+Probability: 0.43955
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 8 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -2.620  Probability:  0.00439
+T2:  -2.626  Probability:  0.00432
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -49,4 +49,4 @@ ________________________________________________________________________________
   | 0.770 | 0.180 | 0.041 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.008 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/14/2017  Time: 3:01:11 PM.
+End of computation. Date: 6/7/2018  Time: 12:30:19 PM.

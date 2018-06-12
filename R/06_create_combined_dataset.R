@@ -16,10 +16,13 @@ library(hierfstat)
 ?hierfstat
 
 # on cluster or full data?
-calc_on_cluster <- TRUE
+calc_on_cluster <- FALSE
+calc_on_hw <- TRUE
 
 if (calc_on_cluster) {
     save_files <- "_cl"    
+} else if (calc_on_hw) {
+    save_files <- "_HW"   
 } else {
     save_files <- ""
 }
@@ -37,7 +40,7 @@ seals2 <- left_join(phylo, seals, by = "species")
 # rest of the life history data from Krueger et al. 2014
 krueger_data <- data.frame(read_excel("data/processed/seal_data_krueger.xlsx", sheet = 1, col_names = T))%>% 
                 dplyr::select(dataset_name, birth_mass:Age_primiparity) %>% 
-                rename(species = dataset_name)
+                dplyr::rename(species = dataset_name)
 
 # join data to full dataset by dataset names
 seals3 <- dplyr::left_join(seals2, krueger_data, by = "species")

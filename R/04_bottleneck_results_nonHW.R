@@ -28,13 +28,24 @@ library(ggthemes)
 library(readr)
 # load data with original population names ---------------------------------------------------------
 library(readxl)
-
+library(stringr)
 # this is the output of the bottleneck tests, merged into one data.frame
-bottleneck_out <- read_excel("data/processed/out_bottleneck_stats_30.xls")
+
+# calculate everything on HW filtered bottleneck stats?
+HW <- TRUE
+
+if (HW) {
+    name_short <- "_HW"
+} else {
+    name_short <- ""
+}
+
+bottleneck_out <- read_excel(paste0("data/processed/out_bottleneck_stats", name_short, "_30.xls"))
 names(bottleneck_out)[1] <- "id"
 
 # extract pure names
 bottleneck_out$id <- sapply(strsplit(bottleneck_out$id, "_genepop"), `[[`, 1)
+bottleneck_out$id <- str_replace_all(bottleneck_out$id, "_HW", "")
 
 # check which columns should be numeric
 charcols <- str_detect(names(bottleneck_out), "Def.Exc") | str_detect(names(bottleneck_out), "id") | str_detect(names(bottleneck_out), "Mode_Shift")
@@ -61,17 +72,21 @@ bottleneck <- cbind(bottleneck_out[!exc_cols], sep_cols)
 
 # correct naming of species from the bottleneck program
 # this has to be double checked in case the clusters are taken
-bottleneck$id[7] <- "bearded_seal_cl_2" # bearded seal is now cluster 2 
+#bottleneck$id[7] <- "bearded_seal_cl_2" # bearded seal is now cluster 2 
+#if (HW) bottleneck$id[7] <- "bearded_seal_cl_2_HW"
 
 # (a) just take the full datasets (alternatively, one can get the largest cluster datasets too here)
 ids <- bottleneck$id[!str_detect(bottleneck$id, "cl")]
+
 # (b) take full datasets for unclustered data and clustered datasets for clustered data
+
 ids_cl_temp <- bottleneck$id[str_detect(bottleneck$id, "cl")]
 ids_cl_fullname <- str_replace(ids_cl_temp, "_cl_[1-9]", "")
 # delete 
 ids_cl <- ids[!(ids %in% ids_cl_fullname)]
 # put together 
 ids_cl <- c(ids_cl, ids_cl_temp)
+
 
 
 format_bottleneck <- function(ids){ 
@@ -112,13 +127,14 @@ out <- apply(cbind(ids, ids_cl), 2, format_bottleneck)
 bottleneck_final_full <- out[[1]]
 bottleneck_final_cl <- out[[2]]
 # for some reason, the bearded seal is cl 1 not 2. 
-bottleneck_final_cl[which(bottleneck_final_cl$id == "bearded_seal_cl_2"), "id"] <- "bearded_seal_cl_1"
+#bottleneck_final_cl[which(bottleneck_final_cl$id == "bearded_seal_cl_2"), "id"] <- "bearded_seal_cl_1"
+
 # check that bottleneck_final_XX are sorted in the same way
 unlist(sapply(bottleneck_final_cl$id, function(x) which(bottleneck_final_full$id %in% str_replace(x, "_cl_[1-9]", ""))))
 # double check
 data.frame(bottleneck_final_cl$id, bottleneck_final_full$id)
 
 # save
-write_delim(bottleneck_final_full, path = "data/processed/bottleneck_results_30.txt")
+write_delim(bottleneck_final_full, path = paste0("data/processed/bottleneck_results", name_short, "_30.txt"))
 write_delim(bottleneck_final_cl, path = "data/processed/bottleneck_results_30_cl.txt")
 

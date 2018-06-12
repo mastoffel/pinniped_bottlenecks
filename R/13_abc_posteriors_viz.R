@@ -19,7 +19,7 @@ library(readr)
 ## bottleneck posteriors -----
 
 # load abc posterior data
-load("data/processed/abc_estimates/abc_10000k_bot_complete_30.RData")
+load("data/processed/abc_estimates/abc_10000kbot500_bot_complete_30.RData")
 # load parameter distributions
 # abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
 
@@ -86,7 +86,6 @@ estimate_mode <- function(s) {
     d$x[which.max(d$y)]
 }
 
-library(png)
 library(grid)
 #img <- readPNG("other_stuff/AFS.png")
 #g <- rasterGrob(img, interpolate=TRUE)
@@ -107,7 +106,7 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
    # scale_fill_cyclical(values = c("lightgrey", "darkgrey")) +
     #ylim(0, 900) +
     scale_x_discrete(labels = species_names_bot_twolines) + 
-    scale_y_continuous(breaks = c(seq(from = 0, to = 800, by = 200)), limits = c(0,900)) +
+    scale_y_continuous(breaks = c(seq(from = 0, to = 500, by = 100)), limits = c(0,550)) +
     #scale_y_discrete(expand = c(0.01, 0))+
     xlab("") +
     ylab(expression(Bottleneck~N[e])) +
@@ -120,7 +119,7 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
 p
 # plot as jpg
 ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert_30.jpg", p,
-    width = 3.7, height = 6)
+    width = 3.8, height = 6)
 
 # plot as pdf
 
@@ -156,7 +155,7 @@ p_mut_bot
 # neutral model posteriors
 
 # load abc posterior data
-load("data/processed/abc_estimates/abc_10000k_neut_complete.RData")
+load("data/processed/abc_estimates/abc_10000kbot500_neut_complete.RData")
 # load parameter distributions
 # abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
 
@@ -182,7 +181,8 @@ species_names_neut <- c(
     "ses" = "Southern Elephant Seal",
     "south_american_sea_lion" = "South American Sea Lion",
     "stellers_sea_lion" =  "Steller Sea Lion",
-    "weddell_seal" = "Weddel Seal"
+    "weddell_seal" = "Weddel Seal",
+    "subantarctic_fur_seal" = "Subantarctic Fur Seal"
 )
 
 #abc$species <- factor(abc$species, levels = c("saimaa_ringed_seal", "mediterranean_monk_seal","hawaiian_monk_seal", "nes", "galapagos_fur_seal",

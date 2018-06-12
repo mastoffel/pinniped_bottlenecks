@@ -52,7 +52,7 @@ g2_file <- paste0("data/processed/g2_summary_", shortcut_save, "_data.txt")
 if(!file.exists(g2_file)){
     library(inbreedR)
     calc_g2s <- function(genotypes){
-        g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 1000, nperm = 1000) # increase at some point
+        g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 10, nperm = 10) # increase at some point
     }
     g2s <- lapply(all_seals, calc_g2s)
     # save(g2s, file = "data/processed/full_data_all_g2s_29.RData")

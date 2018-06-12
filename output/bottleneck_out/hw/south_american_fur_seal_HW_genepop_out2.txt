@@ -4,34 +4,34 @@ Parameters for T.P.M.: Variance=30.00  Probability=80.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\south_american_fur_seal_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\south_american_fur_seal_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes     
 Estimation based on 10000 replications.
 
 
-Date: 08/15/2017  Time: 12:09:47 PM.
+Date: 6/7/2018  Time: 4:01:19 PM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_M11a        422  12 0.823 | 0.804 0.054  0.352 0.4419 
-L_Hg63        338  11 0.823 | 0.790 0.059  0.563 0.3305 
-L_PvcA        390   9 0.825 | 0.740 0.075  1.138 0.0722 
-L_Hg810       382  11 0.764 | 0.788 0.059 -0.399 0.2735 
-L_Pv9         352   9 0.744 | 0.743 0.073  0.011 0.4302 
+L_M11a        422  12 0.823 | 0.805 0.052  0.334 0.4440 
+L_Hg63        338  11 0.823 | 0.792 0.057  0.559 0.3318 
+L_PvcA        390   9 0.825 | 0.740 0.074  1.147 0.0741 
+L_Hg810       382  11 0.764 | 0.789 0.058 -0.422 0.2727 
+L_Pv9         352   9 0.744 | 0.743 0.074  0.007 0.4155 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   2.95
+Expected number of loci with heterozygosity excess:   2.94
 1 loci with heterozygosity deficiency and 4 loci with heterozygosity excess.
-Probability: 0.32096
+Probability: 0.31626
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 5 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:   0.744  Probability:  0.22831
+T2:   0.727  Probability:  0.23370
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -46,4 +46,4 @@ ________________________________________________________________________________
   | 0.596 | 0.288 | 0.058 | 0.038 | 0.019 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/15/2017  Time: 12:21:43 PM.
+End of computation. Date: 6/7/2018  Time: 4:08:18 PM.

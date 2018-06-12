@@ -4,44 +4,44 @@ Parameters for T.P.M.: Variance=30.00  Probability=90.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\weddell_seal_cl_2_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\weddell_seal_cl_2_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes               
 Estimation based on 10000 replications.
 
 
-Date: 08/15/2017  Time: 12:10:24 PM.
+Date: 6/8/2018  Time: 10:16:12 AM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_WS4         906  19 0.810 | 0.884 0.026 -2.884 0.0158 
-L_WS7         906   9 0.665 | 0.750 0.067 -1.267 0.1075 
-L_WS10        906  14 0.867 | 0.839 0.039  0.722 0.2514 
-L_WS11        906  25 0.837 | 0.914 0.019 -4.157 0.0036 
-L_WS16        906  11 0.764 | 0.793 0.054 -0.534 0.2382 
-L_WS20        906  14 0.788 | 0.839 0.040 -1.283 0.0997 
-L_LS8         906  15 0.877 | 0.850 0.036  0.740 0.2475 
-L_LS14        906  15 0.798 | 0.850 0.036 -1.420 0.0881 
-L_LS15        904  21 0.502 | 0.896 0.022 -17.522 0.0000 
-L_LS16        906   8 0.596 | 0.721 0.077 -1.619 0.0691 
-L_LS20        906   6 0.677 | 0.637 0.102  0.390 0.4200 
-L_CS6         906  15 0.886 | 0.851 0.036  0.985 0.1376 
-L_CS26        906  12 0.849 | 0.811 0.049  0.785 0.2169 
-L_CS28        906   5 0.338 | 0.575 0.122 -1.945 0.0562 
-L_G1A         906  14 0.759 | 0.838 0.040 -1.962 0.0462 
+L_WS4         906  19 0.810 | 0.884 0.026 -2.823 0.0166 
+L_WS7         906   9 0.665 | 0.748 0.070 -1.181 0.1125 
+L_WS10        906  14 0.867 | 0.839 0.039  0.715 0.2574 
+L_WS11        906  25 0.837 | 0.914 0.017 -4.426 0.0029 
+L_WS16        906  11 0.764 | 0.794 0.053 -0.560 0.2372 
+L_WS20        906  14 0.788 | 0.840 0.038 -1.360 0.0968 
+L_LS8         906  15 0.877 | 0.850 0.036  0.748 0.2406 
+L_LS14        906  15 0.798 | 0.850 0.037 -1.392 0.0877 
+L_LS15        904  21 0.502 | 0.897 0.022 -17.878 0.0000 
+L_LS16        906   8 0.596 | 0.719 0.080 -1.543 0.0774 
+L_LS20        906   6 0.677 | 0.636 0.105  0.396 0.4146 
+L_CS6         906  15 0.886 | 0.849 0.037  0.975 0.1309 
+L_CS26        906  12 0.849 | 0.811 0.049  0.786 0.2195 
+L_CS28        906   5 0.338 | 0.574 0.125 -1.900 0.0579 
+L_G1A         906  14 0.759 | 0.839 0.040 -1.988 0.0430 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   8.78
+Expected number of loci with heterozygosity excess:   8.79
 10 loci with heterozygosity deficiency and 5 loci with heterozygosity excess.
-Probability: 0.04385
+Probability: 0.04318
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 15 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -7.997  Probability:  0.00000
+T2:  -8.116  Probability:  0.00000
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -56,4 +56,4 @@ ________________________________________________________________________________
   | 0.783 | 0.118 | 0.044 | 0.030 | 0.005 | 0.010 | 0.005 | 0.000 | 0.005 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/15/2017  Time: 2:12:23 PM.
+End of computation. Date: 6/8/2018  Time: 11:20:29 AM.

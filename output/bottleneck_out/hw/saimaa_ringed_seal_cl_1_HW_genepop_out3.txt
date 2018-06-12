@@ -4,52 +4,52 @@ Parameters for T.P.M.: Variance=30.00  Probability=90.00%
 
 
 ======================================================================================
-File: C:\Users\localadmin\Desktop\Emily_Bottleneck_Jul2017\genepop_files\HW\saimaa_ringed_seal_cl_1_HW_genepop.txt
+File: C:\Users\localadmin\Desktop\EmilyHumble\bottleneck_hwe_June2018\HW\saimaa_ringed_seal_cl_1_HW_genepop.txt
 Data type: Genepop format
 Title: Title Line: genotypes                
 Estimation based on 10000 replications.
 
 
-Date: 08/14/2017  Time: 4:17:07 PM.
+Date: 6/7/2018  Time: 4:03:55 PM.
 Population : 1
                  observed   |     under the T.P.M.      
 locus           n  ko    He |   Heq  S.D.  DH/sd   Prob 
-L_Hg14        296   2 0.027 | 0.187 0.170 -0.940 0.2487 
-L_Hg23        296   2 0.268 | 0.190 0.170  0.458 0.3348 
-L_Hg36        296   3 0.562 | 0.393 0.163  1.037 0.1297 
-L_Hg42        296   3 0.493 | 0.396 0.163  0.600 0.3539 
-L_Hg610       296   2 0.053 | 0.188 0.170 -0.797 0.3392 
-L_Hg89        296   3 0.559 | 0.390 0.164  1.025 0.1278 
-L_Hg810       296   2 0.320 | 0.185 0.168  0.806 0.2621 
-L_Hgdii       296   3 0.027 | 0.392 0.161 -2.266 0.0119 
-L_Hgl15       294  16 0.657 | 0.873 0.029 -7.396 0.0000 
-L_Pvc19       296   4 0.471 | 0.518 0.137 -0.341 0.2973 
-L_Pvc26       294   4 0.197 | 0.516 0.138 -2.307 0.0347 
-L_Pvc78       296   2 0.199 | 0.183 0.168  0.093 0.3970 
-L_SGPv9       296   2 0.132 | 0.186 0.170 -0.315 0.4950 
-L_SGPv10      296   2 0.463 | 0.186 0.169  1.635 0.1043 
-L_SGPv11      296   3 0.599 | 0.392 0.164  1.263 0.0681 
-L_SGPv16      296   2 0.132 | 0.186 0.169 -0.321 0.4986 
+L_Hg14        296   2 0.027 | 0.188 0.169 -0.954 0.2419 
+L_Hg23        296   2 0.268 | 0.186 0.169  0.488 0.3136 
+L_Hg36        296   3 0.562 | 0.392 0.164  1.036 0.1291 
+L_Hg42        296   3 0.493 | 0.395 0.162  0.604 0.3494 
+L_Hg610       296   2 0.053 | 0.185 0.168 -0.792 0.3384 
+L_Hg89        296   3 0.559 | 0.392 0.164  1.019 0.1379 
+L_Hg810       296   2 0.320 | 0.188 0.169  0.780 0.2669 
+L_Hgdii       296   3 0.027 | 0.389 0.164 -2.215 0.0131 
+L_Hgl15       294  16 0.657 | 0.873 0.029 -7.491 0.0001 
+L_Pvc19       296   4 0.471 | 0.514 0.140 -0.306 0.3050 
+L_Pvc26       294   4 0.197 | 0.515 0.139 -2.289 0.0346 
+L_Pvc78       296   2 0.199 | 0.187 0.169  0.069 0.4030 
+L_SGPv9       296   2 0.132 | 0.189 0.170 -0.331 0.5034 
+L_SGPv10      296   2 0.463 | 0.191 0.169  1.617 0.1034 
+L_SGPv11      296   3 0.599 | 0.394 0.162  1.265 0.0703 
+L_SGPv16      296   2 0.132 | 0.186 0.169 -0.314 0.4936 
 ______________________________________________________________________________________
                                 SIGN TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:   7.97
+Expected number of loci with heterozygosity excess:   8.00
 8 loci with heterozygosity deficiency and 8 loci with heterozygosity excess.
-Probability: 0.59360
+Probability: 0.59886
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Caution: only 16 polymorphic loci (minimum 20).
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:  -1.941  Probability:  0.02615
+T2:  -1.954  Probability:  0.02536
 
 ______________________________________________________________________________________
                                WILCOXON TEST
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.46994
-Probability (one tail for H excess): 0.55003
-Probability (two tails for H excess or deficiency): 0.93988
+Probability (one tail for H deficiency): 0.44997
+Probability (one tail for H excess): 0.56987
+Probability (two tails for H excess or deficiency): 0.89993
 
 ______________________________________________________________________________________
                                MODE-SHIFT
@@ -57,4 +57,4 @@ ________________________________________________________________________________
   | 0.509 | 0.109 | 0.018 | 0.055 | 0.018 | 0.091 | 0.036 | 0.000 | 0.073 | 0.091 |
 normal L-shaped distribution
 
-End of computation. Date: 08/14/2017  Time: 4:39:30 PM.
+End of computation. Date: 6/7/2018  Time: 4:12:28 PM.

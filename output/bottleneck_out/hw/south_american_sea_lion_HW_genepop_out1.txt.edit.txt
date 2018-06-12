@@ -5,25 +5,25 @@ Expected number of loci with heterozygosity excess:  12.59
 Probability: 0.00008
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:  12.90
+Expected number of loci with heterozygosity excess:  12.89
 5 loci with heterozygosity deficiency and 17 loci with heterozygosity excess.
-Probability: 0.05613
+Probability: 0.05566
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-Expected number of loci with heterozygosity excess:  12.99
+Expected number of loci with heterozygosity excess:  12.98
 18 loci with heterozygosity deficiency and 4 loci with heterozygosity excess.
 Probability: 0.00011
 
 ______________________________________________________________________________________
                                STANDARDIZED DIFFERENCES TEST
 Assumptions: all loci fit I.A.M., mutation-drift equilibrium.
-T2:   4.214  Probability:  0.00001
+T2:   4.202  Probability:  0.00001
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-T2:   1.245  Probability:  0.10656
+T2:   1.248  Probability:  0.10604
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
-T2:  -6.039  Probability:  0.00000
+T2:  -6.012  Probability:  0.00000
 
 ______________________________________________________________________________________
                                WILCOXON TEST
@@ -33,9 +33,9 @@ Probability (one tail for H excess): 0.00002
 Probability (two tails for H excess and deficiency): 0.00004
 
 Assumptions: all loci fit T.P.M., mutation-drift equilibrium.
-Probability (one tail for H deficiency): 0.99857
-Probability (one tail for H excess): 0.00162
-Probability (two tails for H excess or deficiency): 0.00324
+Probability (one tail for H deficiency): 0.99838
+Probability (one tail for H excess): 0.00184
+Probability (two tails for H excess or deficiency): 0.00367
 
 Assumptions: all loci fit S.M.M., mutation-drift equilibrium.
 Probability (one tail for H deficiency): 0.00018
@@ -48,4 +48,4 @@ ________________________________________________________________________________
   | 0.611 | 0.189 | 0.067 | 0.044 | 0.044 | 0.017 | 0.017 | 0.011 | 0.000 | 0.000 |
 normal L-shaped distribution
 
-End of computation. Date: 08/17/2017  Time: 3:38:13 PM.
+End of computation. Date: 6/8/2018  Time: 12:46:49 PM.

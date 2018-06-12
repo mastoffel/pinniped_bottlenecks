@@ -8,6 +8,9 @@
 # make sure it works
 
 system("for i in output/bottleneck_out/*.txt; do cat $i | awk '/SIGN/,0' > output/bottleneck_out/$i.edit.txt; done")
+
+system("for i in output/bottleneck_out/hw/*.txt; do cat $i | awk '/SIGN/,0' > output/bottleneck_out/hw/$i.edit.txt; done")
+
 # for i in *.txt; do cat $i | awk '/SIGN/,0' > $i.edit.txt; done
 
 library(stringr)
@@ -79,9 +82,9 @@ if (grepl("Caution", y[9]) == TRUE) {
         run_2 <- y
         }
 # get vals from second file
-tpm95 <- data.frame(run_2[c(3,4,5,10,15,16,17)])
-colnames(tpm95) <- "out"
-tpm95 <- tpm95
+tpm80 <- data.frame(run_2[c(3,4,5,10,15,16,17)])
+colnames(tpm80) <- "out"
+tpm80 <- tpm80
 }
 
 out2 <- lapply(bottleneck_out2, get_vals2)
@@ -97,9 +100,9 @@ get_vals3 <- function(y) {
                         run_3 <- y
                 }
         # get vals from second file
-        tpm99 <- data.frame(run_3[c(3,4,5,10,15,16,17)])
-        colnames(tpm99) <- "out"
-        tpm99 <- tpm99
+        tpm90 <- data.frame(run_3[c(3,4,5,10,15,16,17)])
+        colnames(tpm90) <- "out"
+        tpm90 <- tpm90
 }
 
 out3 <- lapply(bottleneck_out3, get_vals3)
@@ -187,7 +190,7 @@ out_hw <- ldply(out_hw, data.frame)
 # write out files
 library(WriteXLS)
 WriteXLS(out, ExcelFileName = "output/out_bottleneck_stats_30.xls", na = "", row.names = F, col.names = T)
-WriteXLS(out_hw, ExcelFileName = "output/out_bottleneck_stats_HW_30.xls", na = "", row.names = F, col.names = T)
+WriteXLS(out_hw, ExcelFileName = "output/out_bottleneck_stats_HW_30_Jun2018.xls", na = "", row.names = F, col.names = T)
 
 write.csv(out, file = "output/out_bottleneck_stats_30.csv", na = "", row.names = F, col.names = T, quote = F)
-write.csv(out_hw, file = "output/out_bottleneck_stats_HW_30.csv", na = "", row.names = F, col.names = T, quote = F)
+write.csv(out_hw, file = "output/out_bottleneck_stats_HW_30_Jun2018.csv", na = "", row.names = F, col.names = T, quote = F)

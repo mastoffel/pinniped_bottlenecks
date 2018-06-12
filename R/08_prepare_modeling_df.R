@@ -33,3 +33,23 @@ all_stats <- all_stats %>% mutate(BreedingType = as.factor(as.character(Breeding
 write_csv(all_stats, "data/processed/all_stats_30_modeling.csv")
 
 
+# add on
+library(dplyr)
+library(tibble)
+library(tidyr)
+# all_stats for modeling
+all_stats <- as.data.frame(read_csv("data/processed/all_stats_30_modeling.csv"))
+
+all_stats_sub <- all_stats %>% 
+    dplyr::select(species, lactation_length, breeding_season_length, Generation_time, life_span_years)
+
+all_stats <- all_stats %>% 
+                replace_na(list(lactation_length = 56, life_span_years = 46, breeding_season_length = 60)) %>% 
+                mutate(logbreed_season = log(breeding_season_length)) 
+# Breeding season length mediterranean monk seal (mediterranean colonies)
+all_stats[all_stats$species == "mediterranean_monk_seal", "breeding_season_length"] <- 60
+
+# wtrite to file
+write_csv(all_stats, "data/processed/all_stats_30_modeling.csv")
+
+

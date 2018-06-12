@@ -167,6 +167,22 @@ clustering <- lapply(seals_structure_summary, optimal_k)
 names(clustering) <- names(all_seals)
 best_clustering <- unlist(clustering)
 
+# # get delta_k too
+# which_delta_k <- function(x) {
+#     x <- x[1:5, ] # evaluate with a maximum of 5 clusters. 
+#     elpd <- which.max(x$elpdmean)
+#     if (elpd == 1) {
+#         return(1)
+#     } else {
+#         delta_k <- max(x$deltaK, na.rm = TRUE)
+#         delta_k
+#     }
+# }
+
+# clustering_deltas <- lapply(seals_structure_summary, which_delta_k )
+# names(clustering) <- names(all_seals)
+# best_clustering <- unlist(clustering)
+
 # output best k's
 both_k <- function(x) {
     elpd <- which.max(x$elpdmean)
@@ -195,6 +211,11 @@ runs_to_df_reduced <- lapply(runs_to_df, extract_and_name_runs)
 # create data.frame with optimal K?s 
 clusters <- as.data.frame(best_clustering) 
 names(runs_to_df_reduced)
+
+library(tibble)
+library(readxl)
+clusters <- rownames_to_column(clusters, var = "species")
+write_csv(clusters, "data/processed/number_of_clusters.csv")
 
 # get individual cluster membership
 get_cluster_info <- function(species, runs_to_df_reduced, clusters) {
