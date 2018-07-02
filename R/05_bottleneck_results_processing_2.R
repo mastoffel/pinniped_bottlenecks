@@ -1,13 +1,20 @@
+# Second processing step of BOTTLENECK output
+# calculation of prop. loci in het-exc etc.
+
 # Bottleneck output files 
 # full data (incl non-HW loci)
 
 # files needed for this script:
-# (a) out_bottleneck_stats_29.xls containing the bottleneck output for full data and largest clusters 
+# (a) out_bottleneck_stats_30.xls containing the bottleneck output for full data and largest clusters 
+# this file is provided, as the BOTTLENECK program was used to calculate all heterozygosity-excess tests.
+# Then the script bottleneck_results.R has was run to transform the BOTTLENECK results into 
+# a tidy data frame.
 
 # file output from this script:
-# (a) bottleneck_results_29.txt formatted bottleneck results for full data sets
-# (b) bottleneck_results_29_cl.txt formatted bottleneck results for largest genetic clusters
-
+# (a) bottleneck_results_30.txt formatted bottleneck results for full data sets
+# (b) bottleneck_results_30_cl.txt formatted bottleneck results for largest genetic clusters
+# (c) if selected: bottleneck_results_HW_30.txt formatted bottleneck results for full data sets containing 
+# only loci in HW equilibrium
 
 
 library(data.table)  # faster fread() and better weekdays()
@@ -26,9 +33,10 @@ library(reshape2)
 library(xlsx)
 library(ggthemes)
 library(readr)
-# load data with original population names ---------------------------------------------------------
 library(readxl)
-library(stringr)
+
+# load data with original population names ---------------------------------------------------------
+
 # this is the output of the bottleneck tests, merged into one data.frame
 
 # calculate everything on HW filtered bottleneck stats?

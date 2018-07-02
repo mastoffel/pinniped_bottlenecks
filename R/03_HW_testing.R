@@ -5,13 +5,13 @@
 # will create an output/genind folder containing genind formatted data for all species
 
 # files needed for this script:
-# (a) seal_data_largest_clust_and_pop_29.xlsx 
+# (a) seal_data_largest_clust_and_pop_30.xlsx 
 
 # file output from this script:
 # (a) all_hw_10000iter_29.RData with all hw tests based on 10000 iterations
-# (b) seal_data_descriptives_29.xls provides an overview over the hw testing for all species
-# (c) seal_data_largest_clust_and_pop_all_hw_29.xls contains all full datasets, largest cluster
-# datasets and largest population datasets with just loci in HW equlibrium
+# (b) seal_data_descriptives_30.xls provides an overview over the hw testing for all species
+# (c) seal_data_largest_clust_and_pop_all_hw_30.xlsx contains all full datasets, largest cluster
+# datasets and largest population datasets with just loci in HW equlibrium 
 
 # Hardy Weinberg
 library(pegas)
@@ -219,9 +219,9 @@ unlist(lapply(all_seals_in_hw, function(x) ncol(x) - 3)) / 2
 # write excel file with each dataset 
 write_dflist_to_xls(all_seals_in_hw, "seal_data_largest_clust_and_pop_all_hw_30.xls")
 
-
 ####### LAST step ######
 # save all xls files as xlsx for postprocessing 
+
 
 
 # which proportion of loci out of HW in both tests?

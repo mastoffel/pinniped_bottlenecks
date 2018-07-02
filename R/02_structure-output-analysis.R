@@ -1,4 +1,4 @@
-## script to analyse structure output for 29 seal species
+## script to analyse structure output for 30 seal species
 
 #(1) summarise structure output files with tables / graphs
 #(2) add cluster membership 
@@ -7,12 +7,13 @@
 #(5) put all genotypes into a large list
 
 # files needed for this script:
-# (a) seal_genotypes_basic_29.xlsx
+# (a) seal_genotypes_basic_30.xlsx
 # (b) old_parallel_structure_functions.R
 
-# file output from this script:
-# (a) seal_data_largest_clust_and_pop_29.xls 
-# contains genotype data.frames for all 29 species, plus additional dataframes for the largest
+# output from this script:
+# creates a folder under output/structure
+# creates a file: seal_data_largest_clust_and_pop_30.xls, which
+# contains genotype data.frames for all 30 species, plus additional dataframes for the largest
 # genetic cluster (only for clustered species) and the largest population (sampling location)
 
 # 

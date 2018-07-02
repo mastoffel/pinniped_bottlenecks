@@ -1,9 +1,9 @@
-# Calculates rarified summary statistics
+# Calculates summary statistics as mean of 10 individuals
 
 # files needed:
-# (1) seal_data_largest_clust_and_pop_29.xlsx
-# (2) bottleneck_results_29.txt or bottleneck_results_29_cl.txt
-# (3) overview_29.xlsx
+# (1) seal_data_largest_clust_and_pop_30.xlsx
+# (2) bottleneck_results_30.txt or bottleneck_results_30_cl.txt
+# (3) overview_30.xlsx
 
 # plots
 library(stringr)
@@ -19,7 +19,7 @@ library(strataG)
 library(hierfstat)
 library(strataG)
 library(readr)
-library(stringr)
+library(inbreedR)
 all_seals <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop_30.xlsx")
 
 #### load bottleneck data
@@ -46,11 +46,12 @@ harem_data <- harem_data[!(is.na(harem_data$species)), ]
 
 
 ### diversity
-# g2 
+# g2, identity equilibrium
 # check if calculated
 g2_file <- paste0("data/processed/g2_summary_", shortcut_save, "_data.txt")
+
 if(!file.exists(g2_file)){
-    library(inbreedR)
+
     calc_g2s <- function(genotypes){
         g2_microsats(convert_raw(genotypes[, 4:ncol(genotypes)]), nboot = 10, nperm = 10) # increase at some point
     }

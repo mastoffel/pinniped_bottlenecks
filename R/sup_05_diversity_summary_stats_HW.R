@@ -1,10 +1,5 @@
 # Calculates rarified summary statistics
 
-# files needed:
-# (1) seal_data_largest_clust_and_pop_29.xlsx
-# (2) bottleneck_results_29.txt or bottleneck_results_29_cl.txt
-# (3) overview_29.xlsx
-
 # plots
 library(stringr)
 library(sealABC)

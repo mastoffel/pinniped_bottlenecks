@@ -1,5 +1,5 @@
 ## This script both models and produces the publication ready plot for hypothesis 1:
-# Genetic diversity and bottleneck signatures (het-excess) are correlated.
+# Genetic diversity and bottleneck signatures (het-excess, ABC pbot) are correlated.
 
 # files needed
 # (1) all_stats_30_modeling.csv
@@ -28,6 +28,7 @@ tree_final <- read.tree("data/raw/phylogeny/30_species_10ktrees_final.tre")
 all_stats <- as.data.frame(read_csv("data/processed/all_stats_30_modeling.csv"))
 
 # phylogenetic mixed model preparation
+
 # construct inverse phylo matrix and priors
 inv_phylo <- inverseA(tree_final, nodes="TIPS",scale=FALSE)$Ainv #,scale=TRUE
 prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
@@ -35,6 +36,7 @@ prior<-list(G=list(G1=list(V=1,nu=0.002)),R=list(V=1,nu=0.002))
 nitt <- 110000
 burnin <- 10000
 thin <- 100
+
 # Models for for figure "do bottleneck signatures predict genetic diversity?"
 ## model 1: ABCprob(bot) ~ genetic diversity -------------------------------------------------------
 
@@ -228,6 +230,8 @@ if(modeling){
         write_delim(paste0("output/mcmcmodels/", mod_name, "_beta" ,".txt"))
     
 }
+
+
 
 
 # plots for paper ----------------------------------------------------------------------------------

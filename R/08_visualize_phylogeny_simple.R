@@ -1,12 +1,13 @@
 # Create Fig.1 from paper
 
 # files needed:
-# (1) seal_data_complete_rarefac10_29.csv (all pinniped data)
-# (2) sims_10000k_model_selection.txt (ABC model probabilities)
-# (3) 29_species_10ktrees.tre (phylogenetic data)
+# (1) seal_data_complete_rarefac10_30.csv (all pinniped data, including summary statistics)
+# (2) sims_10000kbot500_*model_selection.txt (ABC model probabilities)
+# (3) 30_species_10ktrees.tre (phylogenetic data)
 
 # creates:
-# all_stats_tree_29.csv (all stats plus tree variable)
+# all_stats_tree_30*.csv (all stats plus tree variable, for largest clusters (cl), or loci
+# in HW (HW), or full datasets (""))
 
 # plot phylogeny
 library(ggtree)

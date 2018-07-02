@@ -1,6 +1,9 @@
+## modified ggplot theme
+# credit to Henrik Lindberg https://github.com/halhen
+
 theme_martin <- function(grid=TRUE, legend.position=NA, base_family='Lato Light', highlight_family='Lato') {
     
-    # credit to Henrik Lindberg https://github.com/halhen
+   
     th <- ggplot2::theme_minimal(base_family = base_family, base_size = 12)
     
     th <- th + theme(text = element_text(color='#333333'))

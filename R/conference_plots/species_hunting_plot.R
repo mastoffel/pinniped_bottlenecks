@@ -4,7 +4,8 @@ library(dplyr)
 library(ggthemr)
 library(viridis)
 library(extrafont)
-source("Martin.R")
+source("R/martin.R")
+
 seal_data <- read_xlsx("data/processed/all_data_seals_handbook.xlsx", skip = 1)
 
 seal_data <- seal_data %>% mutate(seal_hunt = factor(bottleneck_hist))

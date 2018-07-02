@@ -27,7 +27,7 @@ all_stats_table <- all_stats %>%
     dplyr::mutate(Genotypes = nloc * nind) %>% 
     dplyr::mutate(origin_n = paste0(origin, " (" ,populations, ")")) %>% 
     dplyr::select(common_abbr, latin, IUCN_rating, Abundance, BreedingType, Generation_time,
-        SSD, harem_size, nind, nloc, Genotypes, origin_n, published_short) %>% 
+        SSD, breeding_season_length, nind, nloc, Genotypes, origin_n, published_short) %>% 
     dplyr::mutate(Abundance = prettyNum(Abundance, big.mark = ",", scientific = FALSE),
                   Genotypes = prettyNum(Genotypes, big.mark = ",", scientific = FALSE)) %>% 
     dplyr::rename(`Common name` = common_abbr,
@@ -35,7 +35,7 @@ all_stats_table <- all_stats %>%
         `IUCN status` = IUCN_rating,
         `Breeding habitat` = BreedingType,
         `Generation time (days)` = Generation_time,
-        `Harem size` = harem_size,
+        `Breeding season length` = breeding_season_length,
         `Loci` = nloc,
         `Individuals` = nind,
         `Sampling locations (n)` = origin_n,
@@ -493,3 +493,70 @@ kable(mod_full, format = "latex", booktabs = T, align = "c",
     group_rows("prop_{het-exc}", 15,15, latex_gap_space = "1em", escape = F) %>% 
     group_rows("p$_{bot}$", 16,16, latex_gap_space = "1em", escape = F) %>% 
     kable_as_image("SupTab8_full", file_format = "jpeg", keep_pdf = TRUE, density = 600)
+
+
+
+
+# Table for Structure results
+all_seals <- read_excel_sheets("data/processed/seal_data_largest_clust_and_pop_30.xlsx")
+
+#### load bottleneck data
+bottleneck_cl <- read_delim("data/processed/bottleneck_results_30_cl.txt", col_names = TRUE, delim = " ")
+
+# get all clustered seals
+all_seals <- all_seals[bottleneck_cl$id]
+
+#num_ind_cluster
+num_ind_clust <- unlist(lapply(all_seals, nrow))
+num_ind_df <- data.frame(species = names(num_ind_clust), num_ind = num_ind_clust) %>% 
+                mutate(species = str_replace_all(species, pattern = "_cl_[1-5]", ""))
+
+cl_sumstats <-  read_csv("data/processed/all_stats_tree_30_cl.csv") 
+num_cl <- read_csv("data/processed/number_of_clusters.csv")
+    
+names(cl_sumstats)
+
+
+all_stats_table_struc <- cl_sumstats %>% 
+    left_join(num_cl, by = "species") %>% 
+    left_join(num_ind_df, by = "species") %>% 
+    dplyr::select("common_abbr", "latin",  "best_clustering", "num_ind") %>% 
+    dplyr::rename(`Common name` = common_abbr,
+        `Scientific name` = latin,
+        `Number of genetic clusters` =  best_clustering,
+        `Number of individuals in largest cluster` = num_ind) %>% 
+    dplyr::arrange(-row_number()) %>% 
+    mutate(`Scientific name` = cell_spec(`Scientific name`, italic = TRUE))
+
+align_tab5 <- c("l", "l", rep(x = "c", 2))
+
+kable(all_stats_table_struc, format = "latex", escape = F, 
+    booktabs = TRUE, align = align_tab5 , digits = 3, linesep = "") %>% 
+    kable_styling(latex_options =  "scale_down") %>% 
+    row_spec(0, bold = TRUE) %>% 
+    kable_as_image("SupTab10", keep_pdf = TRUE)
+
+
+
+
+######### literature search table ######
+
+all_lit <- read_excel("data/raw/search_terms_formatted_results.xls")
+names(all_lit)[c(2,4)] <- c("Second scientific name", "Second common name")
+
+sum(all_lit$Results)
+
+names(all_lit)[6] <- "Results (n = 304)"
+all_lit[is.na(all_lit)] <- ""
+align_tab6 <- c("l", "l", "l", "l", rep(x = "c", 2))
+
+all_lit <- all_lit[-c(2,4)]
+all_lit <- all_lit %>% 
+    mutate( `Scientific name` = cell_spec( `Scientific name`, italic = TRUE))
+
+kable(all_lit , format = "latex", escape = F, 
+    booktabs = TRUE, align = align_tab6, digits = 3, linesep = "") %>% 
+    kable_styling(latex_options =  "scale_down") %>% 
+    row_spec(0, bold = TRUE) %>% 
+    kable_as_image("SupTabLiterature", keep_pdf = TRUE)
+

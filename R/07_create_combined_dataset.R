@@ -1,9 +1,9 @@
 # create combined dataset with ecology/life-history/demography data in the sequence of Phylogeny
 
 # files needed:
-# (1) phylogeny_overview_29.xlsx
-# (2) all_data_seals_rarefac10_29.csv
-# (3) seal_data_krueger.xlsx
+# (1) phylogeny_overview_30.xlsx        # phylogeny
+# (2) all_data_seals_rarefac10_30.csv   # summary statistics
+# (3) seal_data_krueger.xlsx            # life history
 
 library(stringr)
 library(readxl)

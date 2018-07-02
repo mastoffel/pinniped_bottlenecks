@@ -1,0 +1,17 @@
+tol0.005.Var1 tol0.005.Var2 tol0.005.Freq
+bot_iceage bot_iceage 60
+bottleneck bot_iceage 15
+neut_iceage bot_iceage 16
+neutral bot_iceage 11
+bot_iceage bottleneck 14
+bottleneck bottleneck 64
+neut_iceage bottleneck 5
+neutral bottleneck 6
+bot_iceage neut_iceage 20
+bottleneck neut_iceage 3
+neut_iceage neut_iceage 66
+neutral neut_iceage 14
+bot_iceage neutral 6
+bottleneck neutral 18
+neut_iceage neutral 13
+neutral neutral 69

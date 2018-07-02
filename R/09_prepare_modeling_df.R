@@ -1,12 +1,16 @@
-# prepare data frame for modeling
+# prepare data for bayesian modeling
 
-# prepare the data.frame for modeling
+# creates all_stats_30_modeling.csv
 
 library(readr)
 library(ape)
 library(dplyr)
 library(forcats)
-# load (modified) phylogeney. 26 species from 10ktrees plus 3 subspecies of ringed seal
+library(dplyr)
+library(tibble)
+library(tidyr)
+
+# load (modified) phylogeney. 27 species from 10ktrees plus 3 subspecies of ringed seal
 tree_final <- read.tree("data/raw/phylogeny/30_species_10ktrees_final.tre")
 
 # all_stats_tree is from 10_visualise_phylogeny.R
@@ -33,10 +37,6 @@ all_stats <- all_stats %>% mutate(BreedingType = as.factor(as.character(Breeding
 write_csv(all_stats, "data/processed/all_stats_30_modeling.csv")
 
 
-# add on
-library(dplyr)
-library(tibble)
-library(tidyr)
 # all_stats for modeling
 all_stats <- as.data.frame(read_csv("data/processed/all_stats_30_modeling.csv"))
 

@@ -364,7 +364,7 @@ p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
         #axis.line.y = element_line(colour = "#cccccc"),
         axis.ticks.y = element_blank(),
         axis.ticks = element_line(colour = "#cccccc"),
-        legend.position = "none") 
+        legend.position="none") 
 p1    
 
 hetexc_beta <- read_delim("output/mcmcmodels/IUCN_hetexc_beta.txt", delim = " ")
@@ -376,7 +376,7 @@ p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
     theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
-    xlab("IUCN status") +
+    xlab(" ") +
     scale_x_discrete(labels = c("high concern", "low concern")) +
     ylab(expression(atop("Heterozygosity-excess", paste("("~prop[het-exc]~")")))) +
     #ylab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) +
@@ -393,9 +393,9 @@ p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
         #axis.line.y = element_line(colour = "#cccccc"),
         axis.ticks.y = element_blank(),
         axis.ticks = element_line(colour = "#cccccc"),
-        plot.margin = unit(c(0.5,0.3,0.3,0.2), "cm") ,
+        plot.margin = unit(c(1.9,0.3,0.3,0.2), "cm"),
         axis.title.x= element_text(margin=margin(t=0.5, unit = "cm")),
-        legend.position="top")
+        legend.position = "none")
        # legend.position = "none") 
 p2
 
@@ -408,7 +408,8 @@ p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
     theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
-    xlab(" ") +
+
+    xlab("IUCN status") +
     scale_x_discrete(labels = c("high concern", "low concern")) +
     #ylab(expression("ABC bottleneck\nprobability"~(p[bot]))) +
     ylab(expression(atop("ABC bottleneck", paste("probability (p"[bot]~")")))) +
@@ -425,13 +426,13 @@ p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
         #axis.line.y = element_line(colour = "#cccccc"),
         axis.ticks.y = element_blank(),
         axis.ticks = element_line(colour = "#cccccc"),
-        plot.margin = unit(c(1.9,0.3,0.3,0.2), "cm") ,
+        plot.margin = unit(c(0.5,0.3,0.3,0.2), "cm"),
         axis.title.x= element_text(margin=margin(t=0.5, unit = "cm")),
-        legend.position="")
+        legend.position="top")
 # legend.position = "none") 
 p3
 
-p_final <- plot_grid(p1,p2,p3, nrow = 1, labels = c("A", "B", "C"))
+p_final <- plot_grid(p2,p3,p1, nrow = 1, labels = c("A", "B", "C"))
 ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN_rev.jpg", width = 9, height = 3.5)
 
 
