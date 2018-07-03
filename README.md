@@ -1,17 +1,22 @@
-# Analysis workflow for "Recent demographic histories and genetic diversity across pinnipeds are shaped by anthropogenic interactions and mediated by ecology and life-history"
+# Analysis workflow for "Recent demographic histories and genetic diversity across pinnipeds are shaped by anthropogenic interactions and mediated by ecology and life-history", Stoffel et al.
 
 ## Overview
 
-All scripts to reproduce analyses in the paper can be accessed via two repositories:
+The complete analysis workflow is split into two repositories:
 
 (1) Coalescent simulations and ABC analysis
 - repository: https://github.com/mastoffel/Pinniped_bottleneck_CoalSimABC
-- This part of the project is an extra-repository, the scripts of which should be run on a server with sufficient computing power
+- the scripts in this repository should run on a server with sufficient computing power and memory
 
-(2) All other analyses
+(2) All further analyses
 - repository: https://github.com/mastoffel/pinniped_bottlenecks
+- these scripts can be run a standard desktop machine
 
-In addition, we packaged some specific functions into the sealABC package, also accessible
-on GitHub: https://github.com/mastoffel/sealABC
+In addition, we packaged some specific functions into two packages:
+(a) sealABC:  devtools::install_github("mastoffel/sealABC")
+(b) mcmcR2:   devtools::install_github("mastoffel/mcmcR2")
+
+Both packages are highly specific to the current analysis and probably have to be modified to 
+be of use in other projects.
 
 

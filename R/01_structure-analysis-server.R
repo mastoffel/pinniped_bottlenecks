@@ -1,8 +1,10 @@
-# This script runs from a server where STRUCTURE is installed.
+# This script runs from a multicore machine where STRUCTURE is installed.
 # It uses the parallelStructure package to interface with STRUCTURE.
 
 # be aware: all files from ParallelStructure will be copied into the directory of the script
-# its's not advisable to run this on many datasets on a desktop computer
+# also: its's not advisable to run this on many datasets on a desktop computer
+
+# saves everything into a subfolder structure_results
 
 library(readxl)
 library(ParallelStructure)
@@ -13,12 +15,12 @@ library(sealABC)
 # things will be copy (and deleted) into the working directory
 
 ## load a list of genetic data frames and runs STRUCTURE in parallel on all of them
-seal_data <- "../data/seal_genotypes_basic_30.xlsx"
+# seal_data <- "../data/seal_genotypes_basic_30.xlsx"
+seal_data <- "../data/processed/seal_genotypes_basic_30.xlsx"
 all_seals <- sealABC::read_excel_sheets(seal_data)
 
+## add additional data in the form of single dataframes
 add_dat <- FALSE
-## additional data?
-add_dat <- TRUE
 # if a new species has been added to seal_genotypes_basic and just this species should be run
 additional_species <- "guadalupe_fur_seal"
 
