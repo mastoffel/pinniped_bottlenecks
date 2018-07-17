@@ -124,7 +124,7 @@ all_stats_table_sub3 <- all_stats %>%
         #`$p_{bot}$` = bot,
         #`$p_{neut}$` = neut) %>% 
          `\\boldsymbol{p_{bot}}` = bot,
-         `\\boldsymbol{p_{neut}}` = neut) %>% 
+         `\\boldsymbol{p_{non-bot}}` = neut) %>% 
     dplyr::arrange(-row_number()) %>% 
     mutate(`$\\textbf{Scientific name}` = cell_spec(`$\\textbf{Scientific name}`, italic = TRUE))
 
@@ -151,7 +151,7 @@ all_stats_table_sub4 <-all_stats_table_sub4_temp %>%
     dplyr::mutate(model = ifelse(bot > 0.5, "bot", "neut")) %>% 
     dplyr::mutate(p_val = ifelse(bot > 0.5, all_stats_table_sub4_temp$bot_p, 
                                              all_stats_table_sub4_temp$neut_p)) %>% 
-    dplyr::mutate(model = ifelse(model == "neut", "neutral", "bottleneck")) %>% 
+    dplyr::mutate(model = ifelse(model == "neut", "non-bottleneck", "bottleneck")) %>% 
     dplyr::select(-bot) %>% 
     dplyr::rename(`Common name` = common_abbr,
         `Scientific name` = latin,
@@ -298,11 +298,11 @@ abc_neut_full <- abc_neut_full[-1]
 align_tab7 <- c("l", "l", rep(x = "c", ncol(abc_neut_full) - 2))
 
 kable(abc_neut_full,  format = "latex", escape = F, 
-    booktabs = TRUE, align = align_tab5, digits = 3, linesep = "",
+    booktabs = TRUE, align = align_tab7, digits = 3, linesep = "",
     col.names = c("Common name", rep(names(abc_table_mut_neut), 2))) %>% 
     kable_styling(latex_options =  "scale_down") %>% 
     add_header_above(c(" " = 1, "GSM_{par}" = 5, "mu" = 5), escape = F, bold = TRUE) %>% 
-    add_header_above(c(" " = 1, "Neutral model" = 10), bold = TRUE) %>% 
+    add_header_above(c(" " = 1, "Non-bottleneck model" = 10), bold = TRUE) %>% 
     row_spec(0, bold = TRUE) %>% 
     # group_rows("N_{bot}", 1,10, escape = F) %>% 
     # group_rows("Mutation rate mu", 11,20, escape = F) %>% 

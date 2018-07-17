@@ -24,15 +24,15 @@ library(knitr)
 library(kableExtra)
 all_stats_origin <- read_xlsx("data/raw/table_data.xlsx")
 all_stats_table <- all_stats_origin %>% 
-    select("species", "common", "latin") %>% 
+    dplyr::select("species", "common", "latin") %>% 
     left_join(mod4_ms, by = "species") %>% 
-    select(-species) %>% 
+    dplyr::select(-species) %>% 
     dplyr::rename(`Common name` = common,
         `Scientific name` = latin,
         `LGM + Bottleneck` =  bot_iceage,
         `Bottleneck` = bot,
-        `LGM + Neutral` = neut_iceage,
-        `Neutral` = neut) %>% 
+        `LGM + Non-bottleneck` = neut_iceage,
+        `Non-bottleneck` = neut) %>% 
     dplyr::arrange(-row_number()) %>% 
     mutate(`Scientific name` = cell_spec(`Scientific name`, format = "latex", italic = TRUE))
 
@@ -46,7 +46,7 @@ kable(all_stats_table , format = "latex",  escape = F,
     row_spec(0, bold = TRUE) %>% 
    #add_header_above(c(" " = 2, "Conservation, demography, ecology and life-history data" = 6,
     #    "Genetic data" = 5), italic = TRUE) %>% 
-    kable_as_image("other_stuff/figures/figures_final/figures_4mod/model_probs_expand.png", keep_pdf = TRUE)
+    kable_as_image("other_stuff/figures/figures_final/new_figures_revision_2/supplementary_figures_4mod/model_probs_expand.png", keep_pdf = TRUE)
 
 
 # new plot

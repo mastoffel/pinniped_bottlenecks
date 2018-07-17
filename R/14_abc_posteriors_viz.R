@@ -146,7 +146,7 @@ p_mut_bot <- abc_bot %>% filter(pars == "mut_rate") %>%
     scale_x_continuous(limits = c(-0.00005, 0.0006), breaks = c(0, 0.0001, 0.0002, 
                                     0.0003, 0.0004, 0.0005), labels = c(0,1,2,3,4,5)) +
     ylab("") +
-    ggtitle("Bottleneck model")
+    ggtitle("Bottleneck")
 p_mut_bot
 
 # ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate.jpg", plot = p_mut, width = 4.5, height = 6.5)
@@ -198,14 +198,14 @@ p_mut_neut <- abc_neut %>% filter(pars == "mut_rate") %>%
     scale_x_continuous(limits = c(-0.00005, 0.0006), breaks = c(0, 0.0001, 0.0002, 0.0003, 
                         0.0004, 0.0005), labels = c(0,1,2,3,4,5)) +
     ylab("") +
-    ggtitle("Neutral model")
+    ggtitle("Non-bottleneck")
 
  
 
 ## final figure
 p_final <- p_mut_bot + p_mut_neut
 p_final
-ggsave(filename = "other_stuff/figures/figures_final/Sup_abc_posteriors_mutrate_30.jpg", 
+ggsave(filename = "other_stuff/figures/figures_final/new_figures_revision_2/Sup4_abc_posteriors_mutrate_30.jpg", 
     plot = p_final, width = 7.5, height = 5.5)
 
 

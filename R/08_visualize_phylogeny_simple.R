@@ -30,8 +30,8 @@ library(extrafont)
 # ggthemr('dust')
 source("R/martin.R")
 
-calc_on_cluster <- FALSE
-calc_on_HW <- TRUE
+calc_on_cluster <- TRUE
+calc_on_HW <- FALSE
 if (calc_on_cluster) {
     save_files <- "_cl"    
 } else if (calc_on_HW) {
@@ -396,7 +396,7 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
         legend.text = element_text(size = 9),
         legend.title.align = 0.5,
         text=element_text(family='Hind Guntur Light')) +
-    scale_x_discrete(labels=c(expression(P[bot]),expression(P[neut]))) 
+    scale_x_discrete(labels=c(expression(P[bot]),expression(P[non-bot]))) 
     #labs(x=NULL, y=NULL) +
     # coord_fixed(ratio = 0.7) +
   
@@ -407,7 +407,7 @@ p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1,
 #    draw_plot_label(c("A", "B", "C"), c(0.62, 0.74, 0.87), c(0.995, 0.995, 0.995), size = 11)
 p_final <- p_final +
     draw_plot_label(c("A", "B", "C"), c(0.67, 0.79, 0.91), c(0.995, 0.995, 0.995), size = 11)
-ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_30", save_files, ".jpg"), p_final,
+ggplot2::ggsave(paste0("other_stuff/figures/figures_final/new_figures_revision_2/fig1_phylo_plot_color_30", save_files, ".jpg"), p_final,
     height = 6.1, width = 9, device = "jpg")
 
 
