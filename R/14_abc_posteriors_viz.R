@@ -102,7 +102,7 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
     geom_boxplot(width = 0.4, outlier.shape = NA, color = "white", alpha = 0.5, size = 0.2) +
     stat_summary(fun.y = "estimate_mode", colour = "black", geom = "point", size = 2, shape = 21, fill = "grey") +
     #stat_summary(fun.y = "mean", colour = "blue", geom = "point") +
-    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    theme_martin(base_family = "Arial", highlight_family = "Arial") +
    # scale_fill_cyclical(values = c("lightgrey", "darkgrey")) +
     #ylim(0, 900) +
     scale_x_discrete(labels = species_names_bot_twolines) + 
@@ -124,11 +124,11 @@ ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert_30.jpg", p,
 # plot as pdf
 
 
-ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert_30.pdf", p,
-    width = 3.7, height = 6, device = "pdf")
+ggplot2::ggsave(filename = "other_stuff/figures/figures_final/figures_final_editing/abc_posteriors_vert_30.pdf", p,
+    width = 4, height = 6, device = "pdf")
 
 Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
-extrafont::embed_fonts("other_stuff/figures/abc_posteriors_vert.pdf")
+extrafont::embed_fonts("other_stuff/figures/figures_final/figures_final_editing/abc_posteriors_vert_30.pdf")
 
 
 
@@ -140,7 +140,7 @@ p_mut_bot <- abc_bot %>% filter(pars == "mut_rate") %>%
     ggplot(aes(adj_vals, y = species, fill = species)) +
     geom_density_ridges(rel_min_height = 0.01, scale = 3, alpha = 0.7) +
     scale_fill_cyclical(values = c("#4040B0", "#9090F0"), guide = "legend") +
-    theme_martin(legend.position='none', base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    theme_martin(legend.position='none', base_family = "Arial", highlight_family = "Arial") +
     xlab(expression(mutation~rate~mu~(x~10^-4))) +
     scale_y_discrete(labels = species_names_bot) +
     scale_x_continuous(limits = c(-0.00005, 0.0006), breaks = c(0, 0.0001, 0.0002, 
@@ -192,7 +192,7 @@ p_mut_neut <- abc_neut %>% filter(pars == "mut_rate") %>%
     ggplot(aes(adj_vals, y = species, fill = species)) +
     geom_density_ridges(rel_min_height = 0.01, scale = 3, alpha = 0.8) +
     scale_fill_cyclical(values = c("#4040B0", "#9090F0"), guide = "legend") +
-    theme_martin(legend.position='none', base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    theme_martin(legend.position='none', base_family = "Arial", highlight_family = "Arial") +
     xlab(expression(mutation~rate~mu~(x~10^-4))) +
     scale_y_discrete(labels = species_names_neut) +
     scale_x_continuous(limits = c(-0.00005, 0.0006), breaks = c(0, 0.0001, 0.0002, 0.0003, 
@@ -226,7 +226,7 @@ p_gsm_neut <- abc_neut %>% filter(pars == "gsm_param") %>%
     ggplot(aes(adj_vals, y = species, fill = species)) +
     geom_density_ridges(rel_min_height = 0.01, scale = 3, alpha = 0.8) +
     scale_fill_cyclical(values = c("#4040B0", "#9090F0"), guide = "legend") +
-    theme_martin(legend.position='none', base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    theme_martin(legend.position='none', base_family = "Arial", highlight_family = "Arial") +
     xlab(expression(Multistep~mutations~"("~GSM[par]~")")) +
     scale_y_discrete(labels = species_names_neut) +
     scale_x_continuous(limits = c(-0.05, 0.4), breaks = c(0, 0.1, 0.2, 0.3,0.4)) +

@@ -30,7 +30,7 @@ library(extrafont)
 # ggthemr('dust')
 source("R/martin.R")
 
-calc_on_cluster <- TRUE
+calc_on_cluster <- FALSE
 calc_on_HW <- FALSE
 if (calc_on_cluster) {
     save_files <- "_cl"    
@@ -259,7 +259,7 @@ scale_fill_manual(values = c("#f7f7f7", "#d9d9d9", "#969696", "#252525", "white"
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 9),
         legend.title.align = 0.5,
-        text=element_text(family='Hind Guntur Light')) 
+        text=element_text(family='Arial')) #Arial
 # geom_image(data = d_img, aes(image = image), size = 0.2)
 p
 
@@ -285,20 +285,20 @@ p_div <- ggplot(stand_div_lf, aes(x = variable, y = common_abbr, fill = value)) 
     #scale_fill_distiller(pal(5)) +
     # scale_fill_gradientn(colours=plot_col_div, 
     #   name = "prop. \nhet-exc") +
-    theme_tufte(base_family="Hind Guntur Light") +
+    theme_tufte(base_family="Arial") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
         axis.text.x = element_text(angle = 0, hjust = 0, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(15,10,22,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260)
+        plot.margin=unit(c(15,10,20.7,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260) #15 10 22 10
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
-        axis.text.y = element_text(hjust=0, size = 10, colour = "#525252"), #abc_cols[stand_div$abc][plot_inds]
+        axis.text.y = element_text(hjust=0, size = 9, colour = "#525252"), #abc_cols[stand_div$abc][plot_inds]
         legend.title = element_text(size = 9),
         legend.text = element_text(size = 9),
         legend.title.align = 0.5, 
-        text=element_text(family='Hind Guntur Light')) +
+        text=element_text(family='Arial')) +
     # coord_fixed(ratio = 0.7) +
     scale_x_discrete(labels=c(expression(A[r]), expression(H[o])), # c("Ho", "Ar"),  ##"ARA",
         position = "bottom") +
@@ -326,7 +326,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         direction = -1, limits = c(0,1.01)) +
     # scale_fill_gradientn(colours=rev(pal2(5)),
     #    name = "% of loci with\nheterozyosity excess", labels=c(0, 0.5, 1.0), breaks = c(0,0.5,0.95)) +
-    guides(fill = guide_colorbar(barwidth = 4.7, barheight = 0.5, 
+    guides(fill = guide_colorbar(barwidth = 5.3, barheight = 0.5, 
         title.position = "top", direction = "horizontal",
         title = "Prop. of loci with\nheterozyg.-excess", 
         #title = expression(atop("Prop. loci with", paste("heterozygosity-excess"))),
@@ -334,7 +334,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         #title.theme = element_text(vjust = 2, angle = 0)
         )) +
         #title = "Prop.\nHet.-excess")) +
-    theme_tufte(base_family="Hind Guntur Light") +
+    theme_tufte(base_family="Arial") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
         axis.text.x = element_text(angle = 0, hjust = 0.4, size = 12, margin = margin(t = 7)),
@@ -342,7 +342,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         legend.position=c(0.57, 1.208),
         # legend.position=c(0.57, 1.2337),
        # legend.margin=margin(0,0,0,0),
-        plot.margin=unit(c(80.8,10,22.8,10),"points"), 
+        plot.margin=unit(c(80.8,10,22.4,10),"points"), 
         #   plot.margin=unit(c(87.8,10,22.8,10),"points"),
         #    plot.margin=unit(c(77.8,10,20.1,10),"points"),
         #plot.margin=unit(c(8.3,10,19.5,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
@@ -353,7 +353,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         legend.title = element_text(size = 9),
         legend.text = element_text(size = 9),
        # legend.title.align = -0.5, 
-        text=element_text(family='Hind Guntur Light'),
+        text=element_text(family='Arial'),
         
         legend.justification = "top") +
     # scale_x_discrete(labels=c("PHE","M")) +
@@ -382,21 +382,21 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
         direction = -1) +
     guides(fill = guide_colorbar(barwidth = 4.6, barheight = 0.5, 
         title.position = "top")) +
-    theme_tufte(base_family="Hind Guntur Light") +
+    theme_tufte(base_family="Arial") +
     theme(plot.title=element_text(hjust=0),
         axis.ticks=element_blank(),
         axis.text.x = element_text(angle = 0, hjust = 0.4, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(14.71,10,21.7,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660) +20
+        plot.margin=unit(c(14.71,10,20.4,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660) +20
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(),
         legend.title = element_text(size = 9),
         legend.text = element_text(size = 9),
         legend.title.align = 0.5,
-        text=element_text(family='Hind Guntur Light')) +
-    scale_x_discrete(labels=c(expression(P[bot]),expression(P[non-bot]))) 
+        text=element_text(family='Arial')) +
+    scale_x_discrete(labels=c(expression(p[bot]),expression(p[non-bot]))) 
     #labs(x=NULL, y=NULL) +
     # coord_fixed(ratio = 0.7) +
   
@@ -407,17 +407,17 @@ p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1,
 #    draw_plot_label(c("A", "B", "C"), c(0.62, 0.74, 0.87), c(0.995, 0.995, 0.995), size = 11)
 p_final <- p_final +
     draw_plot_label(c("A", "B", "C"), c(0.67, 0.79, 0.91), c(0.995, 0.995, 0.995), size = 11)
-ggplot2::ggsave(paste0("other_stuff/figures/figures_final/new_figures_revision_2/fig1_phylo_plot_color_30", save_files, ".jpg"), p_final,
-    height = 6.1, width = 9, device = "jpg")
 
 
+ggplot2::ggsave(paste0("other_stuff/figures/figures_final/figures_final_editing/fig1_phylo_plot_color_30", save_files, ".jpg"), p_final,
+    height = 6.1, width = 10, device = "jpg")
 
 
-ggplot2::ggsave(paste0("other_stuff/figures/figures_final/phylo_plot_color_30", save_files, ".pdf"), p_final,
-    height = 6.1, width = 9.2, device = "pdf")
+ggplot2::ggsave(paste0("other_stuff/figures/figures_final/figures_final_editing/fig1_phylo_plot_color_30", save_files, ".pdf"), p_final,
+    height = 6.1, width = 10, device = "pdf")
 
 Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
-extrafont::embed_fonts(paste0("other_stuff/figures/figures_final/phylo_plot_color_30", save_files, ".pdf"))
+extrafont::embed_fonts(paste0("other_stuff/figures/figures_final/figures_final_editing/fig1_phylo_plot_color_30", save_files, ".pdf"))
 
 
 

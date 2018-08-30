@@ -49,16 +49,22 @@ kable(all_stats_table , format = "latex",  escape = F,
     kable_as_image("other_stuff/figures/figures_final/new_figures_revision_2/supplementary_figures_4mod/model_probs_expand.png", keep_pdf = TRUE)
 
 
+
+# check models
+mod2_ms <- read_delim(file = "data/processed/sims_10000kbot500_model_selection_30.txt", delim = " ",
+    col_names = c("species", "bot2", "neut2"), skip = 1)
+
+mod_ms_all <- mod4_ms %>% 
+    left_join(mod2_ms, by = "species")
+
 # new plot
 # mod4_ms <- read_delim(file = "data/processed/sims_1000k_4mods_model_selection_30.txt", delim = " ",
 #     col_names = c("species", "bot_iceage", "bot", "neut_iceage", "neut"), skip = 1)
 
-# transform into logical
+# transform into logicals
 mod4_ms_logi <- mod4_ms
 mod4_ms_logi[2:5] <- data.frame(t(apply(mod4_ms[2:5], 1, function(x) max(x) == x)))
 
-mod2_ms <- read_delim(file = "data/processed/sims_10000kbot500_model_selection_30.txt", delim = " ",
-    col_names = c("species", "bot2", "neut2"), skip = 1)
 mod2_ms_logi <- mod2_ms
 mod2_ms_logi[2:3] <- data.frame(t(apply(mod2_ms[2:3], 1, function(x) max(x) == x)))
 
@@ -78,11 +84,16 @@ sum(n_bot_bot)
 #n_bot_bot <- apply(mod_ms_all[2:ncol(mod_ms_all)], 1, function(x) (x["bot"]) & x["bot2"])
 #sum(n_bot_bot)
 
-# which were neutral in both  scenarios
-n_bot_bot <- apply(mod_ms_all[2:ncol(mod_ms_all)], 1, function(x) (x["neut_iceage"] | x["neut"]) & x["neut2"])
-sum(n_bot_bot)
+# which were neutral in both  scenarios 14
+n_neut_neut <- apply(mod_ms_all[2:ncol(mod_ms_all)], 1, function(x) (x["neut_iceage"] | x["neut"]) & x["neut2"])
+sum(n_neut_neut)
 
+n_neut_bot <- apply(mod_ms_all[2:ncol(mod_ms_all)], 1, function(x) (x["bot_iceage"] | x["bot"]) & x["neut2"])
 
+names_neut_bot <- mod_ms_all$species[n_neut_bot]
+
+# were all these close to bot before?
+mod2_ms[mod2_ms$species %in% names_neut_bot, ]
 
 
 # how is the new classification

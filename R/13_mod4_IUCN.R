@@ -28,6 +28,7 @@ source("R/martin.R")
 library(MCMCglmm)
 library(purrr)
 library(readr)
+library(extrafont)
 ## what should this script do:
 
 # modeling
@@ -344,7 +345,7 @@ gendiv_R2 <- read_delim("output/mcmcmodels/IUCN_gendiv_R2_marginal.txt", delim =
 p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    theme_martin(base_family = "Arial", highlight_family = "Arial") +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_x_discrete(labels = c("high concern", "low concern")) +
@@ -353,9 +354,9 @@ p1 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, num_alleles_mean)) +
    # ylab(expression(Allelic~richness~(A[r]))) +
     scale_y_continuous(limits=c(2, 12), breaks = c(2,4,6,8,10)) +
     annotate("text", x = 1.5, y = 12, label = "R^2 == '0.11 [0, 0.34]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+        parse = TRUE, family = "Arial", size = 3.1, colour = "#333333") +
     annotate("text", x = 1.5, y = 11.1, label = "beta == '1.24 [-0.08, 2.56]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+        parse = TRUE, family = "Arial", size = 3.1, colour = "#333333") +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.grid.major.y = element_line(colour = "lightgrey", size = 0.2),
@@ -373,7 +374,7 @@ hetexc_R2 <- read_delim("output/mcmcmodels/IUCN_hetexc_R2_marginal.txt", delim =
 p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    theme_martin(base_family = "Arial", highlight_family = "Arial") +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
     xlab(" ") +
@@ -381,9 +382,9 @@ p2 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, TPM80_ratio)) +
     ylab(expression(atop("Heterozygosity-excess", paste("("~prop[het-exc]~")")))) +
     #ylab(expression(Heterozygosity-excess ~ "("~prop[het-exc]~")")) +
     annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.03 [0, 0.19]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+        parse = TRUE, family = "Arial", size = 3.1, colour = "#333333") +
     annotate("text", x = 1.5, y = 1.11, label = "beta == '0.02 [-0.14, 0.19]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+        parse = TRUE, family = "Arial", size = 3.1, colour = "#333333") +
     scale_y_continuous(breaks = c(0.2,0.4,0.6,0.8,1), limits = c(0.15, 1.2)) +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -405,7 +406,7 @@ bot_R2 <- read_delim("output/mcmcmodels/IUCN_bot_R2_marginal.txt", delim = " ")
 p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
     geom_boxplot(alpha = 0.5, col = "darkgrey",  size = 0.5, width = 0.7,  outlier.shape = NA) + #aes(fill = BreedingType),
     geom_jitter(size = point_size, alpha = 0.6, shape = 21, col = "black", aes(fill = BreedingType), width = 0.2) +
-    theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
+    theme_martin(base_family = "Arial", highlight_family = "Arial") +
     scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual(values = c("#d8b365", "cornflowerblue")) +
 
@@ -414,9 +415,9 @@ p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
     #ylab(expression("ABC bottleneck\nprobability"~(p[bot]))) +
     ylab(expression(atop("ABC bottleneck", paste("probability (p"[bot]~")")))) +
     annotate("text", x = 1.5, y = 1.2, label = "R^2 == '0.07 [0, 0.29]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
-    annotate("text", x = 1.5, y = 1.11, label = "beta == '-0.14 [-0.36, 0.08]'", 
-        parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+        parse = TRUE, family = "Arial", size = 3.1, colour = "#333333") +
+    annotate("text", x = 1.5, y = 1.10, label = "beta == '-0.14 [-0.36, 0.08]'", 
+        parse = TRUE, family = "Arial", size = 3.1, colour = "#333333") +
     scale_y_continuous(breaks = c(0,0.2,0.4,0.6,0.8,1), limits = c(0, 1.2)) +
     theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -426,20 +427,21 @@ p3 <-  ggplot(data = stats_mod_IUCN, aes(IUCN_binary, bot)) +
         #axis.line.y = element_line(colour = "#cccccc"),
         axis.ticks.y = element_blank(),
         axis.ticks = element_line(colour = "#cccccc"),
-        plot.margin = unit(c(0.5,0.3,0.3,0.2), "cm"),
+        plot.margin = unit(c(0.55,0.3,0.3,0.2), "cm"),
         axis.title.x= element_text(margin=margin(t=0.5, unit = "cm")),
         legend.position="top")
 # legend.position = "none") 
 p3
 
 p_final <- plot_grid(p2,p3,p1, nrow = 1, labels = c("A", "B", "C"))
-ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN_rev.jpg", width = 9, height = 3.5)
+ggsave(p_final, filename = "other_stuff/figures/figures_final/figures_final_editing/IUCN_rev.jpg", width = 9, height = 3.5)
 
 
-#ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN_rev.pdf", width = 9, height = 3.5)
+ggsave(p_final, filename = "other_stuff/figures/figures_final/figures_final_editing/IUCN_rev.pdf", width = 9, height = 3.5,
+    device = "pdf")
 
-#Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
-#extrafont::embed_fonts("other_stuff/figures/figures_final/IUCN.pdf")
+Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
+extrafont::embed_fonts("other_stuff/figures/figures_final/figures_final_editing/IUCN_rev.pdf")
 
 
 
@@ -454,9 +456,9 @@ ggsave(p_final, filename = "other_stuff/figures/figures_final/IUCN_rev.jpg", wid
 #     xlab(" ") +
 #     ylab("Heterozygosity-excess") +
 #     annotate("text", x = 0.9, y = 0.95, label = "R^2 == '0.19 [0, 0.33]'", 
-#         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+#         parse = TRUE, family = "Arial", size = 3.1, colour = "#333333") +
 #     annotate("text", x = 0.9, y = 0.88, label = "beta == '1.29 [-0.08, 2.62]'", 
-#         parse = TRUE, family = "Lato", size = 3.1, colour = "#333333") +
+#         parse = TRUE, family = "Arial", size = 3.1, colour = "#333333") +
 #     scale_y_continuous(breaks = c(0.2,0.4,0.6,0.8,1), limits = c(0.15, 1)) +
 #     theme(panel.grid.major = element_blank(),
 #         panel.grid.minor = element_blank(),

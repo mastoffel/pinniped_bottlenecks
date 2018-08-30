@@ -1,0 +1,113 @@
+Description of the data used in Stoffel et al. 
+
+(1) seal_genotypes_basic_30.xlsx
+
+Microsatellite genotypes for all 30 species used in the study, one species per tab.
+
+(2) 30_species_10ktrees_final.tre
+
+Phylogenetic tree of all 30 species in Newick format. Data was downloaded from
+https://10ktrees.nunn-lab.org/ and the three ringed seal subspecies were added 
+according to their divergence after the last glacial maximum.
+
+(3) all_stats_30_modeling.csv
+
+File with all data used for phylogenetic mixed modeling in the paper. Variables are
+as follows:
+
+Species names
+
+tip_label: Name of the species corresponding to the .tre file
+species: species name with underscores for programming
+latin: latin names for plotting and paper
+common: common names for plotting and paper
+
+
+Ecological and life-history variables from Krüger et al. (some were not used in the paper)
+
+harem_size: Harem size
+male_weight
+female_weight
+male_length
+female_length
+ICUN_rating: Updated based on IUCN status from June 2018
+Abundance: Global Abundance
+BreedingType: Ice or Land breeding or both.
+birth_mass
+breeding_season_length: in days
+life_span_years:
+latitude: of occurence
+rel_birth_weight: relative birth weight 
+log_male_weight
+log_female_weight
+Longevity
+Generation_time
+Age_primiparity
+
+
+Statistics of the genetic data:
+
+g2: identity disequilibrium 
+CIlow: CI of g2
+CIup: CI of g2
+p_val: p value of g2
+
+The following summary stastistics are rarefied and show the average across samples of
+10 individuals each (see paper for an exact description)
+
+For each statistic, there is one column for the mean, two columns for the confidence interval of the mean,
+one column for the sd and two columns for the confidence interval of the sd.
+
+The summary statistics are the following:
+
+num_alleles_mean: Mean number of alleles per locus.
+exp_het_mean: Expected heterozygosity
+obs_het_mean: Observed heterozygosity
+mean_allele_size_sd: Mean standard deviation of allele sizes across loci
+mean_allele_size_kurtosis: Mean kurtosis of allele sizes across loci
+mean_allele_range: Mean allelic range
+mratio: Mratio (Garza and Williamson 2001)
+prop_low_afs_mean: Proportion of low frequency alleles (<5%)
+
+Starting with IAM_ratio, the results from the BOTTLENECK software are summarised:
+
+IAM is the infinite allele model.
+TPM is the Two-phase model.
+SMM is the stepwise-mutation model.
+
+The variables are as follows:
+
+IAM_ratio: proportion of loci in heterozygosity-excess under the IAM
+IAM_Wilc_Exc: p-value of test for het-excess under the IAM
+TPM70_ratio: proportion of loci in heterozygosity-excess under the TPM 70
+TPM70_Wilc_Exc: p-value of test for heterozygosity-excess under the TPM 70
+...
+same pattern until SMM_Wilc_Exc
+
+
+Then some mixed variables follow:
+
+nloc: number of loci for a species
+nind: number of individuals of a species
+bot: bottleneck model probability from the ABC analysis
+neut: non-bottleneck model probability from the ABC analysis
+common_abbr: Species abbreviation used in paper
+SSD: Sexual size dimorphism (male / female weight)
+abc_out: preferred model
+logAbundance: log transformed abundance
+logharem_size: log transformed harem size
+logmale_weight
+logbreed_season: log transformed breeding season length
+loglactation_length: log transformed lactation length
+logSSD: log transformed sexual size dimorphism.
+
+
+
+
+
+
+
+
+
+
+

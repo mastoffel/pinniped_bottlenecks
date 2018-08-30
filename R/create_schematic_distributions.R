@@ -99,7 +99,7 @@ ggsave(filename = "../bottleneck/other_stuff/figures/figures_final/new_figures_r
 
 # Ne LGM
 
-ne <- data.frame(vals = rlnorm(100000, 9, 1))
+ne <- data.frame(vals = rlnorm(100000, 9.5, 1))
 
 ggplot(ne, aes(vals)) +
     # stat_density(geom="line", adjust = 3, fill = "orange", alpha = 0.7) +
@@ -117,7 +117,7 @@ ggplot(ne, aes(vals)) +
     #scale_x_continuous(expand = c(0, 0)) +
     xlim(c(0, 500000)) 
 
-ggsave(filename = "../bottleneck/other_stuff/figures/figures_final/new_figures_revision2/Ne_LGM.png",
+ggsave(filename = "../bottleneck/other_stuff/figures/figures_final/new_figures_revision_2/Ne_LGM.png",
     width = 4, height = 3, bg = "transparent")
 
 

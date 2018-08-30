@@ -4,8 +4,12 @@ library(readr)
 library(ggplot2)
 library(tidyr)
 library(dplyr)
+source("R/martin.R")
 # simulated based on posteriors
-all_checks <- read_delim("output/model_evaluation/check5_postpred/sims_10000kbot500_post_pred_checks2.txt", delim = " ")
+all_checks1 <- read_delim("output/model_evaluation/check5_postpred/sims_10000kbot500_post_pred_checks2.txt", delim = " ")
+all_checks2 <- read_delim("output/model_evaluation/check5_postpred/sims_10000kbot500_post_pred_checks1.txt", delim = " ")
+
+all_checks <- rbind(all_checks1, all_checks2)
 head(all_checks)
 
 # compare these summary statistics
@@ -52,10 +56,11 @@ p <- ggplot(all_data, aes(value)) +
         sumstat = sumstat_names
     )) +
     theme_martin() +
+    scale_fill_manual(values = c("#fc8d62","#8da0cb")) +
     theme(panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
           strip.text.y = element_text(angle = 0),
-        axis.text= element_text(size = 7),
+        axis.text= element_text(size = 9.5),
         axis.text.y = element_blank(),
         legend.position = "bottom",
         legend.title=element_blank(),
@@ -65,6 +70,3 @@ p <- ggplot(all_data, aes(value)) +
 
 ggsave(filename = "post_pred_checks.jpg", plot = p, width = 10, height = 10)
 
-ggplot(all_checks, aes(value)) +
-    geom_histogram() +
-    facet_wrap(species ~ sumstat)
