@@ -92,11 +92,11 @@ library(grid)
 
 p <- abc_bot %>% filter(pars == "nbot") %>% 
     group_by(species) %>% 
-    #sample_n(4000) %>% 
+    sample_n(1000) %>% 
     #filter(!(species == "hawaiian_monk_seal" | species == "saimaa_ringed_seal" | species == "mediterranean_monk_seal")) %>% 
     ggplot(aes(y = adj_vals, x = species)) + 
     # geom_quasirandom(alpha = 0.01, size = 2, color = "#053061", width = 0.45, bandwidth = 1.5) +
-    geom_quasirandom(alpha = 0.05, size = 1, color = "#053061", width = 0.47, bandwidth = 2.5) +
+    geom_quasirandom(alpha = 0.07, size = 2, color = "#053061", width = 0.37, bandwidth = 2.5) + #width = 0.47, bandwidth = 2.5
    # geom_beeswarm(priority='density', alpha = 0.5, cex = 0.2, color = "grey") +
     # geom_jitter(size = 0.5, alpha = 0.1, width = 0.2, color = "grey") +
     geom_boxplot(width = 0.4, outlier.shape = NA, color = "white", alpha = 0.5, size = 0.2) +
@@ -112,9 +112,9 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
     ylab(expression(Bottleneck~N[e])) +
     coord_flip() +
     theme(plot.margin = unit(c(0.5,1.5,0.5,0), "cm"),
-        axis.text.x = element_text(angle = 0, hjust = 0.5, vjust = 0.5, size = 11),
-        axis.title.y = element_text(size = 13),
-        axis.text.y = element_text(size = 11))
+        axis.text.x = element_text(angle = 0, hjust = 0.5, vjust = 0.5, size = 8.5),
+        axis.title.y = element_text(size = 10),
+        axis.text.y = element_text(size = 8.5)) 
 
 p
 # plot as jpg
@@ -124,11 +124,11 @@ ggplot2::ggsave(filename = "other_stuff/figures/abc_posteriors_vert_30.jpg", p,
 # plot as pdf
 
 
-ggplot2::ggsave(filename = "other_stuff/figures/figures_final/figures_final_editing/abc_posteriors_vert_30.pdf", p,
-    width = 4, height = 6, device = "pdf")
+ggplot2::ggsave(filename = "other_stuff/figures/figures_final/figures_final_editing/abc_posteriors_vert_30_3.pdf", p,
+    width = 3.6, height = 6.5, device = "pdf")
 
 Sys.setenv(R_GSCMD = "/usr/local/bin/gs")
-extrafont::embed_fonts("other_stuff/figures/figures_final/figures_final_editing/abc_posteriors_vert_30.pdf")
+extrafont::embed_fonts("other_stuff/figures/figures_final/figures_final_editing/abc_posteriors_vert_30_3.pdf")
 
 
 

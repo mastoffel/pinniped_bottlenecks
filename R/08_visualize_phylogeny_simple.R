@@ -291,7 +291,7 @@ p_div <- ggplot(stand_div_lf, aes(x = variable, y = common_abbr, fill = value)) 
         axis.text.x = element_text(angle = 0, hjust = 0, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(15,10,20.7,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260) #15 10 22 10
+        plot.margin=unit(c(14.6,10,20.7,10),"points"), #c(38,-400,7,-260) c(5,-150,7,-260) #15 10 22 10
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_text(hjust=0, size = 9, colour = "#525252"), #abc_cols[stand_div$abc][plot_inds]
@@ -342,7 +342,7 @@ p_bot <- ggplot(bot_res_lf, aes(x = variable, y = species, fill = value)) +
         legend.position=c(0.57, 1.208),
         # legend.position=c(0.57, 1.2337),
        # legend.margin=margin(0,0,0,0),
-        plot.margin=unit(c(80.8,10,22.4,10),"points"), 
+        plot.margin=unit(c(80.8,10,22.7,10),"points"), 
         #   plot.margin=unit(c(87.8,10,22.8,10),"points"),
         #    plot.margin=unit(c(77.8,10,20.1,10),"points"),
         #plot.margin=unit(c(8.3,10,19.5,10),"points"),# c(38,-770,7, -690) c(38,300,3, 0)
@@ -388,7 +388,7 @@ p_abc <- ggplot(abc_probs_lf, aes(x = variable, y = species, fill = value)) +
         axis.text.x = element_text(angle = 0, hjust = 0.4, size = 12, margin = margin(t = 7)),
         # axis.text.x = element_blank(),
         legend.position="top",
-        plot.margin=unit(c(14.71,10,20.4,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660) +20
+        plot.margin=unit(c(14.6,10,22.7,10),"points"), #c(38,-520,3, -660)c(38,-520,1, -660) +20
         axis.title.x=element_blank(),
         axis.title.y=element_blank(), 
         axis.text.y = element_blank(),
@@ -407,7 +407,7 @@ p_final <- plot_grid(p, p_div, p_bot, p_abc, nrow = 1,
 #    draw_plot_label(c("A", "B", "C"), c(0.62, 0.74, 0.87), c(0.995, 0.995, 0.995), size = 11)
 p_final <- p_final +
     draw_plot_label(c("A", "B", "C"), c(0.67, 0.79, 0.91), c(0.995, 0.995, 0.995), size = 11)
-
+p_final
 
 ggplot2::ggsave(paste0("other_stuff/figures/figures_final/figures_final_editing/fig1_phylo_plot_color_30", save_files, ".jpg"), p_final,
     height = 6.1, width = 10, device = "jpg")
