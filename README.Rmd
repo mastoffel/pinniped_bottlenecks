@@ -32,7 +32,7 @@ We analysed genetic data from 11,000 individuals spanning 30 pinniped species ar
 <p align="center">
   <img width="460" src="pics/fig2.jpeg">
 </p>
-<p align="center" > <i>Estimated bottleneck effective population sizes for eleven severely hunted pinniped species using approximate bayesian computation. Pinniped illustrations by Rebecca Carter.</i></p>
+<p align="center" > <i>Estimated bottleneck effective population sizes for eleven severely hunted pinniped species using Approximate Bayesian Computation. Pinniped illustrations by Rebecca Carter.</i></p>
 
 ## Reproducing the analysis
 

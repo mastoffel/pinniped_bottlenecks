@@ -32,7 +32,7 @@ diversity due to overhunting.
 </p>
 <p align="center">
 <i>Estimated bottleneck effective population sizes for eleven severely
-hunted pinniped species using approximate bayesian computation. Pinniped
+hunted pinniped species using Approximate Bayesian Computation. Pinniped
 illustrations by Rebecca Carter.</i>
 </p>
 
