@@ -69,7 +69,7 @@ p <- ggplot(all_stats, aes(BreedingType, Generation_time)) +
   #  scale_color_manual(values = c("#d8b365", "cornflowerblue")) +
     scale_fill_manual("Breeding habitat", values = c( "cornflowerblue", "#d8b365")) +
     xlab("Breeding Habitat") +
-    ylab("Generation time") +
+    ylab("Generation time (days)") +
     guides(fill=FALSE)
 
 ggsave(p, filename = "other_stuff/figures/figures_final/Sup_BreedHab_GenTime.jpg", width = 3, height = 2.5)    

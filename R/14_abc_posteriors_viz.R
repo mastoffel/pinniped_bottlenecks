@@ -105,7 +105,7 @@ p <- abc_bot %>% filter(pars == "nbot") %>%
     theme_martin(base_family = "Arial", highlight_family = "Arial") +
    # scale_fill_cyclical(values = c("lightgrey", "darkgrey")) +
     #ylim(0, 900) +
-    scale_x_discrete(labels = species_names_bot_twolines) + 
+    scale_x_discrete(labels = species_names_bot) + #_twolines
     scale_y_continuous(breaks = c(seq(from = 0, to = 500, by = 100)), limits = c(0,550)) +
     #scale_y_discrete(expand = c(0.01, 0))+
     xlab("") +
@@ -155,7 +155,7 @@ p_mut_bot
 # neutral model posteriors
 
 # load abc posterior data
-load("data/processed/abc_estimates/abc_10000kbot500_neut_complete.RData")
+load("data/processed/abc_estimates/abc_10000kbot500_neut_complete_30.RData")
 # load parameter distributions
 # abc_params <- fread("data/processed/abc_estimates/sims_1500k_params.txt")
 
@@ -205,7 +205,7 @@ p_mut_neut <- abc_neut %>% filter(pars == "mut_rate") %>%
 ## final figure
 p_final <- p_mut_bot + p_mut_neut
 p_final
-ggsave(filename = "other_stuff/figures/figures_final/new_figures_revision_2/Sup4_abc_posteriors_mutrate_30.jpg", 
+ggsave(filename = "other_stuff/figures/figures_final/figures_revision_2/Sup4_abc_posteriors_mutrate_30.jpg", 
     plot = p_final, width = 7.5, height = 5.5)
 
 

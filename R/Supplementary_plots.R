@@ -8,17 +8,17 @@ library(dplyr)
 library(tidyverse)
 conf_mat <- data.frame("Bottleneck" = c(15, 85), "Non-bottleneck" = c(89, 11)) %>% 
     gather(key = `Classified into`, value = Frequency) %>% 
-    mutate(`Simulated under` = c("Non-bottleneck", "Bottleneck", "Non-bottleneck", "Bottleneck")) %>% 
-    mutate(`Simulated under` = fct_relevel(`Simulated under`, c("Non-bottleneck", "Bottleneck")))
+    mutate(`Simulated under` = c("non-bottleneck", "bottleneck", "non-bottleneck", "bottleneck")) %>% 
+    mutate(`Simulated under` = fct_relevel(`Simulated under`, c("Non-bottleneck", "bottleneck")))
 
 p <- ggplot(conf_mat, aes(x=`Classified into`, y=Frequency, fill = `Simulated under`)) +
     geom_bar(stat = "identity") +
-    scale_x_discrete(labels = c("Bottleneck", "Non-bottleneck")) +
+    scale_x_discrete(labels = c("bottleneck", "non-bottleneck")) +
     scale_y_continuous(breaks = seq(from = 0, to = 100, by = 20)) +
     theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     scale_fill_manual(values = c("grey", "gray27"))
 
-ggsave(filename = "other_stuff/figures/figures_final/new_figures_revision_2/Sup1_fig_conf_mat.jpg",
+ggsave(filename = "other_stuff/figures/figures_final/figures_revision_2/Sup1_fig_conf_mat.jpg",
     height = 3, width = 4.5)
 
 
@@ -58,7 +58,7 @@ source("R/martin.R")
 p <- ggplot(conf_mat, aes(x=var1, y= freq, fill = var2)) +
     geom_bar(stat = "identity") +
     scale_y_continuous(breaks = seq(from = 0, to = 100, by = 20)) +
-    scale_x_discrete(labels = c("LGM +\nBottleneck ", "Bottleneck", "LGM +\nNon-bottleneck", "Non-bottleneck")) +
+    scale_x_discrete(labels = c("LGM +\nbottleneck ", "bottleneck", "LGM +\nnon-bottleneck", "non-bottleneck")) +
     theme_martin(base_family = "Hind Guntur Light", highlight_family = "Hind Guntur Light") +
     xlab("Simulated under") +
     ylab("Frequency") +
@@ -67,7 +67,7 @@ p <- ggplot(conf_mat, aes(x=var1, y= freq, fill = var2)) +
     #    labels = c("Bottleneck +\nIce Age ", "Bottleneck", "Neutral+\nIce Age", "Neutral"))
     scale_fill_manual(name = "Classified into", 
         values = rev(c("#d9d9d9", "#969696", "#525252", "#252525")),
-        labels = c("LGM +\nBottleneck ", "Bottleneck", "LGM +\nNon-bottleneck", "Non-bottleneck"))
+        labels = c("LGM +\nbottleneck ", "bottleneck", "LGM +\nnon-bottleneck", "non-bottleneck"))
 p
-ggsave(filename = "other_stuff/figures/figures_final/new_figures_revision_2/Sup_fig_conf_mat_4mod_expand.jpg",
+ggsave(filename = "other_stuff/figures/figures_final/figures_revision_2/Sup_fig_conf_mat_4mod_expand.jpg",
     height = 3, width = 5.5)

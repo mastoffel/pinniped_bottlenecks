@@ -83,3 +83,55 @@ plot_grid(p1, p2, rel_widths = c(2,1))
 ggsave(filename = "abc4.jpg", width = 7.3, height = 4)
 
 
+
+
+## Last plot on black background
+
+p1 <- ggplot(md, aes(x = pred1, y = resp, colour = factor(col))) +
+    geom_point(size = 3, alpha = 0.5) +
+    ylim(0, 7) +
+    xlab("summary statistic \n(allele number, M-ratio)") +
+    ylab("model parameter \n(Ne, mu)") + 
+    #geom_vline(xintercept = 11.5,  linetype = "longdash") +
+    geom_segment(aes(x = 11.5, y = 0, xend = 11.5, yend = 6), linetype = "longdash", size = 0.3,
+        colour = "cornflowerblue") +
+    annotate("text", x = 11.5, y = 6.2, label = "atop(bold(S(emp)))", parse  =TRUE, 
+        colour = "cornflowerblue") +
+    geom_segment(aes(x = 11.5, y = 0, xend = 12.5, yend = 0), size = 0.3,
+        colour = "goldenrod", arrow = arrow(length = unit(0.3, "cm"))) +
+    geom_segment(aes(x = 11.5, y = 0, xend = 10.5, yend = 0), size = 0.3,
+        colour = "goldenrod", arrow = arrow(length = unit(0.3, "cm"))) +
+    annotate("text", x = 11, y = 0, label = "atop(bold(-tol))", parse  =TRUE, 
+        colour = "goldenrod")  +
+    annotate("text", x = 12, y = 0, label = "atop(bold(+tol))", parse  =TRUE, 
+        colour = "goldenrod")  +
+    geom_segment(aes(x = 12.5, y = 0, xend = 12.5, yend = 7), size = 0.3,
+        colour = "goldenrod", alpha = 0.5) +
+    geom_segment(aes(x = 10.5, y = 0, xend = 10.5, yend = 7), size = 0.3,
+        colour = "goldenrod", alpha = 0.5) +
+    scale_colour_manual(values = c("grey", "goldenrod")) +
+    theme(plot.margin=unit(c(1,0,1,1),"cm"),
+        legend.position="none",
+          plot.background = element_rect(fill = 'black', colour = 'black'),
+        panel.background = element_rect(fill = 'black', colour = 'black'),
+          axis.text = element_text(colour = "white"),
+          axis.line = element_line(colour = "white"),
+          axis.ticks = element_line(colour = "white"),
+          axis.title =  element_text(colour = "white"))
+p1
+#ggsave(filename = "abc3.jpg", width = 6, height = 4)
+
+md_hist <- md[md$col == "tol", ]
+p2 <- ggplot(md_hist, aes(x = resp)) +
+    geom_histogram(bins = 30, fill = "goldenrod", colour = "black", alpha = 0.8,
+        size = 0.2) +
+    coord_flip() +
+    ylab("summary statistic \n(allele number, M-ratio)") +
+    no_axes() +
+    xlim(0, 7) +
+    theme(plot.margin=unit(c(0.6,1,2.3,0),"cm"),
+        plot.background = element_rect(fill = 'black', colour = 'black'),
+        panel.background = element_rect(fill = 'black', colour = 'black'))
+
+plot_grid(p1, p2, rel_widths = c(2,1))
+#ggsave(filename = "abc4.jpg", width = 7.3, height = 4)
