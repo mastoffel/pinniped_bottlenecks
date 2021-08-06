@@ -24,8 +24,7 @@ bottlenecks. Pinniped species with harem-based mating systems and
 land-breeding species were particularly affected by population declines
 and loss of genetic diversity due to overhunting.
 
-![Inferred bottleneck population size across
-species](other_stuff/pics_github/elephant_seal_weaners.jpg)
+![ele\_seals](other_stuff/pics_github/elephant_seal_weaners.jpg)
 
 ## Reproducing the analysis
 
