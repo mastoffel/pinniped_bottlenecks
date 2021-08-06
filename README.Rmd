@@ -27,7 +27,7 @@ Stoffel, M. A., Humble, E., Paijmans, A. J., Acevedo-Whitehouse, K., Chilvers, B
 
 We analysed genetic data from 11,000 individuals spanning 30 pinniped species around the globe to shed light on the consequences of large scale seal-hunting in the 18th and 19th century. Around a third of these species showed distinct genetic signatures of past population bottlenecks. Pinniped species with harem-based mating systems and land-breeding species were particularly affected by population declines and loss of genetic diversity due to overhunting.
 
-![](other_stuff/pics_github/elephant_seal_weaners.JPG)
+![](./other_stuff/pics_github/elephant_seal_weaners.jpg)
 
 
 ## Reproducing the analysis
