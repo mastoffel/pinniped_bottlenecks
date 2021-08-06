@@ -20,14 +20,19 @@ library(badger)
 
 Stoffel, M. A., Humble, E., Paijmans, A. J., Acevedo-Whitehouse, K., Chilvers, B. L., Dickerson, B., ... & Hoffman, J. I. (2018). Demographic histories and genetic diversity across pinnipeds are shaped by human exploitation, ecology and life-history. *Nature Communications*, **9**(1), 1-12. `r badge_doi("https://doi.org/10.1038/s41467-018-06695-z", "green")` `r badger::badge_altmetric("51271319", "Darkorange")`
 
+![](pics/elephant_seal_weaners.jpg)
+
 <!-- badges: start -->
 <!-- badges: end -->
 
 ## Project
 
-We analysed genetic data from 11,000 individuals spanning 30 pinniped species around the globe to shed light on the consequences of large scale seal-hunting in the 18th and 19th century. Around a third of these species showed distinct genetic signatures of past population bottlenecks. Pinniped species with harem-based mating systems and land-breeding species were particularly affected by population declines and loss of genetic diversity due to overhunting.
+We analysed genetic data from 11,000 individuals spanning 30 pinniped species around the globe to shed light on the consequences of large scale seal-hunting in the 18th and 19th century. Around a third of these species showed distinct genetic signatures of past population bottlenecks. Pinniped species with harem-based mating systems and land-breeding species (as opposed to ice-breeding species) were particularly affected by population declines and loss of genetic diversity due to overhunting. 
 
-![](pics/elephant_seal_weaners.jpg)
+<p align="center">
+  <img width="460" src="pics/fig2.jpeg">
+</p>
+<p align="center" > <i>Estimated bottleneck effective population sizes for eleven severely hunted pinniped species using approximate bayesian computation. Pinniped illustrations by Rebecca Carter.</i></p>
 
 ## Reproducing the analysis
 

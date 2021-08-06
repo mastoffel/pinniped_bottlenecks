@@ -11,6 +11,8 @@ exploitation, ecology and life-history. *Nature Communications*,
 [![](https://img.shields.io/badge/doi-https://doi.org/10.1038/s41467--018--06695--z-green.svg)](https://doi.org/https://doi.org/10.1038/s41467-018-06695-z)
 [![](https://img.shields.io/badge/Altmetric-150-Darkorange.svg)](https://www.altmetric.com/details/51271319)
 
+![](pics/elephant_seal_weaners.jpg)
+
 <!-- badges: start -->
 <!-- badges: end -->
 
@@ -21,10 +23,18 @@ species around the globe to shed light on the consequences of large
 scale seal-hunting in the 18th and 19th century. Around a third of these
 species showed distinct genetic signatures of past population
 bottlenecks. Pinniped species with harem-based mating systems and
-land-breeding species were particularly affected by population declines
-and loss of genetic diversity due to overhunting.
+land-breeding species (as opposed to ice-breeding species) were
+particularly affected by population declines and loss of genetic
+diversity due to overhunting.
 
-![](pics/elephant_seal_weaners.jpg)
+<p align="center">
+<img width="460" src="pics/fig2.jpeg">
+</p>
+<p align="center">
+<i>Estimated bottleneck effective population sizes for eleven severely
+hunted pinniped species using approximate bayesian computation. Pinniped
+illustrations by Rebecca Carter.</i>
+</p>
 
 ## Reproducing the analysis
 
